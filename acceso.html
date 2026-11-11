@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Control de Acceso · Asamblea</title>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<style>
+:root{--red:#6e1414;--red2:#9b1c1c;--ink:#1f1f1f;--mut:#666;--line:#d6d6d6;--bg:#e9e9e9;--purple:#5B3C88;--ok:#2e7d32;--err:#c62828}
+[hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;font:17px/1.5 "Segoe UI",Roboto,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:var(--red);color:#fff;padding:10px 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:5}header h1{font-size:18px;margin:0;flex:1;min-width:180px}
+.net{font-size:12px;padding:3px 9px;border-radius:99px;background:#ffffff33}.net.on::before{content:"● ";color:#7fe08a}.net.off{background:#fff;color:var(--red2);font-weight:700}
+button{font:inherit;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:12px 16px;cursor:pointer;font-weight:600}button.pri{background:var(--purple);color:#fff;border-color:var(--purple)}button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}button.warn{background:var(--err);color:#fff;border-color:var(--err)}button.on{background:#333;color:#fff;border-color:#333}
+main{max-width:900px;margin:auto;padding:12px;display:grid;gap:12px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}.tabs button{flex:1;min-width:100px;padding:14px 8px}
+.tabs button.on{background:var(--purple);color:#fff;border-color:var(--purple)}
+.result{border-radius:12px;padding:24px;text-align:center;font-weight:700;margin:12px 0}
+.result.green{background:#e8f5e9;border:3px solid var(--ok);color:var(--ok)}
+.result.red{background:#ffebee;border:3px solid var(--err);color:var(--err)}
+.result h2{margin:8px 0;font-size:24px;color:inherit}
+.result .name{font-size:28px;margin:12px 0;color:#1f1f1f}
+.result .role{font-size:15px;color:var(--mut);font-weight:400}
+.result .reason{font-size:16px;margin-top:8px;color:#b71c1c}
+#reader{width:100%;max-width:500px;margin:auto;border-radius:12px;overflow:hidden;background:#000}
+#reader video{border-radius:12px}
+.inside-item{background:#fff;border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:8px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.inside-item.long{border-left-color:#f57f17;background:#fffde7}
+.inside-item .info{flex:1;min-width:180px}
+.inside-item .name{font-weight:700;font-size:16px}
+.inside-item .meta{font-size:13px;color:var(--mut);margin-top:2px}
+.inside-item .time{font-size:13px;color:var(--purple);font-weight:600;margin-top:4px}
+.inside-item button{padding:10px 16px;font-size:14px}
+.counter{background:#f3f3f3;border-radius:8px;padding:14px;text-align:center;margin-bottom:12px}
+.counter b{display:block;font-size:36px;color:var(--purple);line-height:1}
+.counter small{font-size:13px;color:var(--mut);font-weight:600}
+.zone-select{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:12px}
+.zone-select button{padding:14px 8px;font-size:14px;text-align:center;line-height:1.3;border-radius:8px}
+.zone-select button.on{background:var(--purple);color:#fff;border-color:var(--purple)}
+.empty{text-align:center;padding:30px;color:var(--mut);font-style:italic}
+input,select,textarea{font:inherit;padding:12px;border:1px solid #bbb;border-radius:8px;width:100%}
+.form-row{display:grid;gap:8px;margin-bottom:8px}
+.chk-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}
+.chk-grid label{display:flex;align-items:center;gap:8px;padding:8px;background:#f5f5f5;border-radius:6px;cursor:pointer;font-size:14px}
+.chk-grid input{width:auto}
+.user-card{background:#fafafa;border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:8px}
+.user-card.revoked{opacity:.5;background:#ffebee}
+.user-card .name{font-weight:700;font-size:16px;margin-bottom:4px}
+.user-card .meta{font-size:13px;color:var(--mut);margin-bottom:8px}
+.user-card .actions{display:flex;gap:6px;flex-wrap:wrap}
+.user-card .actions button{padding:8px 12px;font-size:13px}
+#qrDisplay{display:flex;flex-direction:column;align-items:center;padding:16px;background:#fff;border-radius:8px;margin:12px 0}
+#qrDisplay canvas,#qrDisplay img{border-radius:8px}
+.print-mode{position:fixed;inset:0;background:#fff;z-index:9999;overflow:auto;padding:20px}
+.print-card{display:inline-block;margin:10px;padding:15px;border:2px dashed #999;border-radius:8px;text-align:center;page-break-inside:avoid}
+.print-card .pname{font-weight:bold;margin:5px 0;font-size:14px}
+.print-card .pcong{font-size:12px;color:#666;margin-bottom:8px}
+.toast-wrap{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:#2e7d32;color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,.3);opacity:0;transition:opacity .3s;font-size:15px}
+.toast.err{background:#c62828}.toast.show{opacity:1}
+#modal{position:fixed;inset:0;background:#000a;display:grid;place-items:center;padding:14px;z-index:9999}
+#modal[hidden]{display:none}
+#modal .box{background:#fff;border-radius:10px;padding:18px;width:100%;max-width:400px;display:grid;gap:12px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+#modal h2{margin:0;color:var(--purple);font-size:20px}
+.zone-status{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin:12px 0}
+.zone-status div{background:#f0f0f0;border-radius:6px;padding:10px;text-align:center}
+.zone-status b{display:block;font-size:24px;color:var(--purple)}
+.zone-status small{font-size:12px;color:var(--mut)}
+details summary{cursor:pointer;color:var(--mut);font-size:14px;margin:8px 0}
+</style>
+</head>
+<body>
+<div class="toast-wrap" id="toastWrap"></div>
+<div id="modal" hidden><div class="box" id="modalBox"></div></div>
+
+<header>
+  <h1>🚪 Control de Acceso</h1>
+  <span id="net" class="net"></span>
+  <button onclick="location.href='index.html'" style="background:#fff;color:var(--red2)">← Volver</button>
+</header>
+
+<main>
+  <div class="tabs card">
+    <button data-tab="scan" onclick="setTab('scan')" class="on">📷 Escanear</button>
+    <button data-tab="inside" onclick="setTab('inside')">🟢 Dentro Ahora</button>
+    <button data-tab="admin" onclick="setTab('admin')">⚙️ Admin</button>
+  </div>
+
+  <!-- TAB: ESCANEAR -->
+  <div id="tabScan">
+    <div class="card">
+      <h3 style="margin:0 0 8px">Puerta / Zona:</h3>
+      <div class="zone-select" id="zoneSelect"></div>
+    </div>
+    <div class="card">
+      <div id="reader"></div>
+      <div id="result"></div>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="pri" onclick="startCamera()">📷 Iniciar cámara</button>
+        <button onclick="stopCamera()">⏹ Detener</button>
+        <button onclick="manualLookup()">🔎 Buscar por nombre</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: DENTRO AHORA -->
+  <div id="tabInside" hidden>
+    <div class="card">
+      <div class="counter">
+        <b id="insideCount">0</b>
+        <small>personas dentro ahora</small>
+      </div>
+      <div class="zone-select" id="insideZoneFilter"></div>
+      <div id="insideList"></div>
+    </div>
+  </div>
+
+  <!-- TAB: ADMIN -->
+  <div id="tabAdmin" hidden>
+    <div class="card" id="adminLogin">
+      <h3 style="margin:0 0 12px">🔒 Acceso Admin</h3>
+      <input type="password" id="adminPass" placeholder="Contraseña" style="margin-bottom:12px">
+      <button class="pri" style="width:100%" onclick="loginAdmin()">Entrar</button>
+    </div>
+    <div id="adminPanel" hidden>
+      <div class="card">
+        <h3 style="margin:0 0 8px">📊 Estado en vivo por zona</h3>
+        <div class="zone-status" id="zoneStatusLive"></div>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 8px">➕ Agregar hermano autorizado</h3>
+        <div class="form-row">
+          <input id="newName" placeholder="Nombre completo">
+          <input id="newCong" placeholder="Congregación">
+        </div>
+        <div class="chk-grid" id="roleCheckboxes"></div>
+        <button class="pri" style="width:100%;margin-top:8px" onclick="addUser()">Agregar y generar QR</button>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 8px">👥 Hermanos autorizados</h3>
+        <button onclick="printAllQRs()" style="width:100%;margin-bottom:12px;background:#2e7d32;color:#fff;border-color:#2e7d32">🖨️ Imprimir todos los QR</button>
+        <input id="searchUsers" placeholder="🔍 Buscar…" oninput="renderUsers(this.value)" style="margin-bottom:12px">
+        <div id="usersList"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+// ============ CONFIG ============
+const CFG = { DB: "https://voluntariastx20-default-rtdb.firebaseio.com" };
+const APP_SECRET = "asam-laf-2026-secret-v1";
+const ADMIN_PASS = "acceso2026";
+
+const ZONES = {
+  plataforma:  { name: "Plataforma",         roles: ["discursante","presidente","comite","av"] },
+  detras:      { name: "Detrás de Plataforma", roles: ["av","tecnico","comite","instalacion"] },
+  cabina:      { name: "Cabina A/V",         roles: ["av","tecnico"] },
+  bautisterio: { name: "Bautisterio",        roles: ["bautismo","comite"] },
+  primeros:    { name: "Primeros Auxilios",  roles: ["primeros-auxilios"] },
+  comunes:     { name: "Zonas Comunes",      roles: ["acomodador","limpieza","estacionamiento","voluntaria"] }
+};
+
+const ROLES = [
+  { id:"discursante", label:"Discursante" },
+  { id:"presidente", label:"Presidente" },
+  { id:"comite", label:"Comité" },
+  { id:"av", label:"Audio y Video" },
+  { id:"tecnico", label:"Técnico" },
+  { id:"instalacion", label:"Instalación" },
+  { id:"bautismo", label:"Bautismo" },
+  { id:"primeros-auxilios", label:"Primeros Auxilios" },
+  { id:"acomodador", label:"Acomodador" },
+  { id:"limpieza", label:"Limpieza" },
+  { id:"estacionamiento", label:"Estacionamiento" },
+  { id:"voluntaria", label:"Voluntaria" }
+];
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+let S = {};
+let USERS = {};
+let ENTRIES = {};
+let TEMP = {};
+let scanMode = false, scanner = null, lastScan = "", lastScanTs = 0;
+let currentZone = "plataforma", insideFilter = "all", adminLogged = false, pollIv = null;
+
+// ============ TOAST ============
+function toast(msg, err) {
+  const t = document.createElement('div');
+  t.className = 'toast' + (err?' err':'');
+  t.textContent = msg;
+  $('toastWrap').appendChild(t);
+  setTimeout(()=>t.classList.add('show'), 10);
+  setTimeout(()=>{t.classList.remove('show'); setTimeout(()=>t.remove(), 300)}, 3000);
+}
+
+// ============ MODAL ============
+function showModal(title, bodyHtml, buttons) {
+  $('modalBox').innerHTML = `<h2>${title}</h2><div>${bodyHtml}</div><div class="row" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap" id="mdlBtns"></div>`;
+  buttons.forEach(b => {
+    const btn = document.createElement('button');
+    btn.textContent = b.text;
+    btn.className = b.class || '';
+    btn.style.flex = '1';
+    btn.onclick = () => { if(b.action) b.action(); if(!b.keepOpen) $('modal').hidden = true; };
+    $('mdlBtns').appendChild(btn);
+  });
+  $('modal').hidden = false;
+  const inp = $('modalBox').querySelector('input');
+  if(inp) setTimeout(()=>inp.focus(), 50);
+}
+
+// ============ FIREBASE HELPERS ============
+function path(p, v) {
+  if(v === undefined) return fetch(`${CFG.DB}/access/${p}.json`).then(r=>r.json());
+  return fetch(`${CFG.DB}/access/${p}.json`, { method: 'PUT', body: JSON.stringify(v) }).then(r=>r.json());
+}
+function del(p) { return fetch(`${CFG.DB}/access/${p}.json`, { method: 'DELETE' }); }
+function net(on) { const e = $('net'); e.textContent = on ? 'En línea' : 'Sin conexión'; e.className = 'net ' + (on ? 'on' : 'off'); }
+
+async function loadAll() {
+  try {
+    const r = await fetch(`${CFG.DB}/access.json?t=${Date.now()}`);
+    const data = await r.json() || {};
+    USERS = data.users || {};
+    ENTRIES = data.entries || {};
+    TEMP = data.tempQr || {};
+    net(true);
+    renderAll();
+  } catch(e) { net(false); }
+}
+
+function renderAll() {
+  renderZoneSelects();
+  if (adminLogged) { renderUsers($('searchUsers').value); renderZoneStatus(); }
+  renderInsideList();
+}
+
+// ============ FIRMA / VALIDACIÓN QR ============
+async function sign(msg) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('').slice(0,16);
+}
+
+function todayStr() { return new Date().toISOString().slice(0,10); }
+
+async function buildQRContent(uid) {
+  const d = todayStr();
+  const sig = await sign(`${uid}|${d}|${APP_SECRET}`);
+  return `ASM|${uid}|${d}|${sig}`;
+}
+
+async function buildTempQRContent(tempId) {
+  const t = TEMP[tempId];
+  if (!t) return null;
+  const sig = await sign(`${tempId}|${t.zone}|${t.expiresAt}|${APP_SECRET}`);
+  return `TMP|${tempId}|${t.zone}|${t.expiresAt}|${sig}`;
+}
+
+async function validateQR(content) {
+  const parts = content.split('|');
+  if (parts.length !== 4) return { valid: false, reason: "Formato inválido" };
+
+  if (parts[0] === 'TMP') {
+    const [, tempId, zone, expiresAt, sig] = parts;
+    const expected = await sign(`${tempId}|${zone}|${expiresAt}|${APP_SECRET}`);
+    if (sig !== expected) return { valid: false, reason: "Firma inválida (falsificado)" };
+    if (Date.now() > +expiresAt) return { valid: false, reason: "QR temporal expirado" };
+    const t = TEMP[tempId];
+    if (!t) return { valid: false, reason: "QR temporal no encontrado" };
+    if (t.used) return { valid: false, reason: "QR temporal ya usado" };
+    return { valid: true, tempId, zone, temp: true };
+  }
+
+  if (parts[0] === 'ASM') {
+    const [, uid, dateStr, sig] = parts;
+    if (dateStr !== todayStr()) return { valid: false, reason: "Código de otro día (viejo)" };
+    const expected = await sign(`${uid}|${dateStr}|${APP_SECRET}`);
+    if (sig !== expected) return { valid: false, reason: "Firma inválida (falsificado)" };
+    const u = USERS[uid];
+    if (!u) return { valid: false, reason: "Hermano no autorizado en el sistema" };
+    if (u.active === false) return { valid: false, reason: "Acceso revocado por el comité" };
+    return { valid: true, uid, user: u };
+  }
+
+  return { valid: false, reason: "Formato desconocido" };
+}
+
+// ============ ESCANEO ============
+async function startCamera() {
+  if (scanMode) return;
+  try {
+    scanner = new Html5Qrcode("reader");
+    scanMode = true;
+    await scanner.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: { width: 250, height: 250 } },
+      onScanSuccess,
+      () => {}
+    );
+  } catch(e) {
+    toast("No se pudo iniciar la cámara. Verifica permisos.", true);
+    scanMode = false;
+  }
+}
+
+async function stopCamera() {
+  if (scanner && scanMode) {
+    try { await scanner.stop(); scanner.clear(); } catch(e) {}
+  }
+  scanMode = false;
+}
+
+async function onScanSuccess(text) {
+  if (text === lastScan && Date.now() - lastScanTs < 3000) return;
+  lastScan = text; lastScanTs = Date.now();
+
+  const res = await validateQR(text);
+  const zone = ZONES[currentZone];
+
+  if (!res.valid) {
+    showResultRed(res.reason);
+    return;
+  }
+
+  if (res.temp && res.zone !== currentZone) {
+    showResultRed(`QR temporal no válido para esta zona (es para ${ZONES[res.zone]?.name || res.zone})`);
+    return;
+  }
+
+  if (!res.temp) {
+    const hasRole = (res.user.roles || []).some(r => zone.roles.includes(r));
+    if (!hasRole) {
+      showResultRed(`${esc(res.user.name)} no tiene acceso a ${zone.name}. Sus roles: ${(res.user.roles||[]).join(', ')}`);
+      return;
+    }
+  }
+
+  const name = res.temp ? `QR Temporal (${res.zone})` : res.user.name;
+  const uid = res.temp ? `temp:${res.tempId}` : res.uid;
+  await logEntry(uid, currentZone, name, res.temp);
+
+  if (res.temp) {
+    await path(`tempQr/${res.tempId}/used`, true);
+  }
+
+  showResultGreen(name, res.user?.roles || [], currentZone);
+  toast(`✓ Entrada registrada: ${name}`, false);
+}
+
+async function logEntry(uid, zone, name, isTemp) {
+  const entryId = Date.now() + '_' + Math.random().toString(36).slice(2,7);
+  const entry = { uid, zone, name, entryTime: Date.now(), exitTime: null, isTemp: !!isTemp };
+  await path(`entries/${entryId}`, entry);
+}
+
+function showResultGreen(name, roles, zone) {
+  const now = new Date().toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
+  $('result').innerHTML = `
+    <div class="result green">
+      <div style="font-size:44px">✅</div>
+      <h2>PASE</h2>
+      <div class="name">${esc(name)}</div>
+      <div class="role">${roles.length ? roles.join(' · ') : 'QR Temporal'}</div>
+      <div style="font-size:14px;margin-top:8px;color:#555">Puerta: ${zone}</div>
+      <div style="font-size:14px;margin-top:4px;color:#555">Entrada: ${now}</div>
+    </div>`;
+}
+
+function showResultRed(reason) {
+  $('result').innerHTML = `
+    <div class="result red">
+      <div style="font-size:44px">🚫</div>
+      <h2>NO PASE</h2>
+      <div class="reason">${esc(reason)}</div>
+      <div style="font-size:13px;margin-top:12px;color:#666">Diríjase al Superintendente de Acomodadores</div>
+    </div>`;
+}
+
+async function manualLookup() {
+  showModal("🔎 Buscar hermano", `<input id="lookupName" placeholder="Nombre a buscar" autocomplete="off"><div id="lookupResults" style="margin-top:8px;max-height:300px;overflow:auto"></div>`, [{text:"Cerrar"}]);
+  $('lookupName').oninput = () => {
+    const q = $('lookupName').value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    if (q.length < 2) { $('lookupResults').innerHTML = ''; return; }
+    const matches = Object.entries(USERS).filter(([uid, u]) => (u.name||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q));
+    $('lookupResults').innerHTML = matches.length ? matches.map(([uid,u]) =>
+      `<button style="width:100%;text-align:left;margin-bottom:4px;padding:12px" onclick="manualLog('${uid}')"><b>${esc(u.name)}</b><br><small>${esc(u.cong)} · ${(u.roles||[]).join(', ')}</small></button>`
+    ).join('') : '<p style="color:#888">Sin resultados</p>';
+  };
+}
+
+async function manualLog(uid) {
+  const u = USERS[uid];
+  const zone = ZONES[currentZone];
+  const hasRole = (u.roles || []).some(r => zone.roles.includes(r));
+  if (!hasRole) { toast(`${u.name} no autorizado para ${zone.name}`, true); return; }
+  await logEntry(uid, currentZone, u.name, false);
+  showResultGreen(u.name, u.roles, currentZone);
+  toast(`✓ Entrada registrada: ${u.name}`, false);
+  $('modal').hidden = true;
+}
+
+// ============ DENTRO AHORA ============
+function renderInsideList() {
+  const now = Date.now();
+  const inside = Object.entries(ENTRIES)
+    .filter(([id, e]) => !e.exitTime && (insideFilter === 'all' || e.zone === insideFilter))
+    .sort((a,b) => b[1].entryTime - a[1].entryTime);
+
+  $('insideCount').textContent = inside.length;
+
+  if (!inside.length) {
+    $('insideList').innerHTML = '<div class="empty">No hay nadie dentro ahora.</div>';
+    return;
+  }
+
+  $('insideList').innerHTML = inside.map(([id, e]) => {
+    const mins = Math.floor((now - e.entryTime) / 60000);
+    const long = mins >= 30;
+    const time = new Date(e.entryTime).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
+    const zoneName = ZONES[e.zone]?.name || e.zone;
+    return `<div class="inside-item${long?' long':''}">
+      <div class="info">
+        <div class="name">${esc(e.name)}</div>
+        <div class="meta">${esc(zoneName)}${e.isTemp?' · QR Temporal':''}</div>
+        <div class="time">Entró: ${time} (${mins} min)</div>
+      </div>
+      <button class="ok" onclick="markExit('${id}')">Salió</button>
+    </div>`;
+  }).join('');
+}
+
+async function markExit(entryId) {
+  await path(`entries/${entryId}/exitTime`, Date.now());
+  toast("✓ Salida registrada", false);
+}
+
+// ============ ZONAS ============
+function renderZoneSelects() {
+  const zoneHtml = Object.entries(ZONES).map(([id, z]) =>
+    `<button data-zone="${id}" class="${currentZone===id?'on':''}" onclick="setZone('${id}')">${esc(z.name)}</button>`
+  ).join('');
+  $('zoneSelect').innerHTML = zoneHtml;
+
+  const filterHtml = `<button data-zone="all" class="${insideFilter==='all'?'on':''}" onclick="setInsideFilter('all')">Todas</button>` +
+    Object.entries(ZONES).map(([id, z]) =>
+      `<button data-zone="${id}" class="${insideFilter===id?'on':''}" onclick="setInsideFilter('${id}')">${esc(z.name)}</button>`
+    ).join('');
+  $('insideZoneFilter').innerHTML = filterHtml;
+}
+
+function setZone(id) { currentZone = id; renderZoneSelects(); }
+function setInsideFilter(id) { insideFilter = id; renderZoneSelects(); renderInsideList(); }
+
+// ============ ADMIN ============
+function loginAdmin() {
+  if ($('adminPass').value === ADMIN_PASS) {
+    adminLogged = true;
+    $('adminLogin').hidden = true;
+    $('adminPanel').hidden = false;
+    renderRoleCheckboxes();
+    renderUsers('');
+    renderZoneStatus();
+  } else {
+    toast("Contraseña incorrecta", true);
+  }
+}
+
+function renderRoleCheckboxes() {
+  $('roleCheckboxes').innerHTML = ROLES.map(r =>
+    `<label><input type="checkbox" value="${r.id}"> ${esc(r.label)}</label>`
+  ).join('');
+}
+
+async function addUser() {
+  const name = $('newName').value.trim();
+  const cong = $('newCong').value.trim();
+  const roles = Array.from($('roleCheckboxes').querySelectorAll('input:checked')).map(x => x.value);
+  if (!name) { toast("Escribe el nombre", true); return; }
+  if (!roles.length) { toast("Selecciona al menos un rol", true); return; }
+  const uid = Math.random().toString(36).slice(2, 10);
+  const user = { name, cong, roles, active: true, createdAt: Date.now() };
+  await path(`users/${uid}`, user);
+  USERS[uid] = user;
+  $('newName').value = '';
+  $('newCong').value = '';
+  $('roleCheckboxes').querySelectorAll('input').forEach(x => x.checked = false);
+  toast(`✓ ${name} agregado. Generando QR…`, false);
+  await showUserQR(uid);
+  renderUsers('');
+}
+
+function renderUsers(filter) {
+  const q = (filter||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const list = Object.entries(USERS)
+    .filter(([uid, u]) => !q || (u.name||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q))
+    .sort((a,b) => (a[1].name||'').localeCompare(b[1].name||''));
+
+  if (!list.length) {
+    $('usersList').innerHTML = '<div class="empty">Aún no hay hermanos autorizados.</div>';
+    return;
+  }
+
+  $('usersList').innerHTML = list.map(([uid, u]) => `
+    <div class="user-card${u.active===false?' revoked':''}">
+      <div class="name">${esc(u.name)}${u.active===false?' <span style="color:#c62828">(REVOCADO)</span>':''}</div>
+      <div class="meta">${esc(u.cong||'')} · ${(u.roles||[]).map(r=>ROLES.find(x=>x.id===r)?.label||r).join(', ')}</div>
+      <div class="actions">
+        <button onclick="showUserQR('${uid}')">📱 Ver QR</button>
+        <button class="${u.active===false?'ok':'warn'}" onclick="toggleUser('${uid}')">${u.active===false?'Reactivar':'Revocar'}</button>
+        <button onclick="deleteUser('${uid}')" style="color:#c62828">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function showUserQR(uid) {
+  const u = USERS[uid];
+  if (!u) return;
+  const content = await buildQRContent(uid);
+  showModal(`📱 QR de ${u.name}`,
+    `<div style="display:flex;flex-direction:column;align-items:center;padding:12px;background:#fff;border-radius:8px">
+      <div id="qrHolder"></div>
+      <div style="font-weight:bold;font-size:16px;margin-top:8px">${esc(u.name)}</div>
+      <div style="font-size:13px;color:#666;margin-top:4px">${esc(u.cong||'')}</div>
+      <div style="font-size:12px;color:#999;margin-top:8px;text-align:center;word-break:break-all;max-width:280px">${esc(content)}</div>
+    </div>`,
+    [
+      { text: "🖨️ Imprimir", class: "pri", action: () => printSingleQR(uid, u, content) },
+      { text: "Cerrar", action: () => {} }
+    ]
+  );
+  setTimeout(() => {
+    const holder = $('qrHolder');
+    if (holder) {
+      holder.innerHTML = '';
+      new QRCode(holder, { text: content, width: 220, height: 220, correctLevel: QRCode.CorrectLevel.M });
+    }
+  }, 50);
+}
+
+function printSingleQR(uid, u, content) {
+  const w = window.open('', '_blank');
+  w.document.write(`<html><head><title>QR - ${esc(u.name)}</title><style>
+    body{font-family:sans-serif;text-align:center;padding:20px}
+    .card{border:2px dashed #333;padding:20px;display:inline-block;border-radius:8px}
+    .name{font-weight:bold;font-size:18px;margin:12px 0 4px}
+    .cong{font-size:13px;color:#666}
+    .roles{font-size:12px;color:#999;margin-top:8px}
+  </style></head><body>
+    <div class="card">
+      <div id="qr"></div>
+      <div class="name">${esc(u.name)}</div>
+      <div class="cong">${esc(u.cong||'')}</div>
+      <div class="roles">${(u.roles||[]).map(r=>ROLES.find(x=>x.id===r)?.label||r).join(' · ')}</div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
+    <script>
+      new QRCode(document.getElementById("qr"), { text: ${JSON.stringify(content)}, width: 200, height: 200 });
+      setTimeout(() => window.print(), 500);
+    <\/script>
+  </body></html>`);
+}
+
+async function printAllQRs() {
+  const entries = Object.entries(USERS).filter(([uid,u]) => u.active !== false);
+  if (!entries.length) { toast("No hay usuarios activos", true); return; }
+  const contents = await Promise.all(entries.map(async ([uid]) => ({ uid, content: await buildQRContent(uid) })));
+  const w = window.open('', '_blank');
+  const cardsHtml = entries.map(([uid, u], i) => `
+    <div class="print-card">
+      <div id="qr_${i}"></div>
+      <div class="pname">${esc(u.name)}</div>
+      <div class="pcong">${esc(u.cong||'')}</div>
+    </div>
+  `).join('');
+  w.document.write(`<html><head><title>QRs - Asamblea</title><style>
+    body{font-family:sans-serif;padding:10px}
+    .print-card{display:inline-block;margin:8px;padding:12px;border:2px dashed #666;border-radius:8px;text-align:center;page-break-inside:avoid;width:200px;vertical-align:top}
+    .pname{font-weight:bold;font-size:13px;margin:6px 0 2px}
+    .pcong{font-size:11px;color:#666}
+    @media print { .print-card{page-break-inside:avoid} }
+  </style></head><body>
+    ${cardsHtml}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
+    <script>
+      const items = ${JSON.stringify(contents.map((c,i)=>({i, content:c.content})))};
+      items.forEach(({i, content}) => {
+        new QRCode(document.getElementById("qr_"+i), { text: content, width: 160, height: 160 });
+      });
+      setTimeout(() => window.print(), 800);
+    <\/script>
+  </body></html>`);
+}
+
+async function toggleUser(uid) {
+  const u = USERS[uid];
+  if (!u) return;
+  const newActive = u.active === false;
+  await path(`users/${uid}/active`, newActive);
+  USERS[uid].active = newActive;
+  toast(newActive ? `✓ ${u.name} reactivado` : `${u.name} revocado`, false);
+  renderUsers($('searchUsers').value);
+}
+
+async function deleteUser(uid) {
+  const u = USERS[uid];
+  showModal("🗑️ Borrar hermano", `<p>¿Borrar definitivamente a <b>${esc(u.name)}</b>? Su QR dejará de funcionar.</p>`,
+    [{text:"Borrar", class:"warn", action: async () => {
+      await del(`users/${uid}`);
+      delete USERS[uid];
+      renderUsers('');
+      toast("Hermano borrado", false);
+    }}, {text:"Cancelar"}]);
+}
+
+async function renderZoneStatus() {
+  const now = Date.now();
+  const zones = Object.entries(ZONES).map(([id, z]) => {
+    const count = Object.values(ENTRIES).filter(e => e.zone === id && !e.exitTime).length;
+    return `<div><b>${count}</b><small>${esc(z.name)}</small></div>`;
+  });
+  $('zoneStatusLive').innerHTML = zones.join('');
+}
+
+// ============ TABS ============
+function setTab(tab) {
+  ['scan','inside','admin'].forEach(t => {
+    $('tab' + t.charAt(0).toUpperCase() + t.slice(1)).hidden = t !== tab;
+  });
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
+  if (tab === 'inside' || tab === 'admin') stopCamera();
+  if (tab === 'inside') renderInsideList();
+  if (tab === 'admin' && adminLogged) { renderUsers($('searchUsers').value); renderZoneStatus(); }
+}
+
+// ============ INIT ============
+function init() {
+  renderZoneSelects();
+  loadAll();
+  pollIv = setInterval(loadAll, 5000);
+}
+
+window.addEventListener('beforeunload', () => { stopCamera(); clearInterval(pollIv); });
+
+init();
+</script>
+</body>
+</html>
