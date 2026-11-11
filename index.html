@@ -20,7 +20,7 @@ svg.map-svg{width:100%;max-width:100%;height:auto;display:block;touch-action:pan
 .toast{background:#2e7d32;color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,.3);opacity:0;transition:opacity .3s,transform .3s;transform:translateY(20px);display:flex;align-items:center;gap:8px;max-width:340px;font-size:16px}
 .toast.err{background:#b71c1c}.toast.show{opacity:1;transform:translateY(0)}
 .pc{cursor:pointer}.pc text{font:700 15px sans-serif;fill:#fff;pointer-events:none}
-@keyframes bl{50%{opacity:.05}}.pulse{fill:none;stroke:#d11;stroke-width:6;animation:bl .8s infinite}@media(prefers-reduced-motion:reduce){.pulse{animation:none;opacity:.8}}
+@keyframes bl{50%{opacity:.1}}.pulse{fill:none;stroke:#d11;stroke-width:8;animation:bl 1s infinite}@media(prefers-reduced-motion:reduce){.pulse{animation:none;opacity:.8}}
 .tag{font-size:14px;padding:3px 9px;border-radius:99px;color:#fff}.tag.b{background:var(--blue)}.tag.o{background:var(--org)}.tag.p{background:var(--purple)}.tag.g{background:var(--gray)}
 .mut{color:var(--mut)}h3{margin:0 0 6px;font-size:19px}
 .who{background:#f3f3f3;border-left:4px solid var(--red2);padding:10px 12px;margin:10px 0}
@@ -51,7 +51,7 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
 .spill-item.proc{border-left-color:var(--spillP);background:#fffde7}
 .spill-item.done{border-left-color:var(--spillD);background:#f1f8e9;opacity:.75}
 
-/* Walkers Map con Zoom & Pan */
+/* Walkers Map */
 #walkersView{max-width:1100px;margin:12px auto;padding:12px}
 #mapbox{overflow:hidden;border:2px solid var(--purple);border-radius:8px;background:#f0f0f0;height:65vh;touch-action:none;position:relative}
 #walkSvg{display:block;width:100%;height:100%;cursor:grab;touch-action:none}
@@ -69,8 +69,6 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
 .vol-list-item:last-child{border-bottom:none}
 .vol-list-item.occ{background:#fff}
 .vol-list-item.empty{color:#888;font-style:italic}
-@keyframes blinkBg { 50% { background-color: #e1bee7; border-color: var(--purple); } }
-.blink-row { animation: blinkBg 1s infinite; border: 2px solid transparent; border-radius:8px; padding:10px; margin:8px 0; background:#fafafa; transition:all 0.3s; }
 </style>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
@@ -130,11 +128,14 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
   
   <div id="calibMenu" class="cal card" hidden style="background:#f9f9f9;border-color:#ccc;margin-top:10px">
     <b style="color:#e65100">Ajustes de Admin</b>
-    <label>Mover izquierda/derecha <input type="range" id="cDx" min="-40" max="40" step="1"></label>
-    <label>Mover arriba/abajo <input type="range" id="cDy" min="-40" max="40" step="1"></label>
-    <label>Distancia a la curva <input type="range" id="cOff" min="2" max="40" step="1"></label>
-    <label>Largo del tramo (estirar) <input type="range" id="cLen" min="60" max="130" step="1"></label>
-    <button style="margin-top:8px;background:#d11;color:#fff" onclick="calReset()">↺ Restablecer</button>
+    <div class="row" style="margin-top:8px; margin-bottom:8px;">
+      <button onclick="saveWalkCam()" style="background:#2e7d32;color:#fff;flex:1">💾 Guardar Vista</button>
+      <button onclick="resetWalkCam()" style="background:#d11;color:#fff;flex:1">↺ Resetear Vista</button>
+    </div>
+    <label>Mover Cuadrícula Izq/Der <input type="range" id="cDx" min="-100" max="100" step="1"></label>
+    <label>Mover Cuadrícula Arr/Abj <input type="range" id="cDy" min="-100" max="100" step="1"></label>
+    <label>Distancia a la pared <input type="range" id="cOff" min="2" max="50" step="1"></label>
+    <label>Largo de la cuadrícula <input type="range" id="cLen" min="50" max="150" step="1"></label>
   </div>
 
   <div class="row" style="margin-top:15px">
@@ -157,7 +158,7 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
     <div class="lg" style="margin-top:8px">
       <span><i style="background:#e0e0e0;border:1px solid #999"></i>Libre</span>
       <span><i style="background:#43a047"></i>Con walker</span>
-      <span style="color:#666;font-size:12px">Usa 2 dedos para hacer zoom</span>
+      <span style="color:#666;font-size:12px">Usa 1 dedo para mover, 2 dedos para zoom</span>
     </div>
   </div>
 
@@ -168,14 +169,24 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
 <div id="volPanel" hidden style="max-width:900px;margin:12px auto"><div class="card">
   <h2 style="margin-top:0;color:var(--purple)">Portal de Voluntarias</h2>
   <input type="text" id="volSearch" placeholder="🔍 Buscar mi nombre para ver mi posición..." style="width:100%;padding:15px;font-size:18px;margin-bottom:15px;border:2px solid var(--purple)" oninput="buscarVoluntaria(this.value)">
-  <div style="margin-bottom:15px">
-    <b style="font-size:15px;color:#555">O selecciona un turno para ver la lista completa:</b>
-    <div id="volTurnBtns" class="turnsel" style="margin-top:8px"></div>
-  </div>
-  <button onclick="openWalkers('vol')" style="width:100%;padding:14px;font-size:17px;background:#5B3C88;color:#fff;border-color:#5B3C88;font-weight:bold;margin-bottom:15px">🦽 Estacionamiento de Walkers/Sillas</button>
   <div id="volResults" style="text-align:left;margin-top:10px"></div>
   <button onclick="logout()" class="warn" style="width:100%;padding:18px;font-size:20px;margin-top:20px;border-radius:8px">🚪 Cerrar Sesión</button>
 </div></div>
+
+<div id="volMapView" hidden style="max-width:900px;margin:12px auto">
+  <div class="card">
+    <div class="row" style="justify-content:space-between; margin-bottom:12px">
+      <button onclick="closeVolMap()" style="background:#5B3C88;color:#fff;border-color:#5B3C88;font-weight:bold">← Volver</button>
+      <span id="volMapTitle" style="font-weight:bold;color:#5B3C88;font-size:18px"></span>
+    </div>
+    <div class="card" style="overflow:auto;padding:0">
+      <svg id="volMapSvg" viewBox="0 0 1310 926" class="map-svg">
+        <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
+        <g id="volMapPl"></g>
+      </svg>
+    </div>
+  </div>
+</div>
 
 <script>
 const CFG={DB:"https://voluntariastx20-default-rtdb.firebaseio.com"};
@@ -200,7 +211,8 @@ const PRIV={A:'Anciano',S:'Siervo Ministerial',P:'Publicador bautizado'};
 let iv=null,me=null,hl=null,sel=null,edit=false,drag=null,dragV=null,dragL=null,S={},isVolunteerMode=false,mapView='acom',secEditMode=false,currentTurno=1,spillMode=false;
 let walkerReturn='app', lastWalkerData='', volTurn='1', volQuery='';
 let walkTab='map';
-let cam={x:440,y:250,w:240,h:330}; // Estado de la cámara para Walkers
+let cam = { x: 440, y: 250, w: 240, h: 330 };
+try { Object.assign(cam, JSON.parse(localStorage.wcam || '{}')); } catch(e) {}
 let touchState={mode:null,startDist:0,startScale:1,startX:0,startY:0,lastX:0,lastY:0,cx:0,cy:0};
 
 const LET="ABCDEFGHIJKLMNOPQRST".split("");
@@ -259,22 +271,14 @@ $('ad').innerHTML='<option value="">Seleccione su nombre</option>'+ADM.map(a=>`<
 function enter(u){me=u;try{if(!u.adm)localStorage.me=u.n}catch(e){}$('login').hidden=true;$('app').hidden=false;$('out').hidden=false;$('usr').textContent=u.n;$('btn-mode-toggle').hidden=!u.adm;start()}
 function enterU(){if(pick)enter({n:pick})}
 function enterA(){const a=ADM.find(x=>x.n===$('ad').value);if(!a){$('err').textContent='Seleccione su nombre';return}const pw=$('pw').value;const ok=a.h?(H(pw)===a.h):(a.pwd===pw);if(!ok){$('err').textContent='Contraseña incorrecta';return}enter(a.adm?a:{...a,adm:1})}
-function logout(){try{delete localStorage.me}catch(e){}clearInterval(iv);onstorage=null;me=null;sel=null;hl=null;edit=false;pick='';spillMode=false;$('us').value='';$('res').innerHTML='';$('goU').hidden=true;$('pw').value='';$('ad').value='';$('err').textContent='';$('usr').textContent='';$('out').hidden=true;$('app').hidden=true;$('walkersView').hidden=true;$('spillPanel').hidden=true;$('login').hidden=false;$('btn-mode-toggle').hidden=true;$('volPanel').hidden=true;isVolunteerMode=false;secEditMode=false;const t=document.getElementById('appTitle');if(t)t.textContent='Acomodadores · La Feria, TX'}
+function logout(){try{delete localStorage.me}catch(e){}clearInterval(iv);onstorage=null;me=null;sel=null;hl=null;edit=false;pick='';spillMode=false;$('us').value='';$('res').innerHTML='';$('goU').hidden=true;$('pw').value='';$('ad').value='';$('err').textContent='';$('usr').textContent='';$('out').hidden=true;$('app').hidden=true;$('walkersView').hidden=true;$('volMapView').hidden=true;$('spillPanel').hidden=true;$('login').hidden=false;$('btn-mode-toggle').hidden=true;$('volPanel').hidden=true;isVolunteerMode=false;secEditMode=false;const t=document.getElementById('appTitle');if(t)t.textContent='Acomodadores · La Feria, TX'}
 try{if(localStorage.me)enter({n:localStorage.me})}catch(e){}
 
-function enterVoluntaria(){me=null;$('login').hidden=true;$('app').hidden=true;$('volPanel').hidden=false;$('out').hidden=false;$('usr').textContent='Voluntaria';$('btn-mode-toggle').hidden=true;isVolunteerMode=true;const t=document.getElementById('appTitle');if(t)t.textContent='Portal de Voluntarias';renderVolTurnBtns();volTurn='1';volQuery='';$('volSearch').value='';renderVolList();start()}
+function enterVoluntaria(){me=null;$('login').hidden=true;$('app').hidden=true;$('volPanel').hidden=false;$('out').hidden=false;$('usr').textContent='Voluntaria';$('btn-mode-toggle').hidden=true;isVolunteerMode=true;const t=document.getElementById('appTitle');if(t)t.textContent='Portal de Voluntarias';$('volSearch').value='';volQuery='';renderVolList();start()}
 function toggleBigText(){document.body.classList.toggle('big');try{localStorage.bigText=document.body.classList.contains('big')?'1':'0'}catch(e){}}
 try{if(localStorage.bigText==='1')document.body.classList.add('big')}catch(e){}
 
-function renderVolTurnBtns(){
-  const c=$('volTurnBtns');
-  c.innerHTML=Object.keys(TURNOS).map(t=>`
-    <button class="${volTurn==t?'on':''}" onclick="volTurn='${t}';volQuery='';$('volSearch').value='';renderVolTurnBtns();renderVolList()">
-      <b>Turno ${t}</b><br><small>${TURNOS[t].name}</small>
-    </button>
-  `).join('');
-}
-
+// --- Renderizado de Turnos Grandes ---
 function buscarVoluntaria(q){volQuery=q;renderVolList()}
 
 function renderVolList(){
@@ -288,13 +292,13 @@ function renderVolList(){
       const hist=volHistory(v.n);
       html+=`<div class="card" style="margin-bottom:12px;border-left:4px solid var(--purple);"><h3 style="color:var(--purple);margin-top:0">${esc(v.n)}</h3>`;
       if(hist.length){
-        html+='<p style="margin:4px 0"><b>Tus asignaciones:</b></p>';
+        html+='<p style="margin:4px 0"><b>Toca una asignación para ver tu lugar en el mapa:</b></p>';
         for(const h of hist){
           const sec=sectionOf(h.posicion);
-          html+=`<div class="blink-row" style="border-left:4px solid ${sec.color}">
-            <div style="font-size:15px;margin-bottom:4px"><b>Turno ${h.turno}</b> · ${esc(TURNOS[h.turno].name)}</div>
-            <div style="color:${sec.color};font-weight:bold;font-size:16px">📍 ${sec.label} · Posición <span style="font-size:22px">${h.posicion}</span></div>
-          </div>`;
+          html+=`<button class="card" style="width:100%;text-align:left;margin-bottom:8px;border-left:4px solid ${sec.color};background:#fff" onclick="showVolMap(${h.posicion}, '${esc(TURNOS[h.turno].name)}', '${esc(sec.label)}')">
+            <div style="font-size:15px;margin-bottom:4px;color:#333"><b>Turno ${h.turno}</b> · ${esc(TURNOS[h.turno].name)}</div>
+            <div style="color:${sec.color};font-weight:bold;font-size:16px">📍 ${sec.label} · Posición <span style="font-size:20px">${h.posicion}</span></div>
+          </button>`;
         }
       }else{
         html+=`<p>No tienes posición asignada todavía.</p>`;
@@ -303,26 +307,34 @@ function renderVolList(){
     }
     res.innerHTML=html;
   }else{
-    let html=`<h3 style="color:var(--purple);margin-bottom:12px;text-align:center">Turno ${volTurn} · ${TURNOS[volTurn].name}</h3>`;
-    for(const sec of VOL_SECTIONS){
-      html+=`<div class="vol-list-card"><div class="vol-list-head" style="color:${sec.color}">${sec.label}</div>`;
-      for(const pos of sec.pos){
-        const who=(S.volTurnos&&S.volTurnos[volTurn]&&S.volTurnos[volTurn][pos])||'';
-        if(who){html+=`<div class="vol-list-item occ"><span><b>${pos}</b></span><span>${esc(who)}</span></div>`}
-        else{html+=`<div class="vol-list-item empty"><span><b>${pos}</b></span><span>(Sin asignar)</span></div>`}
-      }
-      html+='</div>';
-    }
-    res.innerHTML=html;
+    res.innerHTML=`<p class="mut" style="text-align:center;padding:20px">Escribe tu nombre arriba para ver tus asignaciones.</p>`;
   }
 }
 
-// --- Walkers Zoom & Pan ---
+function showVolMap(pos, turnName, secLabel) {
+  $('volPanel').hidden = true;
+  $('volMapView').hidden = false;
+  $('volMapTitle').textContent = `${secLabel} · Posición ${pos}`;
+  
+  const c = coordsOf(pos);
+  const sec = sectionOf(pos);
+  let h = `<g transform="translate(${c.x} ${c.y})">
+    <circle class="pulse" r="45" fill="none" stroke="${sec.color}" stroke-width="10"/>
+    <circle r="30" fill="${sec.color}" stroke="#fff" stroke-width="4"/>
+    <text text-anchor="middle" dy=".35em" font-size="22" font-weight="bold" fill="#fff">${pos}</text>
+  </g>`;
+  $('volMapPl').innerHTML = h;
+}
+function closeVolMap() {
+  $('volMapView').hidden = true;
+  $('volPanel').hidden = false;
+}
+
+// --- Lógica Walkers ---
 function openWalkers(from){
   walkerReturn=from||'app';$('app').hidden=true;$('volPanel').hidden=true;$('walkersView').hidden=false;
-  $('btnCalib').hidden = !(me && me.all); // Solo Sergio y Alberto
+  $('btnCalib').hidden = !(me && me.all);
   const canEditWalkers = me && (me.all || (me.n === 'José A. González') || me.c === 'Voluntaria');
-  // Set global edit permission for walkers
   window.canEditWalkers = canEditWalkers;
   drawWalkers();
 }
@@ -336,7 +348,7 @@ function wTan(t){return[2*(1-t)*(W_PC[0]-W_P0[0])+2*t*(W_P2[0]-W_PC[0]), 2*(1-t)
 function wSlotXY(id){
   const ci=LET.indexOf(id[0]),r=+id[1];
   const mid=(W_P0[1]+W_P2[1])/2,k=W_CAL.len/100;
-  const t=(ci+.5)/20,b=wBez(t),T=wTan(t),m=Math.hypot(T[0],T[1]),n=[T[1]/m,-T[0]/m]; // Vector normal INVERTIDO
+  const t=(ci+.5)/20,b=wBez(t),T=wTan(t),m=Math.hypot(T[0],T[1]),n=[T[1]/m,-T[0]/m];
   const d=W_CAL.off+(r-1)*13;
   let x=b[0]+n[0]*d,y=b[1]+n[1]*d;
   y=mid-(y-mid)*k;
@@ -430,6 +442,17 @@ function resetWalkers(){
   drawWalkers(); showToast('Estacionamiento vaciado');
 }
 
+function saveWalkCam() {
+  localStorage.wcam = JSON.stringify(cam);
+  showToast("Vista del mapa guardada");
+}
+function resetWalkCam() {
+  cam = { x: 440, y: 250, w: 240, h: 330 };
+  updateCam();
+  localStorage.removeItem('wcam');
+  showToast("Vista restablecida");
+}
+
 // --- Eventos Táctiles para Walkers (Zoom & Pan) ---
 const wSvg = $('walkSvg');
 wSvg.addEventListener('touchstart', e => {
@@ -454,8 +477,8 @@ wSvg.addEventListener('touchmove', e => {
     const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
     const scale = touchState.startDist / dist;
     let newW = touchState.startScale * scale;
-    newW = Math.max(60, Math.min(600, newW)); // Límites de zoom
-    const newH = newW * (330/240); // Mantener proporción
+    newW = Math.max(60, Math.min(600, newW));
+    const newH = newW * (330/240);
     const p = wSvg.createSVGPoint(); p.x = touchState.cx; p.y = touchState.cy;
     const svgP = p.matrixTransform(wSvg.getScreenCTM().inverse());
     cam.x = svgP.x - (touchState.cx - wSvg.getBoundingClientRect().left) / wSvg.getBoundingClientRect().width * newW;
@@ -475,7 +498,6 @@ wSvg.addEventListener('touchend', e => {
   if (e.touches.length === 0) touchState.mode = null;
 });
 
-// Mouse drag para desktop
 wSvg.addEventListener('mousedown', e => {
   touchState.mode = 'pan';
   touchState.startX = e.clientX; touchState.startY = e.clientY;
@@ -590,7 +612,7 @@ if(dragL){if(dragL.moved)moveLabel(dragL.lid,dragL.x,dragL.y);dragL=null;return}
 if(dragV){if(dragV.moved)moveVertex(dragV.sec,dragV.idx,dragV.x,dragV.y);else delVertex(dragV.sec,dragV.idx);dragV=null;return}
 if(!drag)return;const d=drag;drag=null;sel=d.n;if(d.m){put(`pos/${d.n}/x`,d.x);put(`pos/${d.n}/y`,d.y)}else draw()
 });
-function toggleAppMode(){isVolunteerMode=!isVolunteerMode;const btn=$('btn-mode-toggle'),app=$('app'),vp=$('volPanel'),title=$('appTitle');if(isVolunteerMode){btn.textContent='🚪 Volver';btn.style.background='#6e1414';app.hidden=true;vp.hidden=false;title.textContent='Portal de Voluntarias';renderVolTurnBtns();volTurn='1';volQuery='';$('volSearch').value='';renderVolList()}else{btn.textContent='👥 Vista Voluntaria';btn.style.background='#2e7d32';app.hidden=false;vp.hidden=true;title.textContent='Acomodadores · La Feria, TX';if(me)draw()}}
+function toggleAppMode(){isVolunteerMode=!isVolunteerMode;const btn=$('btn-mode-toggle'),app=$('app'),vp=$('volPanel'),title=$('appTitle');if(isVolunteerMode){btn.textContent='🚪 Volver';btn.style.background='#6e1414';app.hidden=true;vp.hidden=false;title.textContent='Portal de Voluntarias';$('volSearch').value='';volQuery='';renderVolList()}else{btn.textContent='👥 Vista Voluntaria';btn.style.background='#2e7d32';app.hidden=false;vp.hidden=true;title.textContent='Acomodadores · La Feria, TX';if(me)draw()}}
 </script>
 </body>
 </html>
