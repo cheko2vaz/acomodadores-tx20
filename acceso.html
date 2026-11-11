@@ -10,52 +10,29 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 <style>
-:root{
-  --primary:#5a1212;
-  --primary-dark:#3d0c0c;
-  --accent:#b8860b;
-  --bg:#f9f5e9;
-  --card:#ffffff;
-  --card-alt:#f0e8d4;
-  --text:#1a1a1a;
-  --text-muted:#6b5d4f;
-  --border:#d4c9b0;
-  --ok:#4a6b3a;
-  --ok-bg:#edf4e8;
-  --err:#a8251c;
-  --err-bg:#fbeae9;
-  --warn:#c28a1c;
-  --warn-bg:#fdf8e8;
-}
-[hidden]{display:none!important}
-*{box-sizing:border-box}
+:root{--primary:#5a1212;--primary-dark:#3d0c0c;--accent:#b8860b;--bg:#f9f5e9;--card:#fff;--card-alt:#f0e8d4;--text:#1a1a1a;--text-muted:#6b5d4f;--border:#d4c9b0;--ok:#4a6b3a;--ok-bg:#edf4e8;--err:#a8251c;--err-bg:#fbeae9;--warn:#c28a1c;--warn-bg:#fdf8e8}
+[hidden]{display:none!important}*{box-sizing:border-box}
 body{margin:0;font:16px/1.5 'Noto Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text)}
 header{background:var(--primary);color:#fff;padding:14px 18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-header h1{font-size:18px;margin:0;flex:1;min-width:180px;font-weight:600;letter-spacing:.3px}
+header h1{font-size:18px;margin:0;flex:1;min-width:180px;font-weight:600}
 header .sub{font-size:13px;opacity:.85;margin-left:8px;font-weight:400}
 .net{font-size:12px;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.18)}
-.net.on::before{content:"● ";color:#9fd49f}
-.net.off{background:#fff;color:var(--err);font-weight:700}
-button{font:inherit;font-family:inherit;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:6px;padding:11px 16px;cursor:pointer;font-weight:600;transition:background .15s}
+.net.on::before{content:"● ";color:#9fd49f}.net.off{background:#fff;color:var(--err);font-weight:700}
+button{font:inherit;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:6px;padding:11px 16px;cursor:pointer;font-weight:600;transition:background .15s;font-family:inherit}
 button:hover{background:var(--card-alt)}
-button.pri{background:var(--primary);color:#fff;border-color:var(--primary)}
-button.pri:hover{background:var(--primary-dark)}
+button.pri{background:var(--primary);color:#fff;border-color:var(--primary)}button.pri:hover{background:var(--primary-dark)}
 button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
 button.warn{background:var(--err);color:#fff;border-color:var(--err)}
-button.on{background:var(--text);color:#fff;border-color:var(--text)}
 main{max-width:900px;margin:auto;padding:14px;display:grid;gap:14px}
 .card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:18px}
-.card h2{margin:0 0 12px;font-size:17px;color:var(--primary);font-weight:700;letter-spacing:.2px}
-.card h3{margin:0 0 10px;font-size:15px;color:var(--text);font-weight:700}
-.tabs{display:flex;gap:6px;flex-wrap:wrap}
-.tabs button{flex:1;min-width:120px;padding:14px 10px;font-size:15px}
+.card h2{margin:0 0 12px;font-size:17px;color:var(--primary);font-weight:700}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}.tabs button{flex:1;min-width:120px;padding:14px 10px;font-size:15px}
 .tabs button.on{background:var(--primary);color:#fff;border-color:var(--primary)}
 .result{border-radius:8px;padding:26px;text-align:center;margin:12px 0;border:3px solid}
 .result.green{background:var(--ok-bg);border-color:var(--ok)}
 .result.red{background:var(--err-bg);border-color:var(--err)}
 .result h2{margin:0 0 8px;font-size:22px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
-.result.green h2{color:var(--ok)}
-.result.red h2{color:var(--err)}
+.result.green h2{color:var(--ok)}.result.red h2{color:var(--err)}
 .result .name{font-size:26px;margin:14px 0 6px;color:var(--text);font-weight:700}
 .result .role{font-size:15px;color:var(--text-muted);font-weight:400}
 .result .reason{font-size:16px;margin-top:10px;color:var(--err);font-weight:500;line-height:1.5}
@@ -64,32 +41,29 @@ main{max-width:900px;margin:auto;padding:14px;display:grid;gap:14px}
 #reader video{border-radius:10px;display:block}
 .inside-item{background:#fff;border:1px solid var(--border);border-left:4px solid var(--ok);border-radius:6px;padding:14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .inside-item.long{border-left-color:var(--warn);background:var(--warn-bg)}
-.inside-item .info{flex:1;min-width:200px}
-.inside-item .name{font-weight:700;font-size:16px}
+.inside-item .info{flex:1;min-width:200px}.inside-item .name{font-weight:700;font-size:16px}
 .inside-item .meta{font-size:13px;color:var(--text-muted);margin-top:3px}
 .inside-item .time{font-size:13px;color:var(--primary);font-weight:600;margin-top:5px}
-.inside-item button{padding:10px 18px;font-size:14px;white-space:nowrap}
 .counter{background:var(--card-alt);border-radius:8px;padding:18px;text-align:center;margin-bottom:14px}
 .counter b{display:block;font-size:42px;color:var(--primary);line-height:1;font-weight:700}
 .counter small{font-size:13px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-top:6px;display:block}
 .empty{text-align:center;padding:34px;color:var(--text-muted);font-style:italic;font-size:15px}
-input,select,textarea{font:inherit;font-family:inherit;padding:12px;border:1px solid var(--border);border-radius:6px;width:100%;background:#fff;color:var(--text)}
-input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);border-color:var(--accent)}
+input,select{font:inherit;font-family:inherit;padding:12px;border:1px solid var(--border);border-radius:6px;width:100%;background:#fff;color:var(--text)}
+input:focus,select:focus{outline:2px solid var(--accent);border-color:var(--accent)}
 .form-row{display:grid;gap:10px;margin-bottom:10px}
 .chk-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
-.chk-grid label{display:flex;align-items:center;gap:8px;padding:10px;background:var(--card-alt);border-radius:6px;cursor:pointer;font-size:14px;border:1px solid transparent;transition:border .15s}
+.chk-grid label{display:flex;align-items:center;gap:8px;padding:10px;background:var(--card-alt);border-radius:6px;cursor:pointer;font-size:14px;border:1px solid transparent}
 .chk-grid label:hover{border-color:var(--accent)}
 .chk-grid input{width:auto;accent-color:var(--primary)}
 .user-card{background:var(--card-alt);border:1px solid var(--border);border-radius:6px;padding:14px;margin-bottom:10px}
 .user-card.revoked{opacity:.6;background:var(--err-bg);border-color:#e6c2be}
-.user-card .name{font-weight:700;font-size:16px;margin-bottom:4px;color:var(--text)}
+.user-card .name{font-weight:700;font-size:16px;margin-bottom:4px}
 .user-card .meta{font-size:13px;color:var(--text-muted);margin-bottom:10px}
 .user-card .actions{display:flex;gap:8px;flex-wrap:wrap}
 .user-card .actions button{padding:8px 14px;font-size:13px}
 .toast-wrap{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 .toast{background:var(--ok);color:#fff;padding:14px 22px;border-radius:6px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;font-size:15px;max-width:340px;text-align:center}
-.toast.err{background:var(--err)}
-.toast.show{opacity:1}
+.toast.err{background:var(--err)}.toast.show{opacity:1}
 #modal{position:fixed;inset:0;background:rgba(26,15,10,.8);display:grid;place-items:center;padding:14px;z-index:9999}
 #modal[hidden]{display:none}
 #modal .box{background:var(--bg);border-radius:10px;padding:22px;width:100%;max-width:440px;display:grid;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.5);max-height:90vh;overflow-y:auto}
@@ -98,12 +72,10 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);border-c
 .modal-btns button{flex:1;min-width:100px}
 .qr-display{display:flex;flex-direction:column;align-items:center;padding:18px;background:#fff;border-radius:8px;margin:12px 0;border:1px solid var(--border)}
 .qr-display .qr-name{font-weight:700;font-size:17px;margin-top:12px;text-align:center}
-.qr-display .qr-cong{font-size:13px;color:var(--text-muted);margin-top:4px;text-align:center}
-.qr-display .qr-roles{font-size:12px;color:var(--text-muted);margin-top:8px;text-align:center;font-style:italic}
+.qr-display .qr-cong{font-size:13px;color:var(--text-muted);margin-top:4px}
+.qr-display .qr-roles{font-size:12px;color:var(--text-muted);margin-top:8px;font-style:italic;text-align:center}
 .notice{background:var(--warn-bg);border-left:4px solid var(--warn);padding:14px 16px;border-radius:6px;font-size:14px;line-height:1.6;margin-bottom:14px}
 .notice b{color:var(--warn)}
-details summary{cursor:pointer;color:var(--text-muted);font-size:14px;margin:10px 0;padding:8px;background:var(--card-alt);border-radius:4px}
-details summary:hover{background:#e8ddc8}
 </style>
 </head>
 <body>
@@ -138,10 +110,7 @@ details summary:hover{background:#e8ddc8}
 
   <div id="tabInside" hidden>
     <div class="card">
-      <div class="counter">
-        <b id="insideCount">0</b>
-        <small>Personas dentro ahora</small>
-      </div>
+      <div class="counter"><b id="insideCount">0</b><small>Personas dentro ahora</small></div>
       <div id="insideList"></div>
     </div>
   </div>
@@ -157,12 +126,11 @@ details summary:hover{background:#e8ddc8}
     <div id="adminPanel" hidden>
       <div class="card">
         <h2>Estado en vivo</h2>
-        <div class="zone-status" id="zoneStatusLive" style="display:grid;grid-template-columns:1fr;gap:8px"></div>
+        <div id="zoneStatusLive"></div>
       </div>
 
       <div class="card">
         <h2>Agregar hermano autorizado</h2>
-        <p style="color:var(--text-muted);font-size:13px;margin:0 0 12px">Este formulario agrega hermanos a la lista <b>permanente</b> de la asamblea. Su QR funciona todos los días mientras no sea revocado.</p>
         <div class="form-row">
           <input id="newName" placeholder="Nombre completo">
           <input id="newCong" placeholder="Congregación">
@@ -173,9 +141,7 @@ details summary:hover{background:#e8ddc8}
 
       <div class="card">
         <h2>Generar QR Temporal</h2>
-        <div class="notice">
-          <b>Uso:</b> para hermanos que <b>olvidaron su QR original</b>. El QR temporal es válido por tiempo limitado (no un solo uso), y puede usarse múltiples veces dentro de ese periodo. Una vez expirado, debe generarse uno nuevo.
-        </div>
+        <div class="notice"><b>Uso:</b> para hermanos que <b>olvidaron su QR original</b>. El QR temporal es válido por tiempo limitado y puede usarse múltiples veces hasta que expire.</div>
         <div class="form-row">
           <input id="tempName" placeholder="Nombre del hermano">
           <select id="tempHours">
@@ -206,33 +172,20 @@ details summary:hover{background:#e8ddc8}
 </main>
 
 <script>
-// =====================================================
-// CONTRASEÑA DE ADMINISTRACIÓN:  acceso2026
-// Para cambiarla, edita la constante ADMIN_PASS abajo.
-// =====================================================
-
 const CFG = { DB: "https://voluntariastx20-default-rtdb.firebaseio.com" };
 const APP_SECRET = "asam-laf-2026-secret-v1";
 const ADMIN_PASS = "acceso2026";
-
 const ZONE = "detras";
 const ZONE_NAME = "Detrás de Plataforma";
 
 const ROLES = [
-  { id:"discursante", label:"Discursante" },
-  { id:"presidente", label:"Presidente" },
-  { id:"comite", label:"Comité" },
-  { id:"av", label:"Audio y Video" },
-  { id:"tecnico", label:"Técnico" },
-  { id:"instalacion", label:"Instalación" },
-  { id:"bautismo", label:"Bautismo" },
-  { id:"primeros-auxilios", label:"Primeros Auxilios" },
-  { id:"acomodador", label:"Acomodador" },
-  { id:"limpieza", label:"Limpieza" },
-  { id:"estacionamiento", label:"Estacionamiento" },
-  { id:"voluntaria", label:"Voluntaria" }
+  { id:"discursante", label:"Discursante" },{ id:"presidente", label:"Presidente" },
+  { id:"comite", label:"Comité" },{ id:"av", label:"Audio y Video" },
+  { id:"tecnico", label:"Técnico" },{ id:"instalacion", label:"Instalación" },
+  { id:"bautismo", label:"Bautismo" },{ id:"primeros-auxilios", label:"Primeros Auxilios" },
+  { id:"acomodador", label:"Acomodador" },{ id:"limpieza", label:"Limpieza" },
+  { id:"estacionamiento", label:"Estacionamiento" },{ id:"voluntaria", label:"Voluntaria" }
 ];
-
 const ZONE_ALLOWED_ROLES = ["av","tecnico","comite","instalacion","presidente","discursante"];
 
 const $ = id => document.getElementById(id);
@@ -265,11 +218,7 @@ function showModal(title, bodyHtml, buttons) {
   if(inp) setTimeout(()=>inp.focus(), 50);
 }
 
-function net(on) {
-  const e = $('net');
-  e.textContent = on ? 'En línea' : 'Sin conexión';
-  e.className = 'net ' + (on ? 'on' : 'off');
-}
+function net(on) { const e = $('net'); e.textContent = on ? 'En línea' : 'Sin conexión'; e.className = 'net ' + (on ? 'on' : 'off'); }
 
 async function loadAll() {
   try {
@@ -289,9 +238,7 @@ function renderAll() {
 }
 
 async function sign(msg) {
-  if (!crypto.subtle) {
-    throw new Error("Este navegador requiere que la app se abra con https:// (como GitHub Pages).");
-  }
+  if (!crypto.subtle) throw new Error("Requiere https:// (GitHub Pages).");
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('').slice(0,16);
 }
@@ -304,31 +251,25 @@ async function buildQRContent(uid) {
   return `ASM|${uid}|${d}|${sig}`;
 }
 
-// ============ VALIDACIÓN — QR temporal ya NO es de un solo uso ============
 async function validateQR(content) {
   const parts = content.split('|');
   const prefix = parts[0];
-
-  // QR TEMPORAL — 5 partes: TMP|tempId|zone|expiresAt|sig
   if (prefix === 'TMP') {
     if (parts.length !== 5) return { valid: false, reason: "Formato de QR temporal inválido" };
     const [, tempId, zone, expiresAt, sig] = parts;
     let expected;
     try { expected = await sign(`${tempId}|${zone}|${expiresAt}|${APP_SECRET}`); }
     catch(e) { return { valid: false, reason: e.message }; }
-    if (sig !== expected) return { valid: false, reason: "Firma inválida (código falsificado o dañado)" };
+    if (sig !== expected) return { valid: false, reason: "Firma inválida" };
     if (Date.now() > +expiresAt) {
       const exp = new Date(+expiresAt).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
       return { valid: false, reason: `QR temporal expirado (era válido hasta ${exp}). Solicite uno nuevo.` };
     }
     const t = TEMP[tempId];
-    if (!t) return { valid: false, reason: "QR temporal no encontrado. Intente de nuevo." };
+    if (!t) return { valid: false, reason: "QR temporal no encontrado" };
     if (zone !== ZONE) return { valid: false, reason: "QR temporal es para otra zona" };
-    // NOTA: ya NO revisamos "used" — el QR temporal funciona múltiples veces
     return { valid: true, tempId, zone, temp: true, name: t.name };
   }
-
-  // QR PERMANENTE — 4 partes: ASM|uid|date|sig
   if (prefix === 'ASM') {
     if (parts.length !== 4) return { valid: false, reason: "Formato de QR inválido" };
     const [, uid, dateStr, sig] = parts;
@@ -336,14 +277,13 @@ async function validateQR(content) {
     let expected;
     try { expected = await sign(`${uid}|${dateStr}|${APP_SECRET}`); }
     catch(e) { return { valid: false, reason: e.message }; }
-    if (sig !== expected) return { valid: false, reason: "Firma inválida (código falsificado)" };
+    if (sig !== expected) return { valid: false, reason: "Firma inválida" };
     const u = USERS[uid];
     if (!u) return { valid: false, reason: "Hermano no autorizado en el sistema" };
     if (u.active === false) return { valid: false, reason: "Acceso revocado por el comité" };
     return { valid: true, uid, user: u };
   }
-
-  return { valid: false, reason: "Formato de código desconocido" };
+  return { valid: false, reason: "Formato desconocido" };
 }
 
 async function startCamera() {
@@ -351,29 +291,17 @@ async function startCamera() {
   try {
     scanner = new Html5Qrcode("reader");
     scanMode = true;
-    await scanner.start(
-      { facingMode: "environment" },
-      { fps: 10, qrbox: { width: 250, height: 250 } },
-      onScanSuccess,
-      () => {}
-    );
-  } catch(e) {
-    toast("No se pudo iniciar la cámara. Verifica los permisos del navegador.", true);
-    scanMode = false;
-  }
+    await scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } }, onScanSuccess, () => {});
+  } catch(e) { toast("No se pudo iniciar la cámara", true); scanMode = false; }
 }
-
 async function stopCamera() {
-  if (scanner && scanMode) {
-    try { await scanner.stop(); scanner.clear(); } catch(e) {}
-  }
+  if (scanner && scanMode) { try { await scanner.stop(); scanner.clear(); } catch(e) {} }
   scanMode = false;
 }
 
 async function onScanSuccess(text) {
   if (text === lastScan && Date.now() - lastScanTs < 3000) return;
   lastScan = text; lastScanTs = Date.now();
-
   const parts = text.split('|');
   if (parts[0] === 'TMP' && parts[1]) {
     try {
@@ -381,94 +309,53 @@ async function onScanSuccess(text) {
       if (fresh) TEMP[parts[1]] = fresh;
     } catch(e) {}
   }
-
   const res = await validateQR(text);
-
-  if (!res.valid) {
-    showResultRed(res.reason);
-    return;
-  }
-
+  if (!res.valid) { showResultRed(res.reason); return; }
   if (!res.temp) {
     const hasRole = (res.user.roles || []).some(r => ZONE_ALLOWED_ROLES.includes(r));
     if (!hasRole) {
-      showResultRed(`${res.user.name} no tiene acceso a Detrás de Plataforma. Sus roles: ${(res.user.roles||[]).map(r=>ROLES.find(x=>x.id===r)?.label||r).join(', ')}`);
+      showResultRed(`${res.user.name} no tiene acceso a Detrás de Plataforma.`);
       return;
     }
   }
-
   const name = res.temp ? res.name : res.user.name;
   const uid = res.temp ? `temp:${res.tempId}` : res.uid;
   await logEntry(uid, name, res.temp);
-
-  // Registrar uso para auditoría (sin bloquear)
   if (res.temp) {
     const t = TEMP[res.tempId] || {};
     await path(`tempQr/${res.tempId}/uses`, (t.uses || 0) + 1);
   }
-
   showResultGreen(name, res.temp ? ['QR Temporal'] : (res.user.roles || []));
   toast(`Entrada registrada: ${name}`);
 }
 
 async function logEntry(uid, name, isTemp) {
   const entryId = Date.now() + '_' + Math.random().toString(36).slice(2,7);
-  const entry = { uid, zone: ZONE, name, entryTime: Date.now(), exitTime: null, isTemp: !!isTemp };
-  await path(`entries/${entryId}`, entry);
+  await path(`entries/${entryId}`, { uid, zone: ZONE, name, entryTime: Date.now(), exitTime: null, isTemp: !!isTemp });
 }
 
 function showResultGreen(name, roles) {
   const now = new Date().toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
-  $('result').innerHTML = `
-    <div class="result green">
-      <h2>Acceso Permitido</h2>
-      <div class="name">${esc(name)}</div>
-      <div class="role">${roles.map(r => ROLES.find(x=>x.id===r)?.label || r).join(' · ')}</div>
-      <div style="font-size:14px;margin-top:12px;color:var(--text-muted)">Entrada: ${now}</div>
-    </div>`;
+  $('result').innerHTML = `<div class="result green"><h2>Acceso Permitido</h2><div class="name">${esc(name)}</div><div class="role">${roles.map(r => ROLES.find(x=>x.id===r)?.label || r).join(' · ')}</div><div style="font-size:14px;margin-top:12px;color:var(--text-muted)">Entrada: ${now}</div></div>`;
 }
-
 function showResultRed(reason) {
-  $('result').innerHTML = `
-    <div class="result red">
-      <h2>Acceso Denegado</h2>
-      <div class="reason">${esc(reason)}</div>
-      <div class="hint">Diríjase al Superintendente de Acomodadores</div>
-    </div>`;
+  $('result').innerHTML = `<div class="result red"><h2>Acceso Denegado</h2><div class="reason">${esc(reason)}</div><div class="hint">Diríjase al Superintendente de Acomodadores</div></div>`;
 }
 
 function renderInsideList() {
   const now = Date.now();
-  const inside = Object.entries(ENTRIES)
-    .filter(([id, e]) => !e.exitTime)
-    .sort((a,b) => b[1].entryTime - a[1].entryTime);
-
+  const inside = Object.entries(ENTRIES).filter(([id, e]) => !e.exitTime).sort((a,b) => b[1].entryTime - a[1].entryTime);
   $('insideCount').textContent = inside.length;
-
-  if (!inside.length) {
-    $('insideList').innerHTML = '<div class="empty">No hay nadie dentro en este momento.</div>';
-    return;
-  }
-
+  if (!inside.length) { $('insideList').innerHTML = '<div class="empty">No hay nadie dentro en este momento.</div>'; return; }
   $('insideList').innerHTML = inside.map(([id, e]) => {
     const mins = Math.floor((now - e.entryTime) / 60000);
     const long = mins >= 30;
     const time = new Date(e.entryTime).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
-    return `<div class="inside-item${long?' long':''}">
-      <div class="info">
-        <div class="name">${esc(e.name)}</div>
-        <div class="meta">${e.isTemp ? 'QR Temporal' : 'QR Permanente'}</div>
-        <div class="time">Entró ${time} · ${mins} min</div>
-      </div>
-      <button class="ok" onclick="markExit('${id}')">Salió</button>
-    </div>`;
+    return `<div class="inside-item${long?' long':''}"><div class="info"><div class="name">${esc(e.name)}</div><div class="meta">${e.isTemp ? 'QR Temporal' : 'QR Permanente'}</div><div class="time">Entró ${time} · ${mins} min</div></div><button class="ok" onclick="markExit('${id}')">Salió</button></div>`;
   }).join('');
 }
 
-async function markExit(entryId) {
-  await path(`entries/${entryId}/exitTime`, Date.now());
-  toast("Salida registrada");
-}
+async function markExit(entryId) { await path(`entries/${entryId}/exitTime`, Date.now()); toast("Salida registrada"); }
 
 function loginAdmin() {
   if ($('adminPass').value === ADMIN_PASS) {
@@ -479,15 +366,11 @@ function loginAdmin() {
     renderUsers('');
     renderZoneStatus();
     renderTempActive();
-  } else {
-    toast("Contraseña incorrecta", true);
-  }
+  } else { toast("Contraseña incorrecta", true); }
 }
 
 function renderRoleCheckboxes() {
-  $('roleCheckboxes').innerHTML = ROLES.map(r =>
-    `<label><input type="checkbox" value="${r.id}"> ${esc(r.label)}</label>`
-  ).join('');
+  $('roleCheckboxes').innerHTML = ROLES.map(r => `<label><input type="checkbox" value="${r.id}"> ${esc(r.label)}</label>`).join('');
 }
 
 async function addUser() {
@@ -513,18 +396,14 @@ function renderUsers(filter) {
   const list = Object.entries(USERS)
     .filter(([uid, u]) => !q || (u.name||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q))
     .sort((a,b) => (a[1].name||'').localeCompare(b[1].name||''));
-
-  if (!list.length) {
-    $('usersList').innerHTML = '<div class="empty">Aún no hay hermanos autorizados.</div>';
-    return;
-  }
-
+  if (!list.length) { $('usersList').innerHTML = '<div class="empty">Aún no hay hermanos autorizados.</div>'; return; }
   $('usersList').innerHTML = list.map(([uid, u]) => `
     <div class="user-card${u.active===false?' revoked':''}">
       <div class="name">${esc(u.name)}${u.active===false?' (REVOCADO)':''}</div>
       <div class="meta">${esc(u.cong||'')} · ${(u.roles||[]).map(r=>ROLES.find(x=>x.id===r)?.label||r).join(', ')}</div>
       <div class="actions">
         <button onclick="showUserQR('${uid}')">Ver QR</button>
+        <button onclick="editUser('${uid}')">Editar</button>
         <button class="${u.active===false?'ok':'warn'}" onclick="toggleUser('${uid}')">${u.active===false?'Reactivar':'Revocar'}</button>
         <button onclick="deleteUser('${uid}')" style="color:var(--err)">Eliminar</button>
       </div>
@@ -532,28 +411,51 @@ function renderUsers(filter) {
   `).join('');
 }
 
+// ============ EDITAR HERMANO ============
+function editUser(uid) {
+  const u = USERS[uid];
+  if (!u) return;
+  const rolesHtml = ROLES.map(r =>
+    `<label><input type="checkbox" value="${r.id}" ${(u.roles||[]).includes(r.id) ? 'checked' : ''}> ${esc(r.label)}</label>`
+  ).join('');
+  showModal("Editar hermano",
+    `<div class="form-row">
+      <input id="editName" value="${esc(u.name)}" placeholder="Nombre completo">
+      <input id="editCong" value="${esc(u.cong||'')}" placeholder="Congregación">
+    </div>
+    <div style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-top:8px">Roles</div>
+    <div class="chk-grid" id="editRoles">${rolesHtml}</div>`,
+    [
+      { text: "Cancelar" },
+      { text: "Guardar cambios", class: "pri", action: () => saveEditUser(uid) }
+    ]);
+}
+
+async function saveEditUser(uid) {
+  const name = $('editName').value.trim();
+  const cong = $('editCong').value.trim();
+  const roles = Array.from($('editRoles').querySelectorAll('input:checked')).map(x => x.value);
+  if (!name) { toast("El nombre no puede estar vacío", true); return; }
+  if (!roles.length) { toast("Debe tener al menos un rol", true); return; }
+  const u = USERS[uid];
+  const updated = { ...u, name, cong, roles, updatedAt: Date.now() };
+  await path(`users/${uid}`, updated);
+  USERS[uid] = updated;
+  toast("Cambios guardados");
+  renderUsers($('searchUsers').value);
+  $('modal').hidden = true;
+}
+
 async function showUserQR(uid) {
   const u = USERS[uid];
   if (!u) return;
   const content = await buildQRContent(uid);
   showModal(`QR de ${u.name}`,
-    `<div class="qr-display">
-      <div id="qrHolder"></div>
-      <div class="qr-name">${esc(u.name)}</div>
-      <div class="qr-cong">${esc(u.cong||'')}</div>
-      <div class="qr-roles">${(u.roles||[]).map(r=>ROLES.find(x=>x.id===r)?.label||r).join(' · ')}</div>
-    </div>`,
-    [
-      { text: "Imprimir", class: "pri", action: () => printSingleQR(uid, u, content) },
-      { text: "Cerrar", action: () => {} }
-    ]
-  );
+    `<div class="qr-display"><div id="qrHolder"></div><div class="qr-name">${esc(u.name)}</div><div class="qr-cong">${esc(u.cong||'')}</div><div class="qr-roles">${(u.roles||[]).map(r=>ROLES.find(x=>x.id===r)?.label||r).join(' · ')}</div></div>`,
+    [{ text: "Imprimir", class: "pri", action: () => printSingleQR(uid, u, content) },{ text: "Cerrar" }]);
   setTimeout(() => {
     const holder = $('qrHolder');
-    if (holder) {
-      holder.innerHTML = '';
-      new QRCode(holder, { text: content, width: 220, height: 220, correctLevel: QRCode.CorrectLevel.M });
-    }
+    if (holder) { holder.innerHTML = ''; new QRCode(holder, { text: content, width: 220, height: 220, correctLevel: QRCode.CorrectLevel.M }); }
   }, 50);
 }
 
@@ -561,26 +463,10 @@ function printSingleQR(uid, u, content) {
   const w = window.open('', '_blank');
   w.document.write(`<html><head><title>QR - ${esc(u.name)}</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    body{font-family:'Noto Sans',sans-serif;text-align:center;padding:30px;color:#1a1a1a}
-    .card{border:2px dashed #5a1212;padding:24px;display:inline-block;border-radius:10px;background:#f9f5e9}
-    .name{font-weight:700;font-size:18px;margin:14px 0 4px;color:#5a1212}
-    .cong{font-size:13px;color:#6b5d4f}
-    .roles{font-size:12px;color:#6b5d4f;margin-top:8px;font-style:italic}
-    .title{font-size:14px;color:#b8860b;font-weight:700;letter-spacing:1px;margin-bottom:10px}
-  </style></head><body>
-    <div class="card">
-      <div class="title">ASAMBLEA REGIONAL</div>
-      <div id="qr"></div>
-      <div class="name">${esc(u.name)}</div>
-      <div class="cong">${esc(u.cong||'')}</div>
-      <div class="roles">${(u.roles||[]).map(r=>ROLES.find(x=>x.id===r)?.label||r).join(' · ')}</div>
-    </div>
+  <style>body{font-family:'Noto Sans',sans-serif;text-align:center;padding:30px;color:#1a1a1a}.card{border:2px dashed #5a1212;padding:24px;display:inline-block;border-radius:10px;background:#f9f5e9}.name{font-weight:700;font-size:18px;margin:14px 0 4px;color:#5a1212}.cong{font-size:13px;color:#6b5d4f}.roles{font-size:12px;color:#6b5d4f;margin-top:8px;font-style:italic}.title{font-size:14px;color:#b8860b;font-weight:700;letter-spacing:1px;margin-bottom:10px}</style></head><body>
+    <div class="card"><div class="title">ASAMBLEA REGIONAL</div><div id="qr"></div><div class="name">${esc(u.name)}</div><div class="cong">${esc(u.cong||'')}</div><div class="roles">${(u.roles||[]).map(r=>ROLES.find(x=>x.id===r)?.label||r).join(' · ')}</div></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
-    <script>
-      new QRCode(document.getElementById("qr"), { text: ${JSON.stringify(content)}, width: 200, height: 200 });
-      setTimeout(() => window.print(), 600);
-    <\/script>
+    <script>new QRCode(document.getElementById("qr"), { text: ${JSON.stringify(content)}, width: 200, height: 200 });setTimeout(() => window.print(), 600);<\/script>
   </body></html>`);
 }
 
@@ -589,32 +475,8 @@ async function printAllQRs() {
   if (!entries.length) { toast("No hay usuarios activos", true); return; }
   const contents = await Promise.all(entries.map(async ([uid]) => ({ uid, content: await buildQRContent(uid) })));
   const w = window.open('', '_blank');
-  const cardsHtml = entries.map(([uid, u], i) => `
-    <div class="print-card">
-      <div id="qr_${i}"></div>
-      <div class="pname">${esc(u.name)}</div>
-      <div class="pcong">${esc(u.cong||'')}</div>
-    </div>
-  `).join('');
-  w.document.write(`<html><head><title>QRs - Asamblea</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    body{font-family:'Noto Sans',sans-serif;padding:14px;background:#fff}
-    .print-card{display:inline-block;margin:8px;padding:14px;border:2px dashed #5a1212;border-radius:10px;text-align:center;page-break-inside:avoid;width:200px;vertical-align:top;background:#f9f5e9}
-    .pname{font-weight:700;font-size:13px;margin:8px 0 2px;color:#5a1212}
-    .pcong{font-size:11px;color:#6b5d4f}
-    @media print { .print-card{page-break-inside:avoid} }
-  </style></head><body>
-    ${cardsHtml}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
-    <script>
-      const items = ${JSON.stringify(contents.map((c,i)=>({i, content:c.content})))};
-      items.forEach(({i, content}) => {
-        new QRCode(document.getElementById("qr_"+i), { text: content, width: 160, height: 160 });
-      });
-      setTimeout(() => window.print(), 900);
-    <\/script>
-  </body></html>`);
+  const cardsHtml = entries.map(([uid, u], i) => `<div class="print-card"><div id="qr_${i}"></div><div class="pname">${esc(u.name)}</div><div class="pcong">${esc(u.cong||'')}</div></div>`).join('');
+  w.document.write(`<html><head><title>QRs</title><link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet"><style>body{font-family:'Noto Sans',sans-serif;padding:14px;background:#fff}.print-card{display:inline-block;margin:8px;padding:14px;border:2px dashed #5a1212;border-radius:10px;text-align:center;page-break-inside:avoid;width:200px;vertical-align:top;background:#f9f5e9}.pname{font-weight:700;font-size:13px;margin:8px 0 2px;color:#5a1212}.pcong{font-size:11px;color:#6b5d4f}@media print{.print-card{page-break-inside:avoid}}</style></head><body>${cardsHtml}<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script>const items = ${JSON.stringify(contents.map((c,i)=>({i, content:c.content})))};items.forEach(({i, content}) => {new QRCode(document.getElementById("qr_"+i), { text: content, width: 160, height: 160 });});setTimeout(() => window.print(), 900);<\/script></body></html>`);
 }
 
 async function toggleUser(uid) {
@@ -630,103 +492,52 @@ async function toggleUser(uid) {
 async function deleteUser(uid) {
   const u = USERS[uid];
   showModal("Eliminar hermano", `<p>¿Eliminar definitivamente a <b>${esc(u.name)}</b>? Su QR dejará de funcionar.</p>`,
-    [{text:"Eliminar", class:"warn", action: async () => {
-      await del(`users/${uid}`);
-      delete USERS[uid];
-      renderUsers('');
-      toast("Hermano eliminado");
-    }}, {text:"Cancelar"}]);
+    [{text:"Eliminar", class:"warn", action: async () => { await del(`users/${uid}`); delete USERS[uid]; renderUsers(''); toast("Hermano eliminado"); }}, {text:"Cancelar"}]);
 }
 
 async function renderZoneStatus() {
   const count = Object.values(ENTRIES).filter(e => !e.exitTime).length;
-  $('zoneStatusLive').innerHTML = `
-    <div style="background:var(--card-alt);border-radius:6px;padding:16px;text-align:center">
-      <b style="display:block;font-size:32px;color:var(--primary)">${count}</b>
-      <small style="font-size:12px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:1px">Dentro ahora en Detrás de Plataforma</small>
-    </div>`;
+  $('zoneStatusLive').innerHTML = `<div style="background:var(--card-alt);border-radius:6px;padding:16px;text-align:center"><b style="display:block;font-size:32px;color:var(--primary)">${count}</b><small style="font-size:12px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:1px">Dentro ahora en Detrás de Plataforma</small></div>`;
 }
 
-// ============ QRs temporales activos ============
 function renderTempActive() {
   const now = Date.now();
-  const active = Object.entries(TEMP)
-    .filter(([id, t]) => t.expiresAt > now)
-    .sort((a, b) => a[1].expiresAt - b[1].expiresAt);
-
+  const active = Object.entries(TEMP).filter(([id, t]) => t.expiresAt > now).sort((a, b) => a[1].expiresAt - b[1].expiresAt);
   $('tempActiveCount').textContent = active.length;
-
-  if (!active.length) {
-    $('tempActiveList').innerHTML = '<div class="empty">No hay QRs temporales activos en este momento.</div>';
-    return;
-  }
-
+  if (!active.length) { $('tempActiveList').innerHTML = '<div class="empty">No hay QRs temporales activos en este momento.</div>'; return; }
   $('tempActiveList').innerHTML = active.map(([id, t]) => {
     const mins = Math.floor((t.expiresAt - now) / 60000);
     const time = new Date(t.expiresAt).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
-    return `<div class="user-card" style="border-left:4px solid var(--warn)">
-      <div class="name">${esc(t.name)}</div>
-      <div class="meta">Expira a las ${time} · Quedan ${mins} min${t.uses ? ' · Usado '+t.uses+' '+(t.uses===1?'vez':'veces') : ' · Aún no usado'}</div>
-      <div class="actions">
-        <button onclick="deleteTempQR('${id}')" style="color:var(--err)">Cancelar QR temporal</button>
-      </div>
-    </div>`;
+    return `<div class="user-card" style="border-left:4px solid var(--warn)"><div class="name">${esc(t.name)}</div><div class="meta">Expira a las ${time} · Quedan ${mins} min${t.uses ? ' · Usado '+t.uses+' '+(t.uses===1?'vez':'veces') : ' · Aún no usado'}</div><div class="actions"><button onclick="deleteTempQR('${id}')" style="color:var(--err)">Cancelar QR temporal</button></div></div>`;
   }).join('');
 }
 
 async function deleteTempQR(id) {
   const t = TEMP[id];
-  showModal("Cancelar QR temporal", `<p>¿Cancelar el QR temporal de <b>${esc(t?.name)}</b>? Si el hermano aún lo necesita, deberá solicitar otro.</p>`,
-    [{text:"Cancelar QR", class:"warn", action: async () => {
-      await del(`tempQr/${id}`);
-      delete TEMP[id];
-      renderTempActive();
-      toast("QR temporal cancelado");
-    }}, {text:"No cancelar"}]);
+  showModal("Cancelar QR temporal", `<p>¿Cancelar el QR temporal de <b>${esc(t?.name)}</b>?</p>`,
+    [{text:"Cancelar QR", class:"warn", action: async () => { await del(`tempQr/${id}`); delete TEMP[id]; renderTempActive(); toast("QR temporal cancelado"); }}, {text:"No cancelar"}]);
 }
 
 async function genTempQR() {
   const name = $('tempName').value.trim();
   const hours = +$('tempHours').value;
   if (!name) { toast('Escriba el nombre del hermano', true); return; }
-
   const tempId = Math.random().toString(36).slice(2, 10);
   const expiresAt = Date.now() + hours * 60 * 60 * 1000;
   const temp = { zone: ZONE, expiresAt, name, createdAt: Date.now(), createdBy: 'Superintendente de Acomodadores', uses: 0 };
-
   await path(`tempQr/${tempId}`, temp);
   TEMP[tempId] = temp;
-
   let sig;
   try { sig = await sign(`${tempId}|${ZONE}|${expiresAt}|${APP_SECRET}`); }
   catch(e) { toast(e.message, true); return; }
-
   const content = `TMP|${tempId}|${ZONE}|${expiresAt}|${sig}`;
-
   const display = $('tempQRDisplay');
   display.hidden = false;
-  display.innerHTML = `
-    <div class="qr-display" style="margin-top:14px">
-      <div style="font-size:13px;color:var(--warn);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">QR Temporal</div>
-      <div id="tempQRHolder"></div>
-      <div class="qr-name">${esc(name)}</div>
-      <div class="qr-cong">Detrás de Plataforma</div>
-      <div style="font-size:13px;color:var(--text-muted);margin-top:10px">Válido ${hours} hora${hours>1?'s':''} · Expira ${new Date(expiresAt).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})}</div>
-      <div style="font-size:12px;color:var(--text-muted);margin-top:6px;font-style:italic">Puede usarse múltiples veces hasta que expire</div>
-      <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;justify-content:center">
-        <button class="ok" onclick="printTempQR('${esc(name)}', '${content}')">Imprimir</button>
-        <button onclick="document.getElementById('tempQRDisplay').hidden=true;$('tempName').value=''">Cerrar</button>
-      </div>
-    </div>`;
-
+  display.innerHTML = `<div class="qr-display" style="margin-top:14px"><div style="font-size:13px;color:var(--warn);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">QR Temporal</div><div id="tempQRHolder"></div><div class="qr-name">${esc(name)}</div><div class="qr-cong">Detrás de Plataforma</div><div style="font-size:13px;color:var(--text-muted);margin-top:10px">Válido ${hours} hora${hours>1?'s':''} · Expira ${new Date(expiresAt).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})}</div><div style="font-size:12px;color:var(--text-muted);margin-top:6px;font-style:italic">Puede usarse múltiples veces hasta que expire</div><div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;justify-content:center"><button class="ok" onclick="printTempQR('${esc(name)}', '${content}')">Imprimir</button><button onclick="document.getElementById('tempQRDisplay').hidden=true;$('tempName').value=''">Cerrar</button></div></div>`;
   setTimeout(() => {
     const holder = $('tempQRHolder');
-    if (holder) {
-      holder.innerHTML = '';
-      new QRCode(holder, { text: content, width: 220, height: 220, correctLevel: QRCode.CorrectLevel.M });
-    }
+    if (holder) { holder.innerHTML = ''; new QRCode(holder, { text: content, width: 220, height: 220, correctLevel: QRCode.CorrectLevel.M }); }
   }, 50);
-
   $('tempName').value = '';
   toast(`QR temporal generado para ${name}`);
   renderTempActive();
@@ -734,29 +545,7 @@ async function genTempQR() {
 
 function printTempQR(name, content) {
   const w = window.open('', '_blank');
-  w.document.write(`<html><head><title>QR Temporal</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    body{font-family:'Noto Sans',sans-serif;text-align:center;padding:30px;color:#1a1a1a}
-    .card{border:2px dashed #c28a1c;padding:24px;display:inline-block;border-radius:10px;background:#fdf8e8}
-    .title{font-size:14px;color:#c28a1c;font-weight:700;letter-spacing:1px;margin-bottom:10px}
-    .name{font-weight:700;font-size:20px;margin:14px 0 4px}
-    .zone{font-size:14px;color:#6b5d4f;margin-bottom:10px}
-    .hint{font-size:12px;color:#6b5d4f;font-style:italic;margin-top:10px}
-  </style></head><body>
-    <div class="card">
-      <div class="title">QR TEMPORAL</div>
-      <div id="qr"></div>
-      <div class="name">${esc(name)}</div>
-      <div class="zone">Detrás de Plataforma</div>
-      <div class="hint">Puede usarse múltiples veces hasta que expire</div>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
-    <script>
-      new QRCode(document.getElementById("qr"), { text: ${JSON.stringify(content)}, width: 240, height: 240 });
-      setTimeout(() => window.print(), 600);
-    <\/script>
-  </body></html>`);
+  w.document.write(`<html><head><title>QR Temporal</title><link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet"><style>body{font-family:'Noto Sans',sans-serif;text-align:center;padding:30px;color:#1a1a1a}.card{border:2px dashed #c28a1c;padding:24px;display:inline-block;border-radius:10px;background:#fdf8e8}.title{font-size:14px;color:#c28a1c;font-weight:700;letter-spacing:1px;margin-bottom:10px}.name{font-weight:700;font-size:20px;margin:14px 0 4px}.zone{font-size:14px;color:#6b5d4f;margin-bottom:10px}.hint{font-size:12px;color:#6b5d4f;font-style:italic;margin-top:10px}</style></head><body><div class="card"><div class="title">QR TEMPORAL</div><div id="qr"></div><div class="name">${esc(name)}</div><div class="zone">Detrás de Plataforma</div><div class="hint">Puede usarse múltiples veces hasta que expire</div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script>new QRCode(document.getElementById("qr"), { text: ${JSON.stringify(content)}, width: 240, height: 240 });setTimeout(() => window.print(), 600);<\/script></body></html>`);
 }
 
 async function manualLookup() {
@@ -765,9 +554,7 @@ async function manualLookup() {
     const q = $('lookupName').value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
     if (q.length < 2) { $('lookupResults').innerHTML = ''; return; }
     const matches = Object.entries(USERS).filter(([uid, u]) => (u.name||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q));
-    $('lookupResults').innerHTML = matches.length ? matches.map(([uid,u]) =>
-      `<button style="width:100%;text-align:left;margin-bottom:6px;padding:12px" onclick="manualLog('${uid}')"><b>${esc(u.name)}</b><br><small style="color:var(--text-muted)">${esc(u.cong||'')} · ${(u.roles||[]).map(r=>ROLES.find(x=>x.id===r)?.label||r).join(', ')}</small></button>`
-    ).join('') : '<p style="color:var(--text-muted)">Sin resultados</p>';
+    $('lookupResults').innerHTML = matches.length ? matches.map(([uid,u]) => `<button style="width:100%;text-align:left;margin-bottom:6px;padding:12px" onclick="manualLog('${uid}')"><b>${esc(u.name)}</b><br><small style="color:var(--text-muted)">${esc(u.cong||'')} · ${(u.roles||[]).map(r=>ROLES.find(x=>x.id===r)?.label||r).join(', ')}</small></button>`).join('') : '<p style="color:var(--text-muted)">Sin resultados</p>';
   };
 }
 
@@ -782,9 +569,7 @@ async function manualLog(uid) {
 }
 
 function setTab(tab) {
-  ['scan','inside','admin'].forEach(t => {
-    $('tab' + t.charAt(0).toUpperCase() + t.slice(1)).hidden = t !== tab;
-  });
+  ['scan','inside','admin'].forEach(t => { $('tab' + t.charAt(0).toUpperCase() + t.slice(1)).hidden = t !== tab; });
   document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
   if (tab === 'inside' || tab === 'admin') stopCamera();
   if (tab === 'inside') renderInsideList();
@@ -797,11 +582,7 @@ const path = (p, v) => {
 };
 const del = (p) => fetch(`${CFG.DB}/access/${p}.json`, { method: 'DELETE' });
 
-function init() {
-  loadAll();
-  pollIv = setInterval(loadAll, 5000);
-}
-
+function init() { loadAll(); pollIv = setInterval(loadAll, 5000); }
 window.addEventListener('beforeunload', () => { stopCamera(); clearInterval(pollIv); });
 init();
 </script>
