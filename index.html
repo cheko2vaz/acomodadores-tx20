@@ -82,7 +82,16 @@ select,input{font:inherit;padding:9px;border:1px solid #bbb;border-radius:6px;wi
   <div id="mine" class="card" hidden></div>
   <div id="alert" class="card" hidden></div>
   <div id="bar" class="card row"></div>
-  <div class="card" id="mapw"><svg id="svg" viewBox="0 0 1310 926"><image id="mi" width="1310" height="926" href="map.png"/><g id="sl"></g><g id="pl"></g></svg></div>
+  
+  <!-- AQUÍ ESTÁ LA MAGIA: Usamos map.png en lugar del código gigante -->
+  <div class="card" id="mapw">
+    <svg id="svg" viewBox="0 0 1310 926">
+      <image id="mi" width="1310" height="926" href="map.png"/>
+      <g id="sl"></g>
+      <g id="pl"></g>
+    </svg>
+  </div>
+  
   <div class="lg card"><span><i style="background:var(--blue)"></i>Fija: siempre cubierta</span><span><i style="background:var(--org)"></i>Antes y después de cada sesión</span><span><i style="background:#2e7d32"></i>Presente</span><span><i style="background:#d11"></i>Ausente / vacante</span><span><i style="background:#777"></i>Sustituto</span></div>
   <div class="card" id="panel"></div>
   <div class="card"><h3>Conteo por sección</h3><div id="expEd" class="row" hidden><label for="exp">Esperados</label><input id="exp" type="number" min="1" style="width:110px"><button class="pri" onclick="const v=+$('exp').value;if(v>0)put('expect',v)">Guardar</button></div><div id="cnt"></div></div>
@@ -100,8 +109,100 @@ select,input{font:inherit;padding:9px;border:1px solid #bbb;border-radius:6px;wi
 </div>
 
 <script>
-const CFG={DB:"https://voluntariastx20-default-rtdb.firebaseio.com"}; /* URL de Firebase */
-const D={"caps": ["Eliud Luna", "Hugo Galvan", "Jimmy Vasquez", "José A. González", "Raúl Quintero"], "sec": {"A2": "809,127 805,144 796,144 786,152 778,152 777,147 772,147 769,141 766,147 759,150 758,156 753,157 752,162 742,166 736,180 722,191 715,200 715,206 705,213 693,238 688,240 682,261 673,269 667,293 674,293 676,299 685,297 686,300 703,300 704,312 709,309 725,311 729,318 748,320 749,324 759,324 761,328 780,330 781,334 798,337 799,354 827,354 828,351 845,351 843,337 849,324 856,316 860,303 872,302 879,294 881,278 906,253 921,252 916,243 916,226 910,224 910,232 903,235 890,234 890,225 895,224 898,218 892,217 891,209 884,207 884,201 878,198 878,192 872,189 871,182 864,180 864,174 858,172 858,166 851,164 851,157 845,155 845,149 834,148 834,135 831,135 832,147 822,147 815,143 815,128 828,127", "A3": "833,375 798,368 785,359 764,357 763,352 756,352 755,349 744,349 742,346 733,346 730,342 713,339 712,324 684,324 683,330 676,330 663,383 659,450 664,503 674,543 680,544 680,561 684,561 685,557 700,558 701,546 707,545 711,538 720,539 723,535 731,535 733,531 743,531 745,527 774,521 776,514 796,514 797,511 808,510 809,505 826,505 836,500 827,494 821,446 828,442 827,433 821,430 822,409 827,384 835,380", "A4": "844,524 826,529 793,529 793,538 782,541 779,546 770,546 725,562 708,563 705,560 702,570 695,570 694,574 681,576 669,584 676,604 684,614 690,634 700,637 700,650 710,665 714,659 723,660 727,671 727,679 723,682 734,692 743,708 751,716 755,716 756,720 760,720 762,728 770,730 771,734 783,731 784,727 793,727 799,733 820,729 821,749 849,748 851,713 857,712 858,705 864,703 864,696 871,694 872,687 877,687 884,669 891,668 888,662 889,649 904,650 905,642 911,641 911,634 919,631 922,618 940,618 921,617 920,602 929,601 930,608 939,608 944,603 954,601 931,597 929,600 921,600 920,589 925,585 954,586 909,570 880,548 895,571 920,597 920,622 906,622 896,612 892,615 876,613 875,601 881,600 880,585 874,576 864,576 848,553 843,540", "B2": "948,292 921,301 887,322 878,330 865,359 876,360 879,365 897,367 900,371 909,371 910,375 912,372 921,372 922,377 931,377 933,382 936,382 937,376 951,375 952,384 941,387 941,393 936,395 936,404 932,406 957,422 965,417 960,413 960,405 964,404 964,393 973,376 991,356 992,351 1007,351 1007,334 976,330 975,321 970,320 970,313 964,312 963,304 957,304 956,296", "B3": "857,384 848,435 850,463 858,495 862,495 863,491 871,491 872,488 891,485 895,480 914,479 916,474 924,474 947,460 949,454 957,453 955,421 931,406 916,403 914,399 882,392 871,385", "B4": "1004,522 986,520 984,512 966,486 962,490 942,489 940,496 931,496 929,500 922,500 921,504 910,502 908,508 898,507 897,510 865,517 876,543 887,554 921,575 953,585 957,582 958,575 964,571 964,565 971,563 971,555 976,547 984,545 985,539 1003,538", "B1": "935,239 1022,346 1064,322 1063,250 1030,239 999,234 965,234", "A1": "865,151 934,238 965,233 999,233 1030,238 1063,249 1060,139 879,139", "B5": "1060,545 1023,532 1014,532 954,608 954,618 946,620 931,640 963,646 1001,646 1027,642 1061,631", "A5": "1061,632 1039,640 1001,647 963,647 930,641 876,712 877,747 1060,751"}, "roster": [{"n": "Alfonso Hernández", "c": "Boca Chica", "p": "A", "t": "(956) 266-2671"}, {"n": "Eliu de la Garza", "c": "Boca Chica", "p": "P", "t": "(956) 346-7709"}, {"n": "Isaias Martinez", "c": "Boca Chica", "p": "P", "t": "(956) 247-1596"}, {"n": "Juan F Garza", "c": "Boca Chica", "p": "P", "t": "(956) 407-7366"}, {"n": "Martin Davila", "c": "Boca Chica", "p": "P", "t": "(956) 832-7370"}, {"n": "Rey Castillo", "c": "Boca Chica", "p": "S", "t": "(956) 551-1562"}, {"n": "Roberto Quiroga", "c": "Boca Chica", "p": "S", "t": "(956) 296-7031"}, {"n": "Norberto Cardenas", "c": "Central", "p": "S", "t": "(956) 543-7217"}, {"n": "Felipe Ortiz", "c": "El Jardin Heights", "p": "P", "t": "(956) 551-0037"}, {"n": "Francisco Montoya", "c": "El Jardin Heights", "p": "P", "t": "(956) 572-5994"}, {"n": "Juan Salinas", "c": "El Jardin Heights", "p": "S", "t": "(956) 621-9132"}, {"n": "Reynaldo Perez", "c": "El Jardin Heights", "p": "A", "t": "(956) 525-8524"}, {"n": "Roberto Borjas", "c": "El Jardin Heights", "p": "A", "t": "(956) 990-2469"}, {"n": "Servando Sustaita", "c": "El Jardin Heights", "p": "P", "t": "(956) 280-3088"}, {"n": "Carlos Leonardo Salas Zuñiga", "c": "Galaxia", "p": "P", "t": "(956) 517-6867"}, {"n": "Celestino Chavez", "c": "Galaxia", "p": "S", "t": "(956) 832-7080"}, {"n": "Gustavo Saucedo", "c": "Galaxia", "p": "P", "t": "(956) 518-8277"}, {"n": "Jose Duran", "c": "Galaxia", "p": "P", "t": "(956) 372-6592"}, {"n": "Luis Duran", "c": "Galaxia", "p": "P", "t": "(956) 434-6075"}, {"n": "Otilio Ramirez", "c": "Galaxia", "p": "P", "t": "(956) 708-5826"}, {"n": "Orlando Benavidez", "c": "Galaxia", "p": "A", "t": "(956) 543-3200"}, {"n": "Adrián Mota Arcos", "c": "Laguna Vista", "p": "P", "t": "(956) 299-0488"}, {"n": "José A. González", "c": "Laguna Vista", "p": "S", "t": "(956) 372-9349"}, {"n": "Jose González Jr", "c": "Laguna Vista", "p": "S", "t": "(956) 299-0927"}, {"n": "Vianney Morales López", "c": "Laguna Vista", "p": "P", "t": "(956) 299-1361"}, {"n": "Valente Alejandro", "c": "Laguna Vista", "p": "P", "t": "(956) 299-0807"}, {"n": "Hugo Galvan", "c": "Laguna Vista", "p": "A", "t": "(956) 590-7542"}, {"n": "Luis Barberena", "c": "Laguna Vista", "p": "S", "t": "(956) 543-4338"}, {"n": "Alex Vazquez", "c": "Los Cedros", "p": "S", "t": "(956) 356-3079"}, {"n": "Eliud Luna", "c": "Los Cedros", "p": "S", "t": "(956) 590-9218"}, {"n": "Jimmy Vasquez", "c": "Los Cedros", "p": "A", "t": "(956) 346-7804"}, {"n": "Guadalupe De La Cruz", "c": "Los Cedros", "p": "S", "t": "(956) 404-9874"}, {"n": "Javier Borjas", "c": "North", "p": "A", "t": "(956) 579-1660"}, {"n": "Abisai Muniz", "c": "North", "p": "S", "t": "(956) 459-9814"}, {"n": "Carlos Martínez", "c": "North", "p": "S", "t": "(956) 579-4578"}, {"n": "Oziel Rodriguez", "c": "North", "p": "P", "t": "(956) 371-4106"}, {"n": "Josue Campos", "c": "Paraiso", "p": "S", "t": "(956) 266-2788"}, {"n": "Ricardo Altamirano", "c": "Paraiso", "p": "S", "t": "(956) 434-9144"}, {"n": "Eulogio Montelongo", "c": "Paraiso", "p": "S", "t": "(956) 957-1848"}, {"n": "Alfredo Garza", "c": "Paraiso", "p": "P", "t": "(956) 455-3806"}, {"n": "Jamin Muñiz", "c": "Sunrise", "p": "P", "t": "(956) 639-7631"}, {"n": "Raúl Quintero", "c": "Sunrise", "p": "S", "t": "(956) 299-4663"}, {"n": "Gonzalo Mejia Sr.", "c": "Sunrise", "p": "P", "t": "(956) 479-0998"}, {"n": "Macario Martinez", "c": "Sunrise", "p": "A", "t": "(956) 639-3354"}], "pos": {"1": {"who": "Luis Barberena", "t": "Alarma de Incendios Cuarto Multiusos", "x": 1172, "y": 220, "l": 1, "a": "alm"}, "2": {"who": "Guadalupe De La Cruz", "t": "Salida de emergencia plataforma", "x": 1172, "y": 404, "l": 1, "a": "alm"}, "3": {"who": "Macario Martinez", "t": "Detras de plataforma", "x": 1100, "y": 432, "l": 1, "a": "ctl"}, "4": {"who": "Celestino Chavez", "t": "Detras de plataforma / Escaleras plat.", "x": 1172, "y": 490, "l": 1, "a": "ctl"}, "5": {"who": "Valente Alejandro", "t": "Entrada principal lado sur plataforma", "x": 1172, "y": 660, "l": 1, "a": "alm"}, "6": {"who": "Norberto Cardenas", "t": "Alarma de incendios Lado sur plataforma · Dirigiendo hacia la seccion 6 de evacuacion", "x": 1073, "y": 775, "l": 1, "a": "alm"}, "7": {"who": "Alfonso Hernández", "t": "Puerta de Acceso Principal Plataforma", "x": 1073, "y": 657, "l": 1, "a": "ent"}, "8": {"who": "Osiel Ramirez", "t": "Alternando la posicion 10 cada cancion · Auditorio - Frente Lado Sur", "x": 1073, "y": 553, "l": 1, "a": "ctl"}, "9": {"who": "Alfredo Jimenez", "t": "Alternando la posicion 10 cada cancion · Auditorio - Frente Lado SE", "x": 993, "y": 527, "l": 1, "a": "ctl"}, "10": {"who": "Gustavo Saucedo", "t": "Alternando la posicion 10 cada cancion · Frente al Escenario", "x": 981, "y": 438, "l": 1, "a": "ctl"}, "11": {"who": "Josue Campos", "t": "Alternando la posicion 10 cada cancion · Auditorio - Frente Lado NE", "x": 994, "y": 341, "l": 1, "a": "ctl"}, "12": {"who": "Rey Castillo", "t": "Alternando la posicion 10 cada cancion · Auditorio - Frente Lado Norte", "x": 1073, "y": 336, "l": 1, "a": "ctl"}, "13": {"who": "Jose González Jr", "t": "Puerta de Acceso Secundaria Plataforma", "x": 1073, "y": 238, "l": 1, "a": "ent"}, "14": {"who": "Carlos Leonardo Salas Zuñiga", "t": "Alarma de incendios Lado norte plataforma · Dirigiendo hacia la seccion 1 de evacuacion", "x": 1073, "y": 141, "l": 1, "a": "alm"}, "15": {"who": "Vianney Morales López", "t": "Alarma de incendios Lado norte Audio · Dirigiendo hacia la seccion 2 de evacuacion", "x": 693, "y": 141, "l": 1, "a": "alm"}, "16": {"who": "Ricardo Altamirano", "t": "Alarma de Incendios", "x": 612, "y": 347, "l": 1, "a": "ent"}, "17": {"who": "Luis Duran", "t": "Alarma de Incendios", "x": 612, "y": 548, "l": 1, "a": "ent"}, "18": {"who": "Jamin Muñiz", "t": "Alarma de incendios Lado sur Instalacion · Dirigiendo hacia la seccion 5 de evacuacion", "x": 693, "y": 775, "l": 1, "a": "alm"}, "19": {"who": "Adrián Mota Arcos", "t": "Entrada Lado Sur", "x": 551, "y": 577, "l": 1, "a": "ent"}, "20": {"who": "Francisco Montoya", "t": "Entrada Lado Sur", "x": 463, "y": 577, "l": 1, "a": "ent"}, "21": {"who": "Roberto Quiroga", "t": "Portico", "x": 211, "y": 473, "l": 1, "a": "ent"}, "22": {"who": "Eulogio Montelongo", "t": "Portico / Alberca", "x": 428, "y": 604, "l": 1, "a": "ent"}, "23": {"who": "Tony Duran", "t": "Entrada Lado Norte · Dirigiendo hacia la seccion 3 de evacuacion", "x": 463, "y": 320, "l": 1, "a": "ent"}, "24": {"who": "Abisai Muniz", "t": "Entrada Lado Norte", "x": 551, "y": 318, "l": 1, "a": "ent"}, "25": {"who": "Gonzalo Mejia Sr.", "t": "Auditorio - Asientos", "x": 818, "y": 153, "l": 0, "a": "aud"}, "26": {"who": "Carlos Martínez", "t": "Auditorio - Asientos", "x": 697, "y": 340, "l": 0, "a": "aud"}, "27": {"who": "Felipe Ortiz", "t": "Auditorio - Asientos", "x": 690, "y": 548, "l": 0, "a": "aud"}, "28": {"who": "Juan Salinas", "t": "Auditorio - Asientos", "x": 833, "y": 735, "l": 0, "a": "aud"}, "29": {"who": "Javier Borjas", "t": "Auditorio - Asientos · Capitan de ruta para Bautismo", "x": 807, "y": 544, "l": 0, "a": "aud"}, "30": {"who": "Martin Davila", "t": "Auditorio - Asientos", "x": 813, "y": 342, "l": 0, "a": "aud"}, "31": {"who": "Juan F Garza", "t": "Auditorio - Asientos", "x": 902, "y": 239, "l": 0, "a": "aud"}, "32": {"who": "Isaias Martinez", "t": "Auditorio - Asientos", "x": 947, "y": 388, "l": 0, "a": "aud"}, "33": {"who": "Alex Vazquez", "t": "Auditorio - Asientos · Auxiliar de ruta para Bautismo", "x": 941, "y": 462, "l": 0, "a": "aud"}, "34": {"who": "Alfredo Garza", "t": "Auditorio - Asientos", "x": 936, "y": 601, "l": 0, "a": "aud"}, "35": {"who": "", "t": "Entrada principal del vestíbulo (sin asignar)", "x": 146, "y": 456, "l": 0, "a": "ent"}}, "runners": ["Eliu de la Garza", "Reynaldo Perez", "Roberto Borjas", "Servando Sustaita", "Jose Duran", "Otilio Ramirez", "Orlando Benavidez", "Oziel Rodriguez"], "cap": {"A2": 464, "A3": 475, "A4": 464, "B2": 158, "B3": 156, "B4": 158}, "expect": 2474},ADM=[{"n": "Sergio E. Vazquez Jr.", "h": "2522631457418853", "all": 1, "cnt": 1, "adm": 1, "areas": []}, {"n": "Alberto Herrera", "h": "992585394121114", "all": 1, "cnt": 1, "adm": 1, "areas": []}, {"n": "Steven Snyder", "h": "1068608750070157", "areas": ["ctl", "aud"], "adm": 1}, {"n": "Jaime Palestina", "h": "5893876321372649", "areas": ["alm", "ent"], "adm": 1}, {"n": "Abdiel Juarez Jr.", "h": "4585732618882182", "areas": ["aud"], "cnt": 1, "adm": 1}];
+const CFG={DB:"https://voluntariastx20-default-rtdb.firebaseio.com"}; 
+
+// AQUI ESTÁN LAS 32 HERMANAS AGREGADAS A LA LISTA PRINCIPAL
+const D={
+  "caps": ["Eliud Luna", "Hugo Galvan", "Jimmy Vasquez", "José A. González", "Raúl Quintero"], 
+  "sec": {"A2": "809,127 805,144 796,144 786,152 778,152 777,147 772,147 769,141 766,147 759,150 758,156 753,157 752,162 742,166 736,180 722,191 715,200 715,206 705,213 693,238 688,240 682,261 673,269 667,293 674,293 676,299 685,297 686,300 703,300 704,312 709,309 725,311 729,318 748,320 749,324 759,324 761,328 780,330 781,334 798,337 799,354 827,354 828,351 845,351 843,337 849,324 856,316 860,303 872,302 879,294 881,278 906,253 921,252 916,243 916,226 910,224 910,232 903,235 890,234 890,225 895,224 898,218 892,217 891,209 884,207 884,201 878,198 878,192 872,189 871,182 864,180 864,174 858,172 858,166 851,164 851,157 845,155 845,149 834,148 834,135 831,135 832,147 822,147 815,143 815,128 828,127", "A3": "833,375 798,368 785,359 764,357 763,352 756,352 755,349 744,349 742,346 733,346 730,342 713,339 712,324 684,324 683,330 676,330 663,383 659,450 664,503 674,543 680,544 680,561 684,561 685,557 700,558 701,546 707,545 711,538 720,539 723,535 731,535 733,531 743,531 745,527 774,521 776,514 796,514 797,511 808,510 809,505 826,505 836,500 827,494 821,446 828,442 827,433 821,430 822,409 827,384 835,380", "A4": "844,524 826,529 793,529 793,538 782,541 779,546 770,546 725,562 708,563 705,560 702,570 695,570 694,574 681,576 669,584 676,604 684,614 690,634 700,637 700,650 710,665 714,659 723,660 727,671 727,679 723,682 734,692 743,708 751,716 755,716 756,720 760,720 762,728 770,730 771,734 783,731 784,727 793,727 799,733 820,729 821,749 849,748 851,713 857,712 858,705 864,703 864,696 871,694 872,687 877,687 884,669 891,668 888,662 889,649 904,650 905,642 911,641 911,634 919,631 922,618 940,618 921,617 920,602 929,601 930,608 939,608 944,603 954,601 931,597 929,600 921,600 920,589 925,585 954,586 909,570 880,548 895,571 920,597 920,622 906,622 896,612 892,615 876,613 875,601 881,600 880,585 874,576 864,576 848,553 843,540", "B2": "948,292 921,301 887,322 878,330 865,359 876,360 879,365 897,367 900,371 909,371 910,375 912,372 921,372 922,377 931,377 933,382 936,382 937,376 951,375 952,384 941,387 941,393 936,395 936,404 932,406 957,422 965,417 960,413 960,405 964,404 964,393 973,376 991,356 992,351 1007,351 1007,334 976,330 975,321 970,320 970,313 964,312 963,304 957,304 956,296", "B3": "857,384 848,435 850,463 858,495 862,495 863,491 871,491 872,488 891,485 895,480 914,479 916,474 924,474 947,460 949,454 957,453 955,421 931,406 916,403 914,399 882,392 871,385", "B4": "1004,522 986,520 984,512 966,486 962,490 942,489 940,496 931,496 929,500 922,500 921,504 910,502 908,508 898,507 897,510 865,517 876,543 887,554 921,575 953,585 957,582 958,575 964,571 964,565 971,563 971,555 976,547 984,545 985,539 1003,538", "B1": "935,239 1022,346 1064,322 1063,250 1030,239 999,234 965,234", "A1": "865,151 934,238 965,233 999,233 1030,238 1063,249 1060,139 879,139", "B5": "1060,545 1023,532 1014,532 954,608 954,618 946,620 931,640 963,646 1001,646 1027,642 1061,631", "A5": "1061,632 1039,640 1001,647 963,647 930,641 876,712 877,747 1060,751"}, 
+  "roster": [
+    {"n": "Alfonso Hernández", "c": "Boca Chica", "p": "A", "t": "(956) 266-2671"}, 
+    {"n": "Eliu de la Garza", "c": "Boca Chica", "p": "P", "t": "(956) 346-7709"}, 
+    {"n": "Isaias Martinez", "c": "Boca Chica", "p": "P", "t": "(956) 247-1596"}, 
+    {"n": "Juan F Garza", "c": "Boca Chica", "p": "P", "t": "(956) 407-7366"}, 
+    {"n": "Martin Davila", "c": "Boca Chica", "p": "P", "t": "(956) 832-7370"}, 
+    {"n": "Rey Castillo", "c": "Boca Chica", "p": "S", "t": "(956) 551-1562"}, 
+    {"n": "Roberto Quiroga", "c": "Boca Chica", "p": "S", "t": "(956) 296-7031"}, 
+    {"n": "Norberto Cardenas", "c": "Central", "p": "S", "t": "(956) 543-7217"}, 
+    {"n": "Felipe Ortiz", "c": "El Jardin Heights", "p": "P", "t": "(956) 551-0037"}, 
+    {"n": "Francisco Montoya", "c": "El Jardin Heights", "p": "P", "t": "(956) 572-5994"}, 
+    {"n": "Juan Salinas", "c": "El Jardin Heights", "p": "S", "t": "(956) 621-9132"}, 
+    {"n": "Reynaldo Perez", "c": "El Jardin Heights", "p": "A", "t": "(956) 525-8524"}, 
+    {"n": "Roberto Borjas", "c": "El Jardin Heights", "p": "A", "t": "(956) 990-2469"}, 
+    {"n": "Servando Sustaita", "c": "El Jardin Heights", "p": "P", "t": "(956) 280-3088"}, 
+    {"n": "Carlos Leonardo Salas Zuñiga", "c": "Galaxia", "p": "P", "t": "(956) 517-6867"}, 
+    {"n": "Celestino Chavez", "c": "Galaxia", "p": "S", "t": "(956) 832-7080"}, 
+    {"n": "Gustavo Saucedo", "c": "Galaxia", "p": "P", "t": "(956) 518-8277"}, 
+    {"n": "Jose Duran", "c": "Galaxia", "p": "P", "t": "(956) 372-6592"}, 
+    {"n": "Luis Duran", "c": "Galaxia", "p": "P", "t": "(956) 434-6075"}, 
+    {"n": "Otilio Ramirez", "c": "Galaxia", "p": "P", "t": "(956) 708-5826"}, 
+    {"n": "Orlando Benavidez", "c": "Galaxia", "p": "A", "t": "(956) 543-3200"}, 
+    {"n": "Adrián Mota Arcos", "c": "Laguna Vista", "p": "P", "t": "(956) 299-0488"}, 
+    {"n": "José A. González", "c": "Laguna Vista", "p": "S", "t": "(956) 372-9349"}, 
+    {"n": "Jose González Jr", "c": "Laguna Vista", "p": "S", "t": "(956) 299-0927"}, 
+    {"n": "Vianney Morales López", "c": "Laguna Vista", "p": "P", "t": "(956) 299-1361"}, 
+    {"n": "Valente Alejandro", "c": "Laguna Vista", "p": "P", "t": "(956) 299-0807"}, 
+    {"n": "Hugo Galvan", "c": "Laguna Vista", "p": "A", "t": "(956) 590-7542"}, 
+    {"n": "Luis Barberena", "c": "Laguna Vista", "p": "S", "t": "(956) 543-4338"}, 
+    {"n": "Alex Vazquez", "c": "Los Cedros", "p": "S", "t": "(956) 356-3079"}, 
+    {"n": "Eliud Luna", "c": "Los Cedros", "p": "S", "t": "(956) 590-9218"}, 
+    {"n": "Jimmy Vasquez", "c": "Los Cedros", "p": "A", "t": "(956) 346-7804"}, 
+    {"n": "Guadalupe De La Cruz", "c": "Los Cedros", "p": "S", "t": "(956) 404-9874"}, 
+    {"n": "Javier Borjas", "c": "North", "p": "A", "t": "(956) 579-1660"}, 
+    {"n": "Abisai Muniz", "c": "North", "p": "S", "t": "(956) 459-9814"}, 
+    {"n": "Carlos Martínez", "c": "North", "p": "S", "t": "(956) 579-4578"}, 
+    {"n": "Oziel Rodriguez", "c": "North", "p": "P", "t": "(956) 371-4106"}, 
+    {"n": "Josue Campos", "c": "Paraiso", "p": "S", "t": "(956) 266-2788"}, 
+    {"n": "Ricardo Altamirano", "c": "Paraiso", "p": "S", "t": "(956) 434-9144"}, 
+    {"n": "Eulogio Montelongo", "c": "Paraiso", "p": "S", "t": "(956) 957-1848"}, 
+    {"n": "Alfredo Garza", "c": "Paraiso", "p": "P", "t": "(956) 455-3806"}, 
+    {"n": "Jamin Muñiz", "c": "Sunrise", "p": "P", "t": "(956) 639-7631"}, 
+    {"n": "Raúl Quintero", "c": "Sunrise", "p": "S", "t": "(956) 299-4663"}, 
+    {"n": "Gonzalo Mejia Sr.", "c": "Sunrise", "p": "P", "t": "(956) 479-0998"}, 
+    {"n": "Macario Martinez", "c": "Sunrise", "p": "A", "t": "(956) 639-3354"},
+    
+    /* === AQUÍ ESTÁN LAS 32 HERMANAS VOLUNTARIAS === */
+    {"n": "Alexia Ramirez", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Alicia González", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Ana Sofia Bejerano", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Ariane Agustin", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Bridyit Perez", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Cynthia Paola Gayosso", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Elizabeth Lopez", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Elizabeth Snyder", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Elizabeth Torres", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Esther Morales", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Geraldine Alison Perez", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Gloria (Gigi) Mastropole", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Gloria Palmira Mastropole", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Irene Avila", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Jackelin Luna", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Jaqueline Echavarria", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Karla Garcia", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Laura Esmeralda Amador Saucedo", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Maria avila", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Maria Fernanda Obispo", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Maria Gayosso", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Maria Rosa Garcia Zapata", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "María Rosario Vizcarra", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Mirsa Elizabeth Silva", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Nicasia Bravo De Gonzalez", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Reyna Jetcél Hernandez Madrid", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Sara del Carmen Gutierrez", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Sarah Martinez", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Sandra Vazquez", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Susana Zuñiga", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Leticia Fernández", "c": "Voluntaria", "p": "P", "t": ""},
+    {"n": "Voluntaria 32", "c": "Voluntaria", "p": "P", "t": ""}
+  ], 
+  "pos": {"1": {"who": "Luis Barberena", "t": "Alarma de Incendios Cuarto Multiusos", "x": 1172, "y": 220, "l": 1, "a": "alm"}, "2": {"who": "Guadalupe De La Cruz", "t": "Salida de emergencia plataforma", "x": 1172, "y": 404, "l": 1, "a": "alm"}, "3": {"who": "Macario Martinez", "t": "Detras de plataforma", "x": 1100, "y": 432, "l": 1, "a": "ctl"}, "4": {"who": "Celestino Chavez", "t": "Detras de plataforma / Escaleras plat.", "x": 1172, "y": 490, "l": 1, "a": "ctl"}, "5": {"who": "Valente Alejandro", "t": "Entrada principal lado sur plataforma", "x": 1172, "y": 660, "l": 1, "a": "alm"}, "6": {"who": "Norberto Cardenas", "t": "Alarma de incendios Lado sur plataforma · Dirigiendo hacia la seccion 6 de evacuacion", "x": 1073, "y": 775, "l": 1, "a": "alm"}, "7": {"who": "Alfonso Hernández", "t": "Puerta de Acceso Principal Plataforma", "x": 1073, "y": 657, "l": 1, "a": "ent"}, "8": {"who": "Osiel Ramirez", "t": "Alternando la posicion 10 cada cancion · Auditorio - Frente Lado Sur", "x": 1073, "y": 553, "l": 1, "a": "ctl"}, "9": {"who": "Alfredo Jimenez", "t": "Alternando la posicion 10 cada cancion · Auditorio - Frente Lado SE", "x": 993, "y": 527, "l": 1, "a": "ctl"}, "10": {"who": "Gustavo Saucedo", "t": "Alternando la posicion 10 cada cancion · Frente al Escenario", "x": 981, "y": 438, "l": 1, "a": "ctl"}, "11": {"who": "Josue Campos", "t": "Alternando la posicion 10 cada cancion · Auditorio - Frente Lado NE", "x": 994, "y": 341, "l": 1, "a": "ctl"}, "12": {"who": "Rey Castillo", "t": "Alternando la posicion 10 cada cancion · Auditorio - Frente Lado Norte", "x": 1073, "y": 336, "l": 1, "a": "ctl"}, "13": {"who": "Jose González Jr", "t": "Puerta de Acceso Secundaria Plataforma", "x": 1073, "y": 238, "l": 1, "a": "ent"}, "14": {"who": "Carlos Leonardo Salas Zuñiga", "t": "Alarma de incendios Lado norte plataforma · Dirigiendo hacia la seccion 1 de evacuacion", "x": 1073, "y": 141, "l": 1, "a": "alm"}, "15": {"who": "Vianney Morales López", "t": "Alarma de incendios Lado norte Audio · Dirigiendo hacia la seccion 2 de evacuacion", "x": 693, "y": 141, "l": 1, "a": "alm"}, "16": {"who": "Ricardo Altamirano", "t": "Alarma de Incendios", "x": 612, "y": 347, "l": 1, "a": "ent"}, "17": {"who": "Luis Duran", "t": "Alarma de Incendios", "x": 612, "y": 548, "l": 1, "a": "ent"}, "18": {"who": "Jamin Muñiz", "t": "Alarma de incendios Lado sur Instalacion · Dirigiendo hacia la seccion 5 de evacuacion", "x": 693, "y": 775, "l": 1, "a": "alm"}, "19": {"who": "Adrián Mota Arcos", "t": "Entrada Lado Sur", "x": 551, "y": 577, "l": 1, "a": "ent"}, "20": {"who": "Francisco Montoya", "t": "Entrada Lado Sur", "x": 463, "y": 577, "l": 1, "a": "ent"}, "21": {"who": "Roberto Quiroga", "t": "Portico", "x": 211, "y": 473, "l": 1, "a": "ent"}, "22": {"who": "Eulogio Montelongo", "t": "Portico / Alberca", "x": 428, "y": 604, "l": 1, "a": "ent"}, "23": {"who": "Tony Duran", "t": "Entrada Lado Norte · Dirigiendo hacia la seccion 3 de evacuacion", "x": 463, "y": 320, "l": 1, "a": "ent"}, "24": {"who": "Abisai Muniz", "t": "Entrada Lado Norte", "x": 551, "y": 318, "l": 1, "a": "ent"}, "25": {"who": "Gonzalo Mejia Sr.", "t": "Auditorio - Asientos", "x": 818, "y": 153, "l": 0, "a": "aud"}, "26": {"who": "Carlos Martínez", "t": "Auditorio - Asientos", "x": 697, "y": 340, "l": 0, "a": "aud"}, "27": {"who": "Felipe Ortiz", "t": "Auditorio - Asientos", "x": 690, "y": 548, "l": 0, "a": "aud"}, "28": {"who": "Juan Salinas", "t": "Auditorio - Asientos", "x": 833, "y": 735, "l": 0, "a": "aud"}, "29": {"who": "Javier Borjas", "t": "Auditorio - Asientos · Capitan de ruta para Bautismo", "x": 807, "y": 544, "l": 0, "a": "aud"}, "30": {"who": "Martin Davila", "t": "Auditorio - Asientos", "x": 813, "y": 342, "l": 0, "a": "aud"}, "31": {"who": "Juan F Garza", "t": "Auditorio - Asientos", "x": 902, "y": 239, "l": 0, "a": "aud"}, "32": {"who": "Isaias Martinez", "t": "Auditorio - Asientos", "x": 947, "y": 388, "l": 0, "a": "aud"}, "33": {"who": "Alex Vazquez", "t": "Auditorio - Asientos · Auxiliar de ruta para Bautismo", "x": 941, "y": 462, "l": 0, "a": "aud"}, "34": {"who": "Alfredo Garza", "t": "Auditorio - Asientos", "x": 936, "y": 601, "l": 0, "a": "aud"}, "35": {"who": "", "t": "Entrada principal del vestíbulo (sin asignar)", "x": 146, "y": 456, "l": 0, "a": "ent"}}, 
+  "runners": ["Eliu de la Garza", "Reynaldo Perez", "Roberto Borjas", "Servando Sustaita", "Jose Duran", "Otilio Ramirez", "Orlando Benavidez", "Oziel Rodriguez"], 
+  "cap": {"A2": 464, "A3": 475, "A4": 464, "B2": 158, "B3": 156, "B4": 158}, 
+  "expect": 2474
+};
+
+const ADM=[{"n": "Sergio E. Vazquez Jr.", "h": "2522631457418853", "all": 1, "cnt": 1, "adm": 1, "areas": []}, {"n": "Alberto Herrera", "h": "992585394121114", "all": 1, "cnt": 1, "adm": 1, "areas": []}, {"n": "Steven Snyder", "h": "1068608750070157", "areas": ["ctl", "aud"], "adm": 1}, {"n": "Jaime Palestina", "h": "5893876321372649", "areas": ["alm", "ent"], "adm": 1}, {"n": "Abdiel Juarez Jr.", "h": "4585732618882182", "areas": ["aud"], "cnt": 1, "adm": 1}];
+
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const H=s=>{let a=0xdeadbeef,b=0x41c6ce57;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);a=Math.imul(a^c,2654435761);b=Math.imul(b^c,1597334677)}a=Math.imul(a^(a>>>16),2246822507)^Math.imul(b^(b>>>13),3266489909);b=Math.imul(b^(b>>>16),2246822507)^Math.imul(a^(a>>>13),3266489909);return String(4294967296*(2097151&b)+(a>>>0))};
 const POS=Object.keys(D.pos).map(Number),SEC=[1,2,3,4,5].flatMap(i=>[['A',i,'Anillo 2'],['B',i,'Anillo 1']].map(([r,i,l])=>({id:r+i,l:l+' · Sección '+i,cap:D.cap[r+i]})));
@@ -113,7 +214,7 @@ const canCnt=()=>me&&(me.cnt||(!me.adm&&S.cntOpen&&(me.n==='Eliud Luna'||POS.som
 const occ=()=>new Set(POS.flatMap(n=>[P(n).who,P(n).sub]).filter(Boolean));
 const watch=n=>me&&(me.all||(me.adm?me.areas.includes(D.pos[n].a):eff(n)===me.n));
 const vacant=n=>watch(n)&&(D.pos[n].l?S.arm!==false:S.arm2===true)&&!['ok','sub'].includes(P(n).st);
-/* ---- sincronización ---- */
+
 const U=p=>CFG.DB.replace(/\/$/,'')+'/s'+(p?'/'+p:'')+'.json';
 function net(v){const e=$('net');if(!CFG.DB){e.textContent='Sin conectar: los cambios solo se ven en este teléfono';e.className='net loc';return}e.textContent=v?'En línea':'Sin conexión';e.className='net '+(v?'on':'off')}
 function setPath(o,p,v){const k=p.split('/');let c=o;k.slice(0,-1).forEach(x=>c=c[x]=c[x]||{});v===null?delete c[k.at(-1)]:c[k.at(-1)]=v}
@@ -135,11 +236,12 @@ function start(){
   clearInterval(iv);
   iv = setInterval(load, 5000);
 }
-/* ---- acceso ---- */
+
 const nrm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();let pick='';
 $('us').oninput=()=>{pick='';$('goU').hidden=true;const q=nrm($('us').value.trim());$('res').innerHTML=q?(D.roster.filter(r=>nrm(r.n).includes(q)).slice(0,6).map(r=>`<button type="button" data-n="${esc(r.n)}" style="width:100%;text-align:left;margin-top:4px">${esc(r.n)}</button>`).join('')||'<span class="mut">No aparece. Prueba con otra parte de tu nombre.</span>'):''};
 $('res').onclick=e=>{const b=e.target.closest('button');if(!b)return;pick=b.dataset.n;$('us').value=pick;$('res').innerHTML='';$('goU').textContent='Entrar como '+pick;$('goU').hidden=false};
 $('ad').innerHTML='<option value="">Seleccione su nombre</option>'+ADM.map(a=>`<option>${esc(a.n)}</option>`).join('');
+
 function enter(u){
   me=u;
   try{if(!u.adm)localStorage.me=u.n}catch(e){}
@@ -147,7 +249,7 @@ function enter(u){
   $('app').hidden=false;
   $('out').hidden=false;
   $('usr').textContent=u.n;
-  $('btn-mode-toggle').hidden=!u.adm; // Solo admins ven el botón
+  $('btn-mode-toggle').hidden=!u.adm; 
   start();
 }
 function enterU(){if(pick)enter({n:pick})}
@@ -164,7 +266,6 @@ function logout(){
 }
 try{if(localStorage.me)enter({n:localStorage.me})}catch(e){}
 
-/* ---- PORTAL VOLUNTARIA ---- */
 function enterVoluntaria() {
   me = null;
   $('login').hidden = true;
@@ -184,6 +285,8 @@ function buscarVoluntaria(query) {
   if (!query || query.length < 2) { resultsEl.innerHTML = ''; return; }
   const q = query.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   let html = '';
+  
+  // Buscar en las posiciones asignadas
   for (const n of POS) {
     const p = P(n);
     const name = p.sub || p.who || '';
@@ -199,10 +302,22 @@ function buscarVoluntaria(query) {
         </div>`;
     }
   }
+
+  // Si no tiene posición, buscar en el roster de voluntarias
+  if (!html) {
+    const matches = D.roster.filter(r => r.c === 'Voluntaria' && r.n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(q));
+    if (matches.length > 0) {
+      html = matches.map(m => `
+        <div class="card" style="margin-bottom:8px;border-left:4px solid var(--org);">
+          <b>${esc(m.n)}</b><br>
+          <span class="mut">Voluntaria registrada (Sin posición asignada aún)</span>
+        </div>`).join('');
+    }
+  }
+
   resultsEl.innerHTML = html || '<p class="mut">No se encontró a nadie con ese nombre.</p>';
 }
 
-/* ---- ACCIONES ---- */
 const stamp=n=>put(`pos/${n}/ts`,Date.now());
 function cnt(id,d){hl=id;const v=Math.max(0,((S.cnt||{})[id]||0)+d);put('cnt/'+id,v)}
 function reset(){if(!confirm('¿Reiniciar asistencia y conteos del día? Las posiciones se conservan.'))return;const o={};POS.forEach(n=>{const p=P(n);o[n]={x:p.x,y:p.y,who:p.who}});put('pos',o);put('cnt',null)}
@@ -232,7 +347,7 @@ function setSt(n,s){
 function here(n){ if(P(n).sub===me.n||P(n).who===me.n){ setSt(n,P(n).sub?'sub':'ok'); } }
 function useSub(n,name){ put(`pos/${n}/sub`,name); setSt(n,'sub'); showToast(`✓ Sustituto asignado: ${name}`); }
 function back(n){ put(`pos/${n}/sub`,null); setSt(n,'ok'); }
-function setWho(n,v){ put(`pos/${n}/who`,v); put(`pos/${n}/sub`,null); setSt(n,'pend'); if(v) showToast(`✓ Acomodador cambiado a: ${v}`); }
+function setWho(n,v){ put(`pos/${n}/who`,v); put(`pos/${n}/sub`,null); setSt(n,'pend'); if(v) showToast(`✓ Asignado a: ${v}`); }
 
 function drawMap(){let s='';for(const k in D.sec)s+=`<polygon class="sec${hl===k?' hl':''}" data-s="${k}" points="${D.sec[k]}"/>`;$('sl').innerHTML=s;let h='';for(const n of POS){const p=P(n),l=D.pos[n].l,b=p.st==='ok'?['#2e7d32','✓']:p.st==='abs'?['#d11','✕']:p.st==='sub'?['#777','S']:null;
  h+=`<g class="pc${watch(n)||me.all?'':' dim'}" data-n="${n}" transform="translate(${p.x} ${p.y})">${vacant(n)?'<circle class="pulse" r="27"/>':''}<circle r="19" fill="${l?'var(--blue)':'var(--org)'}" stroke="${sel===n?'#000':'#fff'}" stroke-width="${sel===n?4.5:2.5}"/><text text-anchor="middle" dy=".35em">${n}</text>${b?`<circle cx="15" cy="-15" r="9" fill="${b[0]}" stroke="#fff" stroke-width="1.5"/><text x="15" y="-15" dy=".35em" text-anchor="middle" style="font-size:11px">${b[1]}</text>`:''}</g>`}
@@ -248,20 +363,20 @@ function drawPanel(){const e=$('panel');if(!sel){e.innerHTML='<span class="mut">
  h+=w?`<div class="who"><b>${esc(w)}</b>${r?`<br>${PRIV[r.p]} · ${esc(r.c)}`+(me.adm?`<br><a href="tel:${r.t.replace(/\D/g,'')}">${r.t}</a>`:''):''}${p.sub?`<br><span class="mut">Sustituye a ${esc(p.who)}</span>`:''}</div>`:'<p class="mut">Sin asignar</p>';
  if(ad){h+=`<div class="row"><button class="ok" onclick="setSt(${n},'${p.sub?'sub':'ok'}')">Presente</button><button onclick="setSt(${n},'abs')">Ausente</button><button onclick="setSt(${n},'pend')">Pendiente</button>${p.sub?`<button onclick="back(${n})">Llegó el titular</button>`:''}</div>`;
   if(p.st==='abs'||!w){const fr=D.runners.filter(x=>!occ().has(x));h+=`<div class="sg"><b>Sustituto sugerido</b>`+(fr.length?fr.slice(0,4).map(x=>{const q=ppl(x);return`<div class="row"><span style="flex:1">${esc(x)} <span class="mut">${esc(q.c)}</span></span><a href="tel:${q.t.replace(/\D/g,'')}">${q.t}</a><button onclick="useSub(${n},'${x.replace(/'/g,"\\'")}')">Poner aquí</button></div>`}).join(''):'<div class="mut">No hay corredores libres.</div>')+'</div>'}
-  h+=`<div class="sg"><b>Cambiar acomodador</b><select onchange="if(this.value)setWho(${n},this.value)"><option value="">Elegir hermano…</option>${D.roster.map(x=>`<option ${x.n===p.who?'disabled':''}>${esc(x.n)}</option>`).join('')}</select></div>`}
+  
+  // AQUI ESTA EL DROPDOWN PARA ASIGNAR A LAS HERMANAS Y A TODOS
+  h+=`<div class="sg"><b>Asignar Persona</b><select onchange="if(this.value)setWho(${n},this.value)"><option value="">Elegir de la lista…</option>${D.roster.map(x=>`<option ${x.n===p.who?'disabled':''}>${esc(x.n)}</option>`).join('')}</select></div>`}
  e.innerHTML=h}
 function drawCnt(){$('expEd').hidden=!(me.all||me.cnt);if(document.activeElement!==$('exp'))$('exp').value=S.expect||D.expect;const t=SEC.reduce((a,s)=>a+((S.cnt||{})[s.id]||0),0),ex=S.expect||D.expect,cc=canCnt();
  $('cnt').innerHTML=`<p><b>${t}</b> contados de <b>${ex}</b> esperados (${Math.round(100*t/ex)}%) </p><div class="bar"><i style="width:${Math.min(100,100*t/ex)}%"></i></div><div class="grid" style="margin-top:10px">`+SEC.map(s=>{const v=(S.cnt||{})[s.id]||0;return`<div class="t${hl===s.id?' hl':''}" onclick="hl=hl==='${s.id}'?null:'${s.id}';draw()"><small>${s.l}</small><b>${v}</b><small class="mut">${s.cap?'cap. '+s.cap:'cap. por definir'}</small>${cc?`<div class="row" style="justify-content:center;margin-top:4px"><button onclick="event.stopPropagation();cnt('${s.id}',-1)">−</button><button onclick="event.stopPropagation();cnt('${s.id}',1)">+</button><button onclick="event.stopPropagation();cnt('${s.id}',10)">+10</button></div>`:''}</div>`}).join('')+'</div>'}
 function drawBench(){const e=$('bench');e.hidden=!me.adm;if(!me.adm)return;const o=occ();e.innerHTML='<h3>Corredores</h3>'+D.runners.map(x=>{const q=ppl(x),n=POS.find(n=>P(n).sub===x);return`<div class="row sg"><span style="flex:1"><b>${esc(x)}</b> <span class="mut">${PRIV[q.p]} · ${esc(q.c)}</span></span><span class="mut">${n?'En posición '+n:'Disponible'}</span><a href="tel:${q.t.replace(/\D/g,'')}">${q.t}</a></div>`}).join('')}
 const _d=draw;draw=function(){_d();if(me&&!drag)drawBench()};
 
-/* ---- mover círculos ---- */
 const svg=$('svg');
 svg.addEventListener('pointerdown',e=>{const z=e.target.closest('.sec');if(z&&!e.target.closest('.pc')){hl=hl===z.dataset.s?null:z.dataset.s;draw();return}const g=e.target.closest('.pc');if(!g)return;const n=+g.dataset.n;if(edit&&canEd(n)){drag={n,m:0};svg.setPointerCapture(e.pointerId)}else{sel=n;draw()}});
 svg.addEventListener('pointermove',e=>{if(!drag)return;drag.m=1;const q=svg.createSVGPoint();q.x=e.clientX;q.y=e.clientY;const r=q.matrixTransform(svg.getScreenCTM().inverse());drag.x=Math.round(r.x);drag.y=Math.round(r.y);svg.querySelector(`[data-n="${drag.n}"]`).setAttribute('transform',`translate(${drag.x} ${drag.y})`)});
 svg.addEventListener('pointerup',()=>{if(!drag)return;const d=drag;drag=null;sel=d.n;if(d.m){put(`pos/${d.n}/x`,d.x);put(`pos/${d.n}/y`,d.y)}else draw()});
 
-/* ---- MODO VOLUNTARIA (TOGGLE ADMIN) ---- */
 function toggleAppMode() {
   isVolunteerMode = !isVolunteerMode;
   const btn = $('btn-mode-toggle');
@@ -284,6 +399,6 @@ function toggleAppMode() {
     if (typeof draw === 'function' && me) draw();
   }
 }
-
+</script>
 </body>
 </html>
