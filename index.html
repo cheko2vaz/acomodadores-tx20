@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Acomodadores · Salón de Asambleas La Feria</title>
+<title>Acomodadores · La Feria, TX</title>
 <style>
 :root{--red:#6e1414;--red2:#9b1c1c;--ink:#1f1f1f;--mut:#666;--line:#d6d6d6;--bg:#e9e9e9;--blue:#2c6cb0;--org:#e07b00;--ok:#2e7d32;--purple:#5B3C88}
 [hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;font:15px/1.4 "Segoe UI",Roboto,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
@@ -16,10 +16,11 @@ main{max-width:1100px;margin:auto;padding:12px;display:grid;gap:12px}
 .card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 #alert{border:2px solid var(--red2);color:var(--red2);font-weight:600}
-#mapw{overflow:auto;padding:0; -webkit-overflow-scrolling: touch;}
-svg{width:100%; max-width:100%; height:auto; display:block; touch-action:pan-x pan-y pinch-zoom;}
+#mapw{overflow:auto;padding:0;-webkit-overflow-scrolling:touch}
+svg{width:100%;max-width:100%;height:auto;display:block;touch-action:pan-x pan-y pinch-zoom}
 #toast-container{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none}
-.toast{background:#2e7d32;color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,.3);opacity:0;transition:opacity .3s,transform .3s;transform:translateY(20px);display:flex;align-items:center;gap:8px}
+.toast{background:#2e7d32;color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,.3);opacity:0;transition:opacity .3s,transform .3s;transform:translateY(20px);display:flex;align-items:center;gap:8px;max-width:340px}
+.toast.err{background:#b71c1c}
 .toast.show{opacity:1;transform:translateY(0)}
 .pc{cursor:pointer}.pc text{font:700 15px sans-serif;fill:#fff;pointer-events:none}
 @keyframes bl{50%{opacity:.05}}.pulse{fill:none;stroke:#d11;stroke-width:6;animation:bl .8s infinite}
@@ -28,15 +29,22 @@ svg{width:100%; max-width:100%; height:auto; display:block; touch-action:pan-x p
 .mut{color:var(--mut)}h3{margin:0 0 4px}
 .who{background:#f3f3f3;border-left:4px solid var(--red2);padding:8px 10px;margin:8px 0}
 a{color:var(--red2);font-weight:600}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
-.t{border:1px solid var(--line);border-radius:6px;padding:8px;text-align:center}.t b{font-size:26px;display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+.t{border:1px solid var(--line);border-radius:6px;padding:8px;text-align:center}.t b{font-size:24px;display:block}
 .bar{height:6px;background:#ddd;border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;background:var(--red2)}
 .sg{padding:8px 0;border-top:1px solid var(--line)}
 #login{position:fixed;inset:0;background:#3a0b0bf2;display:grid;place-items:center;z-index:20;padding:12px;overflow:auto}
 #login .card{max-width:420px;width:100%;display:grid;gap:10px}
 select,input{font:inherit;padding:9px;border:1px solid #bbb;border-radius:6px;width:100%}
 .lg{display:flex;gap:14px;font-size:13px;flex-wrap:wrap}.lg i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:4px;vertical-align:-1px}
-.sec{fill:transparent;cursor:pointer}.sec.hl{fill:#9b1c1c55;stroke:#d11;stroke-width:4;animation:bl2 1s infinite}@keyframes bl2{50%{opacity:.35}}@media(prefers-reduced-motion:reduce){.sec.hl{animation:none}}.t{cursor:pointer}.t.hl{border:2px solid var(--red2);background:#faeaea}.dim{opacity:.4}
+.sec{fill:transparent;cursor:pointer}.sec.hl{fill:#9b1c1c55;stroke:#d11;stroke-width:3;stroke-dasharray:8 4}.sec.edit{stroke:#d11;stroke-width:1.5;stroke-dasharray:5 3;fill:transparent}
+.vertex{cursor:move}.vertex:hover{r:8}.vadd{cursor:pointer;opacity:.6}.vadd:hover{opacity:1}
+.t{cursor:pointer}.t.hl{border:2px solid var(--red2);background:#faeaea}.dim{opacity:.4}
+.capin{width:60px;padding:4px;font-size:13px;text-align:center;border:1px solid #ccc;border-radius:4px}
+.turnsel{display:flex;gap:4px;flex-wrap:wrap;width:100%}
+.turnsel button{padding:6px 10px;font-size:13px}
+.turnsel button.on{background:var(--purple);color:#fff;border-color:var(--purple)}
+.histbox{background:#f5f0ff;border-left:4px solid var(--purple);padding:8px 10px;margin:8px 0;font-size:13px}
 </style>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
@@ -67,9 +75,7 @@ select,input{font:inherit;padding:9px;border:1px solid #bbb;border-radius:6px;wi
     <button class="pri" onclick="enterA()">Entrar</button>
     <span id="err" style="color:#b00"></span>
     <hr style="width:100%;border:0;border-top:1px solid #ddd">
-    <button class="ok" style="width:100%;padding:12px;font-size:16px;background:var(--purple);border-color:var(--purple)" onclick="enterVoluntaria()">
-      👥 Soy Voluntaria
-    </button>
+    <button class="ok" style="width:100%;padding:12px;font-size:16px;background:var(--purple);border-color:var(--purple)" onclick="enterVoluntaria()">👥 Soy Voluntaria</button>
   </div>
 </div>
 
@@ -81,6 +87,7 @@ select,input{font:inherit;padding:9px;border:1px solid #bbb;border-radius:6px;wi
     <svg id="svg" viewBox="0 0 1310 926">
       <image id="mi" width="1310" height="926" href="map.jpg" preserveAspectRatio="none"/>
       <g id="sl"></g>
+      <g id="vl"></g>
       <g id="pl"></g>
     </svg>
   </div>
@@ -90,7 +97,6 @@ select,input{font:inherit;padding:9px;border:1px solid #bbb;border-radius:6px;wi
     <span><i style="background:var(--purple)"></i>Voluntaria</span>
     <span><i style="background:#2e7d32"></i>Presente</span>
     <span><i style="background:#d11"></i>Ausente</span>
-    <span><i style="background:#777"></i>Sustituto</span>
   </div>
   <div class="card" id="panel"></div>
   <div class="card"><h3>Conteo por sección</h3><div id="expEd" class="row" hidden><label for="exp">Esperados</label><input id="exp" type="number" min="1" style="width:110px"><button class="pri" onclick="const v=+$('exp').value;if(v>0)put('expect',v)">Guardar</button></div><div id="cnt"></div></div>
@@ -100,7 +106,7 @@ select,input{font:inherit;padding:9px;border:1px solid #bbb;border-radius:6px;wi
 <div id="volPanel" hidden style="max-width:900px;margin:12px auto;">
   <div class="card">
     <h2 style="margin-top:0;color:var(--purple)">Portal de Voluntarias</h2>
-    <p>Escribe tu nombre o apellido para ver tu asignación.</p>
+    <p>Escribe tu nombre o apellido para ver tus turnos y ubicación.</p>
     <input type="text" id="volSearch" placeholder="Ej. Sandra Vazquez" style="width:100%;padding:15px;font-size:18px;margin-bottom:15px;border:2px solid var(--purple)" oninput="buscarVoluntaria(this.value)">
     <div id="volResults" style="text-align:left;margin-top:10px;"></div>
   </div>
@@ -109,121 +115,117 @@ select,input{font:inherit;padding:9px;border:1px solid #bbb;border-radius:6px;wi
 <script>
 const CFG={DB:"https://voluntariastx20-default-rtdb.firebaseio.com"};
 
+// === TURNOS COMPLETOS ===
+const TURNOS={
+  "1":{name:"7:45 – 8:45 a.m.",vol:["Ana Sofia Bejerano","Ariane Agustin","Bridyit Perez","Cynthia Paola Gayosso","Elizabeth Snyder","Esther Morales","Geraldine Alison Perez","Jackelin Luna","Jaqueline Echavarria","Karla Garcia","Laura Esmeralda Amador Saucedo","Maria Rosa Garcia Zapata","Mirsa Elizabeth Silva","Nicasia Bravo De Gonzalez","Reyna Jetcél Hernandez Madrid","Sarah Martinez","Susana Zuñiga"]},
+  "2":{name:"8:45 – 9:45 a.m.",vol:["Alicia González","Ana Sofia Bejerano","Bridyit Perez","Cynthia Paola Gayosso","Elizabeth Lopez","Elizabeth Snyder","Geraldine Alison Perez","Jackelin Luna","Jaqueline Echavarria","Karla Garcia","Laura Esmeralda Amador Saucedo","Maria Fernanda Obispo","Maria Rosa Garcia Zapata","María Rosario Vizcarra","Mirsa Elizabeth Silva","Reyna Jetcél Hernandez Madrid","Sarah Martinez"]},
+  "3":{name:"9:45 – 11:05 a.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Snyder","Geraldine Alison Perez","Irene Avila","Jaqueline Echavarria","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Sara del Carmen Gutierrez","Sarah Martinez"]},
+  "4":{name:"11:05 a.m. – 12:05 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Snyder","Elizabeth Torres","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Mirsa Elizabeth Silva","Nicasia Bravo De Gonzalez"]},
+  "5":{name:"12:05 – 12:40 p.m. (Intermedio 1ra)",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Reyna Jetcél Hernandez Madrid"]},
+  "6":{name:"12:40 – 1:20 p.m. (Intermedio 2da)",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Mirsa Elizabeth Silva"]},
+  "7":{name:"1:20 – 3:30 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Torres","Geraldine Alison Perez","Gloria (Gigi) Mastropole","Gloria Palmira Mastropole","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Nicasia Bravo De Gonzalez"]},
+  "8":{name:"3:30 – 4:15 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Jaqueline Echavarria","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Reyna Jetcél Hernandez Madrid","Sarah Martinez"]}
+};
+
+// === SECCIONES DE VOLUNTARIAS ===
+const VOL_SECTIONS=[
+  {id:"vest-norte",label:"Vestíbulo Norte",pos:[101,102,103,104,105],color:"#5B3C88"},
+  {id:"vest-portico",label:"Vestíbulo Pórtico",pos:[106,107,108,109],color:"#4A6DA7"},
+  {id:"vest-sur",label:"Vestíbulo Sur",pos:[110,111,112,113,114],color:"#28B04A"},
+  {id:"aud-sur",label:"Auditorio Sur",pos:[115,116],color:"#F18100"},
+  {id:"aud-contra",label:"Auditorio Contrapared",pos:[117,118],color:"#C0392B"},
+  {id:"aud-norte",label:"Auditorio Norte",pos:[119,120],color:"#16A085"}
+];
+
+// === COORDENADAS DE POSICIONES DE VOLUNTARIAS (101-124) ===
+const VOL_POS_COORDS={
+  101:{x:120,y:170},102:{x:210,y:170},103:{x:300,y:170},104:{x:390,y:170},105:{x:480,y:170},
+  106:{x:120,y:370},107:{x:210,y:370},108:{x:300,y:370},109:{x:390,y:370},
+  110:{x:120,y:570},111:{x:210,y:570},112:{x:300,y:570},113:{x:390,y:570},114:{x:480,y:570},
+  115:{x:730,y:700},116:{x:830,y:700},
+  117:{x:730,y:480},118:{x:830,y:480},
+  119:{x:730,y:280},120:{x:830,y:280},
+  121:{x:560,y:170},122:{x:560,y:370},123:{x:560,y:570},124:{x:960,y:480}
+};
+
+// === SECCIONES DE ACOMODADORES (MANTENIDAS) ===
 const D={
   "caps":["Eliud Luna","Hugo Galvan","Jimmy Vasquez","José A. González","Raúl Quintero"],
   "sec":{"A2":"809,127 805,144 796,144 786,152 778,152 777,147 772,147 769,141 766,147 759,150 758,156 753,157 752,162 742,166 736,180 722,191 715,200 715,206 705,213 693,238 688,240 682,261 673,269 667,293 674,293 676,299 685,297 686,300 703,300 704,312 709,309 725,311 729,318 748,320 749,324 759,324 761,328 780,330 781,334 798,337 799,354 827,354 828,351 845,351 843,337 849,324 856,316 860,303 872,302 879,294 881,278 906,253 921,252 916,243 916,226 910,224 910,232 903,235 890,234 890,225 895,224 898,218 892,217 891,209 884,207 884,201 878,198 878,192 872,189 871,182 864,180 864,174 858,172 858,166 851,164 851,157 845,155 845,149 834,148 834,135 831,135 832,147 822,147 815,143 815,128 828,127","A3":"833,375 798,368 785,359 764,357 763,352 756,352 755,349 744,349 742,346 733,346 730,342 713,339 712,324 684,324 683,330 676,330 663,383 659,450 664,503 674,543 680,544 680,561 684,561 685,557 700,558 701,546 707,545 711,538 720,539 723,535 731,535 733,531 743,531 745,527 774,521 776,514 796,514 797,511 808,510 809,505 826,505 836,500 827,494 821,446 828,442 827,433 821,430 822,409 827,384 835,380","A4":"844,524 826,529 793,529 793,538 782,541 779,546 770,546 725,562 708,563 705,560 702,570 695,570 694,574 681,576 669,584 676,604 684,614 690,634 700,637 700,650 710,665 714,659 723,660 727,671 727,679 723,682 734,692 743,708 751,716 755,716 756,720 760,720 762,728 770,730 771,734 783,731 784,727 793,727 799,733 820,729 821,749 849,748 851,713 857,712 858,705 864,703 864,696 871,694 872,687 877,687 884,669 891,668 888,662 889,649 904,650 905,642 911,641 911,634 919,631 922,618 940,618 921,617 920,602 929,601 930,608 939,608 944,603 954,601 931,597 929,600 921,600 920,589 925,585 954,586 909,570 880,548 895,571 920,597 920,622 906,622 896,612 892,615 876,613 875,601 881,600 880,585 874,576 864,576 848,553 843,540","B2":"948,292 921,301 887,322 878,330 865,359 876,360 879,365 897,367 900,371 909,371 910,375 912,372 921,372 922,377 931,377 933,382 936,382 937,376 951,375 952,384 941,387 941,393 936,395 936,404 932,406 957,422 965,417 960,413 960,405 964,404 964,393 973,376 991,356 992,351 1007,351 1007,334 976,330 975,321 970,320 970,313 964,312 963,304 957,304 956,296","B3":"857,384 848,435 850,463 858,495 862,495 863,491 871,491 872,488 891,485 895,480 914,479 916,474 924,474 947,460 949,454 957,453 955,421 931,406 916,403 914,399 882,392 871,385","B4":"1004,522 986,520 984,512 966,486 962,490 942,489 940,496 931,496 929,500 922,500 921,504 910,502 908,508 898,507 897,510 865,517 876,543 887,554 921,575 953,585 957,582 958,575 964,571 964,565 971,563 971,555 976,547 984,545 985,539 1003,538","B1":"935,239 1022,346 1064,322 1063,250 1030,239 999,234 965,234","A1":"865,151 934,238 965,233 999,233 1030,238 1063,249 1060,139 879,139","B5":"1060,545 1023,532 1014,532 954,608 954,618 946,620 931,640 963,646 1001,646 1027,642 1061,631","A5":"1061,632 1039,640 1001,647 963,647 930,641 876,712 877,747 1060,751"},
   "roster":[
-    {"n":"Alfonso Hernández","c":"Boca Chica","p":"A","t":""},
-    {"n":"Eliu de la Garza","c":"Boca Chica","p":"P","t":""},
-    {"n":"Isaias Martinez","c":"Boca Chica","p":"P","t":""},
-    {"n":"Juan F Garza","c":"Boca Chica","p":"P","t":""},
-    {"n":"Martin Davila","c":"Boca Chica","p":"P","t":""},
-    {"n":"Rey Castillo","c":"Boca Chica","p":"S","t":""},
-    {"n":"Roberto Quiroga","c":"Boca Chica","p":"S","t":""},
-    {"n":"Norberto Cardenas","c":"Central","p":"S","t":""},
-    {"n":"Felipe Ortiz","c":"El Jardin Heights","p":"P","t":""},
-    {"n":"Francisco Montoya","c":"El Jardin Heights","p":"P","t":""},
-    {"n":"Juan Salinas","c":"El Jardin Heights","p":"S","t":""},
-    {"n":"Reynaldo Perez","c":"El Jardin Heights","p":"A","t":""},
-    {"n":"Roberto Borjas","c":"El Jardin Heights","p":"A","t":""},
-    {"n":"Servando Sustaita","c":"El Jardin Heights","p":"P","t":""},
-    {"n":"Carlos Leonardo Salas Zuñiga","c":"Galaxia","p":"P","t":""},
-    {"n":"Celestino Chavez","c":"Galaxia","p":"S","t":""},
-    {"n":"Gustavo Saucedo","c":"Galaxia","p":"P","t":""},
-    {"n":"Jose Duran","c":"Galaxia","p":"P","t":""},
-    {"n":"Luis Duran","c":"Galaxia","p":"P","t":""},
-    {"n":"Otilio Ramirez","c":"Galaxia","p":"P","t":""},
-    {"n":"Orlando Benavidez","c":"Galaxia","p":"A","t":""},
-    {"n":"Adrián Mota Arcos","c":"Laguna Vista","p":"P","t":""},
-    {"n":"José A. González","c":"Laguna Vista","p":"S","t":""},
-    {"n":"Jose González Jr","c":"Laguna Vista","p":"S","t":""},
-    {"n":"Vianney Morales López","c":"Laguna Vista","p":"P","t":""},
-    {"n":"Valente Alejandro","c":"Laguna Vista","p":"P","t":""},
-    {"n":"Hugo Galvan","c":"Laguna Vista","p":"A","t":""},
-    {"n":"Luis Barberena","c":"Laguna Vista","p":"S","t":""},
-    {"n":"Alex Vazquez","c":"Los Cedros","p":"S","t":""},
-    {"n":"Eliud Luna","c":"Los Cedros","p":"S","t":""},
-    {"n":"Jimmy Vasquez","c":"Los Cedros","p":"A","t":""},
-    {"n":"Guadalupe De La Cruz","c":"Los Cedros","p":"S","t":""},
-    {"n":"Javier Borjas","c":"North","p":"A","t":""},
-    {"n":"Abisai Muniz","c":"North","p":"S","t":""},
-    {"n":"Carlos Martínez","c":"North","p":"S","t":""},
-    {"n":"Oziel Rodriguez","c":"North","p":"P","t":""},
-    {"n":"Josue Campos","c":"Paraiso","p":"S","t":""},
-    {"n":"Ricardo Altamirano","c":"Paraiso","p":"S","t":""},
-    {"n":"Eulogio Montelongo","c":"Paraiso","p":"S","t":""},
-    {"n":"Alfredo Garza","c":"Paraiso","p":"P","t":""},
-    {"n":"Jamin Muñiz","c":"Sunrise","p":"P","t":""},
-    {"n":"Raúl Quintero","c":"Sunrise","p":"S","t":""},
-    {"n":"Gonzalo Mejia Sr.","c":"Sunrise","p":"P","t":""},
-    {"n":"Macario Martinez","c":"Sunrise","p":"A","t":""},
-    {"n":"Alexia Ramirez","c":"Voluntaria","p":"P","t":""},
-    {"n":"Alicia González","c":"Voluntaria","p":"P","t":""},
-    {"n":"Ana Sofia Bejerano","c":"Voluntaria","p":"P","t":""},
-    {"n":"Ariane Agustin","c":"Voluntaria","p":"P","t":""},
-    {"n":"Bridyit Perez","c":"Voluntaria","p":"P","t":""},
-    {"n":"Cynthia Paola Gayosso","c":"Voluntaria","p":"P","t":""},
-    {"n":"Elizabeth Lopez","c":"Voluntaria","p":"P","t":""},
-    {"n":"Elizabeth Snyder","c":"Voluntaria","p":"P","t":""},
-    {"n":"Elizabeth Torres","c":"Voluntaria","p":"P","t":""},
-    {"n":"Esther Morales","c":"Voluntaria","p":"P","t":""},
-    {"n":"Geraldine Alison Perez","c":"Voluntaria","p":"P","t":""},
-    {"n":"Gloria (Gigi) Mastropole","c":"Voluntaria","p":"P","t":""},
-    {"n":"Gloria Palmira Mastropole","c":"Voluntaria","p":"P","t":""},
-    {"n":"Irene Avila","c":"Voluntaria","p":"P","t":""},
-    {"n":"Jackelin Luna","c":"Voluntaria","p":"P","t":""},
-    {"n":"Jaqueline Echavarria","c":"Voluntaria","p":"P","t":""},
-    {"n":"Karla Garcia","c":"Voluntaria","p":"P","t":""},
-    {"n":"Laura Esmeralda Amador Saucedo","c":"Voluntaria","p":"P","t":""},
-    {"n":"Maria avila","c":"Voluntaria","p":"P","t":""},
-    {"n":"Maria Fernanda Obispo","c":"Voluntaria","p":"P","t":""},
-    {"n":"Maria Gayosso","c":"Voluntaria","p":"P","t":""},
-    {"n":"Maria Rosa Garcia Zapata","c":"Voluntaria","p":"P","t":""},
-    {"n":"María Rosario Vizcarra","c":"Voluntaria","p":"P","t":""},
-    {"n":"Mirsa Elizabeth Silva","c":"Voluntaria","p":"P","t":""},
-    {"n":"Nicasia Bravo De Gonzalez","c":"Voluntaria","p":"P","t":""},
-    {"n":"Reyna Jetcél Hernandez Madrid","c":"Voluntaria","p":"P","t":""},
-    {"n":"Sara del Carmen Gutierrez","c":"Voluntaria","p":"P","t":""},
-    {"n":"Sarah Martinez","c":"Voluntaria","p":"P","t":""},
-    {"n":"Sandra Vazquez","c":"Voluntaria","p":"P","t":""},
-    {"n":"Susana Zuñiga","c":"Voluntaria","p":"P","t":""},
-    {"n":"Leticia Fernández","c":"Voluntaria","p":"P","t":""}
+    {"n":"Alfonso Hernández","c":"Boca Chica","p":"A","t":""},{"n":"Eliu de la Garza","c":"Boca Chica","p":"P","t":""},{"n":"Isaias Martinez","c":"Boca Chica","p":"P","t":""},{"n":"Juan F Garza","c":"Boca Chica","p":"P","t":""},{"n":"Martin Davila","c":"Boca Chica","p":"P","t":""},{"n":"Rey Castillo","c":"Boca Chica","p":"S","t":""},{"n":"Roberto Quiroga","c":"Boca Chica","p":"S","t":""},{"n":"Norberto Cardenas","c":"Central","p":"S","t":""},{"n":"Felipe Ortiz","c":"El Jardin Heights","p":"P","t":""},{"n":"Francisco Montoya","c":"El Jardin Heights","p":"P","t":""},{"n":"Juan Salinas","c":"El Jardin Heights","p":"S","t":""},{"n":"Reynaldo Perez","c":"El Jardin Heights","p":"A","t":""},{"n":"Roberto Borjas","c":"El Jardin Heights","p":"A","t":""},{"n":"Servando Sustaita","c":"El Jardin Heights","p":"P","t":""},{"n":"Carlos Leonardo Salas Zuñiga","c":"Galaxia","p":"P","t":""},{"n":"Celestino Chavez","c":"Galaxia","p":"S","t":""},{"n":"Gustavo Saucedo","c":"Galaxia","p":"P","t":""},{"n":"Jose Duran","c":"Galaxia","p":"P","t":""},{"n":"Luis Duran","c":"Galaxia","p":"P","t":""},{"n":"Otilio Ramirez","c":"Galaxia","p":"P","t":""},{"n":"Orlando Benavidez","c":"Galaxia","p":"A","t":""},{"n":"Adrián Mota Arcos","c":"Laguna Vista","p":"P","t":""},{"n":"José A. González","c":"Laguna Vista","p":"S","t":""},{"n":"Jose González Jr","c":"Laguna Vista","p":"S","t":""},{"n":"Vianney Morales López","c":"Laguna Vista","p":"P","t":""},{"n":"Valente Alejandro","c":"Laguna Vista","p":"P","t":""},{"n":"Hugo Galvan","c":"Laguna Vista","p":"A","t":""},{"n":"Luis Barberena","c":"Laguna Vista","p":"S","t":""},{"n":"Alex Vazquez","c":"Los Cedros","p":"S","t":""},{"n":"Eliud Luna","c":"Los Cedros","p":"S","t":""},{"n":"Jimmy Vasquez","c":"Los Cedros","p":"A","t":""},{"n":"Guadalupe De La Cruz","c":"Los Cedros","p":"S","t":""},{"n":"Javier Borjas","c":"North","p":"A","t":""},{"n":"Abisai Muniz","c":"North","p":"S","t":""},{"n":"Carlos Martínez","c":"North","p":"S","t":""},{"n":"Oziel Rodriguez","c":"North","p":"P","t":""},{"n":"Josue Campos","c":"Paraiso","p":"S","t":""},{"n":"Ricardo Altamirano","c":"Paraiso","p":"S","t":""},{"n":"Eulogio Montelongo","c":"Paraiso","p":"S","t":""},{"n":"Alfredo Garza","c":"Paraiso","p":"P","t":""},{"n":"Jamin Muñiz","c":"Sunrise","p":"P","t":""},{"n":"Raúl Quintero","c":"Sunrise","p":"S","t":""},{"n":"Gonzalo Mejia Sr.","c":"Sunrise","p":"P","t":""},{"n":"Macario Martinez","c":"Sunrise","p":"A","t":""},
+    {"n":"Alexia Ramirez","c":"Voluntaria","p":"P","t":""},{"n":"Alicia González","c":"Voluntaria","p":"P","t":""},{"n":"Ana Sofia Bejerano","c":"Voluntaria","p":"P","t":""},{"n":"Ariane Agustin","c":"Voluntaria","p":"P","t":""},{"n":"Bridyit Perez","c":"Voluntaria","p":"P","t":""},{"n":"Cynthia Paola Gayosso","c":"Voluntaria","p":"P","t":""},{"n":"Elizabeth Lopez","c":"Voluntaria","p":"P","t":""},{"n":"Elizabeth Snyder","c":"Voluntaria","p":"P","t":""},{"n":"Elizabeth Torres","c":"Voluntaria","p":"P","t":""},{"n":"Esther Morales","c":"Voluntaria","p":"P","t":""},{"n":"Geraldine Alison Perez","c":"Voluntaria","p":"P","t":""},{"n":"Gloria (Gigi) Mastropole","c":"Voluntaria","p":"P","t":""},{"n":"Gloria Palmira Mastropole","c":"Voluntaria","p":"P","t":""},{"n":"Irene Avila","c":"Voluntaria","p":"P","t":""},{"n":"Jackelin Luna","c":"Voluntaria","p":"P","t":""},{"n":"Jaqueline Echavarria","c":"Voluntaria","p":"P","t":""},{"n":"Karla Garcia","c":"Voluntaria","p":"P","t":""},{"n":"Laura Esmeralda Amador Saucedo","c":"Voluntaria","p":"P","t":""},{"n":"Maria avila","c":"Voluntaria","p":"P","t":""},{"n":"Maria Fernanda Obispo","c":"Voluntaria","p":"P","t":""},{"n":"Maria Gayosso","c":"Voluntaria","p":"P","t":""},{"n":"Maria Rosa Garcia Zapata","c":"Voluntaria","p":"P","t":""},{"n":"María Rosario Vizcarra","c":"Voluntaria","p":"P","t":""},{"n":"Mirsa Elizabeth Silva","c":"Voluntaria","p":"P","t":""},{"n":"Nicasia Bravo De Gonzalez","c":"Voluntaria","p":"P","t":""},{"n":"Reyna Jetcél Hernandez Madrid","c":"Voluntaria","p":"P","t":""},{"n":"Sara del Carmen Gutierrez","c":"Voluntaria","p":"P","t":""},{"n":"Sarah Martinez","c":"Voluntaria","p":"P","t":""},{"n":"Sandra Vazquez","c":"Voluntaria","p":"P","t":""},{"n":"Susana Zuñiga","c":"Voluntaria","p":"P","t":""},{"n":"Leticia Fernández","c":"Voluntaria","p":"P","t":""}
   ],
   "pos":{"1":{"who":"Luis Barberena","t":"Alarma de Incendios Cuarto Multiusos","x":1172,"y":220,"l":1,"a":"alm"},"2":{"who":"Guadalupe De La Cruz","t":"Salida de emergencia plataforma","x":1172,"y":404,"l":1,"a":"alm"},"3":{"who":"Macario Martinez","t":"Detras de plataforma","x":1100,"y":432,"l":1,"a":"ctl"},"4":{"who":"Celestino Chavez","t":"Detras de plataforma / Escaleras plat.","x":1172,"y":490,"l":1,"a":"ctl"},"5":{"who":"Valente Alejandro","t":"Entrada principal lado sur plataforma","x":1172,"y":660,"l":1,"a":"alm"},"6":{"who":"Norberto Cardenas","t":"Alarma Lado sur plataforma","x":1073,"y":775,"l":1,"a":"alm"},"7":{"who":"Alfonso Hernández","t":"Puerta Principal","x":1073,"y":657,"l":1,"a":"ent"},"8":{"who":"Osiel Ramirez","t":"Alternando pos 10","x":1073,"y":553,"l":1,"a":"ctl"},"9":{"who":"Alfredo Jimenez","t":"Alternando pos 10","x":993,"y":527,"l":1,"a":"ctl"},"10":{"who":"Gustavo Saucedo","t":"Frente al Escenario","x":981,"y":438,"l":1,"a":"ctl"},"11":{"who":"Josue Campos","t":"Frente NE","x":994,"y":341,"l":1,"a":"ctl"},"12":{"who":"Rey Castillo","t":"Frente Norte","x":1073,"y":336,"l":1,"a":"ctl"},"13":{"who":"Jose González Jr","t":"Puerta Secundaria","x":1073,"y":238,"l":1,"a":"ent"},"14":{"who":"Carlos Leonardo Salas Zuñiga","t":"Alarma Lado norte","x":1073,"y":141,"l":1,"a":"alm"},"15":{"who":"Vianney Morales López","t":"Alarma Audio","x":693,"y":141,"l":1,"a":"alm"},"16":{"who":"Ricardo Altamirano","t":"Alarma Incendios","x":612,"y":347,"l":1,"a":"ent"},"17":{"who":"Luis Duran","t":"Alarma Incendios","x":612,"y":548,"l":1,"a":"ent"},"18":{"who":"Jamin Muñiz","t":"Alarma Lado sur","x":693,"y":775,"l":1,"a":"alm"},"19":{"who":"Adrián Mota Arcos","t":"Entrada Sur","x":551,"y":577,"l":1,"a":"ent"},"20":{"who":"Francisco Montoya","t":"Entrada Sur","x":463,"y":577,"l":1,"a":"ent"},"21":{"who":"Roberto Quiroga","t":"Portico","x":211,"y":473,"l":1,"a":"ent"},"22":{"who":"Eulogio Montelongo","t":"Portico/Alberca","x":428,"y":604,"l":1,"a":"ent"},"23":{"who":"Tony Duran","t":"Entrada Norte","x":463,"y":320,"l":1,"a":"ent"},"24":{"who":"Abisai Muniz","t":"Entrada Norte","x":551,"y":318,"l":1,"a":"ent"},"25":{"who":"Gonzalo Mejia Sr.","t":"Auditorio","x":818,"y":153,"l":0,"a":"aud"},"26":{"who":"Carlos Martínez","t":"Auditorio","x":697,"y":340,"l":0,"a":"aud"},"27":{"who":"Felipe Ortiz","t":"Auditorio","x":690,"y":548,"l":0,"a":"aud"},"28":{"who":"Juan Salinas","t":"Auditorio","x":833,"y":735,"l":0,"a":"aud"},"29":{"who":"Javier Borjas","t":"Auditorio","x":807,"y":544,"l":0,"a":"aud"},"30":{"who":"Martin Davila","t":"Auditorio","x":813,"y":342,"l":0,"a":"aud"},"31":{"who":"Juan F Garza","t":"Auditorio","x":902,"y":239,"l":0,"a":"aud"},"32":{"who":"Isaias Martinez","t":"Auditorio","x":947,"y":388,"l":0,"a":"aud"},"33":{"who":"Alex Vazquez","t":"Auditorio","x":941,"y":462,"l":0,"a":"aud"},"34":{"who":"Alfredo Garza","t":"Auditorio","x":936,"y":601,"l":0,"a":"aud"},"35":{"who":"","t":"Entrada vestíbulo","x":146,"y":456,"l":0,"a":"ent"}},
   "runners":["Eliu de la Garza","Reynaldo Perez","Roberto Borjas","Servando Sustaita","Jose Duran","Otilio Ramirez","Orlando Benavidez","Oziel Rodriguez"],
-  "cap":{"A2":464,"A3":475,"A4":464,"B2":158,"B3":156,"B4":158},
+  "cap":{"A1":0,"A2":464,"A3":475,"A4":464,"A5":0,"B1":0,"B2":158,"B3":156,"B4":158,"B5":0},
   "expect":2474
 };
 
-const VOL_POS={
-  "101":{"x":120,"y":260},"102":{"x":240,"y":260},"103":{"x":360,"y":260},"104":{"x":480,"y":260},"105":{"x":580,"y":260},
-  "106":{"x":120,"y":400},"107":{"x":240,"y":400},"108":{"x":360,"y":400},"109":{"x":480,"y":400},"110":{"x":580,"y":400},
-  "111":{"x":120,"y":540},"112":{"x":240,"y":540},"113":{"x":360,"y":540},"114":{"x":480,"y":540},"115":{"x":580,"y":540},
-  "116":{"x":120,"y":680},"117":{"x":240,"y":680},"118":{"x":360,"y":680},"119":{"x":480,"y":680},"120":{"x":580,"y":680}
-};
-for(const k in VOL_POS){D.pos[k]={who:"",t:"Voluntaria "+k,x:VOL_POS[k].x,y:VOL_POS[k].y,l:0,a:"vol",v:1};}
+// Add volunteer positions to D.pos
+for(const k in VOL_POS_COORDS){D.pos[k]={who:"",t:"Voluntaria "+k,x:VOL_POS_COORDS[k].x,y:VOL_POS_COORDS[k].y,l:0,a:"vol",v:1};}
 
 const ADM=[{"n":"Sergio E. Vazquez Jr.","h":"2522631457418853","all":1,"cnt":1,"adm":1,"areas":[]},{"n":"Alberto Herrera","h":"992585394121114","all":1,"cnt":1,"adm":1,"areas":[]},{"n":"Steven Snyder","h":"1068608750070157","areas":["ctl","aud"],"adm":1},{"n":"Jaime Palestina","h":"5893876321372649","areas":["alm","ent"],"adm":1},{"n":"Abdiel Juarez Jr.","h":"4585732618882182","areas":["aud"],"cnt":1,"adm":1}];
 
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const H=s=>{let a=0xdeadbeef,b=0x41c6ce57;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);a=Math.imul(a^c,2654435761);b=Math.imul(b^c,1597334677)}a=Math.imul(a^(a>>>16),2246822507)^Math.imul(b^(b>>>13),3266489909);b=Math.imul(b^(b>>>16),2246822507)^Math.imul(a^(a>>>13),3266489909);return String(4294967296*(2097151&b)+(a>>>0))};
-const POS=Object.keys(D.pos).map(Number),SEC=[1,2,3,4,5].flatMap(i=>[['A',i,'Anillo 2'],['B',i,'Anillo 1']].map(([r,i,l])=>({id:r+i,l:l+' · Sección '+i,cap:D.cap[r+i]})));
+const POS=Object.keys(D.pos).map(Number),SEC=[1,2,3,4,5].flatMap(i=>[['A',i,'Anillo 2'],['B',i,'Anillo 1']].map(([r,i,l])=>({id:r+i,l:l+' · Sección '+i})));
 const PRIV={A:'Anciano',S:'Siervo Ministerial',P:'Publicador bautizado'};
-let iv=null,me=null,hl=null,sel=null,edit=false,drag=null,S={},isVolunteerMode=false,mapView='acom',calMode=false;
-let cal={sx:1,sy:1,ox:0,oy:0};
+let iv=null,me=null,hl=null,sel=null,edit=false,drag=null,S={},isVolunteerMode=false,mapView='acom',secEditMode=false,dragV=null,currentTurno=1;
 
-const P=n=>Object.assign({},D.pos[n],(S.pos||{})[n]),eff=n=>{const p=P(n);return p.sub||p.who||''},ppl=n=>D.roster.find(r=>r.n===n);
+const sectionOf=pos=>VOL_SECTIONS.find(s=>s.pos.includes(+pos))||{label:"Extra",color:"#888"};
+const P=n=>{const d=D.pos[n];if(d.v===1){const who=(S.volTurnos&&S.volTurnos[currentTurno]&&S.volTurnos[currentTurno][n])||"";return{...d,who}}return Object.assign({},d,(S.pos||{})[n])};
+const eff=n=>{const p=P(n);return p.sub||p.who||''},ppl=n=>D.roster.find(r=>r.n===n);
 const canEd=n=>me&&me.adm&&(me.all||D.pos[n].a==='vol'||me.areas.includes(D.pos[n].a));
 const canCnt=()=>me&&(me.cnt||(!me.adm&&S.cntOpen&&(me.n==='Eliud Luna'||POS.some(n=>n>=25&&n<=34&&eff(n)===me.n))));
 const occ=()=>new Set(POS.flatMap(n=>[P(n).who,P(n).sub]).filter(Boolean));
 const watch=n=>me&&(me.all||(me.adm?(D.pos[n].a==='vol'||me.areas.includes(D.pos[n].a)):eff(n)===me.n));
 const vacant=n=>watch(n)&&!D.pos[n].v&&(D.pos[n].l?S.arm!==false:S.arm2===true)&&!['ok','sub'].includes(P(n).st);
 
+// === VALIDATION ===
+function volHistory(name){
+  const res=[],vt=S.volTurnos||{};
+  for(const t in vt)for(const p in vt[t])if(vt[t][p]===name)res.push({turno:+t,posicion:+p});
+  return res.sort((a,b)=>a.turno-b.turno);
+}
+function canAssign(turno,pos,name){
+  const t=+turno;
+  const volList=TURNOS[t]?TURNOS[t].vol:[];
+  if(!volList.includes(name))return{ok:false,msg:"No se apuntó para este turno",level:"err"};
+  const hist=volHistory(name);
+  if(hist.find(h=>h.turno===t))return{ok:false,msg:"Ya está en este turno",level:"err"};
+  const sigCount=Object.values(TURNOS).filter(tt=>tt.vol.includes(name)).length;
+  const maxT=Math.min(4,sigCount);
+  if(hist.length>=maxT)return{ok:false,msg:`Máximo ${maxT} turnos alcanzado`,level:"err"};
+  const consec=hist.find(h=>Math.abs(h.turno-t)===1);
+  if(consec){
+    const ok12=(t===1&&consec.turno===2)||(t===2&&consec.turno===1);
+    if(!ok12)return{ok:false,msg:`Choca con Turno ${consec.turno} (consecutivo)`,level:"err"};
+  }
+  if((t===5&&hist.find(h=>h.turno===6))||(t===6&&hist.find(h=>h.turno===5)))return{ok:false,msg:"Intermedio: no ambas mitades",level:"err"};
+  return{ok:true,msg:`OK (${hist.length+1}/${maxT})`,history:hist};
+}
+function doAssign(turno,pos,name){
+  const chk=canAssign(turno,pos,name);
+  if(!chk.ok){showToast(`❌ ${esc(name)}: ${chk.msg}`,true);return}
+  if(!S.volTurnos)S.volTurnos={};if(!S.volTurnos[turno])S.volTurnos[turno]={};
+  S.volTurnos[turno][pos]=name;
+  put(`volTurnos/${turno}/${pos}`,name);
+  const sec=sectionOf(pos);
+  showToast(`✓ ${esc(name)} → ${sec.label} (${pos})`);
+}
+function unassignVol(turno,pos){
+  if(!S.volTurnos||!S.volTurnos[turno])return;
+  delete S.volTurnos[turno][pos];
+  fetch(U(`volTurnos/${turno}/${pos}`),{method:'DELETE'}).then(()=>load());
+  showToast("Asignación eliminada");
+}
+
 const U=p=>CFG.DB.replace(/\/$/,'')+'/s'+(p?'/'+p:'')+'.json';
 function net(v){const e=$('net');if(!CFG.DB){e.textContent='Sin conexión';e.className='net loc';return}e.textContent=v?'En línea':'Sin conexión';e.className='net '+(v?'on':'off')}
 function setPath(o,p,v){const k=p.split('/');let c=o;k.slice(0,-1).forEach(x=>c=c[x]=c[x]||{});v===null?delete c[k.at(-1)]:c[k.at(-1)]=v}
 function put(p,v){setPath(S,p,v);draw();if(!CFG.DB){try{localStorage.acom=JSON.stringify(S)}catch(e){}return}fetch(U(p),{method:'PUT',body:JSON.stringify(v)}).then(r=>net(r.ok)).catch(()=>net(false))}
-async function load(){if(!CFG.DB){try{S=JSON.parse(localStorage.acom||'{}')}catch(e){}cal=Object.assign({sx:1,sy:1,ox:0,oy:0},S.cal||{});return draw()}try{const r=await fetch(U('')+'?t='+Date.now());S=(await r.json())||{};cal=Object.assign({sx:1,sy:1,ox:0,oy:0},S.cal||{});net(true);draw()}catch(e){net(false)}}
+async function load(){if(!CFG.DB){try{S=JSON.parse(localStorage.acom||'{}')}catch(e){}return draw()}try{const r=await fetch(U('')+'?t='+Date.now());S=(await r.json())||{};net(true);draw()}catch(e){net(false)}}
 function start(){net(false);if(!CFG.DB){net();window.onstorage=load;load();return}load();clearInterval(iv);iv=setInterval(load,5000)}
 
 const nrm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();let pick='';
@@ -234,7 +236,7 @@ $('ad').innerHTML='<option value="">Seleccione su nombre</option>'+ADM.map(a=>`<
 function enter(u){me=u;try{if(!u.adm)localStorage.me=u.n}catch(e){}$('login').hidden=true;$('app').hidden=false;$('out').hidden=false;$('usr').textContent=u.n;$('btn-mode-toggle').hidden=!u.adm;start()}
 function enterU(){if(pick)enter({n:pick})}
 function enterA(){const a=ADM.find(x=>x.n===$('ad').value);if(!a){$('err').textContent='Seleccione su nombre';return}if(H($('pw').value)!==a.h){$('err').textContent='Contraseña incorrecta';return}enter(a.adm?a:{...a,adm:1})}
-function logout(){try{delete localStorage.me}catch(e){}clearInterval(iv);onstorage=null;me=null;sel=null;hl=null;edit=false;pick='';$('us').value='';$('res').innerHTML='';$('goU').hidden=true;$('pw').value='';$('ad').value='';$('err').textContent='';$('usr').textContent='';$('out').hidden=true;$('app').hidden=true;$('login').hidden=false;$('btn-mode-toggle').hidden=true;$('volPanel').hidden=true;isVolunteerMode=false;const t=document.getElementById('appTitle');if(t)t.textContent='Acomodadores · La Feria, TX'}
+function logout(){try{delete localStorage.me}catch(e){}clearInterval(iv);onstorage=null;me=null;sel=null;hl=null;edit=false;pick='';$('us').value='';$('res').innerHTML='';$('goU').hidden=true;$('pw').value='';$('ad').value='';$('err').textContent='';$('usr').textContent='';$('out').hidden=true;$('app').hidden=true;$('login').hidden=false;$('btn-mode-toggle').hidden=true;$('volPanel').hidden=true;isVolunteerMode=false;secEditMode=false;const t=document.getElementById('appTitle');if(t)t.textContent='Acomodadores · La Feria, TX'}
 try{if(localStorage.me)enter({n:localStorage.me})}catch(e){}
 
 function enterVoluntaria(){me=null;$('login').hidden=true;$('app').hidden=true;$('volPanel').hidden=false;$('out').hidden=false;$('usr').textContent='Voluntaria';$('btn-mode-toggle').hidden=true;isVolunteerMode=true;const t=document.getElementById('appTitle');if(t)t.textContent='Portal de Voluntarias';start()}
@@ -243,55 +245,74 @@ function buscarVoluntaria(query){
   const rEl=document.getElementById('volResults');
   if(!query||query.length<2){rEl.innerHTML='';return}
   const q=query.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const matches=D.roster.filter(r=>r.c==='Voluntaria'&&r.n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q));
+  if(!matches.length){rEl.innerHTML='<p class="mut">No se encontró a nadie.</p>';return}
   let html='';
-  for(const n of POS){
-    const p=P(n),name=p.sub||p.who||'';
-    if(!name)continue;
-    const nn=name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-    if(nn.includes(q)){
-      const d=D.pos[n],isVol=d.v===1;
-      html+=`<div class="card" style="margin-bottom:8px;border-left:4px solid ${isVol?'var(--purple)':'var(--blue)'};"><b>${esc(name)}</b><br><span class="mut">${isVol?'Voluntaria':'Posición'} ${n}</span>${!isVol?' · '+esc(d.t):''}<br><span class="tag ${isVol?'p':(d.l?'b':'o')}">${isVol?'Voluntaria':(d.l?'Fija':'Intermitente')}</span></div>`;
+  for(const v of matches.slice(0,5)){
+    const hist=volHistory(v.n);
+    const sig=Object.keys(TURNOS).filter(t=>TURNOS[t].vol.includes(v.n)).map(Number).sort((a,b)=>a-b);
+    html+=`<div class="card" style="margin-bottom:12px;border-left:4px solid var(--purple);"><h3 style="color:var(--purple);margin-top:0">${esc(v.n)}</h3>`;
+    if(hist.length){
+      html+='<p style="margin:4px 0"><b>Tus asignaciones de hoy:</b></p><ul style="margin:4px 0;padding-left:20px">';
+      for(const h of hist){const sec=sectionOf(h.posicion);html+=`<li><b>Turno ${h.turno}</b> (${TURNOS[h.turno].name})<br><span style="color:${sec.color};font-weight:bold">${sec.label}</span> · Posición ${h.posicion}</li>`}
+      html+='</ul>';
+    }else{
+      html+=`<p>No tienes posición asignada todavía.</p><p class="mut" style="font-size:13px">Te apuntaste para: ${sig.map(s=>'Turno '+s).join(', ')}</p>`;
     }
+    html+='</div>';
   }
-  if(!html){
-    const m=D.roster.filter(r=>r.c==='Voluntaria'&&r.n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q));
-    if(m.length)html=m.map(x=>`<div class="card" style="margin-bottom:8px;border-left:4px solid var(--org);"><b>${esc(x.n)}</b><br><span class="mut">Voluntaria registrada · Sin posición asignada</span></div>`).join('');
-  }
-  rEl.innerHTML=html||'<p class="mut">No se encontró.</p>';
+  rEl.innerHTML=html;
 }
 
 const stamp=n=>put(`pos/${n}/ts`,Date.now());
 function cnt(id,d){hl=id;const v=Math.max(0,((S.cnt||{})[id]||0)+d);put('cnt/'+id,v)}
-function reset(){if(!confirm('¿Reiniciar asistencia y conteos?'))return;const o={};POS.forEach(n=>{const p=P(n);o[n]={x:p.x,y:p.y,who:p.who}});put('pos',o);put('cnt',null)}
+function reset(){if(!confirm('¿Reiniciar?'))return;const o={};POS.forEach(n=>{const p=P(n);o[n]={x:p.x,y:p.y,who:p.who}});put('pos',o);put('cnt',null)}
 function draw(){if(!me||drag)return;drawMap();drawPanel();drawBar();drawCnt();drawMine()}
 
-function showToast(m){const c=document.getElementById('toast-container'),t=document.createElement('div');t.className='toast';t.innerHTML=m;c.appendChild(t);setTimeout(()=>t.classList.add('show'),10);setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},2500)}
+function showToast(m,err){const c=document.getElementById('toast-container'),t=document.createElement('div');t.className='toast'+(err?' err':'');t.innerHTML=m;c.appendChild(t);setTimeout(()=>t.classList.add('show'),10);setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},3500)}
 
-function setSt(n,s){put(`pos/${n}/st`,s);stamp(n);const nom=eff(n)||('Posición '+n);if(s==='ok'||s==='sub')showToast(`✓ ${nom} Presente`);else if(s==='abs')showToast(`✕ ${nom} Ausente`);else if(s==='pend')showToast(`⏳ ${nom} Pendiente`)}
+function setSt(n,s){put(`pos/${n}/st`,s);stamp(n);const nom=eff(n)||('Posición '+n);if(s==='ok'||s==='sub')showToast(`✓ ${nom} Presente`);else if(s==='abs')showToast(`✕ ${nom} Ausente`)}
 function here(n){if(P(n).sub===me.n||P(n).who===me.n)setSt(n,P(n).sub?'sub':'ok')}
 function useSub(n,name){put(`pos/${n}/sub`,name);setSt(n,'sub');showToast(`✓ Sustituto: ${name}`)}
 function back(n){put(`pos/${n}/sub`,null);setSt(n,'ok')}
 function setWho(n,v){put(`pos/${n}/who`,v);put(`pos/${n}/sub`,null);setSt(n,'pend');if(v)showToast(`✓ Asignado: ${v}`)}
 
-function calAdjust(prop,delta){cal[prop]=+(cal[prop]+delta).toFixed(3);put('cal',cal)}
-function calAdjustScale(d){cal.sx=+(cal.sx+d).toFixed(3);cal.sy=+(cal.sy+d).toFixed(3);put('cal',cal)}
-function calReset(){cal={sx:1,sy:1,ox:0,oy:0};put('cal',cal)}
-function transformPoly(pts){return pts.split(' ').map(pair=>{const[x,y]=pair.split(',').map(Number);return`${Math.round(x*cal.sx+cal.ox)},${Math.round(y*cal.sy+cal.oy)}`}).join(' ')}
+function secPts(k){return((S.sec&&S.sec[k])||D.sec[k]).split(' ').map(p=>p.split(',').map(Number))}
+function secSave(k,pts){const str=pts.map(p=>`${Math.round(p[0])},${Math.round(p[1])}`).join(' ');if(!S.sec)S.sec={};S.sec[k]=str;put('sec/'+k,str)}
+function moveVertex(k,idx,x,y){const pts=secPts(k);pts[idx]=[x,y];secSave(k,pts)}
+function addVertex(k,idx,x,y){const pts=secPts(k);pts.splice(idx+1,0,[x,y]);secSave(k,pts);showToast(`➕ Punto agregado`)}
+function delVertex(k,idx){const pts=secPts(k);if(pts.length<=3){showToast('⚠ Mínimo 3 puntos',true);return}pts.splice(idx,1);secSave(k,pts)}
+function resetSec(k){if(!confirm(`¿Restaurar ${k}?`))return;if(!S.sec)S.sec={};delete S.sec[k];fetch(U('sec/'+k),{method:'DELETE'}).then(()=>load())}
+function setCap(k,v){const n=Math.max(0,parseInt(v)||0);if(!S.cap)S.cap={};S.cap[k]=n;put('cap/'+k,n);draw()}
 
 function drawMap(){
   let s='';
-  for(const k in D.sec)s+=`<polygon class="sec${hl===k?' hl':''}" data-s="${k}" points="${transformPoly(D.sec[k])}"/>`;
+  for(const k in D.sec){const cls=secEditMode?('sec edit'+(hl===k?' hl':'')):'sec'+(hl===k?' hl':'');s+=`<polygon class="${cls}" data-s="${k}" points="${(S.sec&&S.sec[k])||D.sec[k]}"/>`}
   $('sl').innerHTML=s;
+  let vh='';
+  if(secEditMode&&hl&&D.sec[hl]){
+    const pts=secPts(hl);
+    pts.forEach((pt,i)=>{vh+=`<circle class="vertex" data-sec="${hl}" data-idx="${i}" cx="${pt[0]}" cy="${pt[1]}" r="6" fill="#fff" stroke="#d11" stroke-width="2"/>`});
+    for(let i=0;i<pts.length;i++){const a=pts[i],b=pts[(i+1)%pts.length];const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2;vh+=`<circle class="vadd" data-sec="${hl}" data-after="${i}" data-mx="${Math.round(mx)}" data-my="${Math.round(my)}" cx="${mx}" cy="${my}" r="4" fill="#888" stroke="#fff" stroke-width="1.5"/>`}
+  }
+  $('vl').innerHTML=vh;
   let h='';
+  // Section labels for volunteer mode
+  if(mapView==='vol'){
+    for(const sec of VOL_SECTIONS){
+      const c=sec.pos.map(p=>VOL_POS_COORDS[p]).filter(Boolean);
+      if(!c.length)continue;
+      const cx=c.reduce((a,b)=>a+b.x,0)/c.length,cy=Math.min(...c.map(p=>p.y))-12;
+      h+=`<text x="${cx}" y="${cy}" text-anchor="middle" font-size="13" font-weight="bold" fill="${sec.color}" pointer-events="none" style="text-shadow:0 0 3px #fff,0 0 3px #fff">${sec.label}</text>`;
+    }
+  }
   for(const n of POS){
     const raw=D.pos[n],isVol=raw.v===1;
     if((mapView==='acom'&&isVol)||(mapView==='vol'&&!isVol))continue;
     const p=P(n);
-    const hasFB=S.pos&&S.pos[n]&&S.pos[n].x!==undefined&&S.pos[n].y!==undefined;
-    const cx=hasFB?p.x:Math.round(p.x*cal.sx+cal.ox),cy=hasFB?p.y:Math.round(p.y*cal.sy+cal.oy);
     const b=p.st==='ok'?['#2e7d32','✓']:p.st==='abs'?['#d11','✕']:p.st==='sub'?['#777','S']:null;
-    const fill=isVol?'var(--purple)':(raw.l?'var(--blue)':'var(--org)');
-    h+=`<g class="pc${watch(n)||me.all?'':' dim'}" data-n="${n}" transform="translate(${cx} ${cy})">${vacant(n)?'<circle class="pulse" r="27"/>':''}<circle r="19" fill="${fill}" stroke="${sel===n?'#000':'#fff'}" stroke-width="${sel===n?4.5:2.5}"/><text text-anchor="middle" dy=".35em">${n}</text>${b?`<circle cx="15" cy="-15" r="9" fill="${b[0]}" stroke="#fff" stroke-width="1.5"/><text x="15" y="-15" dy=".35em" text-anchor="middle" style="font-size:11px">${b[1]}</text>`:''}</g>`;
+    const fill=isVol?sectionOf(n).color:(raw.l?'var(--blue)':'var(--org)');
+    h+=`<g class="pc${watch(n)||me.all?'':' dim'}" data-n="${n}" transform="translate(${p.x} ${p.y})">${vacant(n)?'<circle class="pulse" r="27"/>':''}<circle r="19" fill="${fill}" stroke="${sel===n?'#000':'#fff'}" stroke-width="${sel===n?4.5:2.5}"/><text text-anchor="middle" dy=".35em">${n}</text>${b?`<circle cx="15" cy="-15" r="9" fill="${b[0]}" stroke="#fff" stroke-width="1.5"/><text x="15" y="-15" dy=".35em" text-anchor="middle" style="font-size:11px">${b[1]}</text>`:''}</g>`;
   }
   $('pl').innerHTML=h;
 }
@@ -299,38 +320,90 @@ function drawMap(){
 function drawBar(){
   const sc=POS.filter(watch),L=sc.filter(n=>D.pos[n].l),O=sc.filter(n=>!D.pos[n].l),ok=a=>a.filter(n=>['ok','sub'].includes(P(n).st)).length,v=L.filter(n=>!D.pos[n].v&&vacant(n));
   const viewBtns=me.adm?`<button class="${mapView==='acom'?'on':''}" onclick="mapView='acom';sel=null;draw()">🗺️ Acomodadores</button><button class="${mapView==='vol'?'on':''}" onclick="mapView='vol';sel=null;draw()">👥 Voluntarias</button>`:'';
-  const calBtns=me.all?`<button class="${calMode?'on':''}" onclick="calMode=!calMode;draw()" title="Calibrar">🎯</button>${calMode?`<button onclick="calAdjust('ox',-5)">←</button><button onclick="calAdjust('ox',5)">→</button><button onclick="calAdjust('oy',-5)">↑</button><button onclick="calAdjust('oy',5)">↓</button><button onclick="calAdjustScale(0.02)">＋</button><button onclick="calAdjustScale(-0.02)">−</button><button onclick="calReset()">↺</button><small style="font-size:11px">sx=${cal.sx} sy=${cal.sy} ox=${cal.ox} oy=${cal.oy}</small>`:''}`:'';
-  $('bar').innerHTML=viewBtns+`<b>${me.all?'Todas':'Tu área'} · Fijas: ${ok(L)}/${L.length}</b><span>Inter: ${ok(O)}/${O.length}</span><span style="flex:1"></span>`+(me.all||me.cnt?`<button class="${S.cntOpen?'on':''}" onclick="put('cntOpen',${!S.cntOpen})">Conteo ${S.cntOpen?'ON':'OFF'}</button>`:'')+(me.adm?`<button class="${S.arm2?'on':''}" onclick="put('arm2',${!S.arm2})">Vigilar ${S.arm2?'ON':'OFF'}</button><button class="${edit?'on':''}" onclick="edit=!edit;draw()">${edit?'Listo':'Mover'}</button>`:'')+(me.all?`<button class="${S.arm===false?'':'on'}" onclick="put('arm',${S.arm===false})">Vigilancia ${S.arm===false?'OFF':'ON'}</button><button onclick="reset()">Reiniciar</button>`:'')+calBtns;
+  let turnSel='';
+  if(mapView==='vol'&&me.adm){
+    turnSel=`<div class="turnsel"><b style="width:100%;font-size:13px;margin:4px 0">Selecciona turno:</b>`+Object.keys(TURNOS).map(t=>`<button class="${currentTurno==t?'on':''}" onclick="currentTurno=${t};sel=null;draw()">T${t}</button>`).join('')+`</div>`;
+  }
+  const editBtn=me.all?`<button class="${secEditMode?'on':''}" onclick="secEditMode=!secEditMode;hl=null;draw()">✏️ Zonas</button>`:'';
+  $('bar').innerHTML=viewBtns+turnSel+`<b>${me.all?'Todas':'Tu área'} · Fijas: ${ok(L)}/${L.length}</b><span>Inter: ${ok(O)}/${O.length}</span><span style="flex:1"></span>`+(me.adm&&mapView==='acom'?`<button class="${edit?'on':''}" onclick="edit=!edit;draw()">${edit?'Listo':'Mover'}</button>`:'')+(me.adm&&mapView==='vol'?`<button class="${edit?'on':''}" onclick="edit=!edit;draw()">${edit?'Listo':'Mover'}</button>`:'')+(me.all&&mapView==='acom'?`<button class="${S.arm===false?'':'on'}" onclick="put('arm',${S.arm===false})">Vigilancia ${S.arm===false?'OFF':'ON'}</button><button onclick="reset()">Reiniciar</button>`:'')+editBtn;
   const a=$('alert');a.hidden=!v.length;a.innerHTML='⚠ Sin cubrir: '+v.map(n=>`<a href="#" onclick="sel=${n};draw();return false">${n}</a>`).join(', ');
 }
 
-function drawMine(){const e=$('mine'),n=POS.find(n=>eff(n)===me.n);e.hidden=me.adm||me.all;if(me.adm||me.all)return;e.innerHTML=n?`<h3>Tu posición: ${n}</h3><p>${esc(D.pos[n].t)}</p>`+(['ok','sub'].includes(P(n).st)?'<b style="color:var(--ok)">✓ Registrado.</b>':`<button class="ok" style="width:100%;padding:16px;font-size:18px" onclick="here(${n})">Estoy aquí</button>`):D.caps.includes(me.n)?`<h3>Capitán</h3>`:'<h3>Corredor</h3>'}
+function drawMine(){const e=$('mine'),n=POS.find(n=>eff(n)===me.n);e.hidden=me.adm||me.all;if(me.adm||me.all)return;e.innerHTML=n?`<h3>Tu posición: ${n}</h3><p>${esc(D.pos[n].t)}</p>`+(['ok','sub'].includes(P(n).st)?'<b style="color:var(--ok)">✓ Registrado.</b>':`<button class="ok" style="width:100%;padding:16px;font-size:18px" onclick="here(${n})">Estoy aquí</button>`):D.caps.includes(me.n)?'<h3>Capitán</h3>':'<h3>Corredor</h3>'}
 
 function drawPanel(){
   const e=$('panel');
   if(!sel){e.innerHTML='<span class="mut">Toca un número del mapa.</span>';return}
   const n=sel,p=P(n),d=D.pos[n],w=eff(n),r=ppl(w),ad=canEd(n),isVol=d.v===1;
-  let h=`<h3>${isVol?'Voluntaria':'Posición'} ${n} <span class="tag ${isVol?'p':(d.l?'b':'o')}">${isVol?'Voluntaria':(d.l?'Fija':'Intermitente')}</span></h3><div>${esc(d.t)}</div>`;
-  h+=w?`<div class="who" style="border-left-color:${isVol?'var(--purple)':'var(--red2)'}"><b>${esc(w)}</b>${r?`<br>${PRIV[r.p]} · ${esc(r.c)}`:''}${p.sub?`<br><span class="mut">Sustituye a ${esc(p.who)}</span>`:''}</div>`:'<p class="mut">Sin asignar</p>';
-  if(ad){
-    if(!isVol){
-      h+=`<div class="row"><button class="ok" onclick="setSt(${n},'${p.sub?'sub':'ok'}')">Presente</button><button onclick="setSt(${n},'abs')">Ausente</button><button onclick="setSt(${n},'pend')">Pendiente</button>${p.sub?`<button onclick="back(${n})">Llegó titular</button>`:''}</div>`;
+  const sec=isVol?sectionOf(n):null;
+  if(isVol){
+    let h=`<h3 style="color:${sec.color}">Voluntaria ${n} · ${sec.label}</h3>`;
+    h+=`<p style="margin:4px 0;font-size:14px"><b>Turno actual: ${currentTurno} · ${TURNOS[currentTurno].name}</b></p>`;
+    if(w){
+      const hist=volHistory(w).filter(x=>!(+x.turno===+currentTurno&&+x.posicion===+n));
+      h+=`<div class="who" style="border-left-color:${sec.color}"><b>${esc(w)}</b></div>`;
+      if(hist.length){h+=`<div class="histbox"><b>También está en:</b><ul style="margin:4px 0;padding-left:18px">${hist.map(x=>`<li>Turno ${x.turno} · ${sectionOf(x.posicion).label} (${x.posicion})</li>`).join('')}</ul></div>`}
+      h+=`<button onclick="unassignVol(${currentTurno},${n})" style="margin-top:4px">🗑️ Quitar asignación</button>`;
+    }else{
+      h+='<p class="mut">Sin asignar en este turno.</p>';
     }
-    const list=isVol?D.roster.filter(r=>r.c==='Voluntaria'):D.roster.filter(r=>r.c!=='Voluntaria');
-    h+=`<div class="sg"><b>${isVol?'Asignar Voluntaria':'Asignar Acomodador'}</b><select onchange="if(this.value)setWho(${n},this.value)"><option value="">Elegir…</option>${list.map(x=>`<option ${x.n===p.who?'disabled':''}>${esc(x.n)}</option>`).join('')}</select></div>`;
+    const vols=TURNOS[currentTurno].vol.map(name=>{
+      const chk=canAssign(currentTurno,n,name);
+      return {name,ok:chk.ok,msg:chk.msg};
+    });
+    const avail=vols.filter(v=>v.ok);
+    h+=`<div class="sg"><b>Asignar (${avail.length} disponibles de ${vols.length}):</b><select onchange="if(this.value){doAssign(${currentTurno},${n},this.value);this.value=''}"><option value="">Elegir voluntaria…</option>${vols.map(v=>`<option value="${esc(v.name)}" ${!v.ok?'disabled':''}>${esc(v.name)}${!v.ok?' — '+v.msg:''}</option>`).join('')}</select></div>`;
+    if(avail.length===0)h+=`<p class="mut" style="font-size:13px">Ninguna voluntaria puede ser asignada aquí (todas ya están en este turno o violarían una regla).</p>`;
+    e.innerHTML=h;
+    return;
+  }
+  // Accommodation panel (unchanged)
+  let h=`<h3>Posición ${n} <span class="tag ${d.l?'b':'o'}">${d.l?'Fija':'Intermitente'}</span></h3><div>${esc(d.t)}</div>`;
+  h+=w?`<div class="who"><b>${esc(w)}</b>${r?`<br>${PRIV[r.p]} · ${esc(r.c)}`:''}${p.sub?`<br><span class="mut">Sustituye a ${esc(p.who)}</span>`:''}</div>`:'<p class="mut">Sin asignar</p>';
+  if(ad){
+    h+=`<div class="row"><button class="ok" onclick="setSt(${n},'${p.sub?'sub':'ok'}')">Presente</button><button onclick="setSt(${n},'abs')">Ausente</button><button onclick="setSt(${n},'pend')">Pendiente</button>${p.sub?`<button onclick="back(${n})">Llegó titular</button>`:''}</div>`;
+    const list=D.roster.filter(r=>r.c!=='Voluntaria');
+    h+=`<div class="sg"><b>Asignar Acomodador</b><select onchange="if(this.value)setWho(${n},this.value)"><option value="">Elegir…</option>${list.map(x=>`<option ${x.n===p.who?'disabled':''}>${esc(x.n)}</option>`).join('')}</select></div>`;
   }
   e.innerHTML=h;
 }
 
-function drawCnt(){$('expEd').hidden=!(me.all||me.cnt);if(document.activeElement!==$('exp'))$('exp').value=S.expect||D.expect;const t=SEC.reduce((a,s)=>a+((S.cnt||{})[s.id]||0),0),ex=S.expect||D.expect,cc=canCnt();$('cnt').innerHTML=`<p><b>${t}</b> / <b>${ex}</b> (${Math.round(100*t/ex)}%)</p><div class="bar"><i style="width:${Math.min(100,100*t/ex)}%"></i></div><div class="grid" style="margin-top:10px">`+SEC.map(s=>{const v=(S.cnt||{})[s.id]||0;return`<div class="t${hl===s.id?' hl':''}" onclick="hl=hl==='${s.id}'?null:'${s.id}';draw()"><small>${s.l}</small><b>${v}</b>${cc?`<div class="row" style="justify-content:center;margin-top:4px"><button onclick="event.stopPropagation();cnt('${s.id}',-1)">−</button><button onclick="event.stopPropagation();cnt('${s.id}',1)">+</button></div>`:''}</div>`}).join('')+'</div>'}
+function drawCnt(){
+  $('expEd').hidden=!(me.all||me.cnt);
+  if(document.activeElement!==$('exp'))$('exp').value=S.expect||D.expect;
+  const t=SEC.reduce((a,s)=>a+((S.cnt||{})[s.id]||0),0),ex=S.expect||D.expect,cc=canCnt(),editable=me.all;
+  $('cnt').innerHTML=`<p><b>${t}</b> / <b>${ex}</b> (${Math.round(100*t/ex)}%)</p><div class="bar"><i style="width:${Math.min(100,100*t/ex)}%"></i></div><div class="grid" style="margin-top:10px">`+SEC.map(s=>{const v=(S.cnt||{})[s.id]||0,cap=(S.cap&&S.cap[s.id]!==undefined)?S.cap[s.id]:D.cap[s.id];return`<div class="t${hl===s.id?' hl':''}" onclick="hl=hl==='${s.id}'?null:'${s.id}';draw()"><small>${s.l}</small><b>${v}</b>${editable?`<div style="font-size:12px;margin-top:4px">Sillas: <input class="capin" type="number" min="0" value="${cap}" onchange="event.stopPropagation();setCap('${s.id}',this.value)" onclick="event.stopPropagation()"/></div>`:`<small class="mut">Sillas: ${cap}</small>`}${cc?`<div class="row" style="justify-content:center;margin-top:4px"><button onclick="event.stopPropagation();cnt('${s.id}',-1)">−</button><button onclick="event.stopPropagation();cnt('${s.id}',1)">+</button></div>`:''}</div>`}).join('')+'</div>'
+}
 
-function drawBench(){const e=$('bench');e.hidden=!me.adm;if(!me.adm)return;e.innerHTML='<h3>Corredores</h3>'+D.runners.map(x=>{const q=ppl(x),n=POS.find(n=>P(n).sub===x);return`<div class="row sg"><span style="flex:1"><b>${esc(x)}</b> <span class="mut">${esc(q.c)}</span></span><span class="mut">${n?'Pos '+n:'Libre'}</span></div>`}).join('')}
+function drawBench(){const e=$('bench');e.hidden=!me.adm;if(!me.adm)return;e.innerHTML='<h3>Corredores</h3>'+D.runners.map(x=>{const q=ppl(x),n=POS.find(n=>P(n).sub===x);return`<div class="row sg"><span style="flex:1"><b>${esc(x)}</b></span><span class="mut">${n?'Pos '+n:'Libre'}</span></div>`}).join('')}
 const _d=draw;draw=function(){_d();if(me&&!drag)drawBench()};
 
 const svg=$('svg');
-svg.addEventListener('pointerdown',e=>{const z=e.target.closest('.sec');if(z&&!e.target.closest('.pc')){hl=hl===z.dataset.s?null:z.dataset.s;draw();return}const g=e.target.closest('.pc');if(!g)return;const n=+g.dataset.n;if(edit&&canEd(n)){drag={n,m:0};svg.setPointerCapture(e.pointerId)}else{sel=n;draw()}});
-svg.addEventListener('pointermove',e=>{if(!drag)return;drag.m=1;const q=svg.createSVGPoint();q.x=e.clientX;q.y=e.clientY;const r=q.matrixTransform(svg.getScreenCTM().inverse());drag.x=Math.round(r.x);drag.y=Math.round(r.y);svg.querySelector(`[data-n="${drag.n}"]`).setAttribute('transform',`translate(${drag.x} ${drag.y})`)});
-svg.addEventListener('pointerup',()=>{if(!drag)return;const d=drag;drag=null;sel=d.n;if(d.m){put(`pos/${d.n}/x`,d.x);put(`pos/${d.n}/y`,d.y)}else draw()});
+svg.addEventListener('pointerdown',e=>{
+  const vtx=e.target.closest('.vertex');
+  if(vtx){dragV={sec:vtx.dataset.sec,idx:+vtx.dataset.idx};svg.setPointerCapture(e.pointerId);return}
+  const add=e.target.closest('.vadd');
+  if(add){addVertex(add.dataset.sec,+add.dataset.after,+add.dataset.mx,+add.dataset.my);return}
+  const z=e.target.closest('.sec');
+  if(z&&!e.target.closest('.pc')){hl=secEditMode?z.dataset.s:(hl===z.dataset.s?null:z.dataset.s);draw();return}
+  const g=e.target.closest('.pc');if(!g)return;const n=+g.dataset.n;
+  if(edit&&canEd(n)){drag={n,m:0};svg.setPointerCapture(e.pointerId)}else{sel=n;draw()}
+});
+svg.addEventListener('pointermove',e=>{
+  if(dragV){const q=svg.createSVGPoint();q.x=e.clientX;q.y=e.clientY;const r=q.matrixTransform(svg.getScreenCTM().inverse());moveVertex(dragV.sec,dragV.idx,Math.round(r.x),Math.round(r.y));return}
+  if(!drag)return;drag.m=1;const q=svg.createSVGPoint();q.x=e.clientX;q.y=e.clientY;const r=q.matrixTransform(svg.getScreenCTM().inverse());drag.x=Math.round(r.x);drag.y=Math.round(r.y);svg.querySelector(`[data-n="${drag.n}"]`).setAttribute('transform',`translate(${drag.x} ${drag.y})`)
+});
+svg.addEventListener('pointerup',()=>{
+  if(dragV){dragV=null;return}
+  if(!drag)return;const d=drag;drag=null;sel=d.n;if(d.m){const isVol=D.pos[d.n].v===1;
+    if(isVol){const t=currentTurno;if(!S.volTurnos)S.volTurnos={};if(!S.volTurnos[t])S.volTurnos[t]={};S.volTurnos[t][d.n]=S.volTurnos[t][d.n]||"";put(`pos/${d.n}/x`,d.x);put(`pos/${d.n}/y`,d.y);}
+    else{put(`pos/${d.n}/x`,d.x);put(`pos/${d.n}/y`,d.y)}
+  }else draw()
+});
+svg.addEventListener('dblclick',e=>{
+  const vtx=e.target.closest('.vertex');
+  if(vtx&&secEditMode){delVertex(vtx.dataset.sec,+vtx.dataset.idx);e.preventDefault()}
+});
 
 function toggleAppMode(){
   isVolunteerMode=!isVolunteerMode;
