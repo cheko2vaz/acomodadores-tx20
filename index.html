@@ -5,51 +5,76 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Acomodadores · La Feria, TX</title>
 <style>
-:root{--red:#6e1414;--red2:#9b1c1c;--ink:#1f1f1f;--mut:#666;--line:#d6d6d6;--bg:#e9e9e9;--blue:#2c6cb0;--org:#e07b00;--ok:#2e7d32;--purple:#5B3C88}
-[hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;font:15px/1.4 "Segoe UI",Roboto,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+:root{--red:#6e1414;--red2:#9b1c1c;--ink:#1f1f1f;--mut:#555;--line:#d6d6d6;--bg:#e9e9e9;--blue:#2c6cb0;--org:#e07b00;--ok:#2e7d32;--purple:#5B3C88;--spill:#ff9800;--spillP:#fbc02d;--spillD:#4caf50}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+body{margin:0;font:17px/1.5 "Segoe UI",Roboto,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+body.big{zoom:1.25}
 header{background:var(--red);color:#fff;padding:10px 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:5}
-header h1{font-size:17px;margin:0;flex:1;min-width:180px}
+header h1{font-size:18px;margin:0;flex:1;min-width:180px}
 .net{font-size:12px;padding:3px 9px;border-radius:99px;background:#ffffff33}.net.on::before{content:"● ";color:#7fe08a}.net.off{background:#fff;color:var(--red2);font-weight:700}.net.loc{background:#fff;color:#555}
-button{font:inherit;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:6px;padding:8px 12px;cursor:pointer}
+button{font:inherit;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:6px;padding:10px 14px;cursor:pointer}
 button.pri{background:var(--red2);color:#fff;border-color:var(--red2)}button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}button.on{background:#333;color:#fff}
 main{max-width:1100px;margin:auto;padding:12px;display:grid;gap:12px}
-.card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px}
+.card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 #alert{border:2px solid var(--red2);color:var(--red2);font-weight:600}
 #mapw{overflow:auto;padding:0;-webkit-overflow-scrolling:touch}
 svg{width:100%;max-width:100%;height:auto;display:block;touch-action:pan-x pan-y pinch-zoom}
 #toast-container{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none}
-.toast{background:#2e7d32;color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,.3);opacity:0;transition:opacity .3s,transform .3s;transform:translateY(20px);display:flex;align-items:center;gap:8px;max-width:340px}
+.toast{background:#2e7d32;color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,.3);opacity:0;transition:opacity .3s,transform .3s;transform:translateY(20px);display:flex;align-items:center;gap:8px;max-width:340px;font-size:16px}
 .toast.err{background:#b71c1c}
 .toast.show{opacity:1;transform:translateY(0)}
 .pc{cursor:pointer}.pc text{font:700 15px sans-serif;fill:#fff;pointer-events:none}
 @keyframes bl{50%{opacity:.05}}.pulse{fill:none;stroke:#d11;stroke-width:6;animation:bl .8s infinite}
 @media(prefers-reduced-motion:reduce){.pulse{animation:none;opacity:.8}}
-.tag{font-size:12px;padding:2px 8px;border-radius:99px;color:#fff}.tag.b{background:var(--blue)}.tag.o{background:var(--org)}.tag.p{background:var(--purple)}
-.mut{color:var(--mut)}h3{margin:0 0 4px}
-.who{background:#f3f3f3;border-left:4px solid var(--red2);padding:8px 10px;margin:8px 0}
+.tag{font-size:14px;padding:3px 9px;border-radius:99px;color:#fff}.tag.b{background:var(--blue)}.tag.o{background:var(--org)}.tag.p{background:var(--purple)}
+.mut{color:var(--mut)}h3{margin:0 0 6px;font-size:19px}
+.who{background:#f3f3f3;border-left:4px solid var(--red2);padding:10px 12px;margin:10px 0}
 a{color:var(--red2);font-weight:600}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
-.t{border:1px solid var(--line);border-radius:6px;padding:8px;text-align:center}.t b{font-size:24px;display:block}
-.bar{height:6px;background:#ddd;border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;background:var(--red2)}
-.sg{padding:8px 0;border-top:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.t{border:1px solid var(--line);border-radius:6px;padding:10px;text-align:center}.t b{font-size:26px;display:block}
+.bar{height:8px;background:#ddd;border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;background:var(--red2)}
+.sg{padding:10px 0;border-top:1px solid var(--line)}
 #login{position:fixed;inset:0;background:#3a0b0bf2;display:grid;place-items:center;z-index:20;padding:12px;overflow:auto}
-#login .card{max-width:420px;width:100%;display:grid;gap:10px}
-select,input{font:inherit;padding:9px;border:1px solid #bbb;border-radius:6px;width:100%}
-.lg{display:flex;gap:14px;font-size:13px;flex-wrap:wrap}.lg i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:4px;vertical-align:-1px}
+#login .card{max-width:440px;width:100%;display:grid;gap:12px}
+select,input{font:inherit;padding:11px;border:1px solid #bbb;border-radius:6px;width:100%}
+.lg{display:flex;gap:14px;font-size:14px;flex-wrap:wrap}.lg i{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:4px;vertical-align:-2px}
 .sec{fill:transparent;cursor:pointer}.sec.hl{fill:#9b1c1c55;stroke:#d11;stroke-width:3;stroke-dasharray:8 4}.sec.edit{stroke:#d11;stroke-width:1.5;stroke-dasharray:5 3;fill:transparent}
 .vertex{cursor:grab;transition:r .1s}.vertex:hover{r:9;stroke-width:3}.vertex:active{cursor:grabbing}
 .vadd{cursor:pointer;opacity:.5;transition:opacity .15s}.vadd:hover{opacity:1}
+.vlabel{cursor:grab}.vlabel:hover rect{stroke-width:3}
 .t{cursor:pointer}.t.hl{border:2px solid var(--red2);background:#faeaea}.dim{opacity:.4}
-.capin{width:60px;padding:4px;font-size:13px;text-align:center;border:1px solid #ccc;border-radius:4px}
+.capin{width:70px;padding:6px;font-size:15px;text-align:center;border:1px solid #ccc;border-radius:4px}
 .turnsel{display:flex;gap:4px;flex-wrap:wrap;width:100%}
-.turnsel button{padding:6px 10px;font-size:13px}
+.turnsel button{padding:8px 12px;font-size:14px}
 .turnsel button.on{background:var(--purple);color:#fff;border-color:var(--purple)}
-.histbox{background:#f5f0ff;border-left:4px solid var(--purple);padding:8px 10px;margin:8px 0;font-size:13px}
-.vbtn{display:inline-block;margin:3px;padding:8px 10px;border:1px solid var(--ok);background:#e8f5e9;color:var(--ok);border-radius:6px;cursor:pointer;font-size:13px;text-align:left}
+.histbox{background:#f5f0ff;border-left:4px solid var(--purple);padding:10px 12px;margin:10px 0;font-size:14px}
+.vbtn{display:inline-block;margin:4px;padding:10px 12px;border:1px solid var(--ok);background:#e8f5e9;color:var(--ok);border-radius:6px;cursor:pointer;font-size:15px;text-align:left}
 .vbtn:hover{background:var(--ok);color:#fff}
-.rules{background:#fff3e0;border:1px solid #ffb74d;color:#bf5a00;padding:8px 10px;border-radius:6px;font-size:12px;margin:8px 0;line-height:1.5}
-details summary{cursor:pointer;color:var(--mut);font-size:12px;margin-top:8px}
+.rules{background:#fff3e0;border:1px solid #ffb74d;color:#bf5a00;padding:10px 12px;border-radius:6px;font-size:14px;margin:10px 0;line-height:1.6}
+details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
+/* Spill styles */
+.spill{cursor:pointer}
+.spill-panel{background:#fff;border:2px solid var(--spill);border-radius:8px;padding:14px;margin:8px 0}
+.spill-counter{background:#fff;border:1px solid #ddd;border-radius:8px;padding:14px 8px;text-align:center}
+.spill-counter b{display:block;font-size:32px;line-height:1}
+.spill-counter small{font-size:13px;color:#666;font-weight:600}
+.spill-item{background:#fff;border:1px solid #ddd;border-left:4px solid var(--spill);border-radius:6px;padding:12px;margin:8px 0;font-size:14px}
+.spill-item.proc{border-left-color:var(--spillP);background:#fffde7}
+.spill-item.done{border-left-color:var(--spillD);background:#f1f8e9;opacity:.75}
+/* Walkers styles */
+#walkersView{max-width:1100px;margin:12px auto;padding:12px}
+.wslot{min-height:80px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:6px 4px;border-radius:8px;background:#f5f5f5;border:2px solid #ddd;cursor:pointer;font:inherit;transition:all .15s}
+.wslot.empty:hover{background:#e8e8e8}
+.wslot.occ{background:#c8e6c9;border-color:#2e7d32}
+.wslot.occ:hover{background:#a5d6a7}
+.wslot.found{background:#fff59d;border-color:#f57f17;box-shadow:0 0 0 3px #f57f1755}
+.wslot b{font-size:15px;font-weight:700;color:#333}
+.wslot.occ b{color:#1b5e20}
+.wslot small{font-size:12px;color:#666;margin-top:2px;text-align:center;line-height:1.2;word-break:break-word}
+.wslot.occ small{color:#1b5e20;font-weight:600}
+#walkGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(85px,1fr));gap:8px;margin-top:12px}
 </style>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
@@ -63,6 +88,7 @@ details summary{cursor:pointer;color:var(--mut);font-size:12px;margin-top:8px}
   <span id="net" class="net"></span>
   <span id="usr"></span>
   <button id="btn-mode-toggle" onclick="toggleAppMode()" hidden>👥 Vista Voluntaria</button>
+  <button id="bigTextBtn" onclick="toggleBigText()" style="background:#4A6DA7;color:#fff;border-color:#4A6DA7;font-weight:bold" title="Texto grande">🔍 A</button>
   <button id="out" onclick="logout()" hidden>Salir</button>
 </header>
 
@@ -80,13 +106,14 @@ details summary{cursor:pointer;color:var(--mut);font-size:12px;margin-top:8px}
     <button class="pri" onclick="enterA()">Entrar</button>
     <span id="err" style="color:#b00"></span>
     <hr style="width:100%;border:0;border-top:1px solid #ddd">
-    <button class="ok" style="width:100%;padding:12px;font-size:16px;background:var(--purple);border-color:var(--purple)" onclick="enterVoluntaria()">👥 Soy Voluntaria</button>
+    <button class="ok" style="width:100%;padding:14px;font-size:17px;background:var(--purple);border-color:var(--purple)" onclick="enterVoluntaria()">👥 Soy Voluntaria</button>
   </div>
 </div>
 
 <main id="app" hidden>
   <div id="mine" class="card" hidden></div>
   <div id="alert" class="card" hidden></div>
+  <div id="spillPanel" hidden></div>
   <div id="bar" class="card row"></div>
   <div class="card" id="mapw">
     <svg id="svg" viewBox="0 0 1310 926">
@@ -94,6 +121,7 @@ details summary{cursor:pointer;color:var(--mut);font-size:12px;margin-top:8px}
       <g id="sl"></g>
       <g id="vl"></g>
       <g id="pl"></g>
+      <g id="spl"></g>
     </svg>
   </div>
   <div class="lg card" id="legend"></div>
@@ -101,6 +129,30 @@ details summary{cursor:pointer;color:var(--mut);font-size:12px;margin-top:8px}
   <div class="card"><h3>Conteo por sección</h3><div id="expEd" class="row" hidden><label for="exp">Esperados</label><input id="exp" type="number" min="1" style="width:110px"><button class="pri" onclick="const v=+$('exp').value;if(v>0)put('expect',v)">Guardar</button></div><div id="cnt"></div></div>
   <div class="card" id="bench" hidden></div>
 </main>
+
+<div id="walkersView" hidden>
+  <div class="card">
+    <div class="row" style="justify-content:space-between">
+      <button onclick="closeWalkers()" style="background:#5B3C88;color:#fff;border-color:#5B3C88;font-weight:bold">← Volver al mapa</button>
+      <span id="walkCount" style="font-weight:bold;color:#5B3C88"></span>
+    </div>
+    <h2 style="margin:12px 0 4px;color:#5B3C88;font-size:22px">🦽 Estacionamiento Walkers/Sillas</h2>
+    <p style="margin:0 0 12px;color:#666">Contra pared Auditorio · Sección 117-118</p>
+    
+    <svg viewBox="650 400 350 200" style="width:100%;max-width:400px;display:block;margin:0 auto 16px;border:2px solid #5B3C88;border-radius:8px;background:#f0f0f0">
+      <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none" opacity="0.55"/>
+      <circle cx="730" cy="480" r="25" fill="#5B3C88" opacity="0.8"/>
+      <circle cx="830" cy="480" r="25" fill="#C0392B" opacity="0.8"/>
+      <text x="730" y="486" text-anchor="middle" font-size="16" font-weight="bold" fill="#fff" pointer-events="none">117</text>
+      <text x="830" y="486" text-anchor="middle" font-size="16" font-weight="bold" fill="#fff" pointer-events="none">118</text>
+      <line x1="650" y1="540" x2="1000" y2="540" stroke="#333" stroke-width="4"/>
+      <text x="825" y="565" text-anchor="middle" font-size="16" font-weight="bold" fill="#333" pointer-events="none">══ PARED ══</text>
+    </svg>
+    
+    <input type="text" id="walkerSearch" placeholder="🔍 Buscar por nombre..." oninput="searchWalker(this.value)" style="margin-bottom:12px;font-size:16px;padding:12px">
+    <div id="walkGrid"></div>
+  </div>
+</div>
 
 <div id="volPanel" hidden style="max-width:900px;margin:12px auto;">
   <div class="card">
@@ -126,12 +178,12 @@ const TURNOS={
 };
 
 const VOL_SECTIONS=[
-  {id:"vest-norte",label:"Vestíbulo Norte",pos:[101,102,103,104,105],color:"#5B3C88"},
-  {id:"vest-portico",label:"Vestíbulo Pórtico",pos:[106,107,108,109],color:"#4A6DA7"},
-  {id:"vest-sur",label:"Vestíbulo Sur",pos:[110,111,112,113,114],color:"#28B04A"},
-  {id:"aud-sur",label:"Auditorio Sur",pos:[115,116],color:"#F18100"},
-  {id:"aud-contra",label:"Auditorio Contrapared",pos:[117,118],color:"#C0392B"},
-  {id:"aud-norte",label:"Auditorio Norte",pos:[119,120],color:"#16A085"}
+  {id:"vest-norte",label:"Vestíbulo Norte",pos:[101,102,103,104,105],color:"#5B3C88",labelX:300,labelY:150},
+  {id:"vest-portico",label:"Vestíbulo Pórtico",pos:[106,107,108,109],color:"#4A6DA7",labelX:255,labelY:350},
+  {id:"vest-sur",label:"Vestíbulo Sur",pos:[110,111,112,113,114],color:"#28B04A",labelX:300,labelY:550},
+  {id:"aud-sur",label:"Auditorio Sur",pos:[115,116],color:"#F18100",labelX:780,labelY:680},
+  {id:"aud-contra",label:"Auditorio Contrapared",pos:[117,118],color:"#C0392B",labelX:780,labelY:460},
+  {id:"aud-norte",label:"Auditorio Norte",pos:[119,120],color:"#16A085",labelX:780,labelY:260}
 ];
 
 const VOL_POS_COORDS={
@@ -142,6 +194,9 @@ const VOL_POS_COORDS={
   117:{x:730,y:480},118:{x:830,y:480},
   119:{x:730,y:280},120:{x:830,y:280}
 };
+
+const WALKER_SLOTS=[];
+for(let i=1;i<=60;i++)WALKER_SLOTS.push('A'+i);
 
 const D={
   "caps":["Eliud Luna","Hugo Galvan","Jimmy Vasquez","José A. González","Raúl Quintero"],
@@ -162,34 +217,36 @@ const D={
 
 for(const k in VOL_POS_COORDS){D.pos[k]={who:"",t:"Voluntaria "+k,x:VOL_POS_COORDS[k].x,y:VOL_POS_COORDS[k].y,l:0,a:"vol",v:1};}
 
-const ADM=[{"n":"Sergio E. Vazquez Jr.","h":"2522631457418853","all":1,"cnt":1,"adm":1,"areas":[]},{"n":"Alberto Herrera","h":"992585394121114","all":1,"cnt":1,"adm":1,"areas":[]},{"n":"Steven Snyder","h":"1068608750070157","areas":["ctl","aud"],"adm":1},{"n":"Jaime Palestina","h":"5893876321372649","areas":["alm","ent"],"adm":1},{"n":"Abdiel Juarez Jr.","h":"4585732618882182","areas":["aud"],"cnt":1,"adm":1},{"n":"José A. González","pwd":"capitan2026","areas":["vol"],"adm":1}];
+const ADM=[
+  {"n":"Sergio E. Vazquez Jr.","pwd":"acomodadores2026","all":1,"cnt":1,"adm":1,"areas":[]},
+  {"n":"Alberto Herrera","pwd":"seccion@","all":1,"cnt":1,"adm":1,"areas":[]},
+  {"n":"Steven Snyder","pwd":"auxiliar2026","areas":["ctl","aud"],"adm":1},
+  {"n":"Jaime Palestina","pwd":"superaux2026","areas":["alm","ent"],"adm":1},
+  {"n":"Abdiel Juarez Jr.","pwd":"clave2026","areas":["aud"],"cnt":1,"adm":1},
+  {"n":"José A. González","pwd":"capitan2026","areas":["vol"],"adm":1},
+  {"n":"Carlos Vasquez","pwd":"limpieza2026","areas":[],"spill":1,"adm":1}
+];
 
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const H=s=>{let a=0xdeadbeef,b=0x41c6ce57;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);a=Math.imul(a^c,2654435761);b=Math.imul(b^c,1597334677)}a=Math.imul(a^(a>>>16),2246822507)^Math.imul(b^(b>>>13),3266489909);b=Math.imul(b^(b>>>16),2246822507)^Math.imul(a^(a>>>13),3266489909);return String(4294967296*(2097151&b)+(a>>>0))};
 const POS=Object.keys(D.pos).map(Number),SEC=[1,2,3,4,5].flatMap(i=>[['A',i,'Anillo 2'],['B',i,'Anillo 1']].map(([r,i,l])=>({id:r+i,l:l+' · Sección '+i})));
 const PRIV={A:'Anciano',S:'Siervo Ministerial',P:'Publicador bautizado'};
-let iv=null,me=null,hl=null,sel=null,edit=false,drag=null,S={},isVolunteerMode=false,mapView='acom',secEditMode=false,dragV=null,currentTurno=1;
+let iv=null,me=null,hl=null,sel=null,edit=false,drag=null,dragV=null,dragL=null,S={},isVolunteerMode=false,mapView='acom',secEditMode=false,currentTurno=1,spillMode=false;
 
 const sectionOf=pos=>VOL_SECTIONS.find(s=>s.pos.includes(+pos))||{label:"Extra",color:"#888"};
+const labelPos=sec=>{const l=S.labels&&S.labels[sec.id];return l?{x:l.x,y:l.y}:{x:sec.labelX,y:sec.labelY}};
 
-const P=n=>{
-  const d=D.pos[n];
-  const base=Object.assign({},d,(S.pos||{})[n]);
-  if(d.v===1){
-    const who=(S.volTurnos&&S.volTurnos[currentTurno]&&S.volTurnos[currentTurno][n])||"";
-    return Object.assign({},base,{who});
-  }
-  return base;
-};
-
-const coordsOf=pos=>{
-  const d=D.pos[pos];
-  const s=(S.pos||{})[pos]||{};
-  return {x: s.x!==undefined?s.x:d.x, y: s.y!==undefined?s.y:d.y};
-};
+const P=n=>{const d=D.pos[n];const base=Object.assign({},d,(S.pos||{})[n]);if(d.v===1){const who=(S.volTurnos&&S.volTurnos[currentTurno]&&S.volTurnos[currentTurno][n])||"";return Object.assign({},base,{who})}return base};
+const coordsOf=pos=>{const d=D.pos[pos];const s=(S.pos||{})[pos]||{};return{x:s.x!==undefined?s.x:d.x,y:s.y!==undefined?s.y:d.y}};
 
 const eff=n=>{const p=P(n);return p.sub||p.who||''},ppl=n=>D.roster.find(r=>r.n===n);
-const canEd=n=>me&&me.adm&&(me.all||D.pos[n].a==='vol'||me.areas.includes(D.pos[n].a));
+const canEd=n=>{
+  if(!me||!me.adm)return false;
+  if(me.all)return true;
+  const area=D.pos[n].a;
+  if(area==='vol')return (me.areas||[]).includes('vol');
+  return (me.areas||[]).includes(area);
+};
 const canCnt=()=>me&&(me.cnt||(!me.adm&&S.cntOpen&&(me.n==='Eliud Luna'||POS.some(n=>n>=25&&n<=34&&eff(n)===me.n))));
 const occ=()=>new Set(POS.flatMap(n=>[P(n).who,P(n).sub]).filter(Boolean));
 const watch=n=>me&&(me.all||(me.adm?(D.pos[n].a==='vol'||me.areas.includes(D.pos[n].a)):eff(n)===me.n));
@@ -201,8 +258,7 @@ function volHistory(name){
   return res.sort((a,b)=>a.turno-b.turno);
 }
 function canAssign(turno,pos,name){
-  const t=+turno;
-  const volList=TURNOS[t]?TURNOS[t].vol:[];
+  const t=+turno,volList=TURNOS[t]?TURNOS[t].vol:[];
   if(!volList.includes(name))return{ok:false,msg:"No se apuntó a este turno"};
   const hist=volHistory(name);
   if(hist.find(h=>h.turno===t))return{ok:false,msg:"Ya está en este turno"};
@@ -210,10 +266,7 @@ function canAssign(turno,pos,name){
   const maxT=Math.min(4,sigCount);
   if(hist.length>=maxT)return{ok:false,msg:`Máximo ${maxT} turnos`};
   const consec=hist.find(h=>Math.abs(h.turno-t)===1);
-  if(consec){
-    const ok12=(t===1&&consec.turno===2)||(t===2&&consec.turno===1);
-    if(!ok12)return{ok:false,msg:`Consecutivo con T${consec.turno}`};
-  }
+  if(consec){const ok12=(t===1&&consec.turno===2)||(t===2&&consec.turno===1);if(!ok12)return{ok:false,msg:`Consecutivo con T${consec.turno}`}}
   if((t===5&&hist.find(h=>h.turno===6))||(t===6&&hist.find(h=>h.turno===5)))return{ok:false,msg:"T5 y T6 excluyentes"};
   return{ok:true,msg:`OK (${hist.length+1}/${maxT})`};
 }
@@ -232,6 +285,68 @@ function unassignVol(turno,pos){
   showToast("Asignación eliminada");
 }
 
+/* === SPILLS === */
+function toggleSpillMode(){
+  spillMode=!spillMode;
+  if(spillMode){secEditMode=false;edit=false}
+  draw();
+}
+function promptSpill(x,y){
+  const tipo=prompt("🧹 REPORTAR DERRAME\n\n¿Qué se derramó?\n\n1 = Comida\n2 = Bebida\n3 = Otro\n\n(Escribe el número o el texto)");
+  if(!tipo||!tipo.trim())return;
+  let tipoText;
+  const t=tipo.trim().toLowerCase();
+  if(t==='1'||t.includes('comida')||t.includes('food'))tipoText='Comida';
+  else if(t==='2'||t.includes('bebida')||t.includes('drink'))tipoText='Bebida';
+  else tipoText=tipo.trim();
+  const id=Date.now();
+  put(`spills/${id}`,{x:Math.round(x),y:Math.round(y),tipo:tipoText,status:'pendiente',quien:me.n,ts:id});
+  showToast(`🧹 Derrame reportado: ${tipoText}`);
+  spillMode=false;
+  draw();
+}
+function takeSpill(id){
+  put(`spills/${id}/status`,'proceso');
+  put(`spills/${id}/quienLimpia`,me.n);
+  put(`spills/${id}/tsProc`,Date.now());
+  showToast('👷 Derrame tomado');
+  draw();
+}
+function doneSpill(id){
+  put(`spills/${id}/status`,'terminado');
+  put(`spills/${id}/tsDone`,Date.now());
+  showToast('✓ Derrame limpiado');
+  draw();
+}
+function cancelSpill(id){
+  put(`spills/${id}/status`,'pendiente');
+  put(`spills/${id}/quienLimpia`,null);
+  put(`spills/${id}/tsProc`,null);
+  showToast('↩️ Regresado a pendiente');
+  draw();
+}
+function deleteSpill(id){
+  if(!confirm('¿Borrar este derrame del historial?'))return;
+  fetch(U('spills/'+id),{method:'DELETE'}).then(()=>load());
+}
+function showSpillPanel(id){
+  const sp=S.spills&&S.spills[id];if(!sp)return;
+  const e=$('panel');
+  const fecha=new Date(sp.ts);
+  const hora=fecha.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+  const fechaStr=fecha.toLocaleDateString('es-MX',{day:'2-digit',month:'short'});
+  let h=`<h3 style="color:#e65100">🧹 Derrame · ${esc(sp.tipo)}</h3>`;
+  h+=`<div class="who" style="border-left-color:var(--spill);background:#fff8e1"><b>Reportado por:</b> ${esc(sp.quien)}<br><b>Hora:</b> ${hora} (${fechaStr})<br><b>Estado:</b> <span style="color:${sp.status==='pendiente'?'#e65100':sp.status==='proceso'?'#f57f17':'#2e7d32'};font-weight:bold">${sp.status.toUpperCase()}</span>${sp.quienLimpia?'<br><b>Limpiando:</b> '+esc(sp.quienLimpia):''}</div>`;
+  if(sp.status==='pendiente'){
+    h+=`<button onclick="takeSpill('${id}')" style="background:#ffd54f;color:#333;border-color:#fbc02d;padding:12px 16px;width:100%;font-weight:bold;font-size:16px">🖐️ Voy a limpiarlo</button>`;
+  }else if(sp.status==='proceso'){
+    h+=`<div class="row"><button onclick="doneSpill('${id}')" style="background:#2e7d32;color:#fff;border-color:#2e7d32;padding:12px 16px;font-weight:bold;flex:1">✓ Terminado</button><button onclick="cancelSpill('${id}')" style="padding:12px 16px;flex:1">↩️ Cancelar</button></div>`;
+  }else{
+    h+=`<button onclick="deleteSpill('${id}')" style="padding:12px 16px;width:100%">🗑️ Borrar del historial</button>`;
+  }
+  e.innerHTML=h;
+}
+
 const U=p=>CFG.DB.replace(/\/$/,'')+'/s'+(p?'/'+p:'')+'.json';
 function net(v){const e=$('net');if(!CFG.DB){e.textContent='Sin conexión';e.className='net loc';return}e.textContent=v?'En línea':'Sin conexión';e.className='net '+(v?'on':'off')}
 function setPath(o,p,v){const k=p.split('/');let c=o;k.slice(0,-1).forEach(x=>c=c[x]=c[x]||{});v===null?delete c[k.at(-1)]:c[k.at(-1)]=v}
@@ -247,10 +362,16 @@ $('ad').innerHTML='<option value="">Seleccione su nombre</option>'+ADM.map(a=>`<
 function enter(u){me=u;try{if(!u.adm)localStorage.me=u.n}catch(e){}$('login').hidden=true;$('app').hidden=false;$('out').hidden=false;$('usr').textContent=u.n;$('btn-mode-toggle').hidden=!u.adm;start()}
 function enterU(){if(pick)enter({n:pick})}
 function enterA(){const a=ADM.find(x=>x.n===$('ad').value);if(!a){$('err').textContent='Seleccione su nombre';return}const pw=$('pw').value;const ok=a.h?(H(pw)===a.h):(a.pwd===pw);if(!ok){$('err').textContent='Contraseña incorrecta';return}enter(a.adm?a:{...a,adm:1})}
-function logout(){try{delete localStorage.me}catch(e){}clearInterval(iv);onstorage=null;me=null;sel=null;hl=null;edit=false;pick='';$('us').value='';$('res').innerHTML='';$('goU').hidden=true;$('pw').value='';$('ad').value='';$('err').textContent='';$('usr').textContent='';$('out').hidden=true;$('app').hidden=true;$('login').hidden=false;$('btn-mode-toggle').hidden=true;$('volPanel').hidden=true;isVolunteerMode=false;secEditMode=false;const t=document.getElementById('appTitle');if(t)t.textContent='Acomodadores · La Feria, TX'}
+function logout(){try{delete localStorage.me}catch(e){}clearInterval(iv);onstorage=null;me=null;sel=null;hl=null;edit=false;pick='';spillMode=false;$('us').value='';$('res').innerHTML='';$('goU').hidden=true;$('pw').value='';$('ad').value='';$('err').textContent='';$('usr').textContent='';$('out').hidden=true;$('app').hidden=true;$('walkersView').hidden=true;$('spillPanel').hidden=true;$('login').hidden=false;$('btn-mode-toggle').hidden=true;$('volPanel').hidden=true;isVolunteerMode=false;secEditMode=false;const t=document.getElementById('appTitle');if(t)t.textContent='Acomodadores · La Feria, TX'}
 try{if(localStorage.me)enter({n:localStorage.me})}catch(e){}
 
 function enterVoluntaria(){me=null;$('login').hidden=true;$('app').hidden=true;$('volPanel').hidden=false;$('out').hidden=false;$('usr').textContent='Voluntaria';$('btn-mode-toggle').hidden=true;isVolunteerMode=true;const t=document.getElementById('appTitle');if(t)t.textContent='Portal de Voluntarias';start()}
+
+function toggleBigText(){
+  document.body.classList.toggle('big');
+  try{localStorage.bigText=document.body.classList.contains('big')?'1':'0'}catch(e){}
+}
+try{if(localStorage.bigText==='1')document.body.classList.add('big')}catch(e){}
 
 function buscarVoluntaria(query){
   const rEl=document.getElementById('volResults');
@@ -266,34 +387,88 @@ function buscarVoluntaria(query){
     if(hist.length){
       html+='<p style="margin:4px 0"><b>Tus asignaciones:</b></p>';
       for(const h of hist){
-        const sec=sectionOf(h.posicion);
-        const c=coordsOf(h.posicion);
-        html+=`<div style="margin:10px 0;padding:10px;background:#fafafa;border-radius:8px;border:1px solid #e0e0e0">
-          <div style="font-size:14px;margin-bottom:6px"><b>T${h.turno}</b> · ${esc(TURNOS[h.turno].name)}</div>
-          <div style="color:${sec.color};font-weight:bold;font-size:14px;margin-bottom:8px">📍 ${sec.label} · Posición ${h.posicion}</div>
+        const sec=sectionOf(h.posicion),c=coordsOf(h.posicion);
+        html+=`<div style="margin:10px 0;padding:12px;background:#fafafa;border-radius:8px;border:1px solid #e0e0e0">
+          <div style="font-size:15px;margin-bottom:6px"><b>T${h.turno}</b> · ${esc(TURNOS[h.turno].name)}</div>
+          <div style="color:${sec.color};font-weight:bold;font-size:15px;margin-bottom:8px">📍 ${sec.label} · Posición ${h.posicion}</div>
           <svg viewBox="0 0 1310 926" style="width:100%;max-width:340px;display:block;margin:0 auto;border:2px solid ${sec.color};border-radius:8px;background:#f0f0f0">
             <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none" opacity="0.55"/>
-            <circle cx="${c.x}" cy="${c.y}" r="45" fill="none" stroke="${sec.color}" stroke-width="8">
-              <animate attributeName="r" from="45" to="95" dur="1.4s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" from="1" to="0" dur="1.4s" repeatCount="indefinite"/>
-            </circle>
+            <circle cx="${c.x}" cy="${c.y}" r="45" fill="none" stroke="${sec.color}" stroke-width="8"><animate attributeName="r" from="45" to="95" dur="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" from="1" to="0" dur="1.4s" repeatCount="indefinite"/></circle>
             <circle cx="${c.x}" cy="${c.y}" r="45" fill="${sec.color}" opacity="0.9"/>
             <text x="${c.x}" y="${c.y}" dy=".35em" text-anchor="middle" font-size="42" font-weight="bold" fill="#fff" pointer-events="none">${h.posicion}</text>
           </svg>
         </div>`;
       }
     }else{
-      html+=`<p>No tienes posición asignada todavía.</p><p class="mut" style="font-size:13px">Te apuntaste para: ${sig.map(s=>'T'+s).join(', ')}</p>`;
+      html+=`<p>No tienes posición asignada todavía.</p><p class="mut" style="font-size:14px">Te apuntaste para: ${sig.map(s=>'T'+s).join(', ')}</p>`;
     }
     html+='</div>';
   }
   rEl.innerHTML=html;
 }
 
+/* === WALKERS === */
+function openWalkers(){
+  $('app').hidden=true;
+  $('walkersView').hidden=false;
+  drawWalkers();
+}
+function closeWalkers(){
+  $('walkersView').hidden=true;
+  $('app').hidden=false;
+  draw();
+}
+function walkerShort(full){
+  const parts=full.trim().split(/\s+/);
+  if(parts.length===1)return parts[0];
+  return parts[0]+' '+(parts[1]||'')[0]+'.';
+}
+function drawWalkers(){
+  const wk=S.walkers||{};
+  const total=WALKER_SLOTS.length;
+  const occCount=Object.keys(wk).length;
+  $('walkCount').textContent=`${occCount}/${total} ocupados`;
+  let h='';
+  for(const slot of WALKER_SLOTS){
+    const cur=wk[slot];
+    if(cur){
+      h+=`<button class="wslot occ" data-slot="${slot}" title="${esc(cur.name)}" onclick="walkerTap('${slot}')"><b>${slot}</b><small>${esc(walkerShort(cur.name))}</small></button>`;
+    }else{
+      h+=`<button class="wslot empty" data-slot="${slot}" onclick="walkerTap('${slot}')"><b>${slot}</b><small>Vacío</small></button>`;
+    }
+  }
+  $('walkGrid').innerHTML=h;
+}
+function walkerTap(slot){
+  const cur=S.walkers&&S.walkers[slot];
+  if(cur){
+    if(confirm(`Retirar walker de "${cur.name}"?\n\nAceptar = retirado\nCancelar = mantener`)){
+      fetch(U('walkers/'+slot),{method:'DELETE'}).then(()=>{load();drawWalkers()});
+    }
+  }else{
+    const name=prompt(`Estacionamiento ${slot} - ¿Cómo se llama el hermano/a?`);
+    if(!name||!name.trim())return;
+    put(`walkers/${slot}`,{name:name.trim(),ts:Date.now()});
+    showToast(`✓ ${slot} → ${name.trim()}`);
+    setTimeout(drawWalkers,100);
+  }
+}
+function searchWalker(q){
+  const els=document.querySelectorAll('.wslot');
+  if(!q||q.length<2){els.forEach(el=>el.classList.remove('found'));return}
+  const norm=q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  els.forEach(el=>{
+    const slot=el.dataset.slot,cur=S.walkers&&S.walkers[slot];
+    if(!cur){el.classList.remove('found');return}
+    const n=cur.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    if(n.includes(norm))el.classList.add('found');else el.classList.remove('found');
+  });
+}
+
 const stamp=n=>put(`pos/${n}/ts`,Date.now());
 function cnt(id,d){hl=id;const v=Math.max(0,((S.cnt||{})[id]||0)+d);put('cnt/'+id,v)}
 function reset(){if(!confirm('¿Reiniciar?'))return;const o={};POS.forEach(n=>{const p=P(n);o[n]={x:p.x,y:p.y,who:p.who}});put('pos',o);put('cnt',null)}
-function draw(){if(!me||drag)return;drawMap();drawPanel();drawBar();drawCnt();drawMine();drawLegend()}
+function draw(){if(!me||drag||dragV||dragL)return;drawMap();drawPanel();drawBar();drawCnt();drawMine();drawLegend();drawSpills()}
 
 function showToast(m,err){const c=document.getElementById('toast-container'),t=document.createElement('div');t.className='toast'+(err?' err':'');t.innerHTML=m;c.appendChild(t);setTimeout(()=>t.classList.add('show'),10);setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},3500)}
 
@@ -310,14 +485,59 @@ function addVertex(k,idx,x,y){const pts=secPts(k);pts.splice(idx+1,0,[x,y]);secS
 function delVertex(k,idx){const pts=secPts(k);if(pts.length<=3){showToast('⚠ Mínimo 3 puntos',true);return}pts.splice(idx,1);secSave(k,pts);showToast(`🗑️ Punto eliminado`)}
 function resetSec(k){if(!confirm(`¿Restaurar ${k}?`))return;if(!S.sec)S.sec={};delete S.sec[k];fetch(U('sec/'+k),{method:'DELETE'}).then(()=>load())}
 function setCap(k,v){const n=Math.max(0,parseInt(v)||0);if(!S.cap)S.cap={};S.cap[k]=n;put('cap/'+k,n);draw()}
+function moveLabel(lid,x,y){if(!S.labels)S.labels={};S.labels[lid]={x:Math.round(x),y:Math.round(y)};put('labels/'+lid,S.labels[lid])}
 
 function drawLegend(){
   const lg=$('legend');if(!lg)return;
   if(mapView==='vol'&&me&&me.adm){
-    lg.innerHTML=VOL_SECTIONS.map(s=>`<span><i style="background:${s.color}"></i>${s.label} (${s.pos.length})</span>`).join('')+'<span class="mut" style="font-size:11px">Fija/Ausente solo en Acomodadores</span>';
+    lg.innerHTML=VOL_SECTIONS.map(s=>`<span><i style="background:${s.color}"></i>${s.label}</span>`).join('')+'<span><i style="background:var(--spill)"></i>🧹 Derrame</span>';
   }else{
-    lg.innerHTML=`<span><i style="background:var(--blue)"></i>Fija</span><span><i style="background:var(--org)"></i>Intermitente</span><span><i style="background:#2e7d32"></i>Presente</span><span><i style="background:#d11"></i>Ausente</span><span><i style="background:#777"></i>Sustituto</span>`;
+    lg.innerHTML=`<span><i style="background:var(--blue)"></i>Fija</span><span><i style="background:var(--org)"></i>Intermitente</span><span><i style="background:#2e7d32"></i>Presente</span><span><i style="background:#d11"></i>Ausente</span><span><i style="background:#777"></i>Sustituto</span><span><i style="background:var(--spill)"></i>🧹 Derrame</span>`;
   }
+}
+
+function drawSpills(){
+  const e=$('spillPanel');if(!e||!me)return;
+  const arr=Object.entries(S.spills||{}).sort((a,b)=>b[1].ts-a[1].ts);
+  const pend=arr.filter(([id,s])=>s.status==='pendiente');
+  const proc=arr.filter(([id,s])=>s.status==='proceso');
+  const done=arr.filter(([id,s])=>s.status==='terminado');
+  if(!arr.length){e.hidden=true;return}
+  e.hidden=false;
+  let h=`<div class="spill-panel"><h3 style="color:#e65100;margin-top:0">🧹 Derrames</h3>`;
+  h+=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
+    <div class="spill-counter" style="background:#fff3cd"><b style="color:#e65100">${pend.length}</b><small>Pendientes</small></div>
+    <div class="spill-counter" style="background:#fff59d"><b style="color:#f57f17">${proc.length}</b><small>En proceso</small></div>
+    <div class="spill-counter" style="background:#c8e6c9"><b style="color:#2e7d32">${done.length}</b><small>Terminadas</small></div>
+  </div>`;
+  const active=[...pend,...proc];
+  for(const [id,sp] of active){
+    const fecha=new Date(sp.ts),hora=fecha.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+    const isProc=sp.status==='proceso';
+    h+=`<div class="spill-item ${isProc?'proc':''}">
+      <div><b>${esc(sp.tipo)}</b> · <span style="color:${isProc?'#f57f17':'#e65100'};font-weight:600">${sp.status.toUpperCase()}</span></div>
+      <div style="font-size:13px;color:#666;margin-top:4px">Reportado por ${esc(sp.quien)} · ${hora}${sp.quienLimpia?' · Limpia: '+esc(sp.quienLimpia):''}</div>
+      <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+        <button onclick="showSpillPanel('${id}')" style="font-size:14px;padding:8px 12px">Ver detalles</button>
+        ${!isProc?`<button onclick="takeSpill('${id}')" style="font-size:14px;padding:8px 12px;background:#ffd54f;border-color:#fbc02d;font-weight:bold">🖐️ Tomar</button>`:''}
+        ${isProc?`<button onclick="doneSpill('${id}')" style="font-size:14px;padding:8px 12px;background:#2e7d32;color:#fff;border-color:#2e7d32;font-weight:bold">✓ Terminado</button>`:''}
+      </div>
+    </div>`;
+  }
+  if(done.length){
+    h+=`<details style="margin-top:12px"><summary>✅ ${done.length} terminadas hoy</summary>`;
+    for(const [id,sp] of done){
+      const fecha=new Date(sp.ts),hora=fecha.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+      h+=`<div class="spill-item done" style="margin-top:6px">
+        <div><b>${esc(sp.tipo)}</b></div>
+        <div style="font-size:13px;color:#666;margin-top:4px">Por ${esc(sp.quien)} · ${hora}${sp.quienLimpia?' · Limpió: '+esc(sp.quienLimpia):''}</div>
+        <button onclick="deleteSpill('${id}')" style="font-size:13px;padding:6px 10px;margin-top:6px">🗑️ Borrar</button>
+      </div>`;
+    }
+    h+='</details>';
+  }
+  h+='</div>';
+  e.innerHTML=h;
 }
 
 function drawMap(){
@@ -334,10 +554,15 @@ function drawMap(){
   let h='';
   if(mapView==='vol'&&me&&me.adm){
     for(const sec of VOL_SECTIONS){
-      const c=sec.pos.map(p=>P(p)).filter(Boolean);
-      if(!c.length)continue;
-      const cx=c.reduce((a,b)=>a+b.x,0)/c.length,cy=Math.min(...c.map(p=>p.y))-12;
-      h+=`<text x="${cx}" y="${cy}" text-anchor="middle" font-size="13" font-weight="bold" fill="${sec.color}" pointer-events="none" style="text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 3px #fff">${sec.label}</text>`;
+      const lp=labelPos(sec);
+      if(secEditMode){
+        h+=`<g class="vlabel" data-lid="${sec.id}" transform="translate(${lp.x} ${lp.y})">
+          <rect x="-85" y="-18" width="170" height="28" rx="6" fill="#ffffffdd" stroke="${sec.color}" stroke-width="2"/>
+          <text text-anchor="middle" dy=".35em" font-size="15" font-weight="bold" fill="${sec.color}" pointer-events="none">${sec.label}</text>
+        </g>`;
+      }else{
+        h+=`<text x="${lp.x}" y="${lp.y}" text-anchor="middle" font-size="15" font-weight="bold" fill="${sec.color}" pointer-events="none" style="text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 3px #fff">${sec.label}</text>`;
+      }
     }
   }
   for(const n of POS){
@@ -349,6 +574,23 @@ function drawMap(){
     h+=`<g class="pc${watch(n)||me.all?'':' dim'}" data-n="${n}" transform="translate(${p.x} ${p.y})">${vacant(n)?'<circle class="pulse" r="27"/>':''}<circle r="19" fill="${fill}" stroke="${sel===n?'#000':'#fff'}" stroke-width="${sel===n?4.5:2.5}"/><text text-anchor="middle" dy=".35em">${n}</text>${b?`<circle cx="15" cy="-15" r="9" fill="${b[0]}" stroke="#fff" stroke-width="1.5"/><text x="15" y="-15" dy=".35em" text-anchor="middle" style="font-size:11px">${b[1]}</text>`:''}</g>`;
   }
   $('pl').innerHTML=h;
+  let sh='';
+  if(S.spills){
+    for(const id in S.spills){
+      const sp=S.spills[id];
+      if(sp.status==='terminado')continue;
+      const isProc=sp.status==='proceso';
+      const color=isProc?'#fbc02d':'#ff9800';
+      const icon=isProc?'⏳':'!';
+      sh+=`<g class="spill" data-spill="${id}" transform="translate(${sp.x} ${sp.y})">
+        <polygon points="0,-26 24,20 -24,20" fill="${color}" stroke="#fff" stroke-width="2" opacity="0.95">
+          <animate attributeName="opacity" values="0.95;0.55;0.95" dur="1.5s" repeatCount="indefinite"/>
+        </polygon>
+        <text text-anchor="middle" y="6" font-size="18" fill="#fff" font-weight="bold" pointer-events="none">${icon}</text>
+      </g>`;
+    }
+  }
+  $('spl').innerHTML=sh;
 }
 
 function drawBar(){
@@ -356,19 +598,22 @@ function drawBar(){
   const viewBtns=me.adm?`<button class="${mapView==='acom'?'on':''}" onclick="mapView='acom';sel=null;draw()">🗺️ Acomodadores</button><button class="${mapView==='vol'?'on':''}" onclick="mapView='vol';sel=null;draw()">👥 Voluntarias</button>`:'';
   let turnSel='';
   if(mapView==='vol'&&me.adm){
-    turnSel=`<div class="turnsel"><b style="width:100%;font-size:13px;margin:4px 0">Turno actual:</b>`+Object.keys(TURNOS).map(t=>{
+    turnSel=`<div class="turnsel"><b style="width:100%;font-size:14px;margin:4px 0">Turno actual:</b>`+Object.keys(TURNOS).map(t=>{
       const total=TURNOS[t].vol.length;
       const asg=S.volTurnos&&S.volTurnos[t]?Object.keys(S.volTurnos[t]).length:0;
       return `<button class="${currentTurno==t?'on':''}" onclick="currentTurno=${t};sel=null;draw()">T${t} (${asg}/${total})</button>`;
     }).join('')+`</div>`;
   }
-  const editBtn=me.all?`<button class="${secEditMode?'on':''}" onclick="secEditMode=!secEditMode;hl=null;draw()" title="Editar zonas (solo acomodadores)">✏️ Zonas</button>`:'';
-  const helpEdit=secEditMode?`<div style="width:100%;font-size:12px;background:#fff7cc;padding:6px 8px;border-radius:4px;margin-top:4px">✏️ <b>Modo edición de zonas:</b> Toca una zona para activarla. Arrastra puntos blancos para mover. <b>Toca (sin arrastrar) un punto blanco para borrarlo.</b> Toca los grises "+" para agregar.${hl?` <button style="font-size:11px;padding:2px 6px" onclick="resetSec('${hl}')">↺ Restaurar ${hl}</button>`:''}</div>`:'';
-  $('bar').innerHTML=viewBtns+turnSel+`<b>${me.all?'Todas':'Tu área'} · Fijas: ${ok(L)}/${L.length}</b><span>Inter: ${ok(O)}/${O.length}</span><span style="flex:1"></span>`+(me.adm&&(mapView==='acom'||mapView==='vol')?`<button class="${edit?'on':''}" onclick="edit=!edit;draw()">${edit?'Listo':'Mover'}</button>`:'')+(me.all&&mapView==='acom'?`<button onclick="reset()">Reiniciar</button>`:'')+editBtn+helpEdit;
+  const showEditTools=me.all||(me.areas&&me.areas.length>0&&me.areas.some(a=>a!=='spill'));
+  const walkersBtn=`<button onclick="openWalkers()" style="background:#5B3C88;color:#fff;border-color:#5B3C88;font-weight:bold">🦽 Walkers</button>`;
+  const spillBtn=`<button class="${spillMode?'on':''}" onclick="toggleSpillMode()" style="background:${spillMode?'#ff9800':'#fff'};color:${spillMode?'#fff':'#e65100'};border-color:#ff9800;font-weight:bold">🧹 Derrame${spillMode?' (ACTIVO)':''}</button>`;
+  const editBtn=me.all?`<button class="${secEditMode?'on':''}" onclick="secEditMode=!secEditMode;spillMode=false;hl=null;draw()" title="Editar zonas">✏️ Zonas</button>`:'';
+  const helpEdit=secEditMode?`<div style="width:100%;font-size:13px;background:#fff7cc;padding:8px;border-radius:4px;margin-top:4px">✏️ <b>Modo edición:</b> Toca una zona, arrastra puntos blancos. Toca sin arrastrar para borrar.${mapView==='vol'?' Las etiquetas moradas/azules/verdes también se pueden arrastrar.':''}${hl?` <button style="font-size:12px;padding:3px 8px" onclick="resetSec('${hl}')">↺ Restaurar ${hl}</button>`:''}</div>`:spillMode?`<div style="width:100%;font-size:13px;background:#fff3cd;padding:8px;border-radius:4px;margin-top:4px">🧹 <b>Modo derrame:</b> Toca el mapa donde está el derrame.</div>`:'';
+  $('bar').innerHTML=viewBtns+turnSel+walkersBtn+spillBtn+`<b>${me.all?'Todas':'Tu área'} · Fijas: ${ok(L)}/${L.length}</b><span>Inter: ${ok(O)}/${O.length}</span><span style="flex:1"></span>`+(showEditTools&&me.adm?`<button class="${edit?'on':''}" onclick="edit=!edit;spillMode=false;draw()">${edit?'Listo':'Mover'}</button>`:'')+(me.all&&mapView==='acom'?`<button onclick="reset()">Reiniciar</button>`:'')+editBtn+helpEdit;
   const a=$('alert');a.hidden=!v.length;a.innerHTML='⚠ Sin cubrir: '+v.map(n=>`<a href="#" onclick="sel=${n};draw();return false">${n}</a>`).join(', ');
 }
 
-function drawMine(){const e=$('mine'),n=POS.find(n=>eff(n)===me.n);e.hidden=me.adm||me.all;if(me.adm||me.all)return;e.innerHTML=n?`<h3>Tu posición: ${n}</h3><p>${esc(D.pos[n].t)}</p>`+(['ok','sub'].includes(P(n).st)?'<b style="color:var(--ok)">✓ Registrado.</b>':`<button class="ok" style="width:100%;padding:16px;font-size:18px" onclick="here(${n})">Estoy aquí</button>`):D.caps.includes(me.n)?'<h3>Capitán</h3>':'<h3>Corredor</h3>'}
+function drawMine(){const e=$('mine'),n=POS.find(n=>eff(n)===me.n);e.hidden=me.adm||me.all;if(me.adm||me.all)return;e.innerHTML=n?`<h3>Tu posición: ${n}</h3><p>${esc(D.pos[n].t)}</p>`+(['ok','sub'].includes(P(n).st)?'<b style="color:var(--ok)">✓ Registrado.</b>':`<button class="ok" style="width:100%;padding:18px;font-size:20px" onclick="here(${n})">Estoy aquí</button>`):D.caps.includes(me.n)?'<h3>Capitán</h3>':'<h3>Corredor</h3>'}
 
 function drawPanel(){
   const e=$('panel');
@@ -377,96 +622,17 @@ function drawPanel(){
   const sec=isVol?sectionOf(n):null;
   if(isVol){
     let h=`<h3 style="color:${sec.color}">Voluntaria ${n} · ${sec.label}</h3>`;
-    h+=`<p style="margin:4px 0;font-size:14px"><b>Turno: ${currentTurno} · ${TURNOS[currentTurno].name}</b></p>`;
+    h+=`<p style="margin:6px 0;font-size:15px"><b>Turno: ${currentTurno} · ${TURNOS[currentTurno].name}</b></p>`;
     h+=`<div class="rules"><b>📋 Reglas activas:</b><br>✅ No consecutivos (excepto T1+T2)<br>✅ Máximo 4 turnos por hermana<br>✅ T5 y T6 son excluyentes (intermedio)</div>`;
     if(w){
       const hist=volHistory(w).filter(x=>!(+x.turno===+currentTurno&&+x.posicion===+n));
       h+=`<div class="who" style="border-left-color:${sec.color}"><b>${esc(w)}</b></div>`;
-      if(hist.length){h+=`<div class="histbox"><b>También está en:</b><ul style="margin:4px 0;padding-left:18px">${hist.map(x=>`<li>T${x.turno} · ${sectionOf(x.posicion).label} (${x.posicion})</li>`).join('')}</ul></div>`}
-      else h+='<p class="mut" style="font-size:13px">No está en otros turnos.</p>';
-      h+=`<button onclick="unassignVol(${currentTurno},${n})" style="margin-top:4px">🗑️ Quitar asignación</button>`;
-    }else{
-      h+='<p class="mut">Sin asignar en este turno.</p>';
-    }
+      if(hist.length){h+=`<div class="histbox"><b>También está en:</b><ul style="margin:6px 0;padding-left:18px">${hist.map(x=>`<li>T${x.turno} · ${sectionOf(x.posicion).label} (${x.posicion})</li>`).join('')}</ul></div>`}
+      else h+='<p class="mut" style="font-size:14px">No está en otros turnos.</p>';
+      h+=`<button onclick="unassignVol(${currentTurno},${n})" style="margin-top:6px">🗑️ Quitar asignación</button>`;
+    }else{h+='<p class="mut">Sin asignar en este turno.</p>'}
     const vols=TURNOS[currentTurno].vol.map(name=>{const chk=canAssign(currentTurno,n,name);return{name,ok:chk.ok,msg:chk.msg}});
     const avail=vols.filter(v=>v.ok),blocked=vols.filter(v=>!v.ok);
-    h+=`<div class="sg"><b>Disponibles (${avail.length}):</b><div style="margin-top:4px">`;
-    if(avail.length===0) h+='<p class="mut" style="font-size:13px">Ninguna puede asignarse aquí.</p>';
-    else h+=avail.map(v=>`<button class="vbtn" data-vname="${esc(v.name)}" onclick="doAssign(${currentTurno},${n},this.dataset.vname)">✓ ${esc(v.name)}</button>`).join('');
-    h+='</div>';
-    if(blocked.length){
-      h+=`<details style="margin-top:10px"><summary>❌ ${blocked.length} bloqueadas (ver razones)</summary><ul style="margin:6px 0;padding-left:18px;font-size:12px">${blocked.map(v=>`<li><b>${esc(v.name)}</b> — ${v.msg}</li>`).join('')}</ul></details>`;
-    }
-    h+='</div>';
-    e.innerHTML=h;
-    return;
-  }
-  let h=`<h3>Posición ${n} <span class="tag ${d.l?'b':'o'}">${d.l?'Fija':'Intermitente'}</span></h3><div>${esc(d.t)}</div>`;
-  h+=w?`<div class="who"><b>${esc(w)}</b>${r?`<br>${PRIV[r.p]} · ${esc(r.c)}`:''}${p.sub?`<br><span class="mut">Sustituto de ${esc(p.who)}</span>`:''}</div>`:'<p class="mut">Sin asignar</p>';
-  if(ad){
-    h+=`<div class="row"><button class="ok" onclick="setSt(${n},'${p.sub?'sub':'ok'}')">Presente</button><button onclick="setSt(${n},'abs')">Ausente</button>${p.sub?`<button onclick="back(${n})">Llegó titular</button>`:''}</div>`;
-    const list=D.roster.filter(r=>r.c!=='Voluntaria');
-    h+=`<div class="sg"><b>Asignar Acomodador</b><select onchange="if(this.value)setWho(${n},this.value)"><option value="">Elegir…</option>${list.map(x=>`<option ${x.n===p.who?'disabled':''}>${esc(x.n)}</option>`).join('')}</select></div>`;
-  }
-  e.innerHTML=h;
-}
-
-function drawCnt(){
-  $('expEd').hidden=!(me.all||me.cnt);
-  if(document.activeElement!==$('exp'))$('exp').value=S.expect||D.expect;
-  const t=SEC.reduce((a,s)=>a+((S.cnt||{})[s.id]||0),0),ex=S.expect||D.expect,cc=canCnt(),editable=me.all;
-  $('cnt').innerHTML=`<p><b>${t}</b> / <b>${ex}</b> (${Math.round(100*t/ex)}%)</p><div class="bar"><i style="width:${Math.min(100,100*t/ex)}%"></i></div><div class="grid" style="margin-top:10px">`+SEC.map(s=>{const v=(S.cnt||{})[s.id]||0,cap=(S.cap&&S.cap[s.id]!==undefined)?S.cap[s.id]:D.cap[s.id];return`<div class="t${hl===s.id?' hl':''}" onclick="hl=hl==='${s.id}'?null:'${s.id}';draw()"><small>${s.l}</small><b>${v}</b>${editable?`<div style="font-size:12px;margin-top:4px">Sillas: <input class="capin" type="number" min="0" value="${cap}" onchange="event.stopPropagation();setCap('${s.id}',this.value)" onclick="event.stopPropagation()"/></div>`:`<small class="mut">Sillas: ${cap}</small>`}${cc?`<div class="row" style="justify-content:center;margin-top:4px"><button onclick="event.stopPropagation();cnt('${s.id}',-1)">−</button><button onclick="event.stopPropagation();cnt('${s.id}',1)">+</button></div>`:''}</div>`}).join('')+'</div>'
-}
-
-function drawBench(){const e=$('bench');e.hidden=!me.adm;if(!me.adm)return;e.innerHTML='<h3>Corredores</h3>'+D.runners.map(x=>{const q=ppl(x),n=POS.find(n=>P(n).sub===x);return`<div class="row sg"><span style="flex:1"><b>${esc(x)}</b></span><span class="mut">${n?'Pos '+n:'Libre'}</span></div>`}).join('')}
-const _d=draw;draw=function(){_d();if(me&&!drag)drawBench()};
-
-const svg=$('svg');
-svg.addEventListener('pointerdown',e=>{
-  const vtx=e.target.closest('.vertex');
-  if(vtx){
-    dragV={sec:vtx.dataset.sec,idx:+vtx.dataset.idx,startX:e.clientX,startY:e.clientY,moved:false,x:0,y:0};
-    try{svg.setPointerCapture(e.pointerId)}catch(_){}
-    e.preventDefault();
-    return;
-  }
-  const add=e.target.closest('.vadd');
-  if(add){addVertex(add.dataset.sec,+add.dataset.after,+add.dataset.mx,+add.dataset.my);return}
-  const z=e.target.closest('.sec');
-  if(z&&!e.target.closest('.pc')){hl=secEditMode?z.dataset.s:(hl===z.dataset.s?null:z.dataset.s);draw();return}
-  const g=e.target.closest('.pc');if(!g)return;const n=+g.dataset.n;
-  if(edit&&canEd(n)){drag={n,m:0};try{svg.setPointerCapture(e.pointerId)}catch(_){}}else{sel=n;draw()}
-});
-svg.addEventListener('pointermove',e=>{
-  if(dragV){
-    if(!dragV.moved && (Math.abs(e.clientX-dragV.startX)>6 || Math.abs(e.clientY-dragV.startY)>6)) dragV.moved=true;
-    if(dragV.moved){
-      const q=svg.createSVGPoint();q.x=e.clientX;q.y=e.clientY;
-      const r=q.matrixTransform(svg.getScreenCTM().inverse());
-      dragV.x=Math.round(r.x);dragV.y=Math.round(r.y);
-      const el=svg.querySelector(`.vertex[data-sec="${dragV.sec}"][data-idx="${dragV.idx}"]`);
-      if(el){el.setAttribute('cx',dragV.x);el.setAttribute('cy',dragV.y)}
-    }
-    return;
-  }
-  if(!drag)return;drag.m=1;const q=svg.createSVGPoint();q.x=e.clientX;q.y=e.clientY;const r=q.matrixTransform(svg.getScreenCTM().inverse());drag.x=Math.round(r.x);drag.y=Math.round(r.y);const el=svg.querySelector(`[data-n="${drag.n}"]`);if(el)el.setAttribute('transform',`translate(${drag.x} ${drag.y})`)
-});
-svg.addEventListener('pointerup',()=>{
-  if(dragV){
-    if(dragV.moved){moveVertex(dragV.sec,dragV.idx,dragV.x,dragV.y)}
-    else{delVertex(dragV.sec,dragV.idx)}
-    dragV=null;
-    return;
-  }
-  if(!drag)return;const d=drag;drag=null;sel=d.n;if(d.m){put(`pos/${d.n}/x`,d.x);put(`pos/${d.n}/y`,d.y)}else draw()
-});
-
-function toggleAppMode(){
-  isVolunteerMode=!isVolunteerMode;
-  const btn=$('btn-mode-toggle'),app=$('app'),vp=$('volPanel'),title=$('appTitle');
-  if(isVolunteerMode){btn.textContent='🚪 Volver';btn.style.background='#6e1414';app.hidden=true;vp.hidden=false;title.textContent='Portal de Voluntarias'}
-  else{btn.textContent='👥 Vista Voluntaria';btn.style.background='#2e7d32';app.hidden=false;vp.hidden=true;title.textContent='Acomodadores · La Feria, TX';if(me)draw()}
-}
-</script>
-</body>
-</html>
+    h+=`<div class="sg"><b>Disponibles (${avail.length}):</b><div style="margin-top:6px">`;
+    if(avail.length===0)h+='<p class="mut" style="font-size:14px">Ninguna puede asignarse aquí.</p>';
+    else h+=avail.map(v=>`<button class="vbtn" data-vname="${esc(v.name)}" onclick="doAssign(${currentTurno},${n},this.dataset.vname)
