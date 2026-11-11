@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Panel del Comité · La Feria, TX</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{--red:#6e1414;--red2:#9b1c1c;--ink:#1f1f1f;--mut:#666;--line:#d6d6d6;--bg:#e9e9e9;--purple:#5B3C88;--ok:#2e7d32;--err:#c62828;--warn:#f57f17;--blue:#2c6cb0;--spill:#ff9800;--spillP:#fbc02d}
+[hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;font:16px/1.5 "Segoe UI",Roboto,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:var(--purple);color:#fff;padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,.2)}header h1{font-size:20px;margin:0;flex:1;min-width:200px}
+header .clock,header .who{background:#ffffff22;padding:4px 10px;border-radius:99px;font-size:13px;font-variant-numeric:tabular-nums}
+.net{font-size:12px;padding:3px 9px;border-radius:99px;background:#ffffff33}.net.on::before{content:"● ";color:#7fe08a}.net.off{background:#fff;color:var(--err);font-weight:700}
+button{font:inherit;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:10px 14px;cursor:pointer;font-weight:600}button.pri{background:var(--purple);color:#fff;border-color:var(--purple)}button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}button.warn{background:var(--warn);color:#fff;border-color:var(--warn)}button.danger{background:var(--err);color:#fff;border-color:var(--err)}
+main{max-width:1100px;margin:auto;padding:14px;display:grid;gap:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px}
+h2{margin:0 0 10px;font-size:20px;color:var(--purple)}h3{margin:0 0 10px;font-size:17px}
+.alert-bar{border-radius:10px;padding:14px 16px;font-weight:600;font-size:15px;line-height:1.6}
+.alert-bar.critical{background:#ffebee;border:2px solid var(--err);color:#b71c1c}
+.alert-bar.warning{background:#fffde7;border:2px solid var(--warn);color:#b76d00}
+.alert-bar.empty{background:#e8f5e9;border:2px solid var(--ok);color:#1b5e20}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}.tabs button{flex:1;min-width:130px;padding:14px 10px;font-size:15px}
+.tabs button.on{background:var(--purple);color:#fff;border-color:var(--purple)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.stat{background:#f5f5f5;border-radius:10px;padding:14px;text-align:center;border:2px solid transparent}
+.stat b{display:block;font-size:32px;line-height:1;margin-bottom:4px}
+.stat small{font-size:13px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.stat.ok{border-color:#a5d6a7;background:#e8f5e9}.stat.ok b{color:var(--ok)}
+.stat.warn{border-color:#ffcc80;background:#fff8e1}.stat.warn b{color:#e65100}
+.stat.err{border-color:#ef9a9a;background:#ffebee}.stat.err b{color:var(--err)}
+.stat.neutral{border-color:#e0e0e0;background:#fafafa}.stat.neutral b{color:var(--purple)}
+.stat.zone{border-color:#ce93d8;background:#f3e5f5}.stat.zone b{color:var(--purple)}
+.pos-chip{display:inline-block;background:#ffebee;border:1px solid #ef9a9a;color:#b71c1c;padding:6px 12px;border-radius:6px;margin:4px 4px 0 0;font-weight:700;font-size:14px;cursor:pointer}
+.pos-chip:hover{background:var(--err);color:#fff}
+.pos-list{max-height:300px;overflow-y:auto;padding:4px}
+.inside-item{background:#fff;border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:8px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.inside-item.long{border-left-color:var(--warn);background:#fffde7}
+.inside-item .info{flex:1;min-width:180px}
+.inside-item .name{font-weight:700;font-size:16px}
+.inside-item .meta{font-size:13px;color:var(--mut);margin-top:2px}
+.inside-item .time{font-size:13px;color:var(--purple);font-weight:600;margin-top:4px}
+.inside-item button{padding:10px 16px;font-size:14px}
+.spill-item{background:#fff8e1;border:1px solid #ffe082;border-left:4px solid var(--spill);border-radius:6px;padding:12px;margin-bottom:8px;font-size:14px}
+.spill-item.proc{border-left-color:var(--spillP);background:#fffde7}
+.spill-item b{font-size:15px}
+.empty{text-align:center;padding:24px;color:var(--mut);font-style:italic}
+input,select,textarea{font:inherit;padding:10px;border:1px solid #bbb;border-radius:6px;width:100%;box-sizing:border-box;background:#fff}
+.form-row{display:grid;gap:8px;margin-bottom:10px}
+.link-btn{display:inline-block;margin-top:10px;color:var(--purple);font-weight:600;text-decoration:none;font-size:14px;padding:10px 14px;background:#f0ebf8;border-radius:8px}
+.link-btn:hover{background:var(--purple);color:#fff}
+#modal{position:fixed;inset:0;background:#000a;display:grid;place-items:center;padding:14px;z-index:9999}
+#modal[hidden]{display:none}
+#modal .box{background:#fff;border-radius:10px;padding:18px;width:100%;max-width:420px;display:grid;gap:12px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+#modal h2{margin:0;color:var(--purple);font-size:20px}
+.toast-wrap{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:var(--ok);color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,.3);opacity:0;transition:opacity .3s;font-size:15px;max-width:340px;text-align:center}
+.toast.err{background:var(--err)}.toast.show{opacity:1}
+.flex-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.legend{display:flex;gap:14px;font-size:13px;flex-wrap:wrap;margin-top:8px}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:4px;vertical-align:-2px}
+#tempQRDisplay{display:flex;flex-direction:column;align-items:center;padding:16px;background:#fafafa;border-radius:8px;margin-top:12px}
+#tempQRDisplay canvas{border-radius:6px;background:#fff;padding:6px}
+</style>
+</head>
+<body>
+<div class="toast-wrap" id="toastWrap"></div>
+<div id="modal" hidden><div class="box" id="modalBox"></div></div>
+
+<header>
+  <h1>🏛️ Panel del Comité</h1>
+  <span class="who">👤 Alberto Herrera</span>
+  <span class="clock" id="clock">--:--:--</span>
+  <span class="net" id="net"></span>
+  <button onclick="window.open('index.html','_blank')" style="background:#fff;color:var(--purple)">🚪 Acomodadores</button>
+  <button onclick="window.open('acceso.html','_blank')" style="background:#fff;color:var(--purple)">🔐 Escáner</button>
+</header>
+
+<main>
+  <div id="alertBar" class="alert-bar empty">✅ Todo en orden</div>
+
+  <div class="tabs">
+    <button data-tab="acom" onclick="setTab('acom')" class="on">🚪 Acomodadores</button>
+    <button data-tab="acceso" onclick="setTab('acceso')">🔐 Acceso</button>
+    <button data-tab="derrames" onclick="setTab('derrames')">🧹 Derrames</button>
+  </div>
+
+  <!-- TAB: ACOMODADORES -->
+  <div id="tabAcom">
+    <div class="card">
+      <h2>🚪 Estado de Acomodadores</h2>
+      <div class="grid" id="acomStats"></div>
+    </div>
+    <div class="card">
+      <h2>⚠️ Posiciones sin cubrir</h2>
+      <div id="acomSinCubrir" class="pos-list"></div>
+      <a class="link-btn" href="index.html" target="_blank">🚪 Abrir app completa de Acomodadores →</a>
+    </div>
+  </div>
+
+  <!-- TAB: ACCESO -->
+  <div id="tabAcceso" hidden>
+    <div class="card">
+      <h2>🔐 Estado de Acceso en Vivo</h2>
+      <div class="grid" id="accZoneCounters"></div>
+    </div>
+    <div class="card">
+      <h2>🟢 Dentro Ahora (<span id="accInsideCount">0</span>)</h2>
+      <div id="accInsideList"></div>
+    </div>
+    <div class="card">
+      <h2>➕ Generar QR Temporal</h2>
+      <p style="color:var(--mut);font-size:13px;margin:0 0 10px">Para hermanos que olvidaron su pase. Válido por tiempo limitado y una sola zona.</p>
+      <div class="form-row">
+        <input id="tempName" placeholder="Nombre del hermano">
+        <select id="tempZone"></select>
+        <select id="tempHours">
+          <option value="1">Válido 1 hora</option>
+          <option value="2" selected>Válido 2 horas</option>
+          <option value="4">Válido 4 horas</option>
+          <option value="8">Todo el día</option>
+        </select>
+        <button class="pri" onclick="genTempQR()">🎫 Generar QR Temporal</button>
+      </div>
+      <div id="tempQRDisplay" hidden></div>
+    </div>
+    <div class="card">
+      <h2>📊 Registro del Día</h2>
+      <div id="accLog"></div>
+    </div>
+  </div>
+
+  <!-- TAB: DERRAMES -->
+  <div id="tabDerrames" hidden>
+    <div class="card">
+      <h2>🗺️ Mapa de Derrames</h2>
+      <div style="border:2px solid var(--purple);border-radius:10px;overflow:hidden;background:#f0f0f0">
+        <svg viewBox="0 0 1310 926" style="width:100%;height:auto;display:block;max-height:520px">
+          <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
+          <g id="spillPins"></g>
+        </svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#ff9800"></i>Pendiente</span>
+        <span><i style="background:#fbc02d"></i>En proceso</span>
+        <span style="color:var(--mut);font-size:12px">· Toca un pin para ver detalles</span>
+      </div>
+    </div>
+    <div class="card">
+      <h2>📋 Derrames Activos</h2>
+      <div id="spillList"></div>
+    </div>
+    <div class="card">
+      <h2>✅ Historial de Hoy</h2>
+      <div id="spillHistory"></div>
+    </div>
+  </div>
+</main>
+
+<script>
+// ============ CONFIG ============
+const CFG = { DB: "https://voluntariastx20-default-rtdb.firebaseio.com" };
+const APP_SECRET = "asam-laf-2026-secret-v1";
+const VOL_POS = [101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120];
+
+const ZONES = {
+  plataforma:  { name: "Plataforma" },
+  detras:      { name: "Detrás de Plataforma" },
+  cabina:      { name: "Cabina A/V" },
+  bautisterio: { name: "Bautisterio" },
+  primeros:    { name: "Primeros Auxilios" },
+  comunes:     { name: "Zonas Comunes" }
+};
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+let S = {};
+let ACC = {};
+let currentTab = 'acom';
+let pollIv = null;
+
+// ============ TOAST ============
+function toast(msg, err) {
+  const t = document.createElement('div');
+  t.className = 'toast' + (err ? ' err' : '');
+  t.textContent = msg;
+  $('toastWrap').appendChild(t);
+  setTimeout(() => t.classList.add('show'), 10);
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 3000);
+}
+
+// ============ MODAL ============
+function showModal(title, bodyHtml, buttons) {
+  $('modalBox').innerHTML = `<h2>${title}</h2><div>${bodyHtml}</div><div class="flex-row" id="mdlBtns" style="margin-top:10px"></div>`;
+  buttons.forEach(b => {
+    const btn = document.createElement('button');
+    btn.textContent = b.text;
+    btn.className = b.class || '';
+    btn.style.flex = '1';
+    btn.onclick = () => { if(b.action) b.action(); if(!b.keepOpen) $('modal').hidden = true; };
+    $('mdlBtns').appendChild(btn);
+  });
+  $('modal').hidden = false;
+}
+
+// ============ FIREBASE ============
+function net(on) { const e = $('net'); e.textContent = on ? 'En línea' : 'Sin conexión'; e.className = 'net ' + (on ? 'on' : 'off'); }
+function FB_get(path) { return fetch(`${CFG.DB}/${path}.json?t=${Date.now()}`).then(r => r.json()); }
+function FB_put(path, v) { return fetch(`${CFG.DB}/${path}.json`, { method: 'PUT', body: JSON.stringify(v) }).then(r => r.json()); }
+function FB_del(path) { return fetch(`${CFG.DB}/${path}.json`, { method: 'DELETE' }); }
+
+// ============ CARGA ============
+async function loadAll() {
+  try {
+    const [sData, accData] = await Promise.all([FB_get('s'), FB_get('access')]);
+    S = sData || {};
+    ACC = accData || {};
+    net(true);
+    renderAll();
+  } catch(e) { net(false); console.error(e); }
+}
+
+// ============ RENDER ============
+function renderAll() {
+  renderAlertBar();
+  if (currentTab === 'acom') renderAcom();
+  if (currentTab === 'acceso') renderAcceso();
+  if (currentTab === 'derrames') renderDerrames();
+}
+
+function setTab(t) {
+  currentTab = t;
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+  $('tabAcom').hidden = t !== 'acom';
+  $('tabAcceso').hidden = t !== 'acceso';
+  $('tabDerrames').hidden = t !== 'derrames';
+  renderAll();
+}
+
+// ============ ALERT BAR ============
+function renderAlertBar() {
+  const alerts = [];
+  const aStat = computeAcomStats();
+  if (aStat.sinCheckIn > 0) alerts.push(`🚪 ${aStat.sinCheckIn} acomodador(es) sin check-in`);
+  if (aStat.sinAsignar > 0) alerts.push(`🚪 ${aStat.sinAsignar} posición(es) sin asignar`);
+  const entries = ACC.entries || {};
+  const inside = Object.values(entries).filter(e => !e.exitTime);
+  const longInside = inside.filter(e => (Date.now() - e.entryTime) > 60 * 60 * 1000);
+  if (longInside.length > 0) alerts.push(`🔐 ${longInside.length} persona(s) llevan más de 1 hora adentro`);
+  const spills = S.spills || {};
+  const pendSpills = Object.values(spills).filter(s => s.status === 'pendiente');
+  if (pendSpills.length > 0) alerts.push(`🧹 ${pendSpills.length} derrame(s) pendiente(s)`);
+
+  const e = $('alertBar');
+  if (!alerts.length) {
+    e.className = 'alert-bar empty';
+    e.innerHTML = '✅ Todo en orden — sin alertas activas';
+    return;
+  }
+  const hasCrit = pendSpills.length > 0 || longInside.length > 0;
+  e.className = 'alert-bar ' + (hasCrit ? 'critical' : 'warning');
+  e.innerHTML = (hasCrit ? '🚨 ALERTAS:<br>' : '⚠️ Avisos:<br>') + alerts.map(a => '· ' + esc(a)).join('<br>');
+}
+
+// ============ ACOMODADORES ============
+function computeAcomStats() {
+  const pos = S.pos || {};
+  let total = 0, cubiertas = 0, sinAsignar = 0, sinCheckIn = 0;
+  const detalle = [];
+  for (const n in pos) {
+    const num = +n;
+    if (VOL_POS.includes(num)) continue;
+    if (pos[n].active === false) continue;
+    total++;
+    const p = pos[n];
+    const asignado = p.who || p.sub;
+    const checkedIn = p.st === 'ok' || p.st === 'sub';
+    if (checkedIn) cubiertas++;
+    else if (!asignado) { sinAsignar++; detalle.push({ n:num, reason:'sin asignar', quien:'' }); }
+    else { sinCheckIn++; detalle.push({ n:num, reason:'sin check-in', quien: p.sub || p.who }); }
+  }
+  return { total, cubiertas, sinAsignar, sinCheckIn, detalle };
+}
+
+function renderAcom() {
+  const st = computeAcomStats();
+  const pct = st.total > 0 ? Math.round(100 * st.cubiertas / st.total) : 0;
+  $('acomStats').innerHTML = `
+    <div class="stat neutral"><b>${st.total}</b><small>Posiciones activas</small></div>
+    <div class="stat ok"><b>${st.cubiertas}</b><small>Cubiertas (${pct}%)</small></div>
+    <div class="stat warn"><b>${st.sinCheckIn}</b><small>Sin check-in</small></div>
+    <div class="stat err"><b>${st.sinAsignar}</b><small>Sin asignar</small></div>
+  `;
+  const dc = $('acomSinCubrir');
+  if (!st.detalle.length) { dc.innerHTML = '<div class="empty">✅ Todas las posiciones cubiertas</div>'; return; }
+  dc.innerHTML = st.detalle.map(d =>
+    `<span class="pos-chip" title="${esc(d.reason)}${d.quien?' · '+esc(d.quien):''}">#${d.n}${d.quien?' · '+esc(d.quien.split(' ')[0]):''}</span>`
+  ).join('');
+}
+
+// ============ ACCESO ============
+function renderAcceso() {
+  const entries = ACC.entries || {};
+  const zonesHtml = Object.entries(ZONES).map(([id, z]) => {
+    const count = Object.values(entries).filter(e => e.zone === id && !e.exitTime).length;
+    return `<div class="stat zone"><b>${count}</b><small>${esc(z.name)}</small></div>`;
+  }).join('');
+  $('accZoneCounters').innerHTML = zonesHtml;
+
+  const inside = Object.entries(entries)
+    .filter(([id, e]) => !e.exitTime)
+    .sort((a, b) => b[1].entryTime - a[1].entryTime);
+  $('accInsideCount').textContent = inside.length;
+
+  if (!inside.length) {
+    $('accInsideList').innerHTML = '<div class="empty">No hay nadie dentro ahora.</div>';
+  } else {
+    const now = Date.now();
+    $('accInsideList').innerHTML = inside.map(([id, e]) => {
+      const mins = Math.floor((now - e.entryTime) / 60000);
+      const long = mins >= 60;
+      const time = new Date(e.entryTime).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
+      const zoneName = ZONES[e.zone]?.name || e.zone;
+      return `<div class="inside-item${long?' long':''}">
+        <div class="info">
+          <div class="name">${esc(e.name)}</div>
+          <div class="meta">${esc(zoneName)}${e.isTemp?' · QR Temporal':''}</div>
+          <div class="time">Entró: ${time} (${mins} min)</div>
+        </div>
+        <button class="ok" onclick="markExit('${id}')">Salió</button>
+      </div>`;
+    }).join('');
+  }
+
+  const all = Object.entries(entries).sort((a, b) => b[1].entryTime - a[1].entryTime).slice(0, 20);
+  if (!all.length) {
+    $('accLog').innerHTML = '<div class="empty">Aún no hay registros.</div>';
+  } else {
+    $('accLog').innerHTML = all.map(([id, e]) => {
+      const t = new Date(e.entryTime).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
+      const ex = e.exitTime ? new Date(e.exitTime).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' }) : '—';
+      const zoneName = ZONES[e.zone]?.name || e.zone;
+      return `<div style="display:flex;justify-content:space-between;padding:8px 12px;background:#fafafa;border-radius:6px;margin-bottom:4px;font-size:14px;flex-wrap:wrap;gap:6px">
+        <span><b>${esc(e.name)}</b></span>
+        <span style="color:var(--mut)">${esc(zoneName)} · ${t} → ${ex}</span>
+      </div>`;
+    }).join('');
+  }
+
+  if (!$('tempZone').options.length) {
+    $('tempZone').innerHTML = Object.entries(ZONES).map(([id, z]) =>
+      `<option value="${id}">${esc(z.name)}</option>`
+    ).join('');
+  }
+}
+
+async function markExit(entryId) {
+  await FB_put(`access/entries/${entryId}/exitTime`, Date.now());
+  toast('✓ Salida registrada');
+  loadAll();
+}
+
+// ============ QR TEMPORAL ============
+async function sign(msg) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('').slice(0,16);
+}
+
+async function genTempQR() {
+  const name = $('tempName').value.trim();
+  const zone = $('tempZone').value;
+  const hours = +$('tempHours').value;
+  if (!name) { toast('Escribe el nombre del hermano', true); return; }
+
+  const tempId = Math.random().toString(36).slice(2, 10);
+  const expiresAt = Date.now() + hours * 60 * 60 * 1000;
+  const temp = { zone, expiresAt, name, used: false, createdAt: Date.now(), createdBy: 'Alberto Herrera' };
+  await FB_put(`access/tempQr/${tempId}`, temp);
+
+  const sig = await sign(`${tempId}|${zone}|${expiresAt}|${APP_SECRET}`);
+  const content = `TMP|${tempId}|${zone}|${expiresAt}|${sig}`;
+
+  const display = $('tempQRDisplay');
+  display.hidden = false;
+  display.innerHTML = `
+    <div style="text-align:center">
+      <div style="font-weight:700;font-size:17px;color:var(--purple);margin-bottom:4px">QR Temporal para</div>
+      <div style="font-weight:700;font-size:18px">${esc(name)}</div>
+      <div style="font-size:14px;color:var(--mut);margin-top:4px">Zona: ${esc(ZONES[zone].name)}</div>
+      <div style="font-size:13px;color:var(--mut)">Válido ${hours} hora${hours>1?'s':''}</div>
+      <div id="tempQRHolder" style="margin:12px 0"></div>
+      <div style="font-size:12px;color:var(--mut);margin-bottom:10px">Expira: ${new Date(expiresAt).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})}</div>
+      <div class="flex-row" style="justify-content:center">
+        <button class="ok" onclick="printTempQR('${esc(name)}', '${content}', '${esc(ZONES[zone].name)}')">🖨️ Imprimir</button>
+        <button onclick="document.getElementById('tempQRDisplay').hidden=true;$('tempName').value=''">Cerrar</button>
+      </div>
+    </div>`;
+
+  setTimeout(() => {
+    const holder = $('tempQRHolder');
+    if (holder) {
+      holder.innerHTML = '';
+      new QRCode(holder, { text: content, width: 220, height: 220, correctLevel: QRCode.CorrectLevel.M });
+    }
+  }, 50);
+
+  $('tempName').value = '';
+  toast(`✓ QR temporal generado para ${name}`);
+}
+
+function printTempQR(name, content, zoneName) {
+  const w = window.open('', '_blank');
+  w.document.write(`<html><head><title>QR Temporal - ${esc(name)}</title><style>
+    body{font-family:sans-serif;text-align:center;padding:30px}
+    .card{border:2px dashed #5B3C88;padding:20px;display:inline-block;border-radius:10px}
+    .name{font-weight:bold;font-size:20px;margin:12px 0 4px}
+    .zone{font-size:14px;color:#666;margin-bottom:12px}
+    .label{font-size:12px;color:#999;margin-top:10px}
+  </style></head><body>
+    <div class="card">
+      <div class="label">🔑 QR TEMPORAL · ASAMBLEA</div>
+      <div id="qr" style="margin:12px 0"></div>
+      <div class="name">${esc(name)}</div>
+      <div class="zone">${esc(zoneName)}</div>
+      <div class="label">Un solo uso · Diríjase al Superintendente si tiene dudas</div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
+    <script>
+      new QRCode(document.getElementById("qr"), { text: ${JSON.stringify(content)}, width: 240, height: 240 });
+      setTimeout(() => window.print(), 500);
+    <\/script>
+  </body></html>`);
+}
+
+// ============ DERRAMES ============
+function renderDerrames() {
+  const spills = S.spills || {};
+  const active = Object.entries(spills)
+    .filter(([id, s]) => s.status !== 'terminado')
+    .sort((a, b) => b[1].ts - a[1].ts);
+  const done = Object.entries(spills)
+    .filter(([id, s]) => s.status === 'terminado')
+    .sort((a, b) => (b[1].tsDone || b[1].ts) - (a[1].tsDone || a[1].ts));
+
+  const pins = active.map(([id, sp]) => {
+    const isProc = sp.status === 'proceso';
+    const color = isProc ? '#fbc02d' : '#ff9800';
+    const icon = isProc ? '⏳' : '!';
+    const anim = isProc ? '' : '<animate attributeName="opacity" values="0.95;0.5;0.95" dur="1.4s" repeatCount="indefinite"/>';
+    return `<g style="cursor:pointer" onclick="showSpillDetails('${id}')" transform="translate(${sp.x} ${sp.y})">
+      <polygon points="0,-26 24,20 -24,20" fill="${color}" stroke="#fff" stroke-width="2" opacity="0.95">${anim}</polygon>
+      <text text-anchor="middle" y="6" font-size="18" fill="#fff" font-weight="bold" pointer-events="none">${icon}</text>
+    </g>`;
+  }).join('');
+  $('spillPins').innerHTML = pins;
+
+  if (!active.length) {
+    $('spillList').innerHTML = '<div class="empty">✅ Sin derrames activos</div>';
+  } else {
+    $('spillList').innerHTML = active.map(([id, sp]) => {
+      const hora = new Date(sp.ts).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
+      const isProc = sp.status === 'proceso';
+      return `<div class="spill-item${isProc?' proc':''}">
+        <b>${esc(sp.tipo)}</b> · <span style="color:${isProc?'var(--warn)':'var(--err)'};font-weight:700">${sp.status.toUpperCase()}</span>
+        <div style="font-size:13px;color:var(--mut);margin-top:4px">
+          Reportado por ${esc(sp.quien||'?')} · ${hora}
+          ${sp.quienLimpia ? ' · Limpiando: ' + esc(sp.quienLimpia) : ''}
+        </div>
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+          <button onclick="showSpillDetails('${id}')" style="padding:8px 12px;font-size:13px">Ver</button>
+          ${!isProc ? `<button class="warn" onclick="takeSpill('${id}')" style="padding:8px 12px;font-size:13px">🖐️ Tomar</button>` : ''}
+          ${isProc ? `<button class="ok" onclick="doneSpill('${id}')" style="padding:8px 12px;font-size:13px">✓ Terminado</button>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  if (!done.length) {
+    $('spillHistory').innerHTML = '<div class="empty">Aún no hay derrames terminados.</div>';
+  } else {
+    $('spillHistory').innerHTML = done.map(([id, sp]) => {
+      const t = new Date(sp.ts).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
+      const tDone = sp.tsDone ? new Date(sp.tsDone).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' }) : '—';
+      return `<div style="display:flex;justify-content:space-between;padding:8px 12px;background:#f1f8e9;border-left:3px solid var(--ok);border-radius:6px;margin-bottom:4px;font-size:14px;flex-wrap:wrap;gap:6px">
+        <span><b>${esc(sp.tipo)}</b> · ${esc(sp.quien||'?')}</span>
+        <span style="color:var(--mut)">${t} → ${tDone}</span>
+      </div>`;
+    }).join('');
+  }
+}
+
+async function takeSpill(id) {
+  await FB_put(`s/spills/${id}/status`, 'proceso');
+  await FB_put(`s/spills/${id}/quienLimpia`, 'Alberto Herrera');
+  await FB_put(`s/spills/${id}/tsProc`, Date.now());
+  toast('✓ Derrame tomado');
+  loadAll();
+}
+
+async function doneSpill(id) {
+  await FB_put(`s/spills/${id}/status`, 'terminado');
+  await FB_put(`s/spills/${id}/tsDone`, Date.now());
+  toast('✓ Derrame limpiado');
+  loadAll();
+}
+
+function showSpillDetails(id) {
+  const sp = S.spills[id];
+  if (!sp) return;
+  const hora = new Date(sp.ts).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
+  const fechaStr = new Date(sp.ts).toLocaleDateString('es-MX', { day:'2-digit', month:'short' });
+  const isProc = sp.status === 'proceso';
+  const isDone = sp.status === 'terminado';
+  showModal(`🧹 Derrame · ${esc(sp.tipo)}`,
+    `<div class="who" style="background:#fff8e1;border-left:4px solid var(--spill);padding:12px;border-radius:6px">
+      <b>Reportado por:</b> ${esc(sp.quien||'?')}<br>
+      <b>Hora:</b> ${hora} (${fechaStr})<br>
+      <b>Estado:</b> <span style="color:${isDone?'var(--ok)':isProc?'var(--warn)':'var(--err)'};font-weight:700">${sp.status.toUpperCase()}</span>
+      ${sp.quienLimpia?'<br><b>Limpiando:</b> '+esc(sp.quienLimpia):''}
+    </div>`,
+    [
+      {text:'Cerrar'},
+      ...(sp.status === 'pendiente' ? [{text:'🖐️ Tomar', class:'warn', action:()=>takeSpill(id)}] : []),
+      ...(isProc ? [{text:'✓ Terminado', class:'ok', action:()=>doneSpill(id)}] : [])
+    ]);
+}
+
+// ============ RELOJ ============
+function tickClock() {
+  $('clock').textContent = new Date().toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+}
+
+// ============ INIT ============
+function init() {
+  tickClock();
+  setInterval(tickClock, 1000);
+  loadAll();
+  pollIv = setInterval(loadAll, 5000);
+}
+
+window.addEventListener('beforeunload', () => clearInterval(pollIv));
+init();
+</script>
+</body>
+</html>
