@@ -174,7 +174,7 @@ details summary:hover{background:#e8ddc8}
       <div class="card">
         <h2>Generar QR Temporal</h2>
         <div class="notice">
-          <b>Uso:</b> para hermanos que <b>olvidaron su QR</b> y necesitan entrar en este momento. El QR es de <b>un solo uso</b> y expira en el tiempo indicado.
+          <b>Uso:</b> para hermanos que <b>olvidaron su QR original</b>. El QR temporal es válido por tiempo limitado (no un solo uso), y puede usarse múltiples veces dentro de ese periodo. Una vez expirado, debe generarse uno nuevo.
         </div>
         <div class="form-row">
           <input id="tempName" placeholder="Nombre del hermano">
@@ -182,11 +182,17 @@ details summary:hover{background:#e8ddc8}
             <option value="1">Válido 1 hora</option>
             <option value="2" selected>Válido 2 horas</option>
             <option value="4">Válido 4 horas</option>
-            <option value="8">Todo el día</option>
+            <option value="8">Todo el día (8 horas)</option>
+            <option value="24">Todo el día (24 horas)</option>
           </select>
           <button class="pri" onclick="genTempQR()">Generar QR Temporal</button>
         </div>
         <div id="tempQRDisplay" hidden></div>
+      </div>
+
+      <div class="card">
+        <h2>QRs temporales activos (<span id="tempActiveCount">0</span>)</h2>
+        <div id="tempActiveList"></div>
       </div>
 
       <div class="card">
@@ -209,7 +215,6 @@ const CFG = { DB: "https://voluntariastx20-default-rtdb.firebaseio.com" };
 const APP_SECRET = "asam-laf-2026-secret-v1";
 const ADMIN_PASS = "acceso2026";
 
-// Única zona activa:
 const ZONE = "detras";
 const ZONE_NAME = "Detrás de Plataforma";
 
@@ -228,7 +233,6 @@ const ROLES = [
   { id:"voluntaria", label:"Voluntaria" }
 ];
 
-// Roles que SÍ pueden entrar a Detrás de Plataforma
 const ZONE_ALLOWED_ROLES = ["av","tecnico","comite","instalacion","presidente","discursante"];
 
 const $ = id => document.getElementById(id);
@@ -280,7 +284,7 @@ async function loadAll() {
 }
 
 function renderAll() {
-  if (adminLogged) { renderUsers($('searchUsers').value); renderZoneStatus(); }
+  if (adminLogged) { renderUsers($('searchUsers').value); renderZoneStatus(); renderTempActive(); }
   renderInsideList();
 }
 
@@ -300,7 +304,7 @@ async function buildQRContent(uid) {
   return `ASM|${uid}|${d}|${sig}`;
 }
 
-// ============ VALIDACIÓN (corregida) ============
+// ============ VALIDACIÓN — QR temporal ya NO es de un solo uso ============
 async function validateQR(content) {
   const parts = content.split('|');
   const prefix = parts[0];
@@ -315,12 +319,12 @@ async function validateQR(content) {
     if (sig !== expected) return { valid: false, reason: "Firma inválida (código falsificado o dañado)" };
     if (Date.now() > +expiresAt) {
       const exp = new Date(+expiresAt).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
-      return { valid: false, reason: `QR temporal expirado (era válido hasta ${exp})` };
+      return { valid: false, reason: `QR temporal expirado (era válido hasta ${exp}). Solicite uno nuevo.` };
     }
     const t = TEMP[tempId];
     if (!t) return { valid: false, reason: "QR temporal no encontrado. Intente de nuevo." };
-    if (t.used) return { valid: false, reason: "Este QR temporal ya fue usado" };
     if (zone !== ZONE) return { valid: false, reason: "QR temporal es para otra zona" };
+    // NOTA: ya NO revisamos "used" — el QR temporal funciona múltiples veces
     return { valid: true, tempId, zone, temp: true, name: t.name };
   }
 
@@ -370,7 +374,6 @@ async function onScanSuccess(text) {
   if (text === lastScan && Date.now() - lastScanTs < 3000) return;
   lastScan = text; lastScanTs = Date.now();
 
-  // Si es QR temporal, refrescar del servidor para evitar datos viejos
   const parts = text.split('|');
   if (parts[0] === 'TMP' && parts[1]) {
     try {
@@ -398,7 +401,11 @@ async function onScanSuccess(text) {
   const uid = res.temp ? `temp:${res.tempId}` : res.uid;
   await logEntry(uid, name, res.temp);
 
-  if (res.temp) await path(`tempQr/${res.tempId}/used`, true);
+  // Registrar uso para auditoría (sin bloquear)
+  if (res.temp) {
+    const t = TEMP[res.tempId] || {};
+    await path(`tempQr/${res.tempId}/uses`, (t.uses || 0) + 1);
+  }
 
   showResultGreen(name, res.temp ? ['QR Temporal'] : (res.user.roles || []));
   toast(`Entrada registrada: ${name}`);
@@ -471,6 +478,7 @@ function loginAdmin() {
     renderRoleCheckboxes();
     renderUsers('');
     renderZoneStatus();
+    renderTempActive();
   } else {
     toast("Contraseña incorrecta", true);
   }
@@ -639,6 +647,44 @@ async function renderZoneStatus() {
     </div>`;
 }
 
+// ============ QRs temporales activos ============
+function renderTempActive() {
+  const now = Date.now();
+  const active = Object.entries(TEMP)
+    .filter(([id, t]) => t.expiresAt > now)
+    .sort((a, b) => a[1].expiresAt - b[1].expiresAt);
+
+  $('tempActiveCount').textContent = active.length;
+
+  if (!active.length) {
+    $('tempActiveList').innerHTML = '<div class="empty">No hay QRs temporales activos en este momento.</div>';
+    return;
+  }
+
+  $('tempActiveList').innerHTML = active.map(([id, t]) => {
+    const mins = Math.floor((t.expiresAt - now) / 60000);
+    const time = new Date(t.expiresAt).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
+    return `<div class="user-card" style="border-left:4px solid var(--warn)">
+      <div class="name">${esc(t.name)}</div>
+      <div class="meta">Expira a las ${time} · Quedan ${mins} min${t.uses ? ' · Usado '+t.uses+' '+(t.uses===1?'vez':'veces') : ' · Aún no usado'}</div>
+      <div class="actions">
+        <button onclick="deleteTempQR('${id}')" style="color:var(--err)">Cancelar QR temporal</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function deleteTempQR(id) {
+  const t = TEMP[id];
+  showModal("Cancelar QR temporal", `<p>¿Cancelar el QR temporal de <b>${esc(t?.name)}</b>? Si el hermano aún lo necesita, deberá solicitar otro.</p>`,
+    [{text:"Cancelar QR", class:"warn", action: async () => {
+      await del(`tempQr/${id}`);
+      delete TEMP[id];
+      renderTempActive();
+      toast("QR temporal cancelado");
+    }}, {text:"No cancelar"}]);
+}
+
 async function genTempQR() {
   const name = $('tempName').value.trim();
   const hours = +$('tempHours').value;
@@ -646,7 +692,7 @@ async function genTempQR() {
 
   const tempId = Math.random().toString(36).slice(2, 10);
   const expiresAt = Date.now() + hours * 60 * 60 * 1000;
-  const temp = { zone: ZONE, expiresAt, name, used: false, createdAt: Date.now(), createdBy: 'Superintendente de Acomodadores' };
+  const temp = { zone: ZONE, expiresAt, name, createdAt: Date.now(), createdBy: 'Superintendente de Acomodadores', uses: 0 };
 
   await path(`tempQr/${tempId}`, temp);
   TEMP[tempId] = temp;
@@ -666,7 +712,7 @@ async function genTempQR() {
       <div class="qr-name">${esc(name)}</div>
       <div class="qr-cong">Detrás de Plataforma</div>
       <div style="font-size:13px;color:var(--text-muted);margin-top:10px">Válido ${hours} hora${hours>1?'s':''} · Expira ${new Date(expiresAt).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})}</div>
-      <div style="font-size:12px;color:var(--text-muted);margin-top:6px;font-style:italic">Un solo uso</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:6px;font-style:italic">Puede usarse múltiples veces hasta que expire</div>
       <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;justify-content:center">
         <button class="ok" onclick="printTempQR('${esc(name)}', '${content}')">Imprimir</button>
         <button onclick="document.getElementById('tempQRDisplay').hidden=true;$('tempName').value=''">Cerrar</button>
@@ -683,6 +729,7 @@ async function genTempQR() {
 
   $('tempName').value = '';
   toast(`QR temporal generado para ${name}`);
+  renderTempActive();
 }
 
 function printTempQR(name, content) {
@@ -702,7 +749,7 @@ function printTempQR(name, content) {
       <div id="qr"></div>
       <div class="name">${esc(name)}</div>
       <div class="zone">Detrás de Plataforma</div>
-      <div class="hint">Un solo uso · Si tiene dudas, diríjase al Superintendente</div>
+      <div class="hint">Puede usarse múltiples veces hasta que expire</div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
     <script>
@@ -741,7 +788,7 @@ function setTab(tab) {
   document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
   if (tab === 'inside' || tab === 'admin') stopCamera();
   if (tab === 'inside') renderInsideList();
-  if (tab === 'admin' && adminLogged) { renderUsers($('searchUsers').value); renderZoneStatus(); }
+  if (tab === 'admin' && adminLogged) { renderUsers($('searchUsers').value); renderZoneStatus(); renderTempActive(); }
 }
 
 const path = (p, v) => {
