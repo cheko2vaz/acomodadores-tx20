@@ -128,7 +128,7 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
     <b style="color:#e65100">Ajustes de Admin (solo tú ves esto)</b>
     <label>Mover izquierda/derecha <input type="range" id="cDx" min="-40" max="40" step="1"></label>
     <label>Mover arriba/abajo <input type="range" id="cDy" min="-40" max="40" step="1"></label>
-    <label>Distancia a la curva <input type="range" id="cOff" min="2" max="30" step="1"></label>
+    <label>Distancia a la curva <input type="range" id="cOff" min="2" max="40" step="1"></label>
     <label>Largo del tramo (estirar) <input type="range" id="cLen" min="60" max="130" step="1"></label>
     <button style="margin-top:8px;background:#d11;color:#fff" onclick="calReset()">↺ Restablecer</button>
   </div>
@@ -143,7 +143,7 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
 
   <div id="walkMapBox" style="margin-top:10px">
     <div id="mapbox"><svg id="walkSvg" viewBox="440 270 240 310">
-      <image id="mi" href="map.jpg" x="0" y="0" width="1310" height="926" preserveAspectRatio="none"/>
+      <image id="mi2" href="map.jpg" x="0" y="0" width="1310" height="926" preserveAspectRatio="none"/>
       <path id="curve" fill="none" stroke="#5B3C88" stroke-width="2" stroke-dasharray="4 3" opacity=".8"/>
       <g id="slots"></g>
       <g id="mk"></g>
@@ -154,7 +154,7 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
       <span><i style="background:#e0e0e0;border:1px solid #999"></i>Libre</span>
       <span><i style="background:#43a047"></i>Con walker</span>
       <span><i style="background:#fff;border:2px solid #d11"></i>Último en llegar</span>
-      <span>Columnas A→T de norte a sur · Hileras 1-2-3 desde la curva hacia el vestíbulo</span>
+      <span>Columnas A→T de norte a sur · Hileras 1-2-3 desde la curva hacia el auditorio</span>
     </div>
   </div>
 
@@ -189,7 +189,6 @@ const D={"caps":["Eliud Luna","Hugo Galvan","Jimmy Vasquez","José A. González"
 "cap":{"A1":0,"A2":464,"A3":475,"A4":464,"A5":0,"B1":0,"B2":158,"B3":156,"B4":158,"B5":0},"expect":2474};
 for(const k in VOL_POS_COORDS){D.pos[k]={who:"",t:"Voluntaria "+k,x:VOL_POS_COORDS[k].x,y:VOL_POS_COORDS[k].y,l:0,a:"vol",v:1}}
 const ADM=[{"n":"Sergio E. Vazquez Jr.","pwd":"acomodadores2026","all":1,"cnt":1,"adm":1,"areas":[]},{"n":"Alberto Herrera","pwd":"seccion@","all":1,"cnt":1,"adm":1,"areas":[]},{"n":"Steven Snyder","pwd":"auxiliar2026","areas":["ctl","aud"],"adm":1},{"n":"Jaime Palestina","pwd":"superaux2026","areas":["alm","ent"],"adm":1},{"n":"Abdiel Juarez Jr.","pwd":"clave2026","areas":["aud"],"cnt":1,"adm":1},{"n":"José A. González","pwd":"capitan2026","areas":["vol"],"adm":1},{"n":"Carlos Vasquez","pwd":"limpieza2026","areas":[],"spill":1,"adm":1}];
-
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const POS=Object.keys(D.pos).map(Number),SEC=[1,2,3,4,5].flatMap(i=>[['A',i,'Anillo 2'],['B',i,'Anillo 1']].map(([r,i,l])=>({id:r+i,l:l+' · Sección '+i})));
 const PRIV={A:'Anciano',S:'Siervo Ministerial',P:'Publicador bautizado'};
@@ -342,11 +341,11 @@ function wTan(t){return[2*(1-t)*(W_PC[0]-W_P0[0])+2*t*(W_P2[0]-W_PC[0]), 2*(1-t)
 function wSlotXY(id){
   const ci=LET.indexOf(id[0]),r=+id[1];
   const mid=(W_P0[1]+W_P2[1])/2,k=W_CAL.len/100;
-  const t=(ci+.5)/20,b=wBez(t),T=wTan(t),m=Math.hypot(T[0],T[1]),n=[-T[1]/m,T[0]/m];
+  const t=(ci+.5)/20,b=wBez(t),T=wTan(t),m=Math.hypot(T[0],T[1]),n=[T[1]/m,-T[0]/m]; // Vector normal INVERTIDO para mover a la derecha
   const d=W_CAL.off+(r-1)*13;
   let x=b[0]+n[0]*d,y=b[1]+n[1]*d;
   
-  // INVERTIDO: Invertimos Y respecto al centro
+  // Invertir Y para adaptarlo a la perspectiva que pediste
   y=mid-(y-mid)*k;
   
   return{x:x+W_CAL.dx, y:y+W_CAL.dy, a:Math.atan2(T[1],T[0])*180/Math.PI*(-1)};
