@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Acomodadores · La Feria, TX</title>
 <style>
 :root{--red:#6e1414;--red2:#9b1c1c;--ink:#1f1f1f;--mut:#555;--line:#d6d6d6;--bg:#e9e9e9;--blue:#2c6cb0;--org:#e07b00;--ok:#2e7d32;--purple:#5B3C88;--spill:#ff9800;--spillP:#fbc02d;--spillD:#4caf50;--gray:#999}
@@ -14,8 +14,8 @@ main{max-width:1100px;margin:auto;padding:12px;display:grid;gap:12px}
 .card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 #alert{border:2px solid var(--red2);color:var(--red2);font-weight:600}
-#mapw{overflow:auto;padding:0;-webkit-overflow-scrolling:touch}
-svg.map-svg{width:100%;max-width:100%;height:auto;display:block;touch-action:pan-x pan-y pinch-zoom}
+#mapw{overflow:auto;padding:0;-webkit-overflow-scrolling:touch; border:2px solid var(--purple); border-radius:8px}
+svg.map-svg{width:100%;max-width:100%;height:auto;display:block;transition:width 0.2s}
 #toast-container{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none}
 .toast{background:#2e7d32;color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,.3);opacity:0;transition:opacity .3s,transform .3s;transform:translateY(20px);display:flex;align-items:center;gap:8px;max-width:340px;font-size:16px}
 .toast.err{background:#b71c1c}.toast.show{opacity:1;transform:translateY(0)}
@@ -69,6 +69,15 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
 .vol-list-item:last-child{border-bottom:none}
 .vol-list-item.occ{background:#fff}
 .vol-list-item.empty{color:#888;font-style:italic}
+
+/* Menú Admin y Modales Personalizados */
+#adminMenuBtn{background:#4A6DA7;color:#fff;border-color:#4A6DA7;font-weight:bold}
+#adminMenu{position:fixed;top:60px;right:10px;background:#fff;border:2px solid var(--purple);border-radius:8px;padding:10px;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,0.3);display:flex;flex-direction:column;gap:8px;min-width:200px}
+#adminMenu button{text-align:left;justify-content:flex-start}
+#modal{position:fixed;inset:0;background:#000a;display:grid;place-items:center;padding:14px;z-index:9999}
+#modal[hidden]{display:none}
+#modal .box{background:#fff;border-radius:10px;padding:18px;width:100%;max-width:400px;display:grid;gap:12px;box-shadow:0 10px 30px rgba(0,0,0,0.5)}
+#modal h2{margin:0;color:var(--purple);font-size:20px}
 </style>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
@@ -82,8 +91,17 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
   <span id="usr"></span>
   <button id="btn-mode-toggle" onclick="toggleAppMode()" hidden>👥 Vista Voluntaria</button>
   <button onclick="toggleBigText()" style="background:#4A6DA7;color:#fff;border-color:#4A6DA7;font-weight:bold" title="Texto grande">🔍 A</button>
+  <button id="adminMenuBtn" onclick="toggleAdminMenu()" hidden>⚙️ Admin</button>
   <button id="out" onclick="logout()" hidden>Salir</button>
 </header>
+
+<div id="adminMenu" hidden>
+  <button class="${edit?'on':''}" onclick="edit=!edit;spillMode=false;draw();toggleAdminMenu()">✋ Mover Posiciones</button>
+  <button class="${secEditMode?'on':''}" onclick="secEditMode=!secEditMode;spillMode=false;hl=null;draw();toggleAdminMenu()">✏️ Editar Zonas</button>
+  <button onclick="reset();toggleAdminMenu()" class="warn">🔄 Reiniciar Día</button>
+</div>
+
+<div id="modal" hidden><div class="box" id="modalBox"></div></div>
 
 <div id="login"><div class="card">
   <h2 style="margin:0">Dept. de Acomodadores</h2>
@@ -106,7 +124,13 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
   <div id="alert" class="card" hidden></div>
   <div id="spillPanel" hidden></div>
   <div id="bar" class="card row"></div>
-  <div class="card" id="mapw"><svg id="svg" viewBox="0 0 1310 926" class="map-svg"><image id="mi" width="1310" height="926" href="map.jpg" preserveAspectRatio="none"/><g id="sl"></g><g id="vl"></g><g id="pl"></g><g id="spl"></g></svg></div>
+  <div class="card" id="mapw">
+    <div class="row" style="justify-content:flex-end; margin-bottom:5px">
+      <button onclick="zoomMain(-0.2)" style="padding:6px 12px;font-weight:bold;font-size:18px">−</button>
+      <button onclick="zoomMain(0.2)" style="padding:6px 12px;font-weight:bold;font-size:18px">＋</button>
+    </div>
+    <svg id="svg" viewBox="0 0 1310 926" class="map-svg"><image id="mi" width="1310" height="926" href="map.jpg" preserveAspectRatio="none"/><g id="sl"></g><g id="vl"></g><g id="pl"></g><g id="spl"></g></svg>
+  </div>
   <div class="lg card" id="legend"></div>
   <div class="card" id="panel"></div>
   <div class="card"><h3>Conteo por sección</h3><div id="expEd" class="row" hidden><label for="exp">Esperados</label><input id="exp" type="number" min="1" style="width:110px"><button class="pri" onclick="const v=+$('exp').value;if(v>0)put('expect',v)">Guardar</button></div><div id="cnt"></div></div>
@@ -170,6 +194,7 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
   <h2 style="margin-top:0;color:var(--purple)">Portal de Voluntarias</h2>
   <input type="text" id="volSearch" placeholder="🔍 Buscar mi nombre para ver mi posición..." style="width:100%;padding:15px;font-size:18px;margin-bottom:15px;border:2px solid var(--purple)" oninput="buscarVoluntaria(this.value)">
   <div id="volResults" style="text-align:left;margin-top:10px"></div>
+  <button onclick="openWalkers('vol')" style="width:100%;padding:14px;font-size:17px;background:#5B3C88;color:#fff;border-color:#5B3C88;font-weight:bold;margin-top:15px">🦽 Estacionamiento de Walkers/Sillas</button>
   <button onclick="logout()" class="warn" style="width:100%;padding:18px;font-size:20px;margin-top:20px;border-radius:8px">🚪 Cerrar Sesión</button>
 </div></div>
 
@@ -179,7 +204,7 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
       <button onclick="closeVolMap()" style="background:#5B3C88;color:#fff;border-color:#5B3C88;font-weight:bold">← Volver</button>
       <span id="volMapTitle" style="font-weight:bold;color:#5B3C88;font-size:18px"></span>
     </div>
-    <div class="card" style="overflow:auto;padding:0">
+    <div class="card" style="overflow:auto;padding:0; border:2px solid var(--purple)">
       <svg id="volMapSvg" viewBox="0 0 1310 926" class="map-svg">
         <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
         <g id="volMapPl"></g>
@@ -214,6 +239,7 @@ let walkTab='map';
 let cam = { x: 440, y: 250, w: 240, h: 330 };
 try { Object.assign(cam, JSON.parse(localStorage.wcam || '{}')); } catch(e) {}
 let touchState={mode:null,startDist:0,startScale:1,startX:0,startY:0,lastX:0,lastY:0,cx:0,cy:0};
+let mainZoom = 1;
 
 const LET="ABCDEFGHIJKLMNOPQRST".split("");
 const W_P0=[580,304],W_PC=[556,423],W_P2=[581,542];
@@ -226,26 +252,95 @@ const labelPos=sec=>{const l=S.labels&&S.labels[sec.id];return l?{x:l.x,y:l.y}:{
 const P=n=>{const d=D.pos[n];const base=Object.assign({},d,(S.pos||{})[n]);if(d.v===1){const who=(S.volTurnos&&S.volTurnos[currentTurno]&&S.volTurnos[currentTurno][n])||"";return Object.assign({},base,{who})}return base};
 const coordsOf=pos=>{const d=D.pos[pos];const s=(S.pos||{})[pos]||{};return{x:s.x!==undefined?s.x:d.x,y:s.y!==undefined?s.y:d.y}};
 const eff=n=>{const p=P(n);return p.sub||p.who||''},ppl=n=>D.roster.find(r=>r.n===n);
-const isPosActive=n=>{
-  const p=S.pos&&S.pos[n];
-  return p?p.active!==false:true;
-};
+const isPosActive=n=>{const p=S.pos&&S.pos[n];return p?p.active!==false:true};
 const canEd=n=>{if(!me||!me.adm)return false;if(me.all)return true;const area=D.pos[n].a;if(area==='vol')return(me.areas||[]).includes('vol');return(me.areas||[]).includes(area)};
 const canCnt=()=>me&&(me.cnt||(!me.adm&&S.cntOpen&&(me.n==='Eliud Luna'||POS.some(n=>n>=25&&n<=34&&eff(n)===me.n))));
 const occ=()=>new Set(POS.flatMap(n=>[P(n).who,P(n).sub]).filter(Boolean));
 const watch=n=>me&&(me.all||(me.adm?(D.pos[n].a==='vol'||me.areas.includes(D.pos[n].a)):eff(n)===me.n));
 const vacant=n=>watch(n)&&isPosActive(n)&&!D.pos[n].v&&(D.pos[n].l?S.arm!==false:S.arm2===true)&&!['ok','sub'].includes(P(n).st);
 
+// --- MODALES PERSONALIZADOS ---
+function showModal(title, bodyHtml, buttons) {
+  $('modalBox').innerHTML = `<h2>${title}</h2><div>${bodyHtml}</div><div class="row" style="margin-top:10px" id="mdlBtns"></div>`;
+  const btnContainer = $('mdlBtns');
+  buttons.forEach(b => {
+    const btn = document.createElement('button');
+    btn.textContent = b.text;
+    btn.className = b.class;
+    btn.onclick = () => {
+      if (b.action) b.action();
+      if (!b.keepOpen) $('modal').hidden = true;
+    };
+    btnContainer.appendChild(btn);
+  });
+  $('modal').hidden = false;
+  const inp = $('modalBox').querySelector('input');
+  if (inp) setTimeout(() => inp.focus(), 50);
+}
+
+function promptWalker(id, name) {
+  if(!name) {
+    showModal(`🦽 Espacio ${id}`, `<p>¿Cómo se llama el hermano/a?</p><input id="nm" placeholder="Nombre" autocomplete="off">`, [
+      {text:"Guardar", class:"ok", action: () => {
+        const val = $('nm').value.trim();
+        if(!val) return;
+        const ts=Date.now();
+        W_DATA[id]={name:val,ts}; W_HIST[ts]={slot:id,name:val,act:'in',ts};
+        W_Flash=id; drawWalkers();
+        setTimeout(()=>{W_Flash=null;drawWalkMap()},6000);
+        fetch(`${CFG.DB}/walkersTest/w/${id}.json`,{method:'PUT',body:JSON.stringify({name:val,ts})});
+        fetch(`${CFG.DB}/walkersTest/h/${ts}.json`,{method:'PUT',body:JSON.stringify({slot:id,name:val,act:'in',ts})});
+      }},
+      {text:"Cancelar", action: () => {}}
+    ]);
+  } else {
+    showModal(`🦽 Espacio ${id}`, `<p>Estacionado: <b>${esc(name)}</b></p>`, [
+      {text:"Aceptar", class:"pri", action: () => {}}, // Solo cierra
+      {text:"Retirar", class:"warn", action: () => {
+        delete W_DATA[id]; W_HIST[Date.now()]={slot:id,name:name,act:'out',ts:Date.now()};
+        drawWalkers();
+        fetch(`${CFG.DB}/walkersTest/w/${id}.json`,{method:'DELETE'});
+        fetch(`${CFG.DB}/walkersTest/h/${Date.now()}.json`,{method:'PUT',body:JSON.stringify({slot:id,name:name,act:'out',ts:Date.now()})});
+      }},
+      {text:"Cancelar", action: () => {}}
+    ]);
+  }
+}
+
+function promptSpill(x,y) {
+  showModal("🧹 Reportar Derrame", `<p>¿Qué se derramó?</p><select id="spillType"><option value="Comida">Comida</option><option value="Bebida">Bebida</option><option value="Otro">Otro</option></select>`, [
+    {text:"Reportar", class:"warn", action: () => {
+      const tipo = $('spillType').value;
+      const id=Date.now();
+      put(`spills/${id}`,{x:Math.round(x),y:Math.round(y),tipo,status:'pendiente',quien:me.n,ts:id});
+      showToast(`🧹 Derrame reportado: ${tipo}`);
+      spillMode=false; draw();
+    }},
+    {text:"Cancelar", action: () => {}}
+  ]);
+}
+
+// --- FUNCIONES DEL MAPA ---
+function zoomMain(d) {
+  mainZoom = Math.max(1, Math.min(3, mainZoom + d));
+  $('svg').style.width = (mainZoom*100) + '%';
+}
+
+function toggleAdminMenu() {
+  $('adminMenu').hidden = !$('adminMenu').hidden;
+}
+
 function volHistory(name){const res=[],vt=S.volTurnos||{};for(const t in vt)for(const p in vt[t])if(vt[t][p]===name)res.push({turno:+t,posicion:+p});return res.sort((a,b)=>a.turno-b.turno)}
 function canAssign(turno,pos,name){const t=+turno,volList=TURNOS[t]?TURNOS[t].vol:[];if(!volList.includes(name))return{ok:false,msg:"No se apuntó a este turno"};const hist=volHistory(name);if(hist.find(h=>h.turno===t))return{ok:false,msg:"Ya está en este turno"};const sigCount=Object.values(TURNOS).filter(tt=>tt.vol.includes(name)).length;const maxT=Math.min(4,sigCount);if(hist.length>=maxT)return{ok:false,msg:`Máximo ${maxT} turnos`};const consec=hist.find(h=>Math.abs(h.turno-t)===1);if(consec){const ok12=(t===1&&consec.turno===2)||(t===2&&consec.turno===1);if(!ok12)return{ok:false,msg:`Consecutivo con T${consec.turno}`}}if((t===5&&hist.find(h=>h.turno===6))||(t===6&&hist.find(h=>h.turno===5)))return{ok:false,msg:"T5 y T6 excluyentes"};return{ok:true,msg:`OK (${hist.length+1}/${maxT})`}}
 function doAssign(turno,pos,name){const chk=canAssign(turno,pos,name);if(!chk.ok){showToast(`❌ ${esc(name)}: ${chk.msg}`,true);return}if(!S.volTurnos)S.volTurnos={};if(!S.volTurnos[turno])S.volTurnos[turno]={};S.volTurnos[turno][pos]=name;put(`volTurnos/${turno}/${pos}`,name);showToast(`✓ ${esc(name)} → ${sectionOf(pos).label}`)}
 function unassignVol(turno,pos){if(!S.volTurnos||!S.volTurnos[turno])return;delete S.volTurnos[turno][pos];fetch(U(`volTurnos/${turno}/${pos}`),{method:'DELETE'}).then(()=>load());showToast("Asignación eliminada")}
 function toggleSpillMode(){spillMode=!spillMode;if(spillMode){secEditMode=false;edit=false}draw()}
-function promptSpill(x,y){const tipo=prompt("🧹 REPORTAR DERRAME\n\n¿Qué se derramó?\n\n1 = Comida\n2 = Bebida\n3 = Otro\n\n(Escribe el número o el texto)");if(!tipo||!tipo.trim())return;let tipoText;const t=tipo.trim().toLowerCase();if(t==='1'||t.includes('comida')||t.includes('food'))tipoText='Comida';else if(t==='2'||t.includes('bebida')||t.includes('drink'))tipoText='Bebida';else tipoText=tipo.trim();const id=Date.now();put(`spills/${id}`,{x:Math.round(x),y:Math.round(y),tipo:tipoText,status:'pendiente',quien:me.n,ts:id});showToast(`🧹 Derrame reportado: ${tipoText}`);spillMode=false;draw()}
+
 function takeSpill(id){put(`spills/${id}/status`,'proceso');put(`spills/${id}/quienLimpia`,me.n);put(`spills/${id}/tsProc`,Date.now());showToast('👷 Derrame tomado');draw()}
 function doneSpill(id){put(`spills/${id}/status`,'terminado');put(`spills/${id}/tsDone`,Date.now());showToast('✓ Derrame limpiado');draw()}
 function cancelSpill(id){put(`spills/${id}/status`,'pendiente');put(`spills/${id}/quienLimpia`,null);put(`spills/${id}/tsProc`,null);showToast('↩️ Regresado a pendiente');draw()}
-function deleteSpill(id){if(!confirm('¿Borrar este derrame del historial?'))return;fetch(U('spills/'+id),{method:'DELETE'}).then(()=>load())}
+function deleteSpill(id){showModal("🗑️ Borrar Derrame", "<p>¿Borrar este derrame del historial?</p>", [{text:"Borrar", class:"warn", action:()=>fetch(U('spills/'+id),{method:'DELETE'}).then(()=>load())},{text:"Cancelar"}])}
+
 function showSpillPanel(id){const sp=S.spills&&S.spills[id];if(!sp)return;const e=$('panel');const fecha=new Date(sp.ts);const hora=fecha.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});const fechaStr=fecha.toLocaleDateString('es-MX',{day:'2-digit',month:'short'});let h=`<h3 style="color:#e65100">🧹 Derrame · ${esc(sp.tipo)}</h3>`;h+=`<div class="who" style="border-left-color:var(--spill);background:#fff8e1"><b>Reportado por:</b> ${esc(sp.quien)}<br><b>Hora:</b> ${hora} (${fechaStr})<br><b>Estado:</b> <span style="color:${sp.status==='pendiente'?'#e65100':sp.status==='proceso'?'#f57f17':'#2e7d32'};font-weight:bold">${sp.status.toUpperCase()}</span>${sp.quienLimpia?'<br><b>Limpiando:</b> '+esc(sp.quienLimpia):''}</div>`;if(sp.status==='pendiente'){h+=`<button onclick="takeSpill('${id}')" style="background:#ffd54f;color:#333;border-color:#fbc02d;padding:12px 16px;width:100%;font-weight:bold;font-size:16px">🖐️ Voy a limpiarlo</button>`}else if(sp.status==='proceso'){h+=`<div class="row"><button onclick="doneSpill('${id}')" style="background:#2e7d32;color:#fff;border-color:#2e7d32;padding:12px 16px;font-weight:bold;flex:1">✓ Terminado</button><button onclick="cancelSpill('${id}')" style="padding:12px 16px;flex:1">↩️ Cancelar</button></div>`}else{h+=`<button onclick="deleteSpill('${id}')" style="padding:12px 16px;width:100%">🗑️ Borrar del historial</button>`}e.innerHTML=h}
 const U=p=>CFG.DB.replace(/\/$/,'')+'/s'+(p?'/'+p:'')+'.json';
 function net(v){const e=$('net');if(!CFG.DB){e.textContent='Sin conexión';e.className='net loc';return}e.textContent=v?'En línea':'Sin conexión';e.className='net '+(v?'on':'off')}
@@ -268,18 +363,15 @@ const nrm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();let
 $('us').oninput=()=>{pick='';$('goU').hidden=true;const q=nrm($('us').value.trim());$('res').innerHTML=q?(D.roster.filter(r=>r.c!=='Voluntaria'&&nrm(r.n).includes(q)).slice(0,6).map(r=>`<button type="button" data-n="${esc(r.n)}" style="width:100%;text-align:left;margin-top:4px">${esc(r.n)}</button>`).join('')||'<span class="mut">No aparece.</span>'):''};
 $('res').onclick=e=>{const b=e.target.closest('button');if(!b)return;pick=b.dataset.n;$('us').value=pick;$('res').innerHTML='';$('goU').textContent='Entrar como '+pick;$('goU').hidden=false};
 $('ad').innerHTML='<option value="">Seleccione su nombre</option>'+ADM.map(a=>`<option>${esc(a.n)}</option>`).join('');
-function enter(u){me=u;try{if(!u.adm)localStorage.me=u.n}catch(e){}$('login').hidden=true;$('app').hidden=false;$('out').hidden=false;$('usr').textContent=u.n;$('btn-mode-toggle').hidden=!u.adm;start()}
+function enter(u){me=u;try{if(!u.adm)localStorage.me=u.n}catch(e){}$('login').hidden=true;$('app').hidden=false;$('out').hidden=false;$('usr').textContent=u.n;$('btn-mode-toggle').hidden=!u.adm;$('adminMenuBtn').hidden=!(me.all);start()}
 function enterU(){if(pick)enter({n:pick})}
 function enterA(){const a=ADM.find(x=>x.n===$('ad').value);if(!a){$('err').textContent='Seleccione su nombre';return}const pw=$('pw').value;const ok=a.h?(H(pw)===a.h):(a.pwd===pw);if(!ok){$('err').textContent='Contraseña incorrecta';return}enter(a.adm?a:{...a,adm:1})}
-function logout(){try{delete localStorage.me}catch(e){}clearInterval(iv);onstorage=null;me=null;sel=null;hl=null;edit=false;pick='';spillMode=false;$('us').value='';$('res').innerHTML='';$('goU').hidden=true;$('pw').value='';$('ad').value='';$('err').textContent='';$('usr').textContent='';$('out').hidden=true;$('app').hidden=true;$('walkersView').hidden=true;$('volMapView').hidden=true;$('spillPanel').hidden=true;$('login').hidden=false;$('btn-mode-toggle').hidden=true;$('volPanel').hidden=true;isVolunteerMode=false;secEditMode=false;const t=document.getElementById('appTitle');if(t)t.textContent='Acomodadores · La Feria, TX'}
+function logout(){try{delete localStorage.me}catch(e){}clearInterval(iv);onstorage=null;me=null;sel=null;hl=null;edit=false;pick='';spillMode=false;$('us').value='';$('res').innerHTML='';$('goU').hidden=true;$('pw').value='';$('ad').value='';$('err').textContent='';$('usr').textContent='';$('out').hidden=true;$('app').hidden=true;$('walkersView').hidden=true;$('volMapView').hidden=true;$('spillPanel').hidden=true;$('login').hidden=false;$('btn-mode-toggle').hidden=true;$('volPanel').hidden=true;isVolunteerMode=false;secEditMode=false;$('adminMenuBtn').hidden=true;$('adminMenu').hidden=true;const t=document.getElementById('appTitle');if(t)t.textContent='Acomodadores · La Feria, TX'}
 try{if(localStorage.me)enter({n:localStorage.me})}catch(e){}
 
-function enterVoluntaria(){me=null;$('login').hidden=true;$('app').hidden=true;$('volPanel').hidden=false;$('out').hidden=false;$('usr').textContent='Voluntaria';$('btn-mode-toggle').hidden=true;isVolunteerMode=true;const t=document.getElementById('appTitle');if(t)t.textContent='Portal de Voluntarias';$('volSearch').value='';volQuery='';renderVolList();start()}
+function enterVoluntaria(){me=null;$('login').hidden=true;$('app').hidden=true;$('volPanel').hidden=false;$('out').hidden=false;$('usr').textContent='Voluntaria';$('btn-mode-toggle').hidden=true;$('adminMenuBtn').hidden=true;isVolunteerMode=true;const t=document.getElementById('appTitle');if(t)t.textContent='Portal de Voluntarias';$('volSearch').value='';volQuery='';renderVolList();start()}
 function toggleBigText(){document.body.classList.toggle('big');try{localStorage.bigText=document.body.classList.contains('big')?'1':'0'}catch(e){}}
 try{if(localStorage.bigText==='1')document.body.classList.add('big')}catch(e){}
-
-// --- Renderizado de Turnos Grandes ---
-function buscarVoluntaria(q){volQuery=q;renderVolList()}
 
 function renderVolList(){
   const res=$('volResults');
@@ -389,8 +481,8 @@ function drawWalkList(){
     h+=`<div style="margin-bottom:14px"><h4 style="margin:0 0 6px;color:var(--purple);font-size:14px">Columnas ${cols[0]} – ${cols[4]}</h4><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">`;
     for(const r of [1,2,3])for(const L of cols){
       const id=L+r,c=W_DATA[id];
-      if(c){h+=`<button class="wslot occ" data-id="${id}" onclick="tapWalker('${id}')"><b>${id}</b><small>${esc(wShort(c.name))}</small></button>`}
-      else{h+=`<button class="wslot empty" data-id="${id}" onclick="tapWalker('${id}')"><b>${id}</b><small>Libre</small></button>`}
+      if(c){h+=`<button class="wslot occ" data-id="${id}" onclick="promptWalker('${id}','${esc(c.name)}')"><b>${id}</b><small>${esc(wShort(c.name))}</small></button>`}
+      else{h+=`<button class="wslot empty" data-id="${id}" onclick="promptWalker('${id}','')"><b>${id}</b><small>Libre</small></button>`}
     }
     h+='</div></div>';
   }
@@ -412,34 +504,16 @@ function searchWalker(q){
   $('walkSearchRes').textContent = on ? (foundStr || 'No se encontró a nadie') : '';
 }
 
-function tapWalker(id){
-  if(!window.canEditWalkers) { showToast("No tienes permiso para editar walkers", true); return; }
-  const cur=W_DATA[id];
-  if(cur){
-    if(confirm(`Retirar walker de "${cur.name}"?\n\nAceptar = retirado`)){
-      delete W_DATA[id]; W_HIST[Date.now()]={slot:id,name:cur.name,act:'out',ts:Date.now()};
-      drawWalkers();
-      fetch(`${CFG.DB}/walkersTest/w/${id}.json`,{method:'DELETE'});
-      fetch(`${CFG.DB}/walkersTest/h/${Date.now()}.json`,{method:'PUT',body:JSON.stringify({slot:id,name:cur.name,act:'out',ts:Date.now()})});
-    }
-  }else{
-    const name=prompt(`Espacio ${id} - ¿Cómo se llama el hermano/a?`);
-    if(!name||!name.trim())return;
-    const ts=Date.now();
-    W_DATA[id]={name:name.trim(),ts}; W_HIST[ts]={slot:id,name:name.trim(),act:'in',ts};
-    W_Flash=id; drawWalkers();
-    setTimeout(()=>{W_Flash=null;drawWalkMap()},6000);
-    fetch(`${CFG.DB}/walkersTest/w/${id}.json`,{method:'PUT',body:JSON.stringify({name:name.trim(),ts})});
-    fetch(`${CFG.DB}/walkersTest/h/${ts}.json`,{method:'PUT',body:JSON.stringify({slot:id,name:name.trim(),act:'in',ts})});
-  }
-}
-
 function resetWalkers(){
   if(!window.canEditWalkers) return;
-  if(!confirm('¿Vaciar TODO el estacionamiento? Esto borrará los walkers actuales.')) return;
-  W_DATA = {};
-  fetch(`${CFG.DB}/walkersTest/w.json`,{method:'DELETE'});
-  drawWalkers(); showToast('Estacionamiento vaciado');
+  showModal("🗑️ Vaciar Estacionamiento", "<p>¿Borrar todos los walkers?</p>", [
+    {text:"Sí, vaciar", class:"warn", action:()=>{
+      W_DATA = {};
+      fetch(`${CFG.DB}/walkersTest/w.json`,{method:'DELETE'});
+      drawWalkers(); showToast('Estacionamiento vaciado');
+    }},
+    {text:"Cancelar"}
+  ]);
 }
 
 function saveWalkCam() {
@@ -453,7 +527,6 @@ function resetWalkCam() {
   showToast("Vista restablecida");
 }
 
-// --- Eventos Táctiles para Walkers (Zoom & Pan) ---
 const wSvg = $('walkSvg');
 wSvg.addEventListener('touchstart', e => {
   if (e.touches.length === 2) {
@@ -513,6 +586,10 @@ window.addEventListener('mousemove', e => {
 });
 window.addEventListener('mouseup', () => { touchState.mode = null; });
 
+wSvg.addEventListener('click', e => {
+  const g = e.target.closest('.slot');
+  if(g) promptWalker(g.dataset.id, W_DATA[g.dataset.id]?.name || '');
+});
 
 function calInit(){
   const m={cDx:'dx',cDy:'dy',cOff:'off',cLen:'len'};
@@ -544,13 +621,13 @@ function secSave(k,pts){const str=pts.map(p=>`${Math.round(p[0])},${Math.round(p
 function moveVertex(k,idx,x,y){const pts=secPts(k);pts[idx]=[x,y];secSave(k,pts)}
 function addVertex(k,idx,x,y){const pts=secPts(k);pts.splice(idx+1,0,[x,y]);secSave(k,pts);showToast(`➕ Punto agregado`)}
 function delVertex(k,idx){const pts=secPts(k);if(pts.length<=3){showToast('⚠ Mínimo 3 puntos',true);return}pts.splice(idx,1);secSave(k,pts);showToast(`🗑️ Punto eliminado`)}
-function resetSec(k){if(!confirm(`¿Restaurar ${k}?`))return;if(!S.sec)S.sec={};delete S.sec[k];fetch(U('sec/'+k),{method:'DELETE'}).then(()=>load())}
+function resetSec(k){showModal(`↺ Restaurar ${k}`, "<p>¿Restaurar esta zona a su estado original?</p>", [{text:"Restaurar", class:"ok", action:()=>{if(!S.sec)S.sec={};delete S.sec[k];fetch(U('sec/'+k),{method:'DELETE'}).then(()=>load())}}, {text:"Cancelar"}])}
 function setCap(k,v){const n=Math.max(0,parseInt(v)||0);if(!S.cap)S.cap={};S.cap[k]=n;put('cap/'+k,n);draw()}
 function moveLabel(lid,x,y){if(!S.labels)S.labels={};S.labels[lid]={x:Math.round(x),y:Math.round(y)};put('labels/'+lid,S.labels[lid])}
 function drawLegend(){const lg=$('legend');if(!lg)return;if(mapView==='vol'&&me&&me.adm){lg.innerHTML=VOL_SECTIONS.map(s=>`<span><i style="background:${s.color}"></i>${s.label}</span>`).join('')+'<span><i style="background:var(--spill)"></i>🧹 Derrame</span>'}else{lg.innerHTML=`<span><i style="background:var(--blue)"></i>Fija</span><span><i style="background:var(--org)"></i>Intermitente</span><span><i style="background:#2e7d32"></i>Presente</span><span><i style="background:#d11"></i>Ausente</span><span><i style="background:#777"></i>Sustituto</span><span><i style="background:var(--spill)"></i>🧹 Derrame</span>`}}
 function drawSpills(){const e=$('spillPanel');if(!e||!me)return;const arr=Object.entries(S.spills||{}).sort((a,b)=>b[1].ts-a[1].ts);const pend=arr.filter(([id,s])=>s.status==='pendiente');const proc=arr.filter(([id,s])=>s.status==='proceso');const done=arr.filter(([id,s])=>s.status==='terminado');if(!arr.length){e.hidden=true;return}e.hidden=false;let h=`<div class="spill-panel"><h3 style="color:#e65100;margin-top:0">🧹 Derrames</h3>`;h+=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px"><div class="spill-counter" style="background:#fff3cd"><b style="color:#e65100">${pend.length}</b><small>Pendientes</small></div><div class="spill-counter" style="background:#fff59d"><b style="color:#f57f17">${proc.length}</b><small>En proceso</small></div><div class="spill-counter" style="background:#c8e6c9"><b style="color:#2e7d32">${done.length}</b><small>Terminadas</small></div></div>`;const active=[...pend,...proc];for(const [id,sp] of active){const fecha=new Date(sp.ts),hora=fecha.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});const isProc=sp.status==='proceso';h+=`<div class="spill-item ${isProc?'proc':''}"><div><b>${esc(sp.tipo)}</b> · <span style="color:${isProc?'#f57f17':'#e65100'};font-weight:600">${sp.status.toUpperCase()}</span></div><div style="font-size:13px;color:#666;margin-top:4px">Reportado por ${esc(sp.quien)} · ${hora}${sp.quienLimpia?' · Limpia: '+esc(sp.quienLimpia):''}</div><div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><button onclick="showSpillPanel('${id}')" style="font-size:14px;padding:8px 12px">Ver detalles</button>${!isProc?`<button onclick="takeSpill('${id}')" style="font-size:14px;padding:8px 12px;background:#ffd54f;border-color:#fbc02d;font-weight:bold">🖐️ Tomar</button>`:''}${isProc?`<button onclick="doneSpill('${id}')" style="font-size:14px;padding:8px 12px;background:#2e7d32;color:#fff;border-color:#2e7d32;font-weight:bold">✓ Terminado</button>`:''}</div></div>`}if(done.length){h+=`<details style="margin-top:12px"><summary>✅ ${done.length} terminadas hoy</summary>`;for(const [id,sp] of done){const fecha=new Date(sp.ts),hora=fecha.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});h+=`<div class="spill-item done" style="margin-top:6px"><div><b>${esc(sp.tipo)}</b></div><div style="font-size:13px;color:#666;margin-top:4px">Por ${esc(sp.quien)} · ${hora}${sp.quienLimpia?' · Limpió: '+esc(sp.quienLimpia):''}</div><button onclick="deleteSpill('${id}')" style="font-size:13px;padding:6px 10px;margin-top:6px">🗑️ Borrar</button></div>`}h+='</details>'}h+='</div>';e.innerHTML=h}
 function drawMap(){let s='';for(const k in D.sec){const cls=secEditMode?('sec edit'+(hl===k?' hl':'')):'sec'+(hl===k?' hl':'');s+=`<polygon class="${cls}" data-s="${k}" points="${(S.sec&&S.sec[k])||D.sec[k]}"/>`}$('sl').innerHTML=s;let vh='';if(secEditMode&&hl&&D.sec[hl]){const pts=secPts(hl);pts.forEach((pt,i)=>{vh+=`<circle class="vertex" data-sec="${hl}" data-idx="${i}" cx="${pt[0]}" cy="${pt[1]}" r="7" fill="#fff" stroke="#d11" stroke-width="2"/>`});for(let i=0;i<pts.length;i++){const a=pts[i],b=pts[(i+1)%pts.length];const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2;vh+=`<circle class="vadd" data-sec="${hl}" data-after="${i}" data-mx="${Math.round(mx)}" data-my="${Math.round(my)}" cx="${mx}" cy="${my}" r="4" fill="#888" stroke="#fff" stroke-width="1.5"/>`}}$('vl').innerHTML=vh;let h='';if(mapView==='vol'&&me&&me.adm){for(const sec of VOL_SECTIONS){const lp=labelPos(sec);if(secEditMode){h+=`<g class="vlabel" data-lid="${sec.id}" transform="translate(${lp.x} ${lp.y})"><rect x="-85" y="-18" width="170" height="28" rx="6" fill="#ffffffdd" stroke="${sec.color}" stroke-width="2"/><text text-anchor="middle" dy=".35em" font-size="15" font-weight="bold" fill="${sec.color}" pointer-events="none">${sec.label}</text></g>`}else{h+=`<text x="${lp.x}" y="${lp.y}" text-anchor="middle" font-size="15" font-weight="bold" fill="${sec.color}" pointer-events="none" style="text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 3px #fff">${sec.label}</text>`}}}for(const n of POS){const raw=D.pos[n],isVol=raw.v===1;if((mapView==='acom'&&isVol)||(mapView==='vol'&&!isVol))continue;const p=P(n);const b=p.st==='ok'?['#2e7d32','✓']:p.st==='abs'?['#d11','✕']:p.st==='sub'?['#777','S']:null;const isAct=isPosActive(n);const fill=isVol?sectionOf(n).color:(isAct?(raw.l?'var(--blue)':'var(--org)'):'#ccc');h+=`<g class="pc${watch(n)||me.all?'':' dim'}" data-n="${n}" transform="translate(${p.x} ${p.y})">${vacant(n)?'<circle class="pulse" r="27"/>':''}<circle r="19" fill="${fill}" stroke="${sel===n?'#000':'#fff'}" stroke-width="${sel===n?4.5:2.5}"/><text text-anchor="middle" dy=".35em">${n}</text>${b?`<circle cx="15" cy="-15" r="9" fill="${b[0]}" stroke="#fff" stroke-width="1.5"/><text x="15" y="-15" dy=".35em" text-anchor="middle" style="font-size:11px">${b[1]}</text>`:''}</g>`}$('pl').innerHTML=h;let sh='';if(S.spills){for(const id in S.spills){const sp=S.spills[id];if(sp.status==='terminado')continue;const isProc=sp.status==='proceso';const color=isProc?'#fbc02d':'#ff9800';const icon=isProc?'⏳':'!';sh+=`<g class="spill" data-spill="${id}" transform="translate(${sp.x} ${sp.y})"><polygon points="0,-26 24,20 -24,20" fill="${color}" stroke="#fff" stroke-width="2" opacity="0.95"><animate attributeName="opacity" values="0.95;0.55;0.95" dur="1.5s" repeatCount="indefinite"/></polygon><text text-anchor="middle" y="6" font-size="18" fill="#fff" font-weight="bold" pointer-events="none">${icon}</text></g>`}}$('spl').innerHTML=sh}
-function drawBar(){const sc=POS.filter(watch).filter(n=>isPosActive(n)),L=sc.filter(n=>D.pos[n].l),O=sc.filter(n=>!D.pos[n].l),ok=a=>a.filter(n=>['ok','sub'].includes(P(n).st)).length,v=L.filter(n=>!D.pos[n].v&&vacant(n));const viewBtns=me.adm?`<button class="${mapView==='acom'?'on':''}" onclick="mapView='acom';sel=null;draw()">🗺️ Acomodadores</button><button class="${mapView==='vol'?'on':''}" onclick="mapView='vol';sel=null;draw()">👥 Voluntarias</button>`:'';let turnSel='';if(mapView==='vol'&&me.adm){turnSel=`<div class="turnsel"><b style="width:100%;font-size:14px;margin:4px 0">Turno actual:</b>`+Object.keys(TURNOS).map(t=>{const total=TURNOS[t].vol.length;const asg=S.volTurnos&&S.volTurnos[t]?Object.keys(S.volTurnos[t]).length:0;return `<button class="${currentTurno==t?'on':''}" onclick="currentTurno=${t};sel=null;draw()">T${t} (${asg}/${total})</button>`}).join('')+`</div>`}const walkersBtn=`<button onclick="openWalkers('app')" style="background:#5B3C88;color:#fff;border-color:#5B3C88;font-weight:bold">🦽 Walkers</button>`;const spillBtn=`<button class="${spillMode?'on':''}" onclick="toggleSpillMode()" style="background:${spillMode?'#ff9800':'#fff'};color:${spillMode?'#fff':'#e65100'};border-color:#ff9800;font-weight:bold">🧹 Derrame${spillMode?' (ACTIVO)':''}</button>`;const editBtn=me.all?`<button class="${secEditMode?'on':''}" onclick="secEditMode=!secEditMode;spillMode=false;hl=null;draw()" title="Editar zonas">✏️ Zonas</button>`:'';const helpEdit=secEditMode?`<div style="width:100%;font-size:13px;background:#fff7cc;padding:8px;border-radius:4px;margin-top:4px">✏️ <b>Modo edición:</b> Toca una zona, arrastra puntos blancos. Toca sin arrastrar para borrar.${mapView==='vol'?' Las etiquetas también se pueden arrastrar.':''}${hl?` <button style="font-size:12px;padding:3px 8px" onclick="resetSec('${hl}')">↺ Restaurar ${hl}</button>`:''}</div>`:spillMode?`<div style="width:100%;font-size:13px;background:#fff3cd;padding:8px;border-radius:4px;margin-top:4px">🧹 <b>Modo derrame:</b> Toca el mapa donde está el derrame.</div>`:'';$('bar').innerHTML=viewBtns+turnSel+walkersBtn+spillBtn+`<b>${me.all?'Todas':'Tu área'} · Fijas: ${ok(L)}/${L.length}</b><span>Inter: ${ok(O)}/${O.length}</span><span style="flex:1"></span>`+(me.adm?`<button class="${edit?'on':''}" onclick="edit=!edit;spillMode=false;draw()">${edit?'Listo':'Mover'}</button>`:'')+(me.all&&mapView==='acom'?`<button onclick="reset()">Reiniciar</button>`:'')+editBtn+helpEdit;const a=$('alert');a.hidden=!v.length;a.innerHTML='⚠ Sin cubrir: '+v.map(n=>`<a href="#" onclick="sel=${n};draw();return false">${n}</a>`).join(', ')}
+function drawBar(){const sc=POS.filter(watch).filter(n=>isPosActive(n)),L=sc.filter(n=>D.pos[n].l),O=sc.filter(n=>!D.pos[n].l),ok=a=>a.filter(n=>['ok','sub'].includes(P(n).st)).length,v=L.filter(n=>!D.pos[n].v&&vacant(n));const viewBtns=me.adm?`<button class="${mapView==='acom'?'on':''}" onclick="mapView='acom';sel=null;draw()">🗺️ Acomodadores</button><button class="${mapView==='vol'?'on':''}" onclick="mapView='vol';sel=null;draw()">👥 Voluntarias</button>`:'';const walkersBtn=`<button onclick="openWalkers('app')" style="background:#5B3C88;color:#fff;border-color:#5B3C88;font-weight:bold">🦽 Walkers</button>`;const spillBtn=`<button class="${spillMode?'on':''}" onclick="toggleSpillMode()" style="background:${spillMode?'#ff9800':'#fff'};color:${spillMode?'#fff':'#e65100'};border-color:#ff9800;font-weight:bold">🧹 Derrame${spillMode?' (ACTIVO)':''}</button>`;const helpEdit=secEditMode?`<div style="width:100%;font-size:13px;background:#fff7cc;padding:8px;border-radius:4px;margin-top:4px">✏️ <b>Modo edición:</b> Toca una zona, arrastra puntos blancos. Toca sin arrastrar para borrar.</div>`:spillMode?`<div style="width:100%;font-size:13px;background:#fff3cd;padding:8px;border-radius:4px;margin-top:4px">🧹 <b>Modo derrame:</b> Toca el mapa donde está el derrame.</div>`:'';$('bar').innerHTML=viewBtns+walkersBtn+spillBtn+`<b>${me.all?'Todas':'Tu área'} · Fijas: ${ok(L)}/${L.length}</b><span>Inter: ${ok(O)}/${O.length}</span><span style="flex:1"></span>`+helpEdit;const a=$('alert');a.hidden=!v.length;a.innerHTML='⚠ Sin cubrir: '+v.map(n=>`<a href="#" onclick="sel=${n};draw();return false">${n}</a>`).join(', ')}
 function drawMine(){const e=$('mine'),n=POS.find(n=>eff(n)===me.n);e.hidden=me.adm||me.all;if(me.adm||me.all)return;e.innerHTML=n?`<h3>Tu posición: ${n}</h3><p>${esc(D.pos[n].t)}</p>`+(['ok','sub'].includes(P(n).st)?'<b style="color:var(--ok)">✓ Registrado.</b>':`<button class="ok" style="width:100%;padding:18px;font-size:20px" onclick="here(${n})">Estoy aquí</button>`):D.caps.includes(me.n)?'<h3>Capitán</h3>':'<h3>Corredor</h3>'}
 function drawPanel(){
   const e=$('panel');if(!sel){e.innerHTML='<span class="mut">Toca un número del mapa.</span>';return}
@@ -612,7 +689,7 @@ if(dragL){if(dragL.moved)moveLabel(dragL.lid,dragL.x,dragL.y);dragL=null;return}
 if(dragV){if(dragV.moved)moveVertex(dragV.sec,dragV.idx,dragV.x,dragV.y);else delVertex(dragV.sec,dragV.idx);dragV=null;return}
 if(!drag)return;const d=drag;drag=null;sel=d.n;if(d.m){put(`pos/${d.n}/x`,d.x);put(`pos/${d.n}/y`,d.y)}else draw()
 });
-function toggleAppMode(){isVolunteerMode=!isVolunteerMode;const btn=$('btn-mode-toggle'),app=$('app'),vp=$('volPanel'),title=$('appTitle');if(isVolunteerMode){btn.textContent='🚪 Volver';btn.style.background='#6e1414';app.hidden=true;vp.hidden=false;title.textContent='Portal de Voluntarias';$('volSearch').value='';volQuery='';renderVolList()}else{btn.textContent='👥 Vista Voluntaria';btn.style.background='#2e7d32';app.hidden=false;vp.hidden=true;title.textContent='Acomodadores · La Feria, TX';if(me)draw()}}
+function toggleAppMode(){isVolunteerMode=!isVolunteerMode;const btn=$('btn-mode-toggle'),app=$('app'),vp=$('volPanel'),title=$('appTitle');if(isVolunteerMode){btn.textContent='🚪 Volver';btn.style.background='#6e1414';app.hidden=true;vp.hidden=false;title.textContent='Portal de Voluntarias';$('volSearch').value='';volQuery='';renderVolList();$('adminMenuBtn').hidden=true;}else{btn.textContent='👥 Vista Voluntaria';btn.style.background='#2e7d32';app.hidden=false;vp.hidden=true;title.textContent='Acomodadores · La Feria, TX';if(me)draw();$('adminMenuBtn').hidden=!(me&&me.all)}}
 </script>
 </body>
 </html>
