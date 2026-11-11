@@ -2,26 +2,26 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <title>Acomodadores · La Feria, TX</title>
 <style>
-:root{--red:#6e1414;--red2:#9b1c1c;--ink:#1f1f1f;--mut:#555;--line:#d6d6d6;--bg:#e9e9e9;--blue:#2c6cb0;--org:#e07b00;--ok:#2e7d32;--purple:#5B3C88;--spill:#ff9800;--spillP:#fbc02d;--spillD:#4caf50}
+:root{--red:#6e1414;--red2:#9b1c1c;--ink:#1f1f1f;--mut:#555;--line:#d6d6d6;--bg:#e9e9e9;--blue:#2c6cb0;--org:#e07b00;--ok:#2e7d32;--purple:#5B3C88;--spill:#ff9800;--spillP:#fbc02d;--spillD:#4caf50;--gray:#999}
 [hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;font:17px/1.5 "Segoe UI",Roboto,system-ui,sans-serif;background:var(--bg);color:var(--ink)}body.big{zoom:1.2}
 header{background:var(--red);color:#fff;padding:10px 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:5}header h1{font-size:18px;margin:0;flex:1;min-width:180px}
 .net{font-size:12px;padding:3px 9px;border-radius:99px;background:#ffffff33}.net.on::before{content:"● ";color:#7fe08a}.net.off{background:#fff;color:var(--red2);font-weight:700}.net.loc{background:#fff;color:#555}
-button{font:inherit;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:6px;padding:10px 14px;cursor:pointer}button.pri{background:var(--red2);color:#fff;border-color:var(--red2)}button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}button.on{background:#333;color:#fff}
+button{font:inherit;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:6px;padding:10px 14px;cursor:pointer}button.pri{background:var(--red2);color:#fff;border-color:var(--red2)}button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}button.on{background:#333;color:#fff}button.warn{background:#d32f2f;color:#fff;border-color:#b71c1c}
 main{max-width:1100px;margin:auto;padding:12px;display:grid;gap:12px}
 .card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 #alert{border:2px solid var(--red2);color:var(--red2);font-weight:600}
 #mapw{overflow:auto;padding:0;-webkit-overflow-scrolling:touch}
-svg{width:100%;max-width:100%;height:auto;display:block;touch-action:pan-x pan-y pinch-zoom}
+svg.map-svg{width:100%;max-width:100%;height:auto;display:block;touch-action:pan-x pan-y pinch-zoom}
 #toast-container{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none}
 .toast{background:#2e7d32;color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,.3);opacity:0;transition:opacity .3s,transform .3s;transform:translateY(20px);display:flex;align-items:center;gap:8px;max-width:340px;font-size:16px}
 .toast.err{background:#b71c1c}.toast.show{opacity:1;transform:translateY(0)}
 .pc{cursor:pointer}.pc text{font:700 15px sans-serif;fill:#fff;pointer-events:none}
 @keyframes bl{50%{opacity:.05}}.pulse{fill:none;stroke:#d11;stroke-width:6;animation:bl .8s infinite}@media(prefers-reduced-motion:reduce){.pulse{animation:none;opacity:.8}}
-.tag{font-size:14px;padding:3px 9px;border-radius:99px;color:#fff}.tag.b{background:var(--blue)}.tag.o{background:var(--org)}.tag.p{background:var(--purple)}
+.tag{font-size:14px;padding:3px 9px;border-radius:99px;color:#fff}.tag.b{background:var(--blue)}.tag.o{background:var(--org)}.tag.p{background:var(--purple)}.tag.g{background:var(--gray)}
 .mut{color:var(--mut)}h3{margin:0 0 6px;font-size:19px}
 .who{background:#f3f3f3;border-left:4px solid var(--red2);padding:10px 12px;margin:10px 0}
 a{color:var(--red2);font-weight:600}
@@ -51,12 +51,13 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
 .spill-item.proc{border-left-color:var(--spillP);background:#fffde7}
 .spill-item.done{border-left-color:var(--spillD);background:#f1f8e9;opacity:.75}
 
-/* Nuevos estilos para el mapa de Walkers */
+/* Walkers Map con Zoom & Pan */
 #walkersView{max-width:1100px;margin:12px auto;padding:12px}
-#mapbox{overflow:auto;border:2px solid var(--purple);border-radius:8px;background:#f0f0f0;max-height:75vh;-webkit-overflow-scrolling:touch;margin-top:10px}
-#walkSvg{display:block;width:100%;height:auto;transition:width 0.2s}
+#mapbox{overflow:hidden;border:2px solid var(--purple);border-radius:8px;background:#f0f0f0;height:65vh;touch-action:none;position:relative}
+#walkSvg{display:block;width:100%;height:100%;cursor:grab;touch-action:none}
+#walkSvg:active{cursor:grabbing}
 .slot{cursor:pointer}
-.slot rect{fill:#e0e0e0;stroke:#999;stroke-width:0.8}
+.slot rect{fill:#e0e0e0;stroke:#999;stroke-width:0.8;transition:fill .2s}
 .slot.occ rect{fill:#43a047;stroke:#1b5e20}
 .slot text{font:700 5px sans-serif;fill:#555;pointer-events:none}
 .slot.occ text{fill:#fff}
@@ -107,7 +108,7 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
   <div id="alert" class="card" hidden></div>
   <div id="spillPanel" hidden></div>
   <div id="bar" class="card row"></div>
-  <div class="card" id="mapw"><svg id="svg" viewBox="0 0 1310 926"><image id="mi" width="1310" height="926" href="map.jpg" preserveAspectRatio="none"/><g id="sl"></g><g id="vl"></g><g id="pl"></g><g id="spl"></g></svg></div>
+  <div class="card" id="mapw"><svg id="svg" viewBox="0 0 1310 926" class="map-svg"><image id="mi" width="1310" height="926" href="map.jpg" preserveAspectRatio="none"/><g id="sl"></g><g id="vl"></g><g id="pl"></g><g id="spl"></g></svg></div>
   <div class="lg card" id="legend"></div>
   <div class="card" id="panel"></div>
   <div class="card"><h3>Conteo por sección</h3><div id="expEd" class="row" hidden><label for="exp">Esperados</label><input id="exp" type="number" min="1" style="width:110px"><button class="pri" onclick="const v=+$('exp').value;if(v>0)put('expect',v)">Guardar</button></div><div id="cnt"></div></div>
@@ -121,11 +122,14 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
   </div>
   <div class="row" style="justify-content:space-between;margin-top:10px">
     <h2 style="margin:0;color:#5B3C88;font-size:22px">🦽 Estacionamiento Walkers/Sillas</h2>
-    <button id="btnCalib" hidden onclick="toggleCalib()" style="background:#333;color:#fff;border:none;font-size:18px;padding:8px 12px" title="Ajustar mapa">⚙️</button>
+    <div>
+      <button onclick="resetWalkers()" class="warn" style="padding:8px 12px;font-size:14px">🗑️ Vaciar</button>
+      <button id="btnCalib" hidden onclick="toggleCalib()" style="background:#333;color:#fff;border:none;font-size:18px;padding:8px 12px" title="Ajustar mapa">⚙️</button>
+    </div>
   </div>
   
   <div id="calibMenu" class="cal card" hidden style="background:#f9f9f9;border-color:#ccc;margin-top:10px">
-    <b style="color:#e65100">Ajustes de Admin (solo tú ves esto)</b>
+    <b style="color:#e65100">Ajustes de Admin</b>
     <label>Mover izquierda/derecha <input type="range" id="cDx" min="-40" max="40" step="1"></label>
     <label>Mover arriba/abajo <input type="range" id="cDy" min="-40" max="40" step="1"></label>
     <label>Distancia a la curva <input type="range" id="cOff" min="2" max="40" step="1"></label>
@@ -136,25 +140,24 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
   <div class="row" style="margin-top:15px">
     <button id="tabMap" class="on" onclick="setWalkTab('map')">🗺️ Mapa</button>
     <button id="tabList" onclick="setWalkTab('list')">▦ Lista</button>
-    <button onclick="zoomWalk(-1)">−</button><button onclick="zoomWalk(1)">＋</button>
   </div>
   
   <input id="walkerSearch" placeholder="🔍 Buscar hermano por nombre…" oninput="searchWalker(this.value)" style="margin-top:10px;font-size:16px;padding:12px">
+  <div id="walkSearchRes" style="font-weight:bold;color:var(--ok);margin-top:5px;min-height:20px"></div>
 
   <div id="walkMapBox" style="margin-top:10px">
-    <div id="mapbox"><svg id="walkSvg" viewBox="440 270 240 310">
-      <image id="mi2" href="map.jpg" x="0" y="0" width="1310" height="926" preserveAspectRatio="none"/>
-      <path id="curve" fill="none" stroke="#5B3C88" stroke-width="2" stroke-dasharray="4 3" opacity=".8"/>
-      <g id="slots"></g>
-      <g id="mk"></g>
-      <text x="452" y="285" font-size="8" font-weight="700" fill="#6e1414" style="paint-order:stroke;stroke:#fff;stroke-width:2">← VESTÍBULO</text>
-      <text x="676" y="285" font-size="8" font-weight="700" fill="#6e1414" text-anchor="end" style="paint-order:stroke;stroke:#fff;stroke-width:2">AUDITORIO →</text>
-    </svg></div>
+    <div id="mapbox">
+      <svg id="walkSvg" viewBox="440 250 240 330">
+        <image id="mi2" href="map.jpg" x="0" y="0" width="1310" height="926" preserveAspectRatio="none"/>
+        <path id="curve" fill="none" stroke="#5B3C88" stroke-width="2" stroke-dasharray="4 3" opacity=".8"/>
+        <g id="slots"></g>
+        <g id="mk"></g>
+      </svg>
+    </div>
     <div class="lg" style="margin-top:8px">
       <span><i style="background:#e0e0e0;border:1px solid #999"></i>Libre</span>
       <span><i style="background:#43a047"></i>Con walker</span>
-      <span><i style="background:#fff;border:2px solid #d11"></i>Último en llegar</span>
-      <span>Columnas A→T de norte a sur · Hileras 1-2-3 desde la curva hacia el auditorio</span>
+      <span style="color:#666;font-size:12px">Usa 2 dedos para hacer zoom</span>
     </div>
   </div>
 
@@ -171,6 +174,7 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
   </div>
   <button onclick="openWalkers('vol')" style="width:100%;padding:14px;font-size:17px;background:#5B3C88;color:#fff;border-color:#5B3C88;font-weight:bold;margin-bottom:15px">🦽 Estacionamiento de Walkers/Sillas</button>
   <div id="volResults" style="text-align:left;margin-top:10px"></div>
+  <button onclick="logout()" class="warn" style="width:100%;padding:18px;font-size:20px;margin-top:20px;border-radius:8px">🚪 Cerrar Sesión</button>
 </div></div>
 
 <script>
@@ -189,32 +193,36 @@ const D={"caps":["Eliud Luna","Hugo Galvan","Jimmy Vasquez","José A. González"
 "cap":{"A1":0,"A2":464,"A3":475,"A4":464,"A5":0,"B1":0,"B2":158,"B3":156,"B4":158,"B5":0},"expect":2474};
 for(const k in VOL_POS_COORDS){D.pos[k]={who:"",t:"Voluntaria "+k,x:VOL_POS_COORDS[k].x,y:VOL_POS_COORDS[k].y,l:0,a:"vol",v:1}}
 const ADM=[{"n":"Sergio E. Vazquez Jr.","pwd":"acomodadores2026","all":1,"cnt":1,"adm":1,"areas":[]},{"n":"Alberto Herrera","pwd":"seccion@","all":1,"cnt":1,"adm":1,"areas":[]},{"n":"Steven Snyder","pwd":"auxiliar2026","areas":["ctl","aud"],"adm":1},{"n":"Jaime Palestina","pwd":"superaux2026","areas":["alm","ent"],"adm":1},{"n":"Abdiel Juarez Jr.","pwd":"clave2026","areas":["aud"],"cnt":1,"adm":1},{"n":"José A. González","pwd":"capitan2026","areas":["vol"],"adm":1},{"n":"Carlos Vasquez","pwd":"limpieza2026","areas":[],"spill":1,"adm":1}];
+
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const POS=Object.keys(D.pos).map(Number),SEC=[1,2,3,4,5].flatMap(i=>[['A',i,'Anillo 2'],['B',i,'Anillo 1']].map(([r,i,l])=>({id:r+i,l:l+' · Sección '+i})));
 const PRIV={A:'Anciano',S:'Siervo Ministerial',P:'Publicador bautizado'};
 let iv=null,me=null,hl=null,sel=null,edit=false,drag=null,dragV=null,dragL=null,S={},isVolunteerMode=false,mapView='acom',secEditMode=false,currentTurno=1,spillMode=false;
 let walkerReturn='app', lastWalkerData='', volTurn='1', volQuery='';
-let walkTab='map', walkZoomLevel=0;
-const walkZoomWidths=[100, 150, 220, 320];
+let walkTab='map';
+let cam={x:440,y:250,w:240,h:330}; // Estado de la cámara para Walkers
+let touchState={mode:null,startDist:0,startScale:1,startX:0,startY:0,lastX:0,lastY:0,cx:0,cy:0};
 
-// Lógica Walkers
 const LET="ABCDEFGHIJKLMNOPQRST".split("");
-const W_P0=[580,304],W_PC=[556,423],W_P2=[581,542]; // Coordenadas curva originales
+const W_P0=[580,304],W_PC=[556,423],W_P2=[581,542];
 let W_DATA={},W_HIST={},W_CAL={dx:0,dy:0,off:9,len:100},W_Flash=null;
 try{Object.assign(W_CAL,JSON.parse(localStorage.wcal||'{}'))}catch(e){}
 const wShort=n=>{const p=n.trim().split(/\s+/);return p.length>1?p[0]+' '+p[1][0]+'.':p[0]};
-const wHora=ts=>new Date(ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
 
 const sectionOf=pos=>VOL_SECTIONS.find(s=>s.pos.includes(+pos))||{label:"Extra",color:"#888"};
 const labelPos=sec=>{const l=S.labels&&S.labels[sec.id];return l?{x:l.x,y:l.y}:{x:sec.labelX,y:sec.labelY}};
 const P=n=>{const d=D.pos[n];const base=Object.assign({},d,(S.pos||{})[n]);if(d.v===1){const who=(S.volTurnos&&S.volTurnos[currentTurno]&&S.volTurnos[currentTurno][n])||"";return Object.assign({},base,{who})}return base};
 const coordsOf=pos=>{const d=D.pos[pos];const s=(S.pos||{})[pos]||{};return{x:s.x!==undefined?s.x:d.x,y:s.y!==undefined?s.y:d.y}};
 const eff=n=>{const p=P(n);return p.sub||p.who||''},ppl=n=>D.roster.find(r=>r.n===n);
+const isPosActive=n=>{
+  const p=S.pos&&S.pos[n];
+  return p?p.active!==false:true;
+};
 const canEd=n=>{if(!me||!me.adm)return false;if(me.all)return true;const area=D.pos[n].a;if(area==='vol')return(me.areas||[]).includes('vol');return(me.areas||[]).includes(area)};
 const canCnt=()=>me&&(me.cnt||(!me.adm&&S.cntOpen&&(me.n==='Eliud Luna'||POS.some(n=>n>=25&&n<=34&&eff(n)===me.n))));
 const occ=()=>new Set(POS.flatMap(n=>[P(n).who,P(n).sub]).filter(Boolean));
 const watch=n=>me&&(me.all||(me.adm?(D.pos[n].a==='vol'||me.areas.includes(D.pos[n].a)):eff(n)===me.n));
-const vacant=n=>watch(n)&&!D.pos[n].v&&(D.pos[n].l?S.arm!==false:S.arm2===true)&&!['ok','sub'].includes(P(n).st);
+const vacant=n=>watch(n)&&isPosActive(n)&&!D.pos[n].v&&(D.pos[n].l?S.arm!==false:S.arm2===true)&&!['ok','sub'].includes(P(n).st);
 
 function volHistory(name){const res=[],vt=S.volTurnos||{};for(const t in vt)for(const p in vt[t])if(vt[t][p]===name)res.push({turno:+t,posicion:+p});return res.sort((a,b)=>a.turno-b.turno)}
 function canAssign(turno,pos,name){const t=+turno,volList=TURNOS[t]?TURNOS[t].vol:[];if(!volList.includes(name))return{ok:false,msg:"No se apuntó a este turno"};const hist=volHistory(name);if(hist.find(h=>h.turno===t))return{ok:false,msg:"Ya está en este turno"};const sigCount=Object.values(TURNOS).filter(tt=>tt.vol.includes(name)).length;const maxT=Math.min(4,sigCount);if(hist.length>=maxT)return{ok:false,msg:`Máximo ${maxT} turnos`};const consec=hist.find(h=>Math.abs(h.turno-t)===1);if(consec){const ok12=(t===1&&consec.turno===2)||(t===2&&consec.turno===1);if(!ok12)return{ok:false,msg:`Consecutivo con T${consec.turno}`}}if((t===5&&hist.find(h=>h.turno===6))||(t===6&&hist.find(h=>h.turno===5)))return{ok:false,msg:"T5 y T6 excluyentes"};return{ok:true,msg:`OK (${hist.length+1}/${maxT})`}}
@@ -235,12 +243,10 @@ async function load(){
   if(!CFG.DB){try{S=JSON.parse(localStorage.acom||'{}')}catch(e){}return draw()}
   try{
     const r=await fetch(U('')+'?t='+Date.now());S=(await r.json())||{};net(true);
-    // Cargar datos de walkers por separado para no saturar el hilo principal
     const wRes = await fetch(`${CFG.DB}/walkersTest/w.json`);
     W_DATA = await wRes.json() || {};
     const hRes = await fetch(`${CFG.DB}/walkersTest/h.json`);
     W_HIST = await hRes.json() || {};
-    
     if(isVolunteerMode){renderVolList()}else{draw()}
     if(!$('walkersView').hidden) drawWalkers();
   }catch(e){net(false)}
@@ -260,7 +266,6 @@ function enterVoluntaria(){me=null;$('login').hidden=true;$('app').hidden=true;$
 function toggleBigText(){document.body.classList.toggle('big');try{localStorage.bigText=document.body.classList.contains('big')?'1':'0'}catch(e){}}
 try{if(localStorage.bigText==='1')document.body.classList.add('big')}catch(e){}
 
-// --- Renderizado de Turnos Grandes ---
 function renderVolTurnBtns(){
   const c=$('volTurnBtns');
   c.innerHTML=Object.keys(TURNOS).map(t=>`
@@ -270,10 +275,7 @@ function renderVolTurnBtns(){
   `).join('');
 }
 
-function buscarVoluntaria(q){
-  volQuery=q;
-  renderVolList();
-}
+function buscarVoluntaria(q){volQuery=q;renderVolList()}
 
 function renderVolList(){
   const res=$('volResults');
@@ -315,24 +317,17 @@ function renderVolList(){
   }
 }
 
-// --- Lógica Walkers ---
+// --- Walkers Zoom & Pan ---
 function openWalkers(from){
   walkerReturn=from||'app';$('app').hidden=true;$('volPanel').hidden=true;$('walkersView').hidden=false;
-  $('btnCalib').hidden = !(me && me.all); // Solo Sergio y Alberto ven el engranaje
+  $('btnCalib').hidden = !(me && me.all); // Solo Sergio y Alberto
+  const canEditWalkers = me && (me.all || (me.n === 'José A. González') || me.c === 'Voluntaria');
+  // Set global edit permission for walkers
+  window.canEditWalkers = canEditWalkers;
   drawWalkers();
 }
-function closeWalkers(){
-  $('walkersView').hidden=true;if(walkerReturn==='vol'){$('volPanel').hidden=false;renderVolList()}else{$('app').hidden=false;draw()}
-}
-function setWalkTab(t){
-  walkTab=t;$('walkMapBox').hidden=t!=='map';$('walkListView').hidden=t!=='list';
-  $('tabMap').classList.toggle('on',t==='map');$('tabList').classList.toggle('on',t==='list');
-  if(t==='map')drawWalkMap();else drawWalkList();
-}
-function zoomWalk(d){
-  walkZoomLevel=Math.max(0,Math.min(walkZoomWidths.length-1, walkZoomLevel+d));
-  $('walkSvg').style.width=walkZoomWidths[walkZoomLevel]+'%';
-}
+function closeWalkers(){ $('walkersView').hidden=true; if(walkerReturn==='vol'){$('volPanel').hidden=false;renderVolList()}else{$('app').hidden=false;draw()} }
+function setWalkTab(t){ walkTab=t;$('walkMapBox').hidden=t!=='map';$('walkListView').hidden=t!=='list'; $('tabMap').classList.toggle('on',t==='map');$('tabList').classList.toggle('on',t==='list'); if(t==='map')drawWalkMap();else drawWalkList() }
 function toggleCalib(){$('calibMenu').hidden=!$('calibMenu').hidden}
 
 function wBez(t){const u=1-t;return[u*u*W_P0[0]+2*u*t*W_PC[0]+t*t*W_P2[0], u*u*W_P0[1]+2*u*t*W_PC[1]+t*t*W_P2[1]]}
@@ -341,19 +336,20 @@ function wTan(t){return[2*(1-t)*(W_PC[0]-W_P0[0])+2*t*(W_P2[0]-W_PC[0]), 2*(1-t)
 function wSlotXY(id){
   const ci=LET.indexOf(id[0]),r=+id[1];
   const mid=(W_P0[1]+W_P2[1])/2,k=W_CAL.len/100;
-  const t=(ci+.5)/20,b=wBez(t),T=wTan(t),m=Math.hypot(T[0],T[1]),n=[T[1]/m,-T[0]/m]; // Vector normal INVERTIDO para mover a la derecha
+  const t=(ci+.5)/20,b=wBez(t),T=wTan(t),m=Math.hypot(T[0],T[1]),n=[T[1]/m,-T[0]/m]; // Vector normal INVERTIDO
   const d=W_CAL.off+(r-1)*13;
   let x=b[0]+n[0]*d,y=b[1]+n[1]*d;
-  
-  // Invertir Y para adaptarlo a la perspectiva que pediste
   y=mid-(y-mid)*k;
-  
   return{x:x+W_CAL.dx, y:y+W_CAL.dy, a:Math.atan2(T[1],T[0])*180/Math.PI*(-1)};
+}
+
+function updateCam(){
+  $('walkSvg').setAttribute('viewBox', `${cam.x} ${cam.y} ${cam.w} ${cam.h}`);
 }
 
 function drawWalkMap(){
   const k=W_CAL.len/100,mid=(W_P0[1]+W_P2[1])/2;
-  const f=p=>[p[0]+W_CAL.dx, mid-(mid-(p[1]+W_CAL.dy))*k]; // Invertir curva
+  const f=p=>[p[0]+W_CAL.dx, mid-(mid-(p[1]+W_CAL.dy))*k]; 
   const a=f(W_P0),c=f(W_PC),b=f(W_P2);
   $('curve').setAttribute('d',`M${a[0]} ${a[1]} Q${c[0]} ${c[1]} ${b[0]} ${b[1]}`);
 
@@ -371,6 +367,7 @@ function drawWalkMap(){
   
   const total=WALKER_SLOTS.length;const occCount=Object.keys(W_DATA).length;
   $('walkCount').textContent=`${occCount}/${total} ocupados`;
+  updateCam();
 }
 
 function drawWalkList(){
@@ -388,28 +385,28 @@ function drawWalkList(){
   $('walkListView').innerHTML=h;
 }
 
-function drawWalkers(){
-  if(walkTab==='map') drawWalkMap();
-  else drawWalkList();
-}
+function drawWalkers(){ if(walkTab==='map') drawWalkMap(); else drawWalkList(); }
 
 function searchWalker(q){
   const norm=q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
   const on=norm.length>=2;
+  let foundStr = '';
   document.querySelectorAll('.wslot, .slot').forEach(el=>{
     const c=W_DATA[el.dataset.id];
-    el.classList.toggle('found',!!(on&&c&&c.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(norm)));
+    const isMatch = on && c && c.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(norm);
+    el.classList.toggle('found', !!isMatch);
+    if(isMatch && !foundStr) foundStr = `${c.name} está en el espacio ${el.dataset.id}`;
   });
+  $('walkSearchRes').textContent = on ? (foundStr || 'No se encontró a nadie') : '';
 }
 
 function tapWalker(id){
+  if(!window.canEditWalkers) { showToast("No tienes permiso para editar walkers", true); return; }
   const cur=W_DATA[id];
   if(cur){
-    if(confirm(`Retirar walker de "${cur.name}"?\n\nAceptar = retirado\nCancelar = mantener`)){
-      delete W_DATA[id];
-      W_HIST[Date.now()]={slot:id,name:cur.name,act:'out',ts:Date.now()};
+    if(confirm(`Retirar walker de "${cur.name}"?\n\nAceptar = retirado`)){
+      delete W_DATA[id]; W_HIST[Date.now()]={slot:id,name:cur.name,act:'out',ts:Date.now()};
       drawWalkers();
-      // Guardar en firebase
       fetch(`${CFG.DB}/walkersTest/w/${id}.json`,{method:'DELETE'});
       fetch(`${CFG.DB}/walkersTest/h/${Date.now()}.json`,{method:'PUT',body:JSON.stringify({slot:id,name:cur.name,act:'out',ts:Date.now()})});
     }
@@ -417,31 +414,103 @@ function tapWalker(id){
     const name=prompt(`Espacio ${id} - ¿Cómo se llama el hermano/a?`);
     if(!name||!name.trim())return;
     const ts=Date.now();
-    W_DATA[id]={name:name.trim(),ts};
-    W_HIST[ts]={slot:id,name:name.trim(),act:'in',ts};
-    W_Flash=id;
-    drawWalkers();
+    W_DATA[id]={name:name.trim(),ts}; W_HIST[ts]={slot:id,name:name.trim(),act:'in',ts};
+    W_Flash=id; drawWalkers();
     setTimeout(()=>{W_Flash=null;drawWalkMap()},6000);
-    // Guardar en firebase
     fetch(`${CFG.DB}/walkersTest/w/${id}.json`,{method:'PUT',body:JSON.stringify({name:name.trim(),ts})});
     fetch(`${CFG.DB}/walkersTest/h/${ts}.json`,{method:'PUT',body:JSON.stringify({slot:id,name:name.trim(),act:'in',ts})});
   }
 }
+
+function resetWalkers(){
+  if(!window.canEditWalkers) return;
+  if(!confirm('¿Vaciar TODO el estacionamiento? Esto borrará los walkers actuales.')) return;
+  W_DATA = {};
+  fetch(`${CFG.DB}/walkersTest/w.json`,{method:'DELETE'});
+  drawWalkers(); showToast('Estacionamiento vaciado');
+}
+
+// --- Eventos Táctiles para Walkers (Zoom & Pan) ---
+const wSvg = $('walkSvg');
+wSvg.addEventListener('touchstart', e => {
+  if (e.touches.length === 2) {
+    touchState.mode = 'pinch';
+    touchState.startDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    touchState.startScale = cam.w;
+    touchState.cx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+    touchState.cy = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+  } else if (e.touches.length === 1) {
+    touchState.mode = 'pan';
+    touchState.startX = e.touches[0].clientX;
+    touchState.startY = e.touches[0].clientY;
+    touchState.lastX = cam.x;
+    touchState.lastY = cam.y;
+  }
+}, {passive: false});
+
+wSvg.addEventListener('touchmove', e => {
+  e.preventDefault();
+  if (touchState.mode === 'pinch' && e.touches.length === 2) {
+    const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    const scale = touchState.startDist / dist;
+    let newW = touchState.startScale * scale;
+    newW = Math.max(60, Math.min(600, newW)); // Límites de zoom
+    const newH = newW * (330/240); // Mantener proporción
+    const p = wSvg.createSVGPoint(); p.x = touchState.cx; p.y = touchState.cy;
+    const svgP = p.matrixTransform(wSvg.getScreenCTM().inverse());
+    cam.x = svgP.x - (touchState.cx - wSvg.getBoundingClientRect().left) / wSvg.getBoundingClientRect().width * newW;
+    cam.y = svgP.y - (touchState.cy - wSvg.getBoundingClientRect().top) / wSvg.getBoundingClientRect().height * newH;
+    cam.w = newW; cam.h = newH;
+    updateCam();
+  } else if (touchState.mode === 'pan' && e.touches.length === 1) {
+    const dx = (e.touches[0].clientX - touchState.startX) / wSvg.getBoundingClientRect().width * cam.w;
+    const dy = (e.touches[0].clientY - touchState.startY) / wSvg.getBoundingClientRect().height * cam.h;
+    cam.x = touchState.lastX - dx;
+    cam.y = touchState.lastY - dy;
+    updateCam();
+  }
+}, {passive: false});
+
+wSvg.addEventListener('touchend', e => {
+  if (e.touches.length === 0) touchState.mode = null;
+});
+
+// Mouse drag para desktop
+wSvg.addEventListener('mousedown', e => {
+  touchState.mode = 'pan';
+  touchState.startX = e.clientX; touchState.startY = e.clientY;
+  touchState.lastX = cam.x; touchState.lastY = cam.y;
+});
+window.addEventListener('mousemove', e => {
+  if (touchState.mode !== 'pan') return;
+  const dx = (e.clientX - touchState.startX) / wSvg.getBoundingClientRect().width * cam.w;
+  const dy = (e.clientY - touchState.startY) / wSvg.getBoundingClientRect().height * cam.h;
+  cam.x = touchState.lastX - dx;
+  cam.y = touchState.lastY - dy;
+  updateCam();
+});
+window.addEventListener('mouseup', () => { touchState.mode = null; });
+
 
 function calInit(){
   const m={cDx:'dx',cDy:'dy',cOff:'off',cLen:'len'};
   for(const id in m){const el=$(id);el.value=W_CAL[m[id]];el.oninput=()=>{W_CAL[m[id]]=+el.value;try{localStorage.wcal=JSON.stringify(W_CAL)}catch(e){}drawWalkMap()}}
 }
 function calReset(){W_CAL={dx:0,dy:0,off:9,len:100};try{delete localStorage.wcal}catch(e){}calInit();drawWalkMap()}
-
-// Iniciar calibración
 calInit();
 
-// Lógica principal
-const stamp=n=>put(`pos/${n}/ts`,Date.now());
-function cnt(id,d){hl=id;const v=Math.max(0,((S.cnt||{})[id]||0)+d);put('cnt/'+id,v)}
-function reset(){if(!confirm('¿Reiniciar?'))return;const o={};POS.forEach(n=>{const p=P(n);o[n]={x:p.x,y:p.y,who:p.who}});put('pos',o);put('cnt',null)}
-function draw(){if(!me||drag||dragV||dragL)return;drawMap();drawPanel();drawBar();drawCnt();drawMine();drawLegend();drawSpills();if(!$('walkersView').hidden)drawWalkers()}
+// --- Control de Posiciones ---
+function togglePosActive(n) {
+  const current = isPosActive(n);
+  put(`pos/${n}/active`, !current);
+  showToast(!current ? `✓ Posición ${n} Activada` : `Posición ${n} Desactivada`);
+}
+
+function draw(){
+  if(!me||drag||dragV||dragL)return;
+  drawMap();drawPanel();drawBar();drawCnt();drawMine();drawLegend();drawSpills();
+  if(!$('walkersView').hidden)drawWalkers();
+}
 function showToast(m,err){const c=document.getElementById('toast-container'),t=document.createElement('div');t.className='toast'+(err?' err':'');t.innerHTML=m;c.appendChild(t);setTimeout(()=>t.classList.add('show'),10);setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},3500)}
 function setSt(n,s){put(`pos/${n}/st`,s);stamp(n);const nom=eff(n)||('Posición '+n);if(s==='ok'||s==='sub')showToast(`✓ ${nom} Presente`);else if(s==='abs')showToast(`✕ ${nom} Ausente`)}
 function here(n){if(P(n).sub===me.n||P(n).who===me.n)setSt(n,P(n).sub?'sub':'ok')}
@@ -458,10 +527,43 @@ function setCap(k,v){const n=Math.max(0,parseInt(v)||0);if(!S.cap)S.cap={};S.cap
 function moveLabel(lid,x,y){if(!S.labels)S.labels={};S.labels[lid]={x:Math.round(x),y:Math.round(y)};put('labels/'+lid,S.labels[lid])}
 function drawLegend(){const lg=$('legend');if(!lg)return;if(mapView==='vol'&&me&&me.adm){lg.innerHTML=VOL_SECTIONS.map(s=>`<span><i style="background:${s.color}"></i>${s.label}</span>`).join('')+'<span><i style="background:var(--spill)"></i>🧹 Derrame</span>'}else{lg.innerHTML=`<span><i style="background:var(--blue)"></i>Fija</span><span><i style="background:var(--org)"></i>Intermitente</span><span><i style="background:#2e7d32"></i>Presente</span><span><i style="background:#d11"></i>Ausente</span><span><i style="background:#777"></i>Sustituto</span><span><i style="background:var(--spill)"></i>🧹 Derrame</span>`}}
 function drawSpills(){const e=$('spillPanel');if(!e||!me)return;const arr=Object.entries(S.spills||{}).sort((a,b)=>b[1].ts-a[1].ts);const pend=arr.filter(([id,s])=>s.status==='pendiente');const proc=arr.filter(([id,s])=>s.status==='proceso');const done=arr.filter(([id,s])=>s.status==='terminado');if(!arr.length){e.hidden=true;return}e.hidden=false;let h=`<div class="spill-panel"><h3 style="color:#e65100;margin-top:0">🧹 Derrames</h3>`;h+=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px"><div class="spill-counter" style="background:#fff3cd"><b style="color:#e65100">${pend.length}</b><small>Pendientes</small></div><div class="spill-counter" style="background:#fff59d"><b style="color:#f57f17">${proc.length}</b><small>En proceso</small></div><div class="spill-counter" style="background:#c8e6c9"><b style="color:#2e7d32">${done.length}</b><small>Terminadas</small></div></div>`;const active=[...pend,...proc];for(const [id,sp] of active){const fecha=new Date(sp.ts),hora=fecha.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});const isProc=sp.status==='proceso';h+=`<div class="spill-item ${isProc?'proc':''}"><div><b>${esc(sp.tipo)}</b> · <span style="color:${isProc?'#f57f17':'#e65100'};font-weight:600">${sp.status.toUpperCase()}</span></div><div style="font-size:13px;color:#666;margin-top:4px">Reportado por ${esc(sp.quien)} · ${hora}${sp.quienLimpia?' · Limpia: '+esc(sp.quienLimpia):''}</div><div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><button onclick="showSpillPanel('${id}')" style="font-size:14px;padding:8px 12px">Ver detalles</button>${!isProc?`<button onclick="takeSpill('${id}')" style="font-size:14px;padding:8px 12px;background:#ffd54f;border-color:#fbc02d;font-weight:bold">🖐️ Tomar</button>`:''}${isProc?`<button onclick="doneSpill('${id}')" style="font-size:14px;padding:8px 12px;background:#2e7d32;color:#fff;border-color:#2e7d32;font-weight:bold">✓ Terminado</button>`:''}</div></div>`}if(done.length){h+=`<details style="margin-top:12px"><summary>✅ ${done.length} terminadas hoy</summary>`;for(const [id,sp] of done){const fecha=new Date(sp.ts),hora=fecha.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});h+=`<div class="spill-item done" style="margin-top:6px"><div><b>${esc(sp.tipo)}</b></div><div style="font-size:13px;color:#666;margin-top:4px">Por ${esc(sp.quien)} · ${hora}${sp.quienLimpia?' · Limpió: '+esc(sp.quienLimpia):''}</div><button onclick="deleteSpill('${id}')" style="font-size:13px;padding:6px 10px;margin-top:6px">🗑️ Borrar</button></div>`}h+='</details>'}h+='</div>';e.innerHTML=h}
-function drawMap(){let s='';for(const k in D.sec){const cls=secEditMode?('sec edit'+(hl===k?' hl':'')):'sec'+(hl===k?' hl':'');s+=`<polygon class="${cls}" data-s="${k}" points="${(S.sec&&S.sec[k])||D.sec[k]}"/>`}$('sl').innerHTML=s;let vh='';if(secEditMode&&hl&&D.sec[hl]){const pts=secPts(hl);pts.forEach((pt,i)=>{vh+=`<circle class="vertex" data-sec="${hl}" data-idx="${i}" cx="${pt[0]}" cy="${pt[1]}" r="7" fill="#fff" stroke="#d11" stroke-width="2"/>`});for(let i=0;i<pts.length;i++){const a=pts[i],b=pts[(i+1)%pts.length];const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2;vh+=`<circle class="vadd" data-sec="${hl}" data-after="${i}" data-mx="${Math.round(mx)}" data-my="${Math.round(my)}" cx="${mx}" cy="${my}" r="4" fill="#888" stroke="#fff" stroke-width="1.5"/>`}}$('vl').innerHTML=vh;let h='';if(mapView==='vol'&&me&&me.adm){for(const sec of VOL_SECTIONS){const lp=labelPos(sec);if(secEditMode){h+=`<g class="vlabel" data-lid="${sec.id}" transform="translate(${lp.x} ${lp.y})"><rect x="-85" y="-18" width="170" height="28" rx="6" fill="#ffffffdd" stroke="${sec.color}" stroke-width="2"/><text text-anchor="middle" dy=".35em" font-size="15" font-weight="bold" fill="${sec.color}" pointer-events="none">${sec.label}</text></g>`}else{h+=`<text x="${lp.x}" y="${lp.y}" text-anchor="middle" font-size="15" font-weight="bold" fill="${sec.color}" pointer-events="none" style="text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 3px #fff">${sec.label}</text>`}}}for(const n of POS){const raw=D.pos[n],isVol=raw.v===1;if((mapView==='acom'&&isVol)||(mapView==='vol'&&!isVol))continue;const p=P(n);const b=p.st==='ok'?['#2e7d32','✓']:p.st==='abs'?['#d11','✕']:p.st==='sub'?['#777','S']:null;const fill=isVol?sectionOf(n).color:(raw.l?'var(--blue)':'var(--org)');h+=`<g class="pc${watch(n)||me.all?'':' dim'}" data-n="${n}" transform="translate(${p.x} ${p.y})">${vacant(n)?'<circle class="pulse" r="27"/>':''}<circle r="19" fill="${fill}" stroke="${sel===n?'#000':'#fff'}" stroke-width="${sel===n?4.5:2.5}"/><text text-anchor="middle" dy=".35em">${n}</text>${b?`<circle cx="15" cy="-15" r="9" fill="${b[0]}" stroke="#fff" stroke-width="1.5"/><text x="15" y="-15" dy=".35em" text-anchor="middle" style="font-size:11px">${b[1]}</text>`:''}</g>`}$('pl').innerHTML=h;let sh='';if(S.spills){for(const id in S.spills){const sp=S.spills[id];if(sp.status==='terminado')continue;const isProc=sp.status==='proceso';const color=isProc?'#fbc02d':'#ff9800';const icon=isProc?'⏳':'!';sh+=`<g class="spill" data-spill="${id}" transform="translate(${sp.x} ${sp.y})"><polygon points="0,-26 24,20 -24,20" fill="${color}" stroke="#fff" stroke-width="2" opacity="0.95"><animate attributeName="opacity" values="0.95;0.55;0.95" dur="1.5s" repeatCount="indefinite"/></polygon><text text-anchor="middle" y="6" font-size="18" fill="#fff" font-weight="bold" pointer-events="none">${icon}</text></g>`}}$('spl').innerHTML=sh}
-function drawBar(){const sc=POS.filter(watch),L=sc.filter(n=>D.pos[n].l),O=sc.filter(n=>!D.pos[n].l),ok=a=>a.filter(n=>['ok','sub'].includes(P(n).st)).length,v=L.filter(n=>!D.pos[n].v&&vacant(n));const viewBtns=me.adm?`<button class="${mapView==='acom'?'on':''}" onclick="mapView='acom';sel=null;draw()">🗺️ Acomodadores</button><button class="${mapView==='vol'?'on':''}" onclick="mapView='vol';sel=null;draw()">👥 Voluntarias</button>`:'';let turnSel='';if(mapView==='vol'&&me.adm){turnSel=`<div class="turnsel"><b style="width:100%;font-size:14px;margin:4px 0">Turno actual:</b>`+Object.keys(TURNOS).map(t=>{const total=TURNOS[t].vol.length;const asg=S.volTurnos&&S.volTurnos[t]?Object.keys(S.volTurnos[t]).length:0;return `<button class="${currentTurno==t?'on':''}" onclick="currentTurno=${t};sel=null;draw()">T${t} (${asg}/${total})</button>`}).join('')+`</div>`}const walkersBtn=`<button onclick="openWalkers('app')" style="background:#5B3C88;color:#fff;border-color:#5B3C88;font-weight:bold">🦽 Walkers</button>`;const spillBtn=`<button class="${spillMode?'on':''}" onclick="toggleSpillMode()" style="background:${spillMode?'#ff9800':'#fff'};color:${spillMode?'#fff':'#e65100'};border-color:#ff9800;font-weight:bold">🧹 Derrame${spillMode?' (ACTIVO)':''}</button>`;const editBtn=me.all?`<button class="${secEditMode?'on':''}" onclick="secEditMode=!secEditMode;spillMode=false;hl=null;draw()" title="Editar zonas">✏️ Zonas</button>`:'';const helpEdit=secEditMode?`<div style="width:100%;font-size:13px;background:#fff7cc;padding:8px;border-radius:4px;margin-top:4px">✏️ <b>Modo edición:</b> Toca una zona, arrastra puntos blancos. Toca sin arrastrar para borrar.${mapView==='vol'?' Las etiquetas también se pueden arrastrar.':''}${hl?` <button style="font-size:12px;padding:3px 8px" onclick="resetSec('${hl}')">↺ Restaurar ${hl}</button>`:''}</div>`:spillMode?`<div style="width:100%;font-size:13px;background:#fff3cd;padding:8px;border-radius:4px;margin-top:4px">🧹 <b>Modo derrame:</b> Toca el mapa donde está el derrame.</div>`:'';$('bar').innerHTML=viewBtns+turnSel+walkersBtn+spillBtn+`<b>${me.all?'Todas':'Tu área'} · Fijas: ${ok(L)}/${L.length}</b><span>Inter: ${ok(O)}/${O.length}</span><span style="flex:1"></span>`+(me.adm?`<button class="${edit?'on':''}" onclick="edit=!edit;spillMode=false;draw()">${edit?'Listo':'Mover'}</button>`:'')+(me.all&&mapView==='acom'?`<button onclick="reset()">Reiniciar</button>`:'')+editBtn+helpEdit;const a=$('alert');a.hidden=!v.length;a.innerHTML='⚠ Sin cubrir: '+v.map(n=>`<a href="#" onclick="sel=${n};draw();return false">${n}</a>`).join(', ')}
+function drawMap(){let s='';for(const k in D.sec){const cls=secEditMode?('sec edit'+(hl===k?' hl':'')):'sec'+(hl===k?' hl':'');s+=`<polygon class="${cls}" data-s="${k}" points="${(S.sec&&S.sec[k])||D.sec[k]}"/>`}$('sl').innerHTML=s;let vh='';if(secEditMode&&hl&&D.sec[hl]){const pts=secPts(hl);pts.forEach((pt,i)=>{vh+=`<circle class="vertex" data-sec="${hl}" data-idx="${i}" cx="${pt[0]}" cy="${pt[1]}" r="7" fill="#fff" stroke="#d11" stroke-width="2"/>`});for(let i=0;i<pts.length;i++){const a=pts[i],b=pts[(i+1)%pts.length];const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2;vh+=`<circle class="vadd" data-sec="${hl}" data-after="${i}" data-mx="${Math.round(mx)}" data-my="${Math.round(my)}" cx="${mx}" cy="${my}" r="4" fill="#888" stroke="#fff" stroke-width="1.5"/>`}}$('vl').innerHTML=vh;let h='';if(mapView==='vol'&&me&&me.adm){for(const sec of VOL_SECTIONS){const lp=labelPos(sec);if(secEditMode){h+=`<g class="vlabel" data-lid="${sec.id}" transform="translate(${lp.x} ${lp.y})"><rect x="-85" y="-18" width="170" height="28" rx="6" fill="#ffffffdd" stroke="${sec.color}" stroke-width="2"/><text text-anchor="middle" dy=".35em" font-size="15" font-weight="bold" fill="${sec.color}" pointer-events="none">${sec.label}</text></g>`}else{h+=`<text x="${lp.x}" y="${lp.y}" text-anchor="middle" font-size="15" font-weight="bold" fill="${sec.color}" pointer-events="none" style="text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 3px #fff">${sec.label}</text>`}}}for(const n of POS){const raw=D.pos[n],isVol=raw.v===1;if((mapView==='acom'&&isVol)||(mapView==='vol'&&!isVol))continue;const p=P(n);const b=p.st==='ok'?['#2e7d32','✓']:p.st==='abs'?['#d11','✕']:p.st==='sub'?['#777','S']:null;const isAct=isPosActive(n);const fill=isVol?sectionOf(n).color:(isAct?(raw.l?'var(--blue)':'var(--org)'):'#ccc');h+=`<g class="pc${watch(n)||me.all?'':' dim'}" data-n="${n}" transform="translate(${p.x} ${p.y})">${vacant(n)?'<circle class="pulse" r="27"/>':''}<circle r="19" fill="${fill}" stroke="${sel===n?'#000':'#fff'}" stroke-width="${sel===n?4.5:2.5}"/><text text-anchor="middle" dy=".35em">${n}</text>${b?`<circle cx="15" cy="-15" r="9" fill="${b[0]}" stroke="#fff" stroke-width="1.5"/><text x="15" y="-15" dy=".35em" text-anchor="middle" style="font-size:11px">${b[1]}</text>`:''}</g>`}$('pl').innerHTML=h;let sh='';if(S.spills){for(const id in S.spills){const sp=S.spills[id];if(sp.status==='terminado')continue;const isProc=sp.status==='proceso';const color=isProc?'#fbc02d':'#ff9800';const icon=isProc?'⏳':'!';sh+=`<g class="spill" data-spill="${id}" transform="translate(${sp.x} ${sp.y})"><polygon points="0,-26 24,20 -24,20" fill="${color}" stroke="#fff" stroke-width="2" opacity="0.95"><animate attributeName="opacity" values="0.95;0.55;0.95" dur="1.5s" repeatCount="indefinite"/></polygon><text text-anchor="middle" y="6" font-size="18" fill="#fff" font-weight="bold" pointer-events="none">${icon}</text></g>`}}$('spl').innerHTML=sh}
+function drawBar(){const sc=POS.filter(watch).filter(n=>isPosActive(n)),L=sc.filter(n=>D.pos[n].l),O=sc.filter(n=>!D.pos[n].l),ok=a=>a.filter(n=>['ok','sub'].includes(P(n).st)).length,v=L.filter(n=>!D.pos[n].v&&vacant(n));const viewBtns=me.adm?`<button class="${mapView==='acom'?'on':''}" onclick="mapView='acom';sel=null;draw()">🗺️ Acomodadores</button><button class="${mapView==='vol'?'on':''}" onclick="mapView='vol';sel=null;draw()">👥 Voluntarias</button>`:'';let turnSel='';if(mapView==='vol'&&me.adm){turnSel=`<div class="turnsel"><b style="width:100%;font-size:14px;margin:4px 0">Turno actual:</b>`+Object.keys(TURNOS).map(t=>{const total=TURNOS[t].vol.length;const asg=S.volTurnos&&S.volTurnos[t]?Object.keys(S.volTurnos[t]).length:0;return `<button class="${currentTurno==t?'on':''}" onclick="currentTurno=${t};sel=null;draw()">T${t} (${asg}/${total})</button>`}).join('')+`</div>`}const walkersBtn=`<button onclick="openWalkers('app')" style="background:#5B3C88;color:#fff;border-color:#5B3C88;font-weight:bold">🦽 Walkers</button>`;const spillBtn=`<button class="${spillMode?'on':''}" onclick="toggleSpillMode()" style="background:${spillMode?'#ff9800':'#fff'};color:${spillMode?'#fff':'#e65100'};border-color:#ff9800;font-weight:bold">🧹 Derrame${spillMode?' (ACTIVO)':''}</button>`;const editBtn=me.all?`<button class="${secEditMode?'on':''}" onclick="secEditMode=!secEditMode;spillMode=false;hl=null;draw()" title="Editar zonas">✏️ Zonas</button>`:'';const helpEdit=secEditMode?`<div style="width:100%;font-size:13px;background:#fff7cc;padding:8px;border-radius:4px;margin-top:4px">✏️ <b>Modo edición:</b> Toca una zona, arrastra puntos blancos. Toca sin arrastrar para borrar.${mapView==='vol'?' Las etiquetas también se pueden arrastrar.':''}${hl?` <button style="font-size:12px;padding:3px 8px" onclick="resetSec('${hl}')">↺ Restaurar ${hl}</button>`:''}</div>`:spillMode?`<div style="width:100%;font-size:13px;background:#fff3cd;padding:8px;border-radius:4px;margin-top:4px">🧹 <b>Modo derrame:</b> Toca el mapa donde está el derrame.</div>`:'';$('bar').innerHTML=viewBtns+turnSel+walkersBtn+spillBtn+`<b>${me.all?'Todas':'Tu área'} · Fijas: ${ok(L)}/${L.length}</b><span>Inter: ${ok(O)}/${O.length}</span><span style="flex:1"></span>`+(me.adm?`<button class="${edit?'on':''}" onclick="edit=!edit;spillMode=false;draw()">${edit?'Listo':'Mover'}</button>`:'')+(me.all&&mapView==='acom'?`<button onclick="reset()">Reiniciar</button>`:'')+editBtn+helpEdit;const a=$('alert');a.hidden=!v.length;a.innerHTML='⚠ Sin cubrir: '+v.map(n=>`<a href="#" onclick="sel=${n};draw();return false">${n}</a>`).join(', ')}
 function drawMine(){const e=$('mine'),n=POS.find(n=>eff(n)===me.n);e.hidden=me.adm||me.all;if(me.adm||me.all)return;e.innerHTML=n?`<h3>Tu posición: ${n}</h3><p>${esc(D.pos[n].t)}</p>`+(['ok','sub'].includes(P(n).st)?'<b style="color:var(--ok)">✓ Registrado.</b>':`<button class="ok" style="width:100%;padding:18px;font-size:20px" onclick="here(${n})">Estoy aquí</button>`):D.caps.includes(me.n)?'<h3>Capitán</h3>':'<h3>Corredor</h3>'}
-function drawPanel(){const e=$('panel');if(!sel){e.innerHTML='<span class="mut">Toca un número del mapa.</span>';return}const n=sel,p=P(n),d=D.pos[n],w=eff(n),r=ppl(w),ad=canEd(n),isVol=d.v===1;const sec=isVol?sectionOf(n):null;if(isVol){let h=`<h3 style="color:${sec.color}">Voluntaria ${n} · ${sec.label}</h3>`;h+=`<p style="margin:6px 0;font-size:15px"><b>Turno: ${currentTurno} · ${TURNOS[currentTurno].name}</b></p>`;h+=`<div class="rules"><b>📋 Reglas activas:</b><br>✅ No consecutivos (excepto T1+T2)<br>✅ Máximo 4 turnos por hermana<br>✅ T5 y T6 son excluyentes (intermedio)</div>`;if(w){const hist=volHistory(w).filter(x=>!(+x.turno===+currentTurno&&+x.posicion===+n));h+=`<div class="who" style="border-left-color:${sec.color}"><b>${esc(w)}</b></div>`;if(hist.length){h+=`<div class="histbox"><b>También está en:</b><ul style="margin:6px 0;padding-left:18px">${hist.map(x=>`<li>T${x.turno} · ${sectionOf(x.posicion).label} (${x.posicion})</li>`).join('')}</ul></div>`}else h+='<p class="mut" style="font-size:14px">No está en otros turnos.</p>';h+=`<button onclick="unassignVol(${currentTurno},${n})" style="margin-top:6px">🗑️ Quitar asignación</button>`}else{h+='<p class="mut">Sin asignar en este turno.</p>'}const vols=TURNOS[currentTurno].vol.map(name=>{const chk=canAssign(currentTurno,n,name);return{name,ok:chk.ok,msg:chk.msg}});const avail=vols.filter(v=>v.ok),blocked=vols.filter(v=>!v.ok);h+=`<div class="sg"><b>Disponibles (${avail.length}):</b><div style="margin-top:6px">`;if(avail.length===0)h+='<p class="mut" style="font-size:14px">Ninguna puede asignarse aquí.</p>';else h+=avail.map(v=>`<button class="vbtn" data-vname="${esc(v.name)}" onclick="doAssign(${currentTurno},${n},this.dataset.vname)">✓ ${esc(v.name)}</button>`).join('');h+='</div>';if(blocked.length){h+=`<details style="margin-top:10px"><summary>❌ ${blocked.length} bloqueadas</summary><ul style="margin:6px 0;padding-left:18px;font-size:13px">${blocked.map(v=>`<li><b>${esc(v.name)}</b> — ${v.msg}</li>`).join('')}</ul></details>`}h+='</div>';e.innerHTML=h;return}let h=`<h3>Posición ${n} <span class="tag ${d.l?'b':'o'}">${d.l?'Fija':'Intermitente'}</span></h3><div>${esc(d.t)}</div>`;h+=w?`<div class="who"><b>${esc(w)}</b>${r?`<br>${PRIV[r.p]} · ${esc(r.c)}`:''}${p.sub?`<br><span class="mut">Sustituto de ${esc(p.who)}</span>`:''}</div>`:'<p class="mut">Sin asignar</p>';if(ad){h+=`<div class="row"><button class="ok" onclick="setSt(${n},'${p.sub?'sub':'ok'}')">Presente</button><button onclick="setSt(${n},'abs')">Ausente</button>${p.sub?`<button onclick="back(${n})">Llegó titular</button>`:''}</div>`;const list=D.roster.filter(r=>r.c!=='Voluntaria');h+=`<div class="sg"><b>Asignar Acomodador</b><select onchange="if(this.value)setWho(${n},this.value)"><option value="">Elegir…</option>${list.map(x=>`<option ${x.n===p.who?'disabled':''}>${esc(x.n)}</option>`).join('')}</select></div>`}e.innerHTML=h}
+function drawPanel(){
+  const e=$('panel');if(!sel){e.innerHTML='<span class="mut">Toca un número del mapa.</span>';return}
+  const n=sel,p=P(n),d=D.pos[n],w=eff(n),r=ppl(w),ad=canEd(n),isVol=d.v===1,isAct=isPosActive(n);
+  const sec=isVol?sectionOf(n):null;
+  if(isVol){
+    let h=`<h3 style="color:${sec.color}">Voluntaria ${n} · ${sec.label}</h3>`;
+    h+=`<p style="margin:6px 0;font-size:15px"><b>Turno: ${currentTurno} · ${TURNOS[currentTurno].name}</b></p>`;
+    h+=`<div class="rules"><b>📋 Reglas activas:</b><br>✅ No consecutivos (excepto T1+T2)<br>✅ Máximo 4 turnos por hermana<br>✅ T5 y T6 son excluyentes (intermedio)</div>`;
+    if(w){
+      const hist=volHistory(w).filter(x=>!(+x.turno===+currentTurno&&+x.posicion===+n));
+      h+=`<div class="who" style="border-left-color:${sec.color}"><b>${esc(w)}</b></div>`;
+      if(hist.length){h+=`<div class="histbox"><b>También está en:</b><ul style="margin:6px 0;padding-left:18px">${hist.map(x=>`<li>T${x.turno} · ${sectionOf(x.posicion).label} (${x.posicion})</li>`).join('')}</ul></div>`}
+      else h+='<p class="mut" style="font-size:14px">No está en otros turnos.</p>';
+      h+=`<button onclick="unassignVol(${currentTurno},${n})" style="margin-top:6px">🗑️ Quitar asignación</button>`;
+    }else{h+='<p class="mut">Sin asignar en este turno.</p>'}
+    const vols=TURNOS[currentTurno].vol.map(name=>{const chk=canAssign(currentTurno,n,name);return{name,ok:chk.ok,msg:chk.msg}});
+    const avail=vols.filter(v=>v.ok),blocked=vols.filter(v=>!v.ok);
+    h+=`<div class="sg"><b>Disponibles (${avail.length}):</b><div style="margin-top:6px">`;
+    if(avail.length===0)h+='<p class="mut" style="font-size:14px">Ninguna puede asignarse aquí.</p>';
+    else h+=avail.map(v=>`<button class="vbtn" data-vname="${esc(v.name)}" onclick="doAssign(${currentTurno},${n},this.dataset.vname)">✓ ${esc(v.name)}</button>`).join('');
+    h+='</div>';
+    if(blocked.length){h+=`<details style="margin-top:10px"><summary>❌ ${blocked.length} bloqueadas</summary><ul style="margin:6px 0;padding-left:18px;font-size:13px">${blocked.map(v=>`<li><b>${esc(v.name)}</b> — ${v.msg}</li>`).join('')}</ul></details>`}
+    h+='</div>';e.innerHTML=h;return;
+  }
+  let h=`<h3>Posición ${n} <span class="tag ${d.l?'b':'o'}">${d.l?'Fija':'Intermitente'}</span> <span class="tag ${isAct?'g':'p'}">${isAct?'Activa':'Inactiva'}</span></h3><div>${esc(d.t)}</div>`;
+  h+=w?`<div class="who"><b>${esc(w)}</b>${r?`<br>${PRIV[r.p]} · ${esc(r.c)}`:''}${p.sub?`<br><span class="mut">Sustituto de ${esc(p.who)}</span>`:''}</div>`:'<p class="mut">Sin asignar</p>';
+  if(ad){
+    h+=`<div class="row"><button class="ok" onclick="setSt(${n},'${p.sub?'sub':'ok'}')">Presente</button><button onclick="setSt(${n},'abs')">Ausente</button>${p.sub?`<button onclick="back(${n})">Llegó titular</button>`:''}</div>`;
+    const list=D.roster.filter(r=>r.c!=='Voluntaria');
+    h+=`<div class="sg"><b>Asignar Acomodador</b><select onchange="if(this.value)setWho(${n},this.value)"><option value="">Elegir…</option>${list.map(x=>`<option ${x.n===p.who?'disabled':''}>${esc(x.n)}</option>`).join('')}</select></div>`;
+    h+=`<div class="sg"><button class="${isAct?'warn':'ok'}" onclick="togglePosActive(${n})">${isAct?'🚫 Desactivar Posición (Ocultar de sin cubrir)':'✅ Activar Posición'}</button></div>`;
+  }
+  e.innerHTML=h;
+}
 function drawCnt(){$('expEd').hidden=!(me.all||me.cnt);if(document.activeElement!==$('exp'))$('exp').value=S.expect||D.expect;const t=SEC.reduce((a,s)=>a+((S.cnt||{})[s.id]||0),0),ex=S.expect||D.expect,cc=canCnt(),editable=me.all;$('cnt').innerHTML=`<p><b>${t}</b> / <b>${ex}</b> (${Math.round(100*t/ex)}%)</p><div class="bar"><i style="width:${Math.min(100,100*t/ex)}%"></i></div><div class="grid" style="margin-top:10px">`+SEC.map(s=>{const v=(S.cnt||{})[s.id]||0,cap=(S.cap&&S.cap[s.id]!==undefined)?S.cap[s.id]:D.cap[s.id];return`<div class="t${hl===s.id?' hl':''}" onclick="hl=hl==='${s.id}'?null:'${s.id}';draw()"><small>${s.l}</small><b>${v}</b>${editable?`<div style="font-size:12px;margin-top:4px">Sillas: <input class="capin" type="number" min="0" value="${cap}" onchange="event.stopPropagation();setCap('${s.id}',this.value)" onclick="event.stopPropagation()"/></div>`:`<small class="mut">Sillas: ${cap}</small>`}${cc?`<div class="row" style="justify-content:center;margin-top:4px"><button onclick="event.stopPropagation();cnt('${s.id}',-1)">−</button><button onclick="event.stopPropagation();cnt('${s.id}',1)">+</button></div>`:''}</div>`}).join('')+'</div>'}
 function drawBench(){const e=$('bench');e.hidden=!me.adm;if(!me.adm)return;e.innerHTML='<h3>Corredores</h3>'+D.runners.map(x=>{const q=ppl(x),n=POS.find(n=>P(n).sub===x);return`<div class="row sg"><span style="flex:1"><b>${esc(x)}</b></span><span class="mut">${n?'Pos '+n:'Libre'}</span></div>`}).join('')}
 const _d=draw;draw=function(){_d();if(me&&!drag&&!dragV&&!dragL)drawBench()};
