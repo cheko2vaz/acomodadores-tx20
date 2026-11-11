@@ -91,6 +91,8 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
   <span id="usr"></span>
   <button id="btn-mode-toggle" onclick="toggleAppMode()" hidden>👥 Vista Voluntaria</button>
   <button onclick="toggleBigText()" style="background:#4A6DA7;color:#fff;border-color:#4A6DA7;font-weight:bold" title="Texto grande">🔍 A</button>
+  <button onclick="window.open('acceso.html','_blank')" style="background:#5B3C88;color:#fff;border-color:#5B3C88;font-weight:bold">🔐 Acceso</button>
+  <button onclick="window.open('dashboard.html','_blank')" style="background:#2e7d32;color:#fff;border-color:#2e7d32;font-weight:bold">🏛️ Panel</button>
   <button id="adminMenuBtn" onclick="toggleAdminMenu()" hidden>⚙️ Admin</button>
   <button id="out" onclick="logout()" hidden>Salir</button>
 </header>
@@ -142,6 +144,12 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
     <button onclick="closeWalkers()" style="background:#5B3C88;color:#fff;border-color:#5B3C88;font-weight:bold">← Volver</button>
     <span id="walkCount" style="font-weight:bold;color:#5B3C88"></span>
   </div>
+
+  <div id="walkerHelper" hidden style="background:#e8f5e9;border-left:4px solid #2e7d32;padding:10px 12px;border-radius:6px;margin:10px 0;font-size:15px;line-height:1.5">
+    <b>👋 ¿Necesitas ayuda con tu walker?</b><br>
+    Habla con <b>Damian Fernandez</b> · Congregación Los Cedros
+  </div>
+
   <div class="row" style="justify-content:space-between;margin-top:10px">
     <h2 style="margin:0;color:#5B3C88;font-size:22px">🦽 Estacionamiento Walkers/Sillas</h2>
     <div>
@@ -228,7 +236,7 @@ const D={"caps":["Eliud Luna","Hugo Galvan","Jimmy Vasquez","José A. González"
 "runners":["Eliu de la Garza","Reynaldo Perez","Roberto Borjas","Servando Sustaita","Jose Duran","Otilio Ramirez","Orlando Benavidez","Oziel Rodriguez"],
 "cap":{"A1":0,"A2":464,"A3":475,"A4":464,"A5":0,"B1":0,"B2":158,"B3":156,"B4":158,"B5":0},"expect":2474};
 for(const k in VOL_POS_COORDS){D.pos[k]={who:"",t:"Voluntaria "+k,x:VOL_POS_COORDS[k].x,y:VOL_POS_COORDS[k].y,l:0,a:"vol",v:1}}
-const ADM=[{"n":"Sergio E. Vazquez Jr.","pwd":"acomodadores2026","all":1,"cnt":1,"adm":1,"areas":[]},{"n":"Alberto Herrera","pwd":"seccion@","all":1,"cnt":1,"adm":1,"areas":[]},{"n":"Steven Snyder","pwd":"auxiliar2026","areas":["ctl","aud"],"adm":1},{"n":"Jaime Palestina","pwd":"superaux2026","areas":["alm","ent"],"adm":1},{"n":"Abdiel Juarez Jr.","pwd":"clave2026","areas":["aud"],"cnt":1,"adm":1},{"n":"José A. González","pwd":"capitan2026","areas":["vol"],"adm":1},{"n":"Carlos Vasquez","pwd":"limpieza2026","areas":[],"spill":1,"adm":1}];
+const ADM=[{"n":"Sergio E. Vazquez Jr.","pwd":"acomodadores2026","all":1,"cnt":1,"adm":1,"areas":[]},{"n":"Alberto Herrera","pwd":"seccion@","all":1,"cnt":1,"adm":1,"areas":[]},{"n":"Steven Snyder","pwd":"auxiliar2026","areas":["ctl","aud"],"adm":1},{"n":"Jaime Palestina","pwd":"superaux2026","areas":["alm","ent"],"adm":1},{"n":"Abdiel Juarez Jr.","pwd":"clave2026","areas":["aud"],"cnt":1,"adm":1},{"n":"José A. González","pwd":"capitan2026","areas":["vol"],"adm":1},{"n":"Carlos Vasquez","pwd":"limpieza2026","areas":[],"spill":1,"adm":1},{"n":"Damian Fernandez","pwd":"damian2026","walkers":1,"areas":[]}];
 
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const POS=Object.keys(D.pos).map(Number),SEC=[1,2,3,4,5].flatMap(i=>[['A',i,'Anillo 2'],['B',i,'Anillo 1']].map(([r,i,l])=>({id:r+i,l:l+' · Sección '+i})));
@@ -295,7 +303,7 @@ function promptWalker(id, name) {
     ]);
   } else {
     showModal(`🦽 Espacio ${id}`, `<p>Estacionado: <b>${esc(name)}</b></p>`, [
-      {text:"Aceptar", class:"pri", action: () => {}}, // Solo cierra
+      {text:"Aceptar", class:"pri", action: () => {}},
       {text:"Retirar", class:"warn", action: () => {
         delete W_DATA[id]; W_HIST[Date.now()]={slot:id,name:name,act:'out',ts:Date.now()};
         drawWalkers();
@@ -426,7 +434,8 @@ function closeVolMap() {
 function openWalkers(from){
   walkerReturn=from||'app';$('app').hidden=true;$('volPanel').hidden=true;$('walkersView').hidden=false;
   $('btnCalib').hidden = !(me && me.all);
-  const canEditWalkers = me && (me.all || (me.n === 'José A. González') || me.c === 'Voluntaria');
+  $('walkerHelper').hidden = (from !== 'vol');
+  const canEditWalkers = me && (me.all || me.walkers || (me.n === 'José A. González') || me.c === 'Voluntaria');
   window.canEditWalkers = canEditWalkers;
   drawWalkers();
 }
