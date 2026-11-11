@@ -312,4 +312,32 @@ function drawPanel(){
   const n=sel,p=P(n),d=D.pos[n],w=eff(n),r=ppl(w),ad=canEd(n),isVol=d.v===1;
   let h=`<h3>${isVol?'Voluntaria':'Posición'} ${n} <span class="tag ${isVol?'p':(d.l?'b':'o')}">${isVol?'Voluntaria':(d.l?'Fija':'Intermitente')}</span></h3><div>${esc(d.t)}</div>`;
   h+=w?`<div class="who" style="border-left-color:${isVol?'var(--purple)':'var(--red2)'}"><b>${esc(w)}</b>${r?`<br>${PRIV[r.p]} · ${esc(r.c)}`:''}${p.sub?`<br><span class="mut">Sustituye a ${esc(p.who)}</span>`:''}</div>`:'<p class="mut">Sin asignar</p>';
-  if(ad
+  if(ad){
+    if(!isVol){
+      h+=`<div class="row"><button class="ok" onclick="setSt(${n},'${p.sub?'sub':'ok'}')">Presente</button><button onclick="setSt(${n},'abs')">Ausente</button><button onclick="setSt(${n},'pend')">Pendiente</button>${p.sub?`<button onclick="back(${n})">Llegó titular</button>`:''}</div>`;
+    }
+    const list=isVol?D.roster.filter(r=>r.c==='Voluntaria'):D.roster.filter(r=>r.c!=='Voluntaria');
+    h+=`<div class="sg"><b>${isVol?'Asignar Voluntaria':'Asignar Acomodador'}</b><select onchange="if(this.value)setWho(${n},this.value)"><option value="">Elegir…</option>${list.map(x=>`<option ${x.n===p.who?'disabled':''}>${esc(x.n)}</option>`).join('')}</select></div>`;
+  }
+  e.innerHTML=h;
+}
+
+function drawCnt(){$('expEd').hidden=!(me.all||me.cnt);if(document.activeElement!==$('exp'))$('exp').value=S.expect||D.expect;const t=SEC.reduce((a,s)=>a+((S.cnt||{})[s.id]||0),0),ex=S.expect||D.expect,cc=canCnt();$('cnt').innerHTML=`<p><b>${t}</b> / <b>${ex}</b> (${Math.round(100*t/ex)}%)</p><div class="bar"><i style="width:${Math.min(100,100*t/ex)}%"></i></div><div class="grid" style="margin-top:10px">`+SEC.map(s=>{const v=(S.cnt||{})[s.id]||0;return`<div class="t${hl===s.id?' hl':''}" onclick="hl=hl==='${s.id}'?null:'${s.id}';draw()"><small>${s.l}</small><b>${v}</b>${cc?`<div class="row" style="justify-content:center;margin-top:4px"><button onclick="event.stopPropagation();cnt('${s.id}',-1)">−</button><button onclick="event.stopPropagation();cnt('${s.id}',1)">+</button></div>`:''}</div>`}).join('')+'</div>'}
+
+function drawBench(){const e=$('bench');e.hidden=!me.adm;if(!me.adm)return;e.innerHTML='<h3>Corredores</h3>'+D.runners.map(x=>{const q=ppl(x),n=POS.find(n=>P(n).sub===x);return`<div class="row sg"><span style="flex:1"><b>${esc(x)}</b> <span class="mut">${esc(q.c)}</span></span><span class="mut">${n?'Pos '+n:'Libre'}</span></div>`}).join('')}
+const _d=draw;draw=function(){_d();if(me&&!drag)drawBench()};
+
+const svg=$('svg');
+svg.addEventListener('pointerdown',e=>{const z=e.target.closest('.sec');if(z&&!e.target.closest('.pc')){hl=hl===z.dataset.s?null:z.dataset.s;draw();return}const g=e.target.closest('.pc');if(!g)return;const n=+g.dataset.n;if(edit&&canEd(n)){drag={n,m:0};svg.setPointerCapture(e.pointerId)}else{sel=n;draw()}});
+svg.addEventListener('pointermove',e=>{if(!drag)return;drag.m=1;const q=svg.createSVGPoint();q.x=e.clientX;q.y=e.clientY;const r=q.matrixTransform(svg.getScreenCTM().inverse());drag.x=Math.round(r.x);drag.y=Math.round(r.y);svg.querySelector(`[data-n="${drag.n}"]`).setAttribute('transform',`translate(${drag.x} ${drag.y})`)});
+svg.addEventListener('pointerup',()=>{if(!drag)return;const d=drag;drag=null;sel=d.n;if(d.m){put(`pos/${d.n}/x`,d.x);put(`pos/${d.n}/y`,d.y)}else draw()});
+
+function toggleAppMode(){
+  isVolunteerMode=!isVolunteerMode;
+  const btn=$('btn-mode-toggle'),app=$('app'),vp=$('volPanel'),title=$('appTitle');
+  if(isVolunteerMode){btn.textContent='🚪 Volver';btn.style.background='#6e1414';app.hidden=true;vp.hidden=false;title.textContent='Portal de Voluntarias'}
+  else{btn.textContent='👥 Vista Voluntaria';btn.style.background='#2e7d32';app.hidden=false;vp.hidden=true;title.textContent='Acomodadores · La Feria, TX';if(me)draw()}
+}
+</script>
+</body>
+</html>
