@@ -3,73 +3,107 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Control de Acceso · Asamblea</title>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+<title>Control de Acceso · Detrás de Plataforma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 <style>
-:root{--red:#6e1414;--red2:#9b1c1c;--ink:#1f1f1f;--mut:#666;--line:#d6d6d6;--bg:#e9e9e9;--purple:#5B3C88;--ok:#2e7d32;--err:#c62828}
-[hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;font:17px/1.5 "Segoe UI",Roboto,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
-header{background:var(--red);color:#fff;padding:10px 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:5}header h1{font-size:18px;margin:0;flex:1;min-width:180px}
-.net{font-size:12px;padding:3px 9px;border-radius:99px;background:#ffffff33}.net.on::before{content:"● ";color:#7fe08a}.net.off{background:#fff;color:var(--red2);font-weight:700}
-button{font:inherit;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:12px 16px;cursor:pointer;font-weight:600}button.pri{background:var(--purple);color:#fff;border-color:var(--purple)}button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}button.warn{background:var(--err);color:#fff;border-color:var(--err)}button.on{background:#333;color:#fff;border-color:#333}
-main{max-width:900px;margin:auto;padding:12px;display:grid;gap:12px}
-.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px}
-.tabs{display:flex;gap:6px;flex-wrap:wrap}.tabs button{flex:1;min-width:100px;padding:14px 8px}
-.tabs button.on{background:var(--purple);color:#fff;border-color:var(--purple)}
-.result{border-radius:12px;padding:24px;text-align:center;font-weight:700;margin:12px 0}
-.result.green{background:#e8f5e9;border:3px solid var(--ok);color:var(--ok)}
-.result.red{background:#ffebee;border:3px solid var(--err);color:var(--err)}
-.result h2{margin:8px 0;font-size:24px;color:inherit}
-.result .name{font-size:28px;margin:12px 0;color:#1f1f1f}
-.result .role{font-size:15px;color:var(--mut);font-weight:400}
-.result .reason{font-size:16px;margin-top:8px;color:#b71c1c}
-#reader{width:100%;max-width:500px;margin:auto;border-radius:12px;overflow:hidden;background:#000}
-#reader video{border-radius:12px}
-.inside-item{background:#fff;border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:8px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
-.inside-item.long{border-left-color:#f57f17;background:#fffde7}
-.inside-item .info{flex:1;min-width:180px}
+:root{
+  --primary:#5a1212;
+  --primary-dark:#3d0c0c;
+  --accent:#b8860b;
+  --bg:#f9f5e9;
+  --card:#ffffff;
+  --card-alt:#f0e8d4;
+  --text:#1a1a1a;
+  --text-muted:#6b5d4f;
+  --border:#d4c9b0;
+  --ok:#4a6b3a;
+  --ok-bg:#edf4e8;
+  --err:#a8251c;
+  --err-bg:#fbeae9;
+  --warn:#c28a1c;
+  --warn-bg:#fdf8e8;
+}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.5 'Noto Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text)}
+header{background:var(--primary);color:#fff;padding:14px 18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+header h1{font-size:18px;margin:0;flex:1;min-width:180px;font-weight:600;letter-spacing:.3px}
+header .sub{font-size:13px;opacity:.85;margin-left:8px;font-weight:400}
+.net{font-size:12px;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.18)}
+.net.on::before{content:"● ";color:#9fd49f}
+.net.off{background:#fff;color:var(--err);font-weight:700}
+button{font:inherit;font-family:inherit;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:6px;padding:11px 16px;cursor:pointer;font-weight:600;transition:background .15s}
+button:hover{background:var(--card-alt)}
+button.pri{background:var(--primary);color:#fff;border-color:var(--primary)}
+button.pri:hover{background:var(--primary-dark)}
+button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
+button.warn{background:var(--err);color:#fff;border-color:var(--err)}
+button.on{background:var(--text);color:#fff;border-color:var(--text)}
+main{max-width:900px;margin:auto;padding:14px;display:grid;gap:14px}
+.card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:18px}
+.card h2{margin:0 0 12px;font-size:17px;color:var(--primary);font-weight:700;letter-spacing:.2px}
+.card h3{margin:0 0 10px;font-size:15px;color:var(--text);font-weight:700}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{flex:1;min-width:120px;padding:14px 10px;font-size:15px}
+.tabs button.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+.result{border-radius:8px;padding:26px;text-align:center;margin:12px 0;border:3px solid}
+.result.green{background:var(--ok-bg);border-color:var(--ok)}
+.result.red{background:var(--err-bg);border-color:var(--err)}
+.result h2{margin:0 0 8px;font-size:22px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.result.green h2{color:var(--ok)}
+.result.red h2{color:var(--err)}
+.result .name{font-size:26px;margin:14px 0 6px;color:var(--text);font-weight:700}
+.result .role{font-size:15px;color:var(--text-muted);font-weight:400}
+.result .reason{font-size:16px;margin-top:10px;color:var(--err);font-weight:500;line-height:1.5}
+.result .hint{font-size:13px;margin-top:14px;color:var(--text-muted);font-style:italic}
+#reader{width:100%;max-width:500px;margin:auto;border-radius:10px;overflow:hidden;background:#000;min-height:0}
+#reader video{border-radius:10px;display:block}
+.inside-item{background:#fff;border:1px solid var(--border);border-left:4px solid var(--ok);border-radius:6px;padding:14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.inside-item.long{border-left-color:var(--warn);background:var(--warn-bg)}
+.inside-item .info{flex:1;min-width:200px}
 .inside-item .name{font-weight:700;font-size:16px}
-.inside-item .meta{font-size:13px;color:var(--mut);margin-top:2px}
-.inside-item .time{font-size:13px;color:var(--purple);font-weight:600;margin-top:4px}
-.inside-item button{padding:10px 16px;font-size:14px}
-.counter{background:#f3f3f3;border-radius:8px;padding:14px;text-align:center;margin-bottom:12px}
-.counter b{display:block;font-size:36px;color:var(--purple);line-height:1}
-.counter small{font-size:13px;color:var(--mut);font-weight:600}
-.zone-select{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:12px}
-.zone-select button{padding:14px 8px;font-size:14px;text-align:center;line-height:1.3;border-radius:8px}
-.zone-select button.on{background:var(--purple);color:#fff;border-color:var(--purple)}
-.empty{text-align:center;padding:30px;color:var(--mut);font-style:italic}
-input,select,textarea{font:inherit;padding:12px;border:1px solid #bbb;border-radius:8px;width:100%}
-.form-row{display:grid;gap:8px;margin-bottom:8px}
-.chk-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}
-.chk-grid label{display:flex;align-items:center;gap:8px;padding:8px;background:#f5f5f5;border-radius:6px;cursor:pointer;font-size:14px}
-.chk-grid input{width:auto}
-.user-card{background:#fafafa;border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:8px}
-.user-card.revoked{opacity:.5;background:#ffebee}
-.user-card .name{font-weight:700;font-size:16px;margin-bottom:4px}
-.user-card .meta{font-size:13px;color:var(--mut);margin-bottom:8px}
-.user-card .actions{display:flex;gap:6px;flex-wrap:wrap}
-.user-card .actions button{padding:8px 12px;font-size:13px}
-#qrDisplay{display:flex;flex-direction:column;align-items:center;padding:16px;background:#fff;border-radius:8px;margin:12px 0}
-#qrDisplay canvas,#qrDisplay img{border-radius:8px}
-.print-mode{position:fixed;inset:0;background:#fff;z-index:9999;overflow:auto;padding:20px}
-.print-card{display:inline-block;margin:10px;padding:15px;border:2px dashed #999;border-radius:8px;text-align:center;page-break-inside:avoid}
-.print-card .pname{font-weight:bold;margin:5px 0;font-size:14px}
-.print-card .pcong{font-size:12px;color:#666;margin-bottom:8px}
+.inside-item .meta{font-size:13px;color:var(--text-muted);margin-top:3px}
+.inside-item .time{font-size:13px;color:var(--primary);font-weight:600;margin-top:5px}
+.inside-item button{padding:10px 18px;font-size:14px;white-space:nowrap}
+.counter{background:var(--card-alt);border-radius:8px;padding:18px;text-align:center;margin-bottom:14px}
+.counter b{display:block;font-size:42px;color:var(--primary);line-height:1;font-weight:700}
+.counter small{font-size:13px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-top:6px;display:block}
+.empty{text-align:center;padding:34px;color:var(--text-muted);font-style:italic;font-size:15px}
+input,select,textarea{font:inherit;font-family:inherit;padding:12px;border:1px solid var(--border);border-radius:6px;width:100%;background:#fff;color:var(--text)}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);border-color:var(--accent)}
+.form-row{display:grid;gap:10px;margin-bottom:10px}
+.chk-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.chk-grid label{display:flex;align-items:center;gap:8px;padding:10px;background:var(--card-alt);border-radius:6px;cursor:pointer;font-size:14px;border:1px solid transparent;transition:border .15s}
+.chk-grid label:hover{border-color:var(--accent)}
+.chk-grid input{width:auto;accent-color:var(--primary)}
+.user-card{background:var(--card-alt);border:1px solid var(--border);border-radius:6px;padding:14px;margin-bottom:10px}
+.user-card.revoked{opacity:.6;background:var(--err-bg);border-color:#e6c2be}
+.user-card .name{font-weight:700;font-size:16px;margin-bottom:4px;color:var(--text)}
+.user-card .meta{font-size:13px;color:var(--text-muted);margin-bottom:10px}
+.user-card .actions{display:flex;gap:8px;flex-wrap:wrap}
+.user-card .actions button{padding:8px 14px;font-size:13px}
 .toast-wrap{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-.toast{background:#2e7d32;color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,.3);opacity:0;transition:opacity .3s;font-size:15px}
-.toast.err{background:#c62828}.toast.show{opacity:1}
-#modal{position:fixed;inset:0;background:#000a;display:grid;place-items:center;padding:14px;z-index:9999}
+.toast{background:var(--ok);color:#fff;padding:14px 22px;border-radius:6px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;font-size:15px;max-width:340px;text-align:center}
+.toast.err{background:var(--err)}
+.toast.show{opacity:1}
+#modal{position:fixed;inset:0;background:rgba(26,15,10,.8);display:grid;place-items:center;padding:14px;z-index:9999}
 #modal[hidden]{display:none}
-#modal .box{background:#fff;border-radius:10px;padding:18px;width:100%;max-width:400px;display:grid;gap:12px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
-#modal h2{margin:0;color:var(--purple);font-size:20px}
-.zone-status{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin:12px 0}
-.zone-status div{background:#f0f0f0;border-radius:6px;padding:10px;text-align:center}
-.zone-status b{display:block;font-size:24px;color:var(--purple)}
-.zone-status small{font-size:12px;color:var(--mut)}
-details summary{cursor:pointer;color:var(--mut);font-size:14px;margin:8px 0}
+#modal .box{background:var(--bg);border-radius:10px;padding:22px;width:100%;max-width:440px;display:grid;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.5);max-height:90vh;overflow-y:auto}
+#modal h2{margin:0;color:var(--primary);font-size:19px;font-weight:700}
+.modal-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.modal-btns button{flex:1;min-width:100px}
+.qr-display{display:flex;flex-direction:column;align-items:center;padding:18px;background:#fff;border-radius:8px;margin:12px 0;border:1px solid var(--border)}
+.qr-display .qr-name{font-weight:700;font-size:17px;margin-top:12px;text-align:center}
+.qr-display .qr-cong{font-size:13px;color:var(--text-muted);margin-top:4px;text-align:center}
+.qr-display .qr-roles{font-size:12px;color:var(--text-muted);margin-top:8px;text-align:center;font-style:italic}
+.notice{background:var(--warn-bg);border-left:4px solid var(--warn);padding:14px 16px;border-radius:6px;font-size:14px;line-height:1.6;margin-bottom:14px}
+.notice b{color:var(--warn)}
+details summary{cursor:pointer;color:var(--text-muted);font-size:14px;margin:10px 0;padding:8px;background:var(--card-alt);border-radius:4px}
+details summary:hover{background:#e8ddc8}
 </style>
 </head>
 <body>
@@ -77,72 +111,88 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin:8px 0}
 <div id="modal" hidden><div class="box" id="modalBox"></div></div>
 
 <header>
-  <h1>🚪 Control de Acceso</h1>
+  <h1>Control de Acceso <span class="sub">Detrás de Plataforma</span></h1>
   <span id="net" class="net"></span>
-  <button onclick="location.href='index.html'" style="background:#fff;color:var(--red2)">← Volver</button>
+  <button onclick="location.href='index.html'" style="background:#fff;color:var(--primary);border-color:#fff;font-weight:700">Volver</button>
 </header>
 
 <main>
   <div class="tabs card">
-    <button data-tab="scan" onclick="setTab('scan')" class="on">📷 Escanear</button>
-    <button data-tab="inside" onclick="setTab('inside')">🟢 Dentro Ahora</button>
-    <button data-tab="admin" onclick="setTab('admin')">⚙️ Admin</button>
+    <button data-tab="scan" onclick="setTab('scan')" class="on">Escanear</button>
+    <button data-tab="inside" onclick="setTab('inside')">Dentro Ahora</button>
+    <button data-tab="admin" onclick="setTab('admin')">Administración</button>
   </div>
 
-  <!-- TAB: ESCANEAR -->
   <div id="tabScan">
     <div class="card">
-      <h3 style="margin:0 0 8px">Puerta / Zona:</h3>
-      <div class="zone-select" id="zoneSelect"></div>
-    </div>
-    <div class="card">
+      <h2>Cámara de escaneo</h2>
       <div id="reader"></div>
       <div id="result"></div>
-      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-        <button class="pri" onclick="startCamera()">📷 Iniciar cámara</button>
-        <button onclick="stopCamera()">⏹ Detener</button>
-        <button onclick="manualLookup()">🔎 Buscar por nombre</button>
+      <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="pri" onclick="startCamera()">Iniciar cámara</button>
+        <button onclick="stopCamera()">Detener</button>
+        <button onclick="manualLookup()">Buscar por nombre</button>
       </div>
     </div>
   </div>
 
-  <!-- TAB: DENTRO AHORA -->
   <div id="tabInside" hidden>
     <div class="card">
       <div class="counter">
         <b id="insideCount">0</b>
-        <small>personas dentro ahora</small>
+        <small>Personas dentro ahora</small>
       </div>
-      <div class="zone-select" id="insideZoneFilter"></div>
       <div id="insideList"></div>
     </div>
   </div>
 
-  <!-- TAB: ADMIN -->
   <div id="tabAdmin" hidden>
     <div class="card" id="adminLogin">
-      <h3 style="margin:0 0 12px">🔒 Acceso Admin</h3>
+      <h2>Acceso de Administración</h2>
+      <p style="color:var(--text-muted);font-size:14px;margin:0 0 12px">Ingrese la contraseña para administrar la lista de hermanos autorizados.</p>
       <input type="password" id="adminPass" placeholder="Contraseña" style="margin-bottom:12px">
       <button class="pri" style="width:100%" onclick="loginAdmin()">Entrar</button>
     </div>
+
     <div id="adminPanel" hidden>
       <div class="card">
-        <h3 style="margin:0 0 8px">📊 Estado en vivo por zona</h3>
-        <div class="zone-status" id="zoneStatusLive"></div>
+        <h2>Estado en vivo</h2>
+        <div class="zone-status" id="zoneStatusLive" style="display:grid;grid-template-columns:1fr;gap:8px"></div>
       </div>
+
       <div class="card">
-        <h3 style="margin:0 0 8px">➕ Agregar hermano autorizado</h3>
+        <h2>Agregar hermano autorizado</h2>
+        <p style="color:var(--text-muted);font-size:13px;margin:0 0 12px">Este formulario agrega hermanos a la lista <b>permanente</b> de la asamblea. Su QR funciona todos los días mientras no sea revocado.</p>
         <div class="form-row">
           <input id="newName" placeholder="Nombre completo">
           <input id="newCong" placeholder="Congregación">
         </div>
         <div class="chk-grid" id="roleCheckboxes"></div>
-        <button class="pri" style="width:100%;margin-top:8px" onclick="addUser()">Agregar y generar QR</button>
+        <button class="pri" style="width:100%;margin-top:10px" onclick="addUser()">Agregar hermano</button>
       </div>
+
       <div class="card">
-        <h3 style="margin:0 0 8px">👥 Hermanos autorizados</h3>
-        <button onclick="printAllQRs()" style="width:100%;margin-bottom:12px;background:#2e7d32;color:#fff;border-color:#2e7d32">🖨️ Imprimir todos los QR</button>
-        <input id="searchUsers" placeholder="🔍 Buscar…" oninput="renderUsers(this.value)" style="margin-bottom:12px">
+        <h2>Generar QR Temporal</h2>
+        <div class="notice">
+          <b>Uso:</b> para hermanos que <b>olvidaron su QR</b> y necesitan entrar en este momento. El QR es de <b>un solo uso</b> y expira en el tiempo indicado.
+        </div>
+        <div class="form-row">
+          <input id="tempName" placeholder="Nombre del hermano">
+          <select id="tempHours">
+            <option value="1">Válido 1 hora</option>
+            <option value="2" selected>Válido 2 horas</option>
+            <option value="4">Válido 4 horas</option>
+            <option value="8">Todo el día</option>
+          </select>
+          <button class="pri" onclick="genTempQR()">Generar QR Temporal</button>
+        </div>
+        <div id="tempQRDisplay" hidden></div>
+      </div>
+
+      <div class="card">
+        <h2>Hermanos autorizados</h2>
+        <button onclick="printAllQRs()" style="width:100%;margin-bottom:12px;background:var(--ok);color:#fff;border-color:var(--ok)">Imprimir todos los QR</button>
+        <input id="searchUsers" placeholder="Buscar hermano..." oninput="renderUsers(this.value)" style="margin-bottom:12px">
         <div id="usersList"></div>
       </div>
     </div>
@@ -150,19 +200,18 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin:8px 0}
 </main>
 
 <script>
-// ============ CONFIG ============
+// =====================================================
+// CONTRASEÑA DE ADMINISTRACIÓN:  acceso2026
+// Para cambiarla, edita la constante ADMIN_PASS abajo.
+// =====================================================
+
 const CFG = { DB: "https://voluntariastx20-default-rtdb.firebaseio.com" };
 const APP_SECRET = "asam-laf-2026-secret-v1";
 const ADMIN_PASS = "acceso2026";
 
-const ZONES = {
-  plataforma:  { name: "Plataforma",         roles: ["discursante","presidente","comite","av"] },
-  detras:      { name: "Detrás de Plataforma", roles: ["av","tecnico","comite","instalacion"] },
-  cabina:      { name: "Cabina A/V",         roles: ["av","tecnico"] },
-  bautisterio: { name: "Bautisterio",        roles: ["bautismo","comite"] },
-  primeros:    { name: "Primeros Auxilios",  roles: ["primeros-auxilios"] },
-  comunes:     { name: "Zonas Comunes",      roles: ["acomodador","limpieza","estacionamiento","voluntaria"] }
-};
+// Única zona activa:
+const ZONE = "detras";
+const ZONE_NAME = "Detrás de Plataforma";
 
 const ROLES = [
   { id:"discursante", label:"Discursante" },
@@ -179,34 +228,31 @@ const ROLES = [
   { id:"voluntaria", label:"Voluntaria" }
 ];
 
+// Roles que SÍ pueden entrar a Detrás de Plataforma
+const ZONE_ALLOWED_ROLES = ["av","tecnico","comite","instalacion","presidente","discursante"];
+
 const $ = id => document.getElementById(id);
 const esc = s => String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-let S = {};
-let USERS = {};
-let ENTRIES = {};
-let TEMP = {};
+let USERS = {}, ENTRIES = {}, TEMP = {};
 let scanMode = false, scanner = null, lastScan = "", lastScanTs = 0;
-let currentZone = "plataforma", insideFilter = "all", adminLogged = false, pollIv = null;
+let adminLogged = false, pollIv = null;
 
-// ============ TOAST ============
 function toast(msg, err) {
   const t = document.createElement('div');
   t.className = 'toast' + (err?' err':'');
   t.textContent = msg;
   $('toastWrap').appendChild(t);
   setTimeout(()=>t.classList.add('show'), 10);
-  setTimeout(()=>{t.classList.remove('show'); setTimeout(()=>t.remove(), 300)}, 3000);
+  setTimeout(()=>{t.classList.remove('show'); setTimeout(()=>t.remove(), 300)}, 3200);
 }
 
-// ============ MODAL ============
 function showModal(title, bodyHtml, buttons) {
-  $('modalBox').innerHTML = `<h2>${title}</h2><div>${bodyHtml}</div><div class="row" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap" id="mdlBtns"></div>`;
+  $('modalBox').innerHTML = `<h2>${esc(title)}</h2><div>${bodyHtml}</div><div class="modal-btns" id="mdlBtns"></div>`;
   buttons.forEach(b => {
     const btn = document.createElement('button');
     btn.textContent = b.text;
     btn.className = b.class || '';
-    btn.style.flex = '1';
     btn.onclick = () => { if(b.action) b.action(); if(!b.keepOpen) $('modal').hidden = true; };
     $('mdlBtns').appendChild(btn);
   });
@@ -215,13 +261,11 @@ function showModal(title, bodyHtml, buttons) {
   if(inp) setTimeout(()=>inp.focus(), 50);
 }
 
-// ============ FIREBASE HELPERS ============
-function path(p, v) {
-  if(v === undefined) return fetch(`${CFG.DB}/access/${p}.json`).then(r=>r.json());
-  return fetch(`${CFG.DB}/access/${p}.json`, { method: 'PUT', body: JSON.stringify(v) }).then(r=>r.json());
+function net(on) {
+  const e = $('net');
+  e.textContent = on ? 'En línea' : 'Sin conexión';
+  e.className = 'net ' + (on ? 'on' : 'off');
 }
-function del(p) { return fetch(`${CFG.DB}/access/${p}.json`, { method: 'DELETE' }); }
-function net(on) { const e = $('net'); e.textContent = on ? 'En línea' : 'Sin conexión'; e.className = 'net ' + (on ? 'on' : 'off'); }
 
 async function loadAll() {
   try {
@@ -236,13 +280,14 @@ async function loadAll() {
 }
 
 function renderAll() {
-  renderZoneSelects();
   if (adminLogged) { renderUsers($('searchUsers').value); renderZoneStatus(); }
   renderInsideList();
 }
 
-// ============ FIRMA / VALIDACIÓN QR ============
 async function sign(msg) {
+  if (!crypto.subtle) {
+    throw new Error("Este navegador requiere que la app se abra con https:// (como GitHub Pages).");
+  }
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('').slice(0,16);
 }
@@ -255,43 +300,48 @@ async function buildQRContent(uid) {
   return `ASM|${uid}|${d}|${sig}`;
 }
 
-async function buildTempQRContent(tempId) {
-  const t = TEMP[tempId];
-  if (!t) return null;
-  const sig = await sign(`${tempId}|${t.zone}|${t.expiresAt}|${APP_SECRET}`);
-  return `TMP|${tempId}|${t.zone}|${t.expiresAt}|${sig}`;
-}
-
+// ============ VALIDACIÓN (corregida) ============
 async function validateQR(content) {
   const parts = content.split('|');
-  if (parts.length !== 4) return { valid: false, reason: "Formato inválido" };
+  const prefix = parts[0];
 
-  if (parts[0] === 'TMP') {
+  // QR TEMPORAL — 5 partes: TMP|tempId|zone|expiresAt|sig
+  if (prefix === 'TMP') {
+    if (parts.length !== 5) return { valid: false, reason: "Formato de QR temporal inválido" };
     const [, tempId, zone, expiresAt, sig] = parts;
-    const expected = await sign(`${tempId}|${zone}|${expiresAt}|${APP_SECRET}`);
-    if (sig !== expected) return { valid: false, reason: "Firma inválida (falsificado)" };
-    if (Date.now() > +expiresAt) return { valid: false, reason: "QR temporal expirado" };
+    let expected;
+    try { expected = await sign(`${tempId}|${zone}|${expiresAt}|${APP_SECRET}`); }
+    catch(e) { return { valid: false, reason: e.message }; }
+    if (sig !== expected) return { valid: false, reason: "Firma inválida (código falsificado o dañado)" };
+    if (Date.now() > +expiresAt) {
+      const exp = new Date(+expiresAt).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
+      return { valid: false, reason: `QR temporal expirado (era válido hasta ${exp})` };
+    }
     const t = TEMP[tempId];
-    if (!t) return { valid: false, reason: "QR temporal no encontrado" };
-    if (t.used) return { valid: false, reason: "QR temporal ya usado" };
-    return { valid: true, tempId, zone, temp: true };
+    if (!t) return { valid: false, reason: "QR temporal no encontrado. Intente de nuevo." };
+    if (t.used) return { valid: false, reason: "Este QR temporal ya fue usado" };
+    if (zone !== ZONE) return { valid: false, reason: "QR temporal es para otra zona" };
+    return { valid: true, tempId, zone, temp: true, name: t.name };
   }
 
-  if (parts[0] === 'ASM') {
+  // QR PERMANENTE — 4 partes: ASM|uid|date|sig
+  if (prefix === 'ASM') {
+    if (parts.length !== 4) return { valid: false, reason: "Formato de QR inválido" };
     const [, uid, dateStr, sig] = parts;
     if (dateStr !== todayStr()) return { valid: false, reason: "Código de otro día (viejo)" };
-    const expected = await sign(`${uid}|${dateStr}|${APP_SECRET}`);
-    if (sig !== expected) return { valid: false, reason: "Firma inválida (falsificado)" };
+    let expected;
+    try { expected = await sign(`${uid}|${dateStr}|${APP_SECRET}`); }
+    catch(e) { return { valid: false, reason: e.message }; }
+    if (sig !== expected) return { valid: false, reason: "Firma inválida (código falsificado)" };
     const u = USERS[uid];
     if (!u) return { valid: false, reason: "Hermano no autorizado en el sistema" };
     if (u.active === false) return { valid: false, reason: "Acceso revocado por el comité" };
     return { valid: true, uid, user: u };
   }
 
-  return { valid: false, reason: "Formato desconocido" };
+  return { valid: false, reason: "Formato de código desconocido" };
 }
 
-// ============ ESCANEO ============
 async function startCamera() {
   if (scanMode) return;
   try {
@@ -304,7 +354,7 @@ async function startCamera() {
       () => {}
     );
   } catch(e) {
-    toast("No se pudo iniciar la cámara. Verifica permisos.", true);
+    toast("No se pudo iniciar la cámara. Verifica los permisos del navegador.", true);
     scanMode = false;
   }
 }
@@ -320,102 +370,76 @@ async function onScanSuccess(text) {
   if (text === lastScan && Date.now() - lastScanTs < 3000) return;
   lastScan = text; lastScanTs = Date.now();
 
+  // Si es QR temporal, refrescar del servidor para evitar datos viejos
+  const parts = text.split('|');
+  if (parts[0] === 'TMP' && parts[1]) {
+    try {
+      const fresh = await fetch(`${CFG.DB}/access/tempQr/${parts[1]}.json?t=${Date.now()}`).then(r => r.json());
+      if (fresh) TEMP[parts[1]] = fresh;
+    } catch(e) {}
+  }
+
   const res = await validateQR(text);
-  const zone = ZONES[currentZone];
 
   if (!res.valid) {
     showResultRed(res.reason);
     return;
   }
 
-  if (res.temp && res.zone !== currentZone) {
-    showResultRed(`QR temporal no válido para esta zona (es para ${ZONES[res.zone]?.name || res.zone})`);
-    return;
-  }
-
   if (!res.temp) {
-    const hasRole = (res.user.roles || []).some(r => zone.roles.includes(r));
+    const hasRole = (res.user.roles || []).some(r => ZONE_ALLOWED_ROLES.includes(r));
     if (!hasRole) {
-      showResultRed(`${esc(res.user.name)} no tiene acceso a ${zone.name}. Sus roles: ${(res.user.roles||[]).join(', ')}`);
+      showResultRed(`${res.user.name} no tiene acceso a Detrás de Plataforma. Sus roles: ${(res.user.roles||[]).map(r=>ROLES.find(x=>x.id===r)?.label||r).join(', ')}`);
       return;
     }
   }
 
-  const name = res.temp ? `QR Temporal (${res.zone})` : res.user.name;
+  const name = res.temp ? res.name : res.user.name;
   const uid = res.temp ? `temp:${res.tempId}` : res.uid;
-  await logEntry(uid, currentZone, name, res.temp);
+  await logEntry(uid, name, res.temp);
 
-  if (res.temp) {
-    await path(`tempQr/${res.tempId}/used`, true);
-  }
+  if (res.temp) await path(`tempQr/${res.tempId}/used`, true);
 
-  showResultGreen(name, res.user?.roles || [], currentZone);
-  toast(`✓ Entrada registrada: ${name}`, false);
+  showResultGreen(name, res.temp ? ['QR Temporal'] : (res.user.roles || []));
+  toast(`Entrada registrada: ${name}`);
 }
 
-async function logEntry(uid, zone, name, isTemp) {
+async function logEntry(uid, name, isTemp) {
   const entryId = Date.now() + '_' + Math.random().toString(36).slice(2,7);
-  const entry = { uid, zone, name, entryTime: Date.now(), exitTime: null, isTemp: !!isTemp };
+  const entry = { uid, zone: ZONE, name, entryTime: Date.now(), exitTime: null, isTemp: !!isTemp };
   await path(`entries/${entryId}`, entry);
 }
 
-function showResultGreen(name, roles, zone) {
+function showResultGreen(name, roles) {
   const now = new Date().toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
   $('result').innerHTML = `
     <div class="result green">
-      <div style="font-size:44px">✅</div>
-      <h2>PASE</h2>
+      <h2>Acceso Permitido</h2>
       <div class="name">${esc(name)}</div>
-      <div class="role">${roles.length ? roles.join(' · ') : 'QR Temporal'}</div>
-      <div style="font-size:14px;margin-top:8px;color:#555">Puerta: ${zone}</div>
-      <div style="font-size:14px;margin-top:4px;color:#555">Entrada: ${now}</div>
+      <div class="role">${roles.map(r => ROLES.find(x=>x.id===r)?.label || r).join(' · ')}</div>
+      <div style="font-size:14px;margin-top:12px;color:var(--text-muted)">Entrada: ${now}</div>
     </div>`;
 }
 
 function showResultRed(reason) {
   $('result').innerHTML = `
     <div class="result red">
-      <div style="font-size:44px">🚫</div>
-      <h2>NO PASE</h2>
+      <h2>Acceso Denegado</h2>
       <div class="reason">${esc(reason)}</div>
-      <div style="font-size:13px;margin-top:12px;color:#666">Diríjase al Superintendente de Acomodadores</div>
+      <div class="hint">Diríjase al Superintendente de Acomodadores</div>
     </div>`;
 }
 
-async function manualLookup() {
-  showModal("🔎 Buscar hermano", `<input id="lookupName" placeholder="Nombre a buscar" autocomplete="off"><div id="lookupResults" style="margin-top:8px;max-height:300px;overflow:auto"></div>`, [{text:"Cerrar"}]);
-  $('lookupName').oninput = () => {
-    const q = $('lookupName').value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-    if (q.length < 2) { $('lookupResults').innerHTML = ''; return; }
-    const matches = Object.entries(USERS).filter(([uid, u]) => (u.name||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q));
-    $('lookupResults').innerHTML = matches.length ? matches.map(([uid,u]) =>
-      `<button style="width:100%;text-align:left;margin-bottom:4px;padding:12px" onclick="manualLog('${uid}')"><b>${esc(u.name)}</b><br><small>${esc(u.cong)} · ${(u.roles||[]).join(', ')}</small></button>`
-    ).join('') : '<p style="color:#888">Sin resultados</p>';
-  };
-}
-
-async function manualLog(uid) {
-  const u = USERS[uid];
-  const zone = ZONES[currentZone];
-  const hasRole = (u.roles || []).some(r => zone.roles.includes(r));
-  if (!hasRole) { toast(`${u.name} no autorizado para ${zone.name}`, true); return; }
-  await logEntry(uid, currentZone, u.name, false);
-  showResultGreen(u.name, u.roles, currentZone);
-  toast(`✓ Entrada registrada: ${u.name}`, false);
-  $('modal').hidden = true;
-}
-
-// ============ DENTRO AHORA ============
 function renderInsideList() {
   const now = Date.now();
   const inside = Object.entries(ENTRIES)
-    .filter(([id, e]) => !e.exitTime && (insideFilter === 'all' || e.zone === insideFilter))
+    .filter(([id, e]) => !e.exitTime)
     .sort((a,b) => b[1].entryTime - a[1].entryTime);
 
   $('insideCount').textContent = inside.length;
 
   if (!inside.length) {
-    $('insideList').innerHTML = '<div class="empty">No hay nadie dentro ahora.</div>';
+    $('insideList').innerHTML = '<div class="empty">No hay nadie dentro en este momento.</div>';
     return;
   }
 
@@ -423,12 +447,11 @@ function renderInsideList() {
     const mins = Math.floor((now - e.entryTime) / 60000);
     const long = mins >= 30;
     const time = new Date(e.entryTime).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
-    const zoneName = ZONES[e.zone]?.name || e.zone;
     return `<div class="inside-item${long?' long':''}">
       <div class="info">
         <div class="name">${esc(e.name)}</div>
-        <div class="meta">${esc(zoneName)}${e.isTemp?' · QR Temporal':''}</div>
-        <div class="time">Entró: ${time} (${mins} min)</div>
+        <div class="meta">${e.isTemp ? 'QR Temporal' : 'QR Permanente'}</div>
+        <div class="time">Entró ${time} · ${mins} min</div>
       </div>
       <button class="ok" onclick="markExit('${id}')">Salió</button>
     </div>`;
@@ -437,27 +460,9 @@ function renderInsideList() {
 
 async function markExit(entryId) {
   await path(`entries/${entryId}/exitTime`, Date.now());
-  toast("✓ Salida registrada", false);
+  toast("Salida registrada");
 }
 
-// ============ ZONAS ============
-function renderZoneSelects() {
-  const zoneHtml = Object.entries(ZONES).map(([id, z]) =>
-    `<button data-zone="${id}" class="${currentZone===id?'on':''}" onclick="setZone('${id}')">${esc(z.name)}</button>`
-  ).join('');
-  $('zoneSelect').innerHTML = zoneHtml;
-
-  const filterHtml = `<button data-zone="all" class="${insideFilter==='all'?'on':''}" onclick="setInsideFilter('all')">Todas</button>` +
-    Object.entries(ZONES).map(([id, z]) =>
-      `<button data-zone="${id}" class="${insideFilter===id?'on':''}" onclick="setInsideFilter('${id}')">${esc(z.name)}</button>`
-    ).join('');
-  $('insideZoneFilter').innerHTML = filterHtml;
-}
-
-function setZone(id) { currentZone = id; renderZoneSelects(); }
-function setInsideFilter(id) { insideFilter = id; renderZoneSelects(); renderInsideList(); }
-
-// ============ ADMIN ============
 function loginAdmin() {
   if ($('adminPass').value === ADMIN_PASS) {
     adminLogged = true;
@@ -481,8 +486,8 @@ async function addUser() {
   const name = $('newName').value.trim();
   const cong = $('newCong').value.trim();
   const roles = Array.from($('roleCheckboxes').querySelectorAll('input:checked')).map(x => x.value);
-  if (!name) { toast("Escribe el nombre", true); return; }
-  if (!roles.length) { toast("Selecciona al menos un rol", true); return; }
+  if (!name) { toast("Escriba el nombre", true); return; }
+  if (!roles.length) { toast("Seleccione al menos un rol", true); return; }
   const uid = Math.random().toString(36).slice(2, 10);
   const user = { name, cong, roles, active: true, createdAt: Date.now() };
   await path(`users/${uid}`, user);
@@ -490,7 +495,7 @@ async function addUser() {
   $('newName').value = '';
   $('newCong').value = '';
   $('roleCheckboxes').querySelectorAll('input').forEach(x => x.checked = false);
-  toast(`✓ ${name} agregado. Generando QR…`, false);
+  toast(`${name} agregado correctamente`);
   await showUserQR(uid);
   renderUsers('');
 }
@@ -508,12 +513,12 @@ function renderUsers(filter) {
 
   $('usersList').innerHTML = list.map(([uid, u]) => `
     <div class="user-card${u.active===false?' revoked':''}">
-      <div class="name">${esc(u.name)}${u.active===false?' <span style="color:#c62828">(REVOCADO)</span>':''}</div>
+      <div class="name">${esc(u.name)}${u.active===false?' (REVOCADO)':''}</div>
       <div class="meta">${esc(u.cong||'')} · ${(u.roles||[]).map(r=>ROLES.find(x=>x.id===r)?.label||r).join(', ')}</div>
       <div class="actions">
-        <button onclick="showUserQR('${uid}')">📱 Ver QR</button>
+        <button onclick="showUserQR('${uid}')">Ver QR</button>
         <button class="${u.active===false?'ok':'warn'}" onclick="toggleUser('${uid}')">${u.active===false?'Reactivar':'Revocar'}</button>
-        <button onclick="deleteUser('${uid}')" style="color:#c62828">🗑️</button>
+        <button onclick="deleteUser('${uid}')" style="color:var(--err)">Eliminar</button>
       </div>
     </div>
   `).join('');
@@ -523,15 +528,15 @@ async function showUserQR(uid) {
   const u = USERS[uid];
   if (!u) return;
   const content = await buildQRContent(uid);
-  showModal(`📱 QR de ${u.name}`,
-    `<div style="display:flex;flex-direction:column;align-items:center;padding:12px;background:#fff;border-radius:8px">
+  showModal(`QR de ${u.name}`,
+    `<div class="qr-display">
       <div id="qrHolder"></div>
-      <div style="font-weight:bold;font-size:16px;margin-top:8px">${esc(u.name)}</div>
-      <div style="font-size:13px;color:#666;margin-top:4px">${esc(u.cong||'')}</div>
-      <div style="font-size:12px;color:#999;margin-top:8px;text-align:center;word-break:break-all;max-width:280px">${esc(content)}</div>
+      <div class="qr-name">${esc(u.name)}</div>
+      <div class="qr-cong">${esc(u.cong||'')}</div>
+      <div class="qr-roles">${(u.roles||[]).map(r=>ROLES.find(x=>x.id===r)?.label||r).join(' · ')}</div>
     </div>`,
     [
-      { text: "🖨️ Imprimir", class: "pri", action: () => printSingleQR(uid, u, content) },
+      { text: "Imprimir", class: "pri", action: () => printSingleQR(uid, u, content) },
       { text: "Cerrar", action: () => {} }
     ]
   );
@@ -546,14 +551,18 @@ async function showUserQR(uid) {
 
 function printSingleQR(uid, u, content) {
   const w = window.open('', '_blank');
-  w.document.write(`<html><head><title>QR - ${esc(u.name)}</title><style>
-    body{font-family:sans-serif;text-align:center;padding:20px}
-    .card{border:2px dashed #333;padding:20px;display:inline-block;border-radius:8px}
-    .name{font-weight:bold;font-size:18px;margin:12px 0 4px}
-    .cong{font-size:13px;color:#666}
-    .roles{font-size:12px;color:#999;margin-top:8px}
+  w.document.write(`<html><head><title>QR - ${esc(u.name)}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:'Noto Sans',sans-serif;text-align:center;padding:30px;color:#1a1a1a}
+    .card{border:2px dashed #5a1212;padding:24px;display:inline-block;border-radius:10px;background:#f9f5e9}
+    .name{font-weight:700;font-size:18px;margin:14px 0 4px;color:#5a1212}
+    .cong{font-size:13px;color:#6b5d4f}
+    .roles{font-size:12px;color:#6b5d4f;margin-top:8px;font-style:italic}
+    .title{font-size:14px;color:#b8860b;font-weight:700;letter-spacing:1px;margin-bottom:10px}
   </style></head><body>
     <div class="card">
+      <div class="title">ASAMBLEA REGIONAL</div>
       <div id="qr"></div>
       <div class="name">${esc(u.name)}</div>
       <div class="cong">${esc(u.cong||'')}</div>
@@ -562,7 +571,7 @@ function printSingleQR(uid, u, content) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
     <script>
       new QRCode(document.getElementById("qr"), { text: ${JSON.stringify(content)}, width: 200, height: 200 });
-      setTimeout(() => window.print(), 500);
+      setTimeout(() => window.print(), 600);
     <\/script>
   </body></html>`);
 }
@@ -579,11 +588,13 @@ async function printAllQRs() {
       <div class="pcong">${esc(u.cong||'')}</div>
     </div>
   `).join('');
-  w.document.write(`<html><head><title>QRs - Asamblea</title><style>
-    body{font-family:sans-serif;padding:10px}
-    .print-card{display:inline-block;margin:8px;padding:12px;border:2px dashed #666;border-radius:8px;text-align:center;page-break-inside:avoid;width:200px;vertical-align:top}
-    .pname{font-weight:bold;font-size:13px;margin:6px 0 2px}
-    .pcong{font-size:11px;color:#666}
+  w.document.write(`<html><head><title>QRs - Asamblea</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:'Noto Sans',sans-serif;padding:14px;background:#fff}
+    .print-card{display:inline-block;margin:8px;padding:14px;border:2px dashed #5a1212;border-radius:10px;text-align:center;page-break-inside:avoid;width:200px;vertical-align:top;background:#f9f5e9}
+    .pname{font-weight:700;font-size:13px;margin:8px 0 2px;color:#5a1212}
+    .pcong{font-size:11px;color:#6b5d4f}
     @media print { .print-card{page-break-inside:avoid} }
   </style></head><body>
     ${cardsHtml}
@@ -593,7 +604,7 @@ async function printAllQRs() {
       items.forEach(({i, content}) => {
         new QRCode(document.getElementById("qr_"+i), { text: content, width: 160, height: 160 });
       });
-      setTimeout(() => window.print(), 800);
+      setTimeout(() => window.print(), 900);
     <\/script>
   </body></html>`);
 }
@@ -604,31 +615,125 @@ async function toggleUser(uid) {
   const newActive = u.active === false;
   await path(`users/${uid}/active`, newActive);
   USERS[uid].active = newActive;
-  toast(newActive ? `✓ ${u.name} reactivado` : `${u.name} revocado`, false);
+  toast(newActive ? `${u.name} reactivado` : `${u.name} revocado`);
   renderUsers($('searchUsers').value);
 }
 
 async function deleteUser(uid) {
   const u = USERS[uid];
-  showModal("🗑️ Borrar hermano", `<p>¿Borrar definitivamente a <b>${esc(u.name)}</b>? Su QR dejará de funcionar.</p>`,
-    [{text:"Borrar", class:"warn", action: async () => {
+  showModal("Eliminar hermano", `<p>¿Eliminar definitivamente a <b>${esc(u.name)}</b>? Su QR dejará de funcionar.</p>`,
+    [{text:"Eliminar", class:"warn", action: async () => {
       await del(`users/${uid}`);
       delete USERS[uid];
       renderUsers('');
-      toast("Hermano borrado", false);
+      toast("Hermano eliminado");
     }}, {text:"Cancelar"}]);
 }
 
 async function renderZoneStatus() {
-  const now = Date.now();
-  const zones = Object.entries(ZONES).map(([id, z]) => {
-    const count = Object.values(ENTRIES).filter(e => e.zone === id && !e.exitTime).length;
-    return `<div><b>${count}</b><small>${esc(z.name)}</small></div>`;
-  });
-  $('zoneStatusLive').innerHTML = zones.join('');
+  const count = Object.values(ENTRIES).filter(e => !e.exitTime).length;
+  $('zoneStatusLive').innerHTML = `
+    <div style="background:var(--card-alt);border-radius:6px;padding:16px;text-align:center">
+      <b style="display:block;font-size:32px;color:var(--primary)">${count}</b>
+      <small style="font-size:12px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:1px">Dentro ahora en Detrás de Plataforma</small>
+    </div>`;
 }
 
-// ============ TABS ============
+async function genTempQR() {
+  const name = $('tempName').value.trim();
+  const hours = +$('tempHours').value;
+  if (!name) { toast('Escriba el nombre del hermano', true); return; }
+
+  const tempId = Math.random().toString(36).slice(2, 10);
+  const expiresAt = Date.now() + hours * 60 * 60 * 1000;
+  const temp = { zone: ZONE, expiresAt, name, used: false, createdAt: Date.now(), createdBy: 'Superintendente de Acomodadores' };
+
+  await path(`tempQr/${tempId}`, temp);
+  TEMP[tempId] = temp;
+
+  let sig;
+  try { sig = await sign(`${tempId}|${ZONE}|${expiresAt}|${APP_SECRET}`); }
+  catch(e) { toast(e.message, true); return; }
+
+  const content = `TMP|${tempId}|${ZONE}|${expiresAt}|${sig}`;
+
+  const display = $('tempQRDisplay');
+  display.hidden = false;
+  display.innerHTML = `
+    <div class="qr-display" style="margin-top:14px">
+      <div style="font-size:13px;color:var(--warn);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">QR Temporal</div>
+      <div id="tempQRHolder"></div>
+      <div class="qr-name">${esc(name)}</div>
+      <div class="qr-cong">Detrás de Plataforma</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-top:10px">Válido ${hours} hora${hours>1?'s':''} · Expira ${new Date(expiresAt).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})}</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:6px;font-style:italic">Un solo uso</div>
+      <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;justify-content:center">
+        <button class="ok" onclick="printTempQR('${esc(name)}', '${content}')">Imprimir</button>
+        <button onclick="document.getElementById('tempQRDisplay').hidden=true;$('tempName').value=''">Cerrar</button>
+      </div>
+    </div>`;
+
+  setTimeout(() => {
+    const holder = $('tempQRHolder');
+    if (holder) {
+      holder.innerHTML = '';
+      new QRCode(holder, { text: content, width: 220, height: 220, correctLevel: QRCode.CorrectLevel.M });
+    }
+  }, 50);
+
+  $('tempName').value = '';
+  toast(`QR temporal generado para ${name}`);
+}
+
+function printTempQR(name, content) {
+  const w = window.open('', '_blank');
+  w.document.write(`<html><head><title>QR Temporal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:'Noto Sans',sans-serif;text-align:center;padding:30px;color:#1a1a1a}
+    .card{border:2px dashed #c28a1c;padding:24px;display:inline-block;border-radius:10px;background:#fdf8e8}
+    .title{font-size:14px;color:#c28a1c;font-weight:700;letter-spacing:1px;margin-bottom:10px}
+    .name{font-weight:700;font-size:20px;margin:14px 0 4px}
+    .zone{font-size:14px;color:#6b5d4f;margin-bottom:10px}
+    .hint{font-size:12px;color:#6b5d4f;font-style:italic;margin-top:10px}
+  </style></head><body>
+    <div class="card">
+      <div class="title">QR TEMPORAL</div>
+      <div id="qr"></div>
+      <div class="name">${esc(name)}</div>
+      <div class="zone">Detrás de Plataforma</div>
+      <div class="hint">Un solo uso · Si tiene dudas, diríjase al Superintendente</div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
+    <script>
+      new QRCode(document.getElementById("qr"), { text: ${JSON.stringify(content)}, width: 240, height: 240 });
+      setTimeout(() => window.print(), 600);
+    <\/script>
+  </body></html>`);
+}
+
+async function manualLookup() {
+  showModal("Buscar hermano", `<input id="lookupName" placeholder="Nombre a buscar" autocomplete="off"><div id="lookupResults" style="margin-top:10px;max-height:300px;overflow:auto"></div>`, [{text:"Cerrar"}]);
+  $('lookupName').oninput = () => {
+    const q = $('lookupName').value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    if (q.length < 2) { $('lookupResults').innerHTML = ''; return; }
+    const matches = Object.entries(USERS).filter(([uid, u]) => (u.name||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q));
+    $('lookupResults').innerHTML = matches.length ? matches.map(([uid,u]) =>
+      `<button style="width:100%;text-align:left;margin-bottom:6px;padding:12px" onclick="manualLog('${uid}')"><b>${esc(u.name)}</b><br><small style="color:var(--text-muted)">${esc(u.cong||'')} · ${(u.roles||[]).map(r=>ROLES.find(x=>x.id===r)?.label||r).join(', ')}</small></button>`
+    ).join('') : '<p style="color:var(--text-muted)">Sin resultados</p>';
+  };
+}
+
+async function manualLog(uid) {
+  const u = USERS[uid];
+  const hasRole = (u.roles || []).some(r => ZONE_ALLOWED_ROLES.includes(r));
+  if (!hasRole) { toast(`${u.name} no autorizado para esta zona`, true); return; }
+  await logEntry(uid, u.name, false);
+  showResultGreen(u.name, u.roles);
+  toast(`Entrada registrada: ${u.name}`);
+  $('modal').hidden = true;
+}
+
 function setTab(tab) {
   ['scan','inside','admin'].forEach(t => {
     $('tab' + t.charAt(0).toUpperCase() + t.slice(1)).hidden = t !== tab;
@@ -639,15 +744,18 @@ function setTab(tab) {
   if (tab === 'admin' && adminLogged) { renderUsers($('searchUsers').value); renderZoneStatus(); }
 }
 
-// ============ INIT ============
+const path = (p, v) => {
+  if (v === undefined) return fetch(`${CFG.DB}/access/${p}.json`).then(r=>r.json());
+  return fetch(`${CFG.DB}/access/${p}.json`, { method: 'PUT', body: JSON.stringify(v) }).then(r=>r.json());
+};
+const del = (p) => fetch(`${CFG.DB}/access/${p}.json`, { method: 'DELETE' });
+
 function init() {
-  renderZoneSelects();
   loadAll();
   pollIv = setInterval(loadAll, 5000);
 }
 
 window.addEventListener('beforeunload', () => { stopCamera(); clearInterval(pollIv); });
-
 init();
 </script>
 </body>
