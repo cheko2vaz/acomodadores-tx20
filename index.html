@@ -486,6 +486,7 @@ const POS=Object.keys(D.pos).map(Number);
 const VOL_POS=[101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120];
 let spillMode=false, hl=null, selectedSpill=null, adminMoveMode=false, currentVolDrag=null;
 let lastSelectTurno='1';
+let currentWalkerSearch='';
 
 function shouldSkipRender(){
   if(currentVolDrag) return true;
@@ -701,7 +702,6 @@ function renderAdminView(){
   if(adminTab==='limpieza') renderSpillTab();
 }
 
-// =========== NUEVO: REINICIAR PRESENTES ===========
 async function resetAllPresentes(){
   if(!confirm('¿Borrar TODOS los estados de "Aquí estoy" (Presente/Sustituto/Ausente)? Los hermanos volverán a "pendiente".')) return;
   const updates={};
@@ -720,7 +720,6 @@ async function resetAllPresentes(){
   else showToast('Error al reiniciar',true);
 }
 
-// =========== EQUIPO UNIFICADO ===========
 function renderAdminEquipo(){
   const areas=[
     {id:'alm',name:'Alarmas de Incendios'},
@@ -730,14 +729,11 @@ function renderAdminEquipo(){
   ];
   const corredores=S.auxGroups?.corredores||[];
   const camaras=S.auxGroups?.camaras||[];
-
-  // Build the main area
   let mainHtml='';
   const allAuxOpts = [
     {label:'Corredores', list:corredores},
     {label:'Cámaras', list:camaras}
   ];
-
   for(const area of areas){
     const posInArea=POS.filter(n=>D.pos[n].a===area.id&&D.pos[n].v!==1);
     if(!posInArea.length)continue;
@@ -751,7 +747,6 @@ function renderAdminEquipo(){
       const available=D.roster.filter(r=>r.c!=='Voluntaria');
       const sortedWho=available.filter(r=>r.n===currentWho).concat(available.filter(r=>r.n!==currentWho).sort((a,b)=>a.n.localeCompare(b.n)));
       sortedWho.forEach(r=>{whoOpts.push(`<option value="${esc(r.n)}" ${r.n===currentWho?'selected':''}>${esc(r.n)}</option>`);});
-
       const auxOpts=['<option value="">— Sin apoyo —</option>'];
       allAuxOpts.forEach(grp=>{
         if(!grp.list.length) return;
@@ -761,7 +756,6 @@ function renderAdminEquipo(){
         });
         auxOpts.push(`</optgroup>`);
       });
-
       mainHtml+=`<tr class="${currentWho?'assigned':''}">
         <td class="pos-num">${n}</td>
         <td class="pos-sec">${esc(D.pos[n].t)}</td>
@@ -772,14 +766,11 @@ function renderAdminEquipo(){
     mainHtml+='</tbody></table></div>';
   }
   $('adminEquipoMain').innerHTML=mainHtml;
-
-  // Side: corredores + camaras lists
   const auxAssignedCounts={};
   for(const n in S.pos||{}){
     const a=S.pos[n]?.aux;
     if(a) auxAssignedCounts[a]=(auxAssignedCounts[a]||0)+1;
   }
-
   const renderAuxGroup=(title,list,group)=>{
     if(!list.length) return `<div style="color:var(--muted);font-style:italic;padding:8px 0">Sin asignaciones</div>`;
     return list.map(name=>{
@@ -790,7 +781,6 @@ function renderAdminEquipo(){
       </div>`;
     }).join('');
   };
-
   let sideHtml=`
     <h3>Corredores (${corredores.length})</h3>
     <div style="margin-bottom:14px">${renderAuxGroup('corredores',corredores,'corredores')}</div>
@@ -810,7 +800,6 @@ async function assignAuxToPos(pos, auxName){
   showToast(auxName?`${auxName} → apoyo en Pos ${pos}`:`Apoyo liberado en Pos ${pos}`);
   await load();
 }
-
 async function adminAssignAcom(pos,name){
   if(!S.pos)S.pos={};
   if(!S.pos[pos])S.pos[pos]={};
@@ -822,10 +811,8 @@ async function adminAssignAcom(pos,name){
   showToast(name?`${name} → ${pos}`:`Pos ${pos} libre`);
   await load();
 }
-
 async function removeAuxPerson(group,name){
   if(!S.auxGroups?.[group]) return;
-  // Also remove from any pos that has them as aux
   for(const n in S.pos||{}){
     if(S.pos[n]?.aux===name){
       S.pos[n].aux=null;
@@ -838,7 +825,6 @@ async function removeAuxPerson(group,name){
   await load();
 }
 
-// =========== ASIGNACIONES VOLUNTARIAS ===========
 function renderAdminTurnoSelector(){
   const t8signedUp = TURNOS[8].vol;
   const t8assigned = (S.volTurnos && S.volTurnos[8]) || {};
@@ -1031,7 +1017,6 @@ function setCapMax(sec,val){
   showToast(`Máx ${sec}: ${n}`);
 }
 
-// =========== MAPA ADMIN ===========
 function toggleAdminMove(){
   adminMoveMode=!adminMoveMode;
   const btn=$('btnMoveVol');
@@ -1096,7 +1081,6 @@ function attachVolDrag(turno){
   svg.dataset.dragBound='1';
   svg.style.touchAction='none';
   let dragState=null, rafId=null, pendingPos=null, matrix=null;
-
   svg.addEventListener('pointerdown',e=>{
     const g=e.target.closest('.vol-marker');
     if(!g) return;
@@ -1163,7 +1147,6 @@ function renderAdminMapAcom(){
   $('adminMapArea').innerHTML=`<div style="width:100%;border:2px solid var(--brown);border-radius:8px;overflow:hidden"><svg viewBox="0 0 1310 926" style="width:100%;height:auto;display:block"><image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/><g>${markers}</g></svg></div>`;
 }
 
-// =========== SPILLS ===========
 function buildSpillContent(){
   const active=Object.entries(S.spills||{}).filter(([,s])=>s.status!=='terminado').sort((a,b)=>b[1].ts-a[1].ts);
   const done=Object.entries(S.spills||{}).filter(([,s])=>s.status==='terminado').sort((a,b)=>(b[1].tsDone||b[1].ts)-(a[1].tsDone||a[1].ts));
@@ -1245,7 +1228,6 @@ function openSpillFullMap(){
   showModal('Mapa completo',`<div style="border:2px solid var(--ok);border-radius:8px;overflow:hidden;background:var(--card)"><svg viewBox="0 0 1310 926" style="width:100%;height:auto;display:block"><image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>${pins}</svg></div>`,[{text:'Cerrar',action:()=>{$('modalBox').classList.remove('wide');}}]);
 }
 
-// =========== UTILS ===========
 function showToast(m,err){const c=document.getElementById('toast-container'),t=document.createElement('div');t.className='toast'+(err?' err':'');t.textContent=m;c.appendChild(t);setTimeout(()=>t.classList.add('show'),10);setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},3500);}
 function net(v){const e=$('net');if(!e)return;e.textContent=v?'En línea':'Sin conexión';e.className='net '+(v?'on':'off');}
 const U=p=>CFG.DB.replace(/\/$/,'')+'/s'+(p?'/'+p:'')+'.json';
@@ -1474,11 +1456,22 @@ async function loadWalkers(){
       fetch(`${CFG.DB}/walkersTest/w.json?t=${Date.now()}`).then(r=>r.json()),
       fetch(`${CFG.DB}/walkersTest/last.json?t=${Date.now()}`).then(r=>r.json())
     ]);
-    W_DATA=rData||{};W_LAST=lData||{};
-    drawWalkers();
+    const newW=rData||{},newL=lData||{};
+    const wChanged=JSON.stringify(newW)!==JSON.stringify(W_DATA);
+    const lChanged=JSON.stringify(newL)!==JSON.stringify(W_LAST);
+    W_DATA=newW;W_LAST=newL;
+    // Solo redibujar si cambió o es la primera vez
+    if(wChanged||lChanged||!$('walkGrid').children.length){
+      drawWalkers();
+    }
   }catch(e){}
 }
-function drawWalkers(){drawCroquis();drawWalkGrid();}
+function drawWalkers(){
+  drawCroquis();
+  drawWalkGrid();
+  // Re-aplicar búsqueda después de redibujar
+  if(currentWalkerSearch) applyWalkerFilter(currentWalkerSearch);
+}
 function drawCroquis(){
   const wk=W_DATA||{};const el=$('walkCroquis');if(!el)return;
   let h='';
@@ -1502,9 +1495,36 @@ function drawCroquis(){
 }
 function drawWalkGrid(){
   const wk=W_DATA||{};let h='';
-  WALKER_SLOTS.forEach(slot=>{const cur=wk[slot];if(cur){h+=`<button class="wslot occ" onclick="walkerTap('${slot}')"><b>${slot}</b><small>${esc(walkerShort(cur.name))}</small></button>`}else{h+=`<button class="wslot empty" onclick="walkerTap('${slot}')"><b>${slot}</b><small>Vacío</small></button>`}});
+  WALKER_SLOTS.forEach(slot=>{
+    const cur=wk[slot];
+    if(cur){
+      h+=`<button class="wslot occ" data-slot="${slot}" onclick="walkerTap('${slot}')"><b>${slot}</b><small>${esc(walkerShort(cur.name))}</small></button>`;
+    }else{
+      h+=`<button class="wslot empty" data-slot="${slot}" onclick="walkerTap('${slot}')"><b>${slot}</b><small>Vacío</small></button>`;
+    }
+  });
   $('walkGrid').innerHTML=h;
   $('walkCount').textContent=`${Object.keys(wk).length}/${WALKER_SLOTS.length} ocupados`;
+}
+function searchWalker(q){
+  currentWalkerSearch=q;
+  applyWalkerFilter(q);
+  // Auto-scroll al primer resultado
+  if(q.length>=2){
+    const firstMatch=document.querySelector('.wslot.found, .cslot.found');
+    if(firstMatch) firstMatch.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+}
+function applyWalkerFilter(q){
+  const norm=q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  document.querySelectorAll('.wslot,.cslot').forEach(el=>{
+    if(!q||q.length<2){el.classList.remove('found');return;}
+    const slot=el.dataset.slot;
+    const cur=W_DATA&&W_DATA[slot];
+    if(!cur){el.classList.remove('found');return;}
+    const match=cur.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(norm);
+    el.classList.toggle('found',match);
+  });
 }
 function walkerTap(slot){
   const cur=W_DATA&&W_DATA[slot],last=W_LAST&&W_LAST[slot];
@@ -1535,14 +1555,6 @@ async function walkerRemove(slot,name){
   await fetch(`${CFG.DB}/walkersTest/w/${slot}.json`,{method:'DELETE'});
   await loadWalkers();$('modal').hidden=true;
   showToast(`${name} removido`);
-}
-function searchWalker(q){
-  const norm=q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  document.querySelectorAll('.wslot,.cslot').forEach(el=>{
-    if(!q||q.length<2){el.classList.remove('found');return;}
-    const slot=el.dataset.slot,cur=W_DATA&&W_DATA[slot];if(!cur){el.classList.remove('found');return;}
-    el.classList.toggle('found',cur.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(norm));
-  });
 }
 
 function showModal(title,body,btns){
