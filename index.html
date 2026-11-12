@@ -93,12 +93,14 @@ svg.map-svg{width:100%;height:auto;display:block;transition:width 0.2s}
 .who{background:var(--card-alt);border-left:4px solid var(--red);padding:10px 12px;margin:10px 0;border-radius:0 6px 6px 0}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
 .t{border:1px solid var(--border);border-radius:6px;padding:10px;text-align:center;background:#fff;cursor:pointer}.t b{font-size:26px;display:block;color:var(--red)}
-.t.at-max{border-color:#ffcc80;background:var(--warn-bg)}
-.t.over{background:var(--err-bg);border-color:#ef9a9a}
 .bar{height:8px;background:#e0d8c4;border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--red);transition:width .3s}
 select,input{font:inherit;padding:11px;border:1px solid var(--border);border-radius:6px;width:100%;background:#fff;color:var(--text);font-family:inherit}
 select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 .dim{opacity:.4}
+.sec{fill:rgba(0,0,0,0.02);stroke:#d4c9b0;stroke-width:1;pointer-events:none;transition:fill .2s,stroke .2s}
+.sec.hl{fill:rgba(168,37,28,0.3);stroke:#a8251c;stroke-width:4;stroke-dasharray:12 6;animation:secBlink 1s infinite}
+@keyframes secBlink{0%,100%{fill-opacity:.3;stroke-opacity:1}50%{fill-opacity:.08;stroke-opacity:.4}}
+.cnt-sec.hl{border:2px solid var(--red);background:#faeaea;box-shadow:0 0 0 3px rgba(168,37,28,.2)}
 .spill{cursor:pointer}
 .spill-panel{background:#fff;border:2px solid var(--gold);border-radius:8px;padding:14px;margin:8px 0}
 .spill-item{background:#fff;border:1px solid var(--border);border-left:4px solid var(--spill);border-radius:6px;padding:12px;margin:8px 0;font-size:14px}
@@ -139,7 +141,8 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 .clear-turno-bar span{font-size:13px;color:#8a5a00;flex:1}
 
 /* CONTEO */
-.cnt-sec{border:1px solid var(--border);border-radius:8px;padding:12px;background:#fff;text-align:center;position:relative}
+.cnt-sec{border:1px solid var(--border);border-radius:8px;padding:12px;background:#fff;text-align:center;position:relative;cursor:pointer;transition:all .15s}
+.cnt-sec:hover{border-color:var(--gold)}
 .cnt-sec .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
 .cnt-sec .num{font-size:28px;font-weight:700;color:var(--brown);margin:4px 0}
 .cnt-sec .max{font-size:12px;color:var(--muted)}
@@ -315,16 +318,7 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
     </div>
 
     <div id="adminTabConteo" hidden>
-      <div class="card">
-        <div class="row" style="justify-content:space-between;margin-bottom:14px">
-          <h2 style="margin:0;color:var(--brown);font-size:18px">Conteo por sección</h2>
-          <button onclick="put('cnt',null)" style="padding:8px 14px;font-size:13px">Reiniciar conteo</button>
-        </div>
-        <div id="adminCntGrid" class="grid"></div>
-        <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
-          <button onclick="put('cntOpen',!S.cntOpen)" id="cntOpenBtn" style="padding:12px"></button>
-        </div>
-      </div>
+      <div class="card" id="adminCntCard"></div>
     </div>
 
     <div id="adminTabMapa" hidden>
@@ -433,6 +427,7 @@ const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"]/g,c
 const POS=Object.keys(D.pos).map(Number);
 const VOL_POS=[101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120];
 let moreOpen=false,centered=false;
+let spillMode=false, hl=null;
 
 const visible=n=>{
   if(!me) return false;
@@ -509,7 +504,7 @@ function acomEnter(name){
   $('btnWalkers').hidden=!(u.all||u.walkers||u.adm);
   start();
 }
-function acomLogout(){clearInterval(iv);me=null;S={};sel=null;goHome();}
+function acomLogout(){clearInterval(iv);me=null;S={};sel=null;hl=null;goHome();}
 
 // VOLUNTARIA
 function volSearch(q){
@@ -598,7 +593,7 @@ function adminLogin(){
   start();
   renderAdminView();
 }
-function adminLogout(){clearInterval(iv);adminMe=null;me=null;S={};goHome();}
+function adminLogout(){clearInterval(iv);adminMe=null;me=null;S={};hl=null;goHome();}
 function setAdminTab(t){
   adminTab=t;
   document.querySelectorAll('.admin-tabs button').forEach(b=>b.classList.toggle('on',b.dataset.adminTab===t));
@@ -619,10 +614,7 @@ function renderAdminView(){
 async function clearTurno(){
   const t=adminCurrentTurno;
   const count=countAsignadas(t);
-  if(count===0){
-    showToast('El turno ya está vacío');
-    return;
-  }
+  if(count===0){showToast('El turno ya está vacío');return;}
   if(!confirm(`¿Borrar TODAS las ${count} asignaciones del turno T${t}? Esta acción no se puede deshacer.`)) return;
   await fetch(U(`volTurnos/${t}`),{method:'DELETE'});
   if(S.volTurnos) delete S.volTurnos[t];
@@ -649,9 +641,7 @@ function renderAdminAcomAsignaciones(){
       const opts=['<option value="">— Sin asignar —</option>'];
       const available=D.roster.filter(r=>r.c!=='Voluntaria');
       const sorted=available.filter(r=>r.n===current).concat(available.filter(r=>r.n!==current).sort((a,b)=>a.n.localeCompare(b.n)));
-      sorted.forEach(r=>{
-        opts.push(`<option value="${esc(r.n)}" ${r.n===current?'selected':''}>${esc(r.n)}</option>`);
-      });
+      sorted.forEach(r=>{opts.push(`<option value="${esc(r.n)}" ${r.n===current?'selected':''}>${esc(r.n)}</option>`);});
       html+=`<tr class="${current?'assigned':''}"><td class="pos-num">${n}</td><td class="pos-sec">${esc(D.pos[n].t)}</td><td><select onfocus="panelLocked=true" onblur="setTimeout(()=>panelLocked=false,200)" onchange="adminAssignAcom(${n},this.value)">${opts.join('')}</select></td></tr>`;
     });
     html+='</tbody></table></div>';
@@ -749,37 +739,75 @@ async function adminAssign(pos,name){
   await load();
 }
 
-// CONTEO CON MÁXIMOS
+// CONTEO CON MÁXIMOS Y MAPA LATERAL
 function renderAdminConteo(){
   const cnt=S.cnt||{}, exp=S.expect||D.expect;
   const total=Object.values(cnt).reduce((a,b)=>a+(+b||0),0);
   const secs=['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5'];
-  let html='';
-  html+=`<div style="margin-bottom:14px;font-size:16px"><b>Total:</b> ${total} / ${exp} (${Math.round(100*total/exp)}%)</div>`;
-  html+=`<div class="bar" style="margin-bottom:16px"><i style="width:${Math.min(100,100*total/exp)}%"></i></div>`;
+  let html=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div>
+      <div style="margin-bottom:14px;font-size:16px"><b>Total:</b> ${total} / ${exp} (${Math.round(100*total/exp)}%)</div>
+      <div class="bar" style="margin-bottom:16px"><i style="width:${Math.min(100,100*total/exp)}%"></i></div>
+      <p style="font-size:13px;color:var(--muted);margin:0 0 10px">Toca una sección para verla resaltada en el mapa</p>
+      <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr))">`;
   secs.forEach(sec=>{
     const v=cnt[sec]||0;
     const max=(S.cap&&S.cap[sec]!==undefined)?S.cap[sec]:(D.cap[sec]||0);
     const atMax=max>0&&v>=max;
     const over=max>0&&v>max;
     const canInc=!max||v<max;
-    html+=`<div class="cnt-sec${over?' over':atMax?' at-max':''}">
+    const isHl=hl===sec;
+    html+=`<div class="cnt-sec${over?' over':atMax?' at-max':''}${isHl?' hl':''}" onclick="adminToggleHl('${sec}')" style="cursor:pointer">
       <div class="label">${sec}</div>
       <div class="num">${v}</div>
       <div class="max">${max>0?`máx ${max}`:'sin límite'}</div>
       <div class="btns">
-        <button onclick="adminCnt('${sec}',-1)">−</button>
-        <button onclick="adminCnt('${sec}',1)" ${canInc?'':'disabled'}>+</button>
+        <button onclick="event.stopPropagation();adminCnt('${sec}',-1)">−</button>
+        <button onclick="event.stopPropagation();adminCnt('${sec}',1)" ${canInc?'':'disabled'}>+</button>
       </div>
-      ${me.all?`<div class="edit-max"><span>máx:</span><input type="number" min="0" value="${max}" onchange="setCapMax('${sec}',this.value)"></div>`:''}
+      ${me.all?`<div class="edit-max" onclick="event.stopPropagation()"><span>máx:</span><input type="number" min="0" value="${max}" onchange="setCapMax('${sec}',this.value)"></div>`:''}
     </div>`;
   });
-  $('adminCntGrid').innerHTML=html;
+  html+=`</div></div>
+    <div>
+      <h3 style="margin:0 0 8px;color:var(--brown);font-size:14px;text-transform:uppercase;letter-spacing:.5px">Vista de sección</h3>
+      <div id="adminCntMap" style="border:2px solid var(--brown);border-radius:8px;overflow:hidden;background:#fff;position:sticky;top:80px">
+        <svg viewBox="0 0 1310 926" style="width:100%;height:auto;display:block">
+          <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
+          <g id="adminCntMapSec"></g>
+        </svg>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:8px;text-align:center">${hl?`Resaltada: <b style="color:var(--red)">${hl}</b>`:'Ninguna sección resaltada'}</p>
+    </div>
+  </div>
+  <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+    <button onclick="put('cnt',null)" style="padding:12px">Reiniciar conteo</button>
+    <button onclick="put('cntOpen',!S.cntOpen)" id="cntOpenBtn" style="padding:12px"></button>
+  </div>`;
+  $('adminCntCard').innerHTML=html;
+  renderAdminCntMapHighlight();
   $('cntOpenBtn').textContent=S.cntOpen?'Cerrar conteo a capitanes':'Abrir conteo a capitanes';
   $('cntOpenBtn').style.background=S.cntOpen?'var(--err)':'var(--ok)';
   $('cntOpenBtn').style.color='#fff';
   $('cntOpenBtn').style.borderColor=S.cntOpen?'var(--err)':'var(--ok)';
 }
+
+function adminToggleHl(sec){
+  hl=hl===sec?null:sec;
+  renderAdminConteo();
+}
+
+function renderAdminCntMapHighlight(){
+  const g=$('adminCntMapSec');
+  if(!g) return;
+  let h='';
+  for(const k in D.sec){
+    const cls=hl===k?'sec hl':'sec';
+    h+=`<polygon class="${cls}" points="${(S.sec&&S.sec[k])||D.sec[k]}"/>`;
+  }
+  g.innerHTML=h;
+}
+
 function adminCnt(sec,d){
   const max=(S.cap&&S.cap[sec]!==undefined)?S.cap[sec]:(D.cap[sec]||0);
   let v=(S.cnt||{})[sec]||0;
@@ -887,6 +915,13 @@ function here(n){if(P(n).sub===me.n||P(n).who===me.n)setSt(n,P(n).sub?'sub':'ok'
 function zoomMain(d){mainZoom=Math.max(1,Math.min(3,mainZoom+d));$('svg').style.width=(mainZoom*100)+'%';}
 
 function drawMap(){
+  let sectHtml='';
+  for(const k in D.sec){
+    const cls=hl===k?'sec hl':'sec';
+    sectHtml+=`<polygon class="${cls}" points="${(S.sec&&S.sec[k])||D.sec[k]}"/>`;
+  }
+  $('sl').innerHTML=sectHtml;
+
   let h='';
   for(const n of POS){
     if(!visible(n))continue;
@@ -913,17 +948,109 @@ function drawMap(){
   $('spl').innerHTML=sh;
   $('svg').querySelectorAll('.pc').forEach(el=>{el.onclick=()=>{sel=+el.dataset.n;draw();};});
   $('svg').querySelectorAll('.spill').forEach(el=>{el.onclick=()=>showSpillPanel(el.dataset.spill);});
+  attachSpillHandler();
 }
+
+function attachSpillHandler(){
+  const svgEl=$('svg');
+  if(!svgEl || svgEl.dataset.spillBound) return;
+  svgEl.dataset.spillBound='1';
+  svgEl.addEventListener('pointerdown', e => {
+    if(!spillMode) return;
+    const pt=svgEl.createSVGPoint();
+    pt.x=e.clientX;
+    pt.y=e.clientY;
+    const svgP=pt.matrixTransform(svgEl.getScreenCTM().inverse());
+    e.preventDefault();
+    e.stopPropagation();
+    promptSpill(svgP.x, svgP.y);
+  }, true);
+}
+
+function toggleSpillMode(){
+  spillMode=!spillMode;
+  drawBar();
+  if(spillMode) showToast('Toca el mapa donde está el derrame');
+}
+
+function promptSpill(x,y){
+  showModal('Reportar derrame',
+    `<p>¿Qué se derramó?</p>
+     <select id="spillType">
+       <option value="Comida">Comida</option>
+       <option value="Bebida">Bebida</option>
+       <option value="Otro">Otro</option>
+     </select>`,
+    [
+      {text:'Cancelar', action:()=>{spillMode=false;drawBar();}},
+      {text:'Reportar', class:'warn', action:()=>{
+        const tipo=$('spillType').value;
+        const id=Date.now();
+        put(`spills/${id}`,{x:Math.round(x),y:Math.round(y),tipo,status:'pendiente',quien:me.n,ts:id});
+        spillMode=false;
+        drawBar();
+        showToast(`Derrame reportado: ${tipo}`);
+      }}
+    ]);
+}
+
+function toggleCntPanel(){
+  const card=$('cntCard');
+  card.hidden=!card.hidden;
+  if(!card.hidden) drawCnt();
+}
+
+function drawCnt(){
+  if(!canCnt()) return;
+  const cnt=S.cnt||{};
+  const secs=['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5'];
+  let html=`<p style="margin:0 0 10px;font-size:13px;color:var(--muted)">Toca una sección para resaltarla en el mapa</p><div class="grid">`;
+  secs.forEach(sec=>{
+    const v=cnt[sec]||0;
+    const max=(S.cap&&S.cap[sec]!==undefined)?S.cap[sec]:(D.cap[sec]||0);
+    const canInc=!max||v<max;
+    const isHl=hl===sec;
+    html+=`<div class="cnt-sec${max>0&&v>=max?' at-max':''}${isHl?' hl':''}" onclick="toggleHl('${sec}')" style="cursor:pointer">
+      <div class="label">${sec}</div>
+      <div class="num">${v}</div>
+      <div class="max">${max>0?`máx ${max}`:'sin límite'}</div>
+      <div class="btns">
+        <button onclick="event.stopPropagation();adminCnt('${sec}',-1)">−</button>
+        <button onclick="event.stopPropagation();adminCnt('${sec}',1)" ${canInc?'':'disabled'}>+</button>
+      </div>
+    </div>`;
+  });
+  html+=`</div>`;
+  $('cnt').innerHTML=html;
+}
+
+function toggleHl(sec){
+  hl=hl===sec?null:sec;
+  drawCnt();
+  drawMap();
+  if(hl){
+    const mapEl=$('mapw');
+    const poly=document.querySelector(`#sl polygon.hl`);
+    if(poly){
+      const svgEl=$('svg');
+      const bbox=poly.getBBox();
+      const scale=svgEl.getBoundingClientRect().width/1310;
+      const cx=(bbox.x+bbox.width/2)*scale;
+      const cy=(bbox.y+bbox.height/2)*scale;
+      mapEl.scrollTo({left:Math.max(0,cx-mapEl.clientWidth/2),top:Math.max(0,cy-mapEl.clientHeight/2),behavior:'smooth'});
+    }
+  }
+}
+
 function drawBar(){
   if(isSpillOnly()){
-    $('bar').innerHTML=`<button onclick="toggleSpillMode()" style="background:var(--warn);color:#fff;border-color:var(--warn);font-weight:700;padding:14px 22px">Reportar Derrame</button>`;
+    $('bar').innerHTML=`<button onclick="toggleSpillMode()" style="background:${spillMode?'var(--warn)':'#fff'};color:${spillMode?'#fff':'var(--warn)'};border-color:var(--warn);font-weight:700;padding:14px 22px">${spillMode?'Toca el mapa (ACTIVO)':'Reportar Derrame'}</button>`;
     return;
   }
-  const spillBtn=`<button onclick="toggleSpillMode()" style="background:#fff;color:var(--warn);border-color:var(--warn);font-weight:700">Reportar Derrame</button>`;
-  const cntBtn=canCnt()?`<button onclick="drawCntPanel()" style="background:var(--gold);color:#fff;border-color:var(--gold);font-weight:700">Conteo</button>`:'';
+  const spillBtn=`<button onclick="toggleSpillMode()" style="background:${spillMode?'var(--warn)':'#fff'};color:${spillMode?'#fff':'var(--warn)'};border-color:var(--warn);font-weight:700">${spillMode?'Toca el mapa (ACTIVO)':'Reportar Derrame'}</button>`;
+  const cntBtn=canCnt()?`<button onclick="toggleCntPanel()" style="background:var(--gold);color:#fff;border-color:var(--gold);font-weight:700">Conteo</button>`:'';
   $('bar').innerHTML=`${spillBtn}${cntBtn}`;
 }
-function toggleSpillMode(){showToast('Toca el mapa donde está el derrame');}
 function drawMine(){
   const e=$('mine');if(!e)return;
   if(isSpillOnly()){e.hidden=true;return;}
@@ -960,20 +1087,6 @@ function drawSpills(){
 function showSpillPanel(id){
   const sp=S.spills&&S.spills[id];if(!sp)return;
   showModal(`Derrame · ${sp.tipo}`,`<div class="who"><b>Reportado por:</b> ${esc(sp.quien)}<br><b>Estado:</b> ${sp.status.toUpperCase()}</div>`,[{text:'Cerrar'}]);
-}
-function drawCntPanel(){
-  if(!canCnt())return;
-  const cnt=S.cnt||{};
-  const secs=['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5'];
-  let h=`<div class="grid">`;
-  secs.forEach(sec=>{
-    const v=cnt[sec]||0;
-    const max=(S.cap&&S.cap[sec]!==undefined)?S.cap[sec]:(D.cap[sec]||0);
-    const canInc=!max||v<max;
-    h+=`<div class="cnt-sec${max>0&&v>=max?' at-max':''}"><div class="label">${sec}</div><div class="num">${v}</div><div class="max">${max>0?`máx ${max}`:''}</div><div class="btns"><button onclick="adminCnt('${sec}',-1)">−</button><button onclick="adminCnt('${sec}',1)" ${canInc?'':'disabled'}>+</button></div></div>`;
-  });
-  h+=`</div>`;
-  showModal('Conteo por sección',h,[{text:'Cerrar'}]);
 }
 
 // WALKERS
@@ -1102,7 +1215,6 @@ async function walkerReassign(slot, name){
 }
 async function walkerRemove(slot, name){
   if(!confirm(`¿Remover a ${name} del espacio ${slot}?`)) return;
-  // Guardar como último ocupante
   await fetch(`${CFG.DB}/walkersTest/last/${slot}.json`,{method:'PUT',body:JSON.stringify({name, ts:Date.now()})});
   await fetch(`${CFG.DB}/walkersTest/w/${slot}.json`,{method:'DELETE'});
   await loadWalkers();
