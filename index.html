@@ -146,36 +146,20 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 .wslot.occ b{color:var(--ok)}
 .wslot small{font-size:11px;color:var(--muted);text-align:center;word-break:break-word}
 .wslot.occ small{color:var(--ok);font-weight:600}
-.wslot.found{background:#e6d580;border-color:#c28a1c;box-shadow:0 0 0 3px rgba(194,138,28,.35)}
+.wslot.found{background:#fff3cd!important;border:3px solid #d11!important;box-shadow:0 0 0 4px rgba(221,17,17,.35);animation:foundPulse 1s infinite}
+@keyframes foundPulse{0%,100%{box-shadow:0 0 0 4px rgba(221,17,17,.35)}50%{box-shadow:0 0 0 14px rgba(221,17,17,.05)}}
 .cq-lg{display:flex;gap:14px;justify-content:center;font-size:13px;flex-wrap:wrap;margin:8px 0;color:#555}
 .cq-lg i{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:4px;vertical-align:-2px}
 .cslot{cursor:pointer}
 .cslot rect{fill:#ddd0b0;stroke:#9a9a9a;stroke-width:1}
 .cslot.occ rect{fill:#43a047;stroke:#1b5e20}
-.cslot.found rect{fill:#ddb835;stroke:#a86b10;stroke-width:2.5}
+.cslot.found rect{fill:#fbc02d!important;stroke:#d11!important;stroke-width:2.5!important}
+.cslot.found text{fill:#333!important}
 .cslot text{pointer-events:none;font-family:'Noto Sans',sans-serif;fill:#666}
 .cslot.occ text{fill:#fff;font-weight:700}
 @keyframes cqp{50%{opacity:.15}}
 .cq-latest{fill:none;stroke:#d11;stroke-width:3;animation:cqp .9s infinite;pointer-events:none}
 .walker-info{background:var(--ok-bg);border-left:4px solid var(--ok);padding:10px 12px;border-radius:6px;margin-bottom:10px;font-size:14px}
-/* Búsqueda de walkers */
-.wslot.hidden-search{display:none!important}
-.wslot.found{
-  background:#fff3cd!important;
-  border:3px solid #d11!important;
-  box-shadow:0 0 0 4px rgba(221,17,17,.35);
-  transform:scale(1.08);
-  z-index:2;
-  position:relative;
-  animation:foundPulse 1s infinite;
-}
-@keyframes foundPulse{
-  0%,100%{box-shadow:0 0 0 4px rgba(221,17,17,.35)}
-  50%{box-shadow:0 0 0 12px rgba(221,17,17,.05)}
-}
-.cslot.dimmed-search{opacity:.1;pointer-events:none;transition:opacity .2s}
-.cslot.found rect{fill:#fbc02d!important;stroke:#d11!important;stroke-width:2.5!important}
-.cslot.found text{fill:#333!important}
 #spillAdminApp{min-height:100vh;background:var(--bg)}
 #spillAdminApp header{background:var(--ok)}
 #spillAdminApp main{max-width:1400px}
@@ -1452,6 +1436,8 @@ function openWalkers(from){
   $('walkersView').hidden=false;
   const canReset=me&&(me.all||me.walkersReset);
   $('btnResetWalkers').style.display=canReset?'inline-block':'none';
+  currentWalkerSearch='';
+  $('walkerSearch').value='';
   loadWalkers();
 }
 function closeWalkers(){
@@ -1485,13 +1471,14 @@ async function loadWalkers(){
     }
   }catch(e){}
 }
-function drawWalkers(){
-  drawCroquis();
-  drawWalkGrid();
-  if(currentWalkerSearch) applyWalkerFilter(currentWalkerSearch);
-}
+function drawWalkers(){drawCroquis();drawWalkGrid();}
+
 function drawCroquis(){
-  const wk=W_DATA||{};const el=$('walkCroquis');if(!el)return;
+  const wk=W_DATA||{};
+  const el=$('walkCroquis');if(!el)return;
+  const norm=(currentWalkerSearch||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const isSearchActive=norm.length>=2;
+
   let h='';
   for(const o of [172,194,216,238]){h+=`<path d="M${CQ_A[0]+o} ${CQ_A[1]} Q${CQ_C[0]+o} ${CQ_C[1]} ${CQ_B[0]+o} ${CQ_B[1]}" fill="none" stroke="#d8c9a3" stroke-width="10" stroke-dasharray="7 4" opacity=".6"/>`}
   h+=`<text x="428" y="365" font-size="14" font-weight="700" fill="#a08a50" text-anchor="middle" transform="rotate(90 428 365)">AUDITORIO · ASIENTOS</text>`;
@@ -1502,107 +1489,77 @@ function drawCroquis(){
   h+=`<line x1="64" y1="${y0}" x2="64" y2="680" stroke="#6e1414" stroke-width="7" stroke-linecap="round"/>`;
   for(const [a,b] of doors){const m=(a+b)/2;h+=`<path d="M64 ${a} Q86 ${a+6} 86 ${a+27}" fill="none" stroke="#6e1414" stroke-width="2" opacity=".6"/><path d="M64 ${b} Q86 ${b-6} 86 ${b-27}" fill="none" stroke="#6e1414" stroke-width="2" opacity=".6"/><path d="M14 ${m} H48 M40 ${m-7} L50 ${m} L40 ${m+7}" fill="none" stroke="#6e1414" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`}
   h+=`<text x="12" y="20" font-size="14" font-weight="700" fill="#6e1414">VESTÍBULO</text>`;
+
   let latest=null,lts=0;
+  const matchedCoords=[];
   for(const slot of WALKER_SLOTS){
     const g=cqGeo(slot),cur=wk[slot];
     if(cur&&(cur.ts||0)>=lts){lts=cur.ts||0;latest=slot}
-    h+=`<g class="cslot${cur?' occ':''}" data-slot="${slot}" transform="translate(${g.x.toFixed(1)} ${g.y.toFixed(1)}) rotate(${g.a.toFixed(1)})" onclick="walkerTap('${slot}')"><rect x="-22" y="-12" width="44" height="24" rx="4"/>`+(cur?`<text text-anchor="middle" y="-2" font-size="8" opacity=".85" transform="rotate(${(-g.a).toFixed(1)})">${slot}</text><text text-anchor="middle" y="8" font-size="10" font-weight="700" transform="rotate(${(-g.a).toFixed(1)})">${esc(cqFirst(cur.name))}</text>`:`<text text-anchor="middle" y="4" font-size="11" font-weight="700" transform="rotate(${(-g.a).toFixed(1)})">${slot}</text>`)+`</g>`;
+    const isMatch=isSearchActive && cur && cur.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(norm);
+    let cls='cslot';
+    if(cur) cls+=' occ';
+    if(isMatch) cls+=' found';
+    const op=(isSearchActive && !isMatch)?' opacity="0.12"':'';
+    h+=`<g class="${cls}" data-slot="${slot}" transform="translate(${g.x.toFixed(1)} ${g.y.toFixed(1)}) rotate(${g.a.toFixed(1)})" onclick="walkerTap('${slot}')"${op}><rect x="-22" y="-12" width="44" height="24" rx="4"/>`+(cur?`<text text-anchor="middle" y="-2" font-size="8" opacity=".85" transform="rotate(${(-g.a).toFixed(1)})">${slot}</text><text text-anchor="middle" y="8" font-size="10" font-weight="700" transform="rotate(${(-g.a).toFixed(1)})">${esc(cqFirst(cur.name))}</text>`:`<text text-anchor="middle" y="4" font-size="11" font-weight="700" transform="rotate(${(-g.a).toFixed(1)})">${slot}</text>`)+`</g>`;
+    if(isMatch) matchedCoords.push({x:g.x,y:g.y,slot});
   }
-  if(latest&&Date.now()-lts<1800000){const g=cqGeo(latest);h+=`<circle class="cq-latest" cx="${g.x.toFixed(1)}" cy="${g.y.toFixed(1)}" r="28"/>`}
+  if(latest&&Date.now()-lts<1800000&&!isSearchActive){const g=cqGeo(latest);h+=`<circle class="cq-latest" cx="${g.x.toFixed(1)}" cy="${g.y.toFixed(1)}" r="28"/>`}
+  // Círculos rojos pulsantes sobre coincidencias
+  if(isSearchActive){
+    for(const mc of matchedCoords){
+      h+=`<circle cx="${mc.x.toFixed(1)}" cy="${mc.y.toFixed(1)}" r="30" fill="none" stroke="#d11" stroke-width="5" stroke-dasharray="8 4" opacity="0.9">
+        <animate attributeName="r" values="22;42;22" dur="1.2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.9;0.2;0.9" dur="1.2s" repeatCount="indefinite"/>
+      </circle>`;
+    }
+  }
   el.innerHTML=h;
 }
 function drawWalkGrid(){
-  const wk=W_DATA||{};let h='';
+  const wk=W_DATA||{};
+  const norm=(currentWalkerSearch||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const isSearchActive=norm.length>=2;
+
+  let h='';
+  let matchCount=0;
+  let totalOcc=0;
+
   WALKER_SLOTS.forEach(slot=>{
     const cur=wk[slot];
+    if(cur) totalOcc++;
+    const isMatch=isSearchActive && cur && cur.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(norm);
+
+    // Si búsqueda activa y este slot no matchea → ocultar
+    if(isSearchActive && !isMatch) return;
+    if(isMatch) matchCount++;
+
+    let cls='wslot';
+    if(cur) cls+=' occ';
+    if(isMatch) cls+=' found';
+
     if(cur){
-      h+=`<button class="wslot occ" data-slot="${slot}" onclick="walkerTap('${slot}')"><b>${slot}</b><small>${esc(walkerShort(cur.name))}</small></button>`;
+      h+=`<button class="${cls}" data-slot="${slot}" onclick="walkerTap('${slot}')"><b>${slot}</b><small>${esc(walkerShort(cur.name))}</small></button>`;
     }else{
-      h+=`<button class="wslot empty" data-slot="${slot}" onclick="walkerTap('${slot}')"><b>${slot}</b><small>Vacío</small></button>`;
+      h+=`<button class="${cls} empty" data-slot="${slot}" onclick="walkerTap('${slot}')"><b>${slot}</b><small>Vacío</small></button>`;
     }
   });
+
+  if(isSearchActive && matchCount===0){
+    h=`<div style="grid-column:1/-1;text-align:center;padding:30px 16px;color:var(--err);font-style:italic;font-size:15px">
+      No se encontraron coincidencias para "<b>${esc(currentWalkerSearch)}</b>"
+      <div style="font-size:13px;color:var(--muted);margin-top:8px">Verifica el nombre o intenta con menos letras</div>
+    </div>`;
+  }
+
   $('walkGrid').innerHTML=h;
-  $('walkCount').textContent=`${Object.keys(wk).length}/${WALKER_SLOTS.length} ocupados`;
+  $('walkCount').textContent = isSearchActive
+    ? `${matchCount} de ${totalOcc} · buscando "${currentWalkerSearch}"`
+    : `${totalOcc}/${WALKER_SLOTS.length} ocupados`;
 }
 function searchWalker(q){
-  currentWalkerSearch=q;
-  applyWalkerFilter(q);
-}
-function applyWalkerFilter(q){
-  const norm=(q||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  const isActive=norm.length>=2;
-  
-  // Limpiar overlays viejos del croquis
-  document.querySelectorAll('.search-overlay').forEach(el=>el.remove());
-  
-  // Limpiar clases
-  document.querySelectorAll('.wslot,.cslot').forEach(el=>{
-    el.classList.remove('found','dimmed-search','hidden-search');
-  });
-  
-  if(!isActive) return;
-  
-  // Buscar coincidencias
-  const matches=[];
-  WALKER_SLOTS.forEach(slot=>{
-    const cur=W_DATA&&W_DATA[slot];
-    if(cur&&cur.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(norm)){
-      matches.push(slot);
-    }
-  });
-  
-  if(!matches.length) return;
-  
-  // En el GRID: ocultar los que no coinciden
-  document.querySelectorAll('.wslot').forEach(el=>{
-    const slot=el.dataset.slot;
-    if(matches.includes(slot)) el.classList.add('found');
-    else el.classList.add('hidden-search');
-  });
-  
-  // En el CROQUIS: atenuar los que no coinciden, resaltar los que sí
-  const croquisEl=$('walkCroquis');
-  document.querySelectorAll('.cslot').forEach(el=>{
-    const slot=el.dataset.slot;
-    if(matches.includes(slot)) el.classList.add('found');
-    else el.classList.add('dimmed-search');
-  });
-  
-  // Agregar círculo rojo pulsante sobre cada coincidencia en el croquis
-  matches.forEach(slot=>{
-    const g=cqGeo(slot);
-    const circle=document.createElementNS('http://www.w3.org/2000/svg','circle');
-    circle.setAttribute('cx',g.x.toFixed(1));
-    circle.setAttribute('cy',g.y.toFixed(1));
-    circle.setAttribute('r','30');
-    circle.setAttribute('fill','none');
-    circle.setAttribute('stroke','#d11');
-    circle.setAttribute('stroke-width','5');
-    circle.setAttribute('stroke-dasharray','8 4');
-    circle.classList.add('search-overlay');
-    
-    const anim1=document.createElementNS('http://www.w3.org/2000/svg','animate');
-    anim1.setAttribute('attributeName','r');
-    anim1.setAttribute('values','24;42;24');
-    anim1.setAttribute('dur','1.2s');
-    anim1.setAttribute('repeatCount','indefinite');
-    circle.appendChild(anim1);
-    
-    const anim2=document.createElementNS('http://www.w3.org/2000/svg','animate');
-    anim2.setAttribute('attributeName','opacity');
-    anim2.setAttribute('values','1;0.3;1');
-    anim2.setAttribute('dur','1.2s');
-    anim2.setAttribute('repeatCount','indefinite');
-    circle.appendChild(anim2);
-    
-    croquisEl.appendChild(circle);
-  });
-  
-  // Auto-scroll en el grid al primer resultado
-  setTimeout(()=>{
-    const firstEl=document.querySelector(`.wslot[data-slot="${matches[0]}"]`);
-    if(firstEl) firstEl.scrollIntoView({behavior:'smooth',block:'center'});
-  },50);
+  currentWalkerSearch=q||'';
+  drawWalkGrid();
+  drawCroquis();
 }
 function walkerTap(slot){
   const cur=W_DATA&&W_DATA[slot],last=W_LAST&&W_LAST[slot];
