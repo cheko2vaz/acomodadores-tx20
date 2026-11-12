@@ -3,1187 +3,966 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Acomodadores · La Feria, TX</title>
+<title>Acomodadores · La Feria TX</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 :root{
   --primary:#5a1212;--primary-dark:#3d0c0c;--accent:#b8860b;
   --bg:#f9f5e9;--card:#fff;--card-alt:#f0e8d4;
-  --text:#1a1a1a;--text-muted:#6b5d4f;--border:#d4c9b0;
-  --ok:#4a6b3a;--ok-bg:#edf4e8;--err:#a8251c;--err-bg:#fbeae9;
-  --warn:#c28a1c;--warn-bg:#fdf8e8;
-  --red:#5a1212;--red2:#7a1e1e;--ink:#1a1a1a;--mut:#6b5d4f;--line:#d4c9b0;
-  --blue:#3d5a80;--org:#c28a1c;--purple:#5a1212;--spill:#b8860b;--spillP:#c28a1c;--spillD:#4a6b3a;--gray:#999;
+  --text:#1a1a1a;--muted:#6b5d4f;--border:#d4c9b0;
+  --ok:#2e7d32;--ok-bg:#e8f5e9;--err:#c62828;--err-bg:#fbeaea;
+  --warn:#e68a00;--warn-bg:#fff8e1;
 }
 [hidden]{display:none!important}*{box-sizing:border-box}
-body{margin:0;font:16px/1.5 'Noto Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text)}
-body.big{zoom:1.15}
-header{background:var(--primary);color:#fff;padding:12px 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-header h1{font-size:17px;margin:0;flex:1;min-width:180px;font-weight:600}
+body{margin:0;font:16px/1.5 'Noto Sans',system-ui,sans-serif;background:var(--bg);color:var(--text)}
+header{background:var(--primary);color:#fff;padding:12px 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+header h1{font-size:17px;margin:0;flex:1;min-width:160px;font-weight:700}
 .net{font-size:12px;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.18)}
-.net.on::before{content:"● ";color:#9fd49f}.net.off{background:#fff;color:var(--err);font-weight:700}.net.loc{background:#fff;color:#6b5d4f}
-button{font:inherit;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:6px;padding:10px 14px;cursor:pointer;font-weight:600;transition:background .15s;font-family:inherit}
-button:hover{background:var(--card-alt)}
-button.pri{background:var(--primary);color:#fff;border-color:var(--primary)}button.pri:hover{background:var(--primary-dark)}
-button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
-button.on{background:var(--text);color:#fff;border-color:var(--text)}
-button.warn{background:var(--err);color:#fff;border-color:var(--err)}
-header button{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.3)}
-header button:hover{background:rgba(255,255,255,.25)}
+.net.on::before{content:"● ";color:#9fd49f}.net.off{background:#fff;color:var(--err);font-weight:700}
+.hbtn{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.3);padding:8px 14px;border-radius:6px;font:inherit;font-weight:600;cursor:pointer;font-size:14px}
+.hbtn:hover{background:rgba(255,255,255,.28)}
 main{max-width:1100px;margin:auto;padding:12px;display:grid;gap:12px}
 .card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-#alert{border:2px solid var(--err);color:var(--err);font-weight:600;background:#fff}
-#mapw{overflow:auto;padding:0;-webkit-overflow-scrolling:touch;border:2px solid var(--primary);border-radius:8px;position:relative}
-svg.map-svg{width:100%;height:auto;display:block;transition:width 0.2s}
-#toast-container{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none}
-.toast{background:var(--ok);color:#fff;padding:14px 22px;border-radius:6px;font-weight:700;box-shadow:0 4px 16px rgba(0,0,0,.3);opacity:0;transition:opacity .3s,transform .3s;transform:translateY(20px);max-width:340px;font-size:15px}
-.toast.err{background:var(--err)}.toast.show{opacity:1;transform:translateY(0)}
-.pc{cursor:pointer}.pc text{font:700 15px 'Noto Sans',sans-serif;fill:#fff;pointer-events:none}
-@keyframes bl{50%{opacity:.15}}.pulse{fill:none;stroke:var(--err);stroke-width:8;animation:bl 1s infinite}@media(prefers-reduced-motion:reduce){.pulse{animation:none;opacity:.6}}
-.tag{font-size:13px;padding:3px 9px;border-radius:99px;color:#fff;font-weight:700}.tag.b{background:var(--blue)}.tag.o{background:var(--org)}.tag.p{background:var(--purple)}.tag.g{background:var(--gray)}
-.mut{color:var(--text-muted)}h3{margin:0 0 6px;font-size:18px;color:var(--primary)}
-.who{background:var(--card-alt);border-left:4px solid var(--primary);padding:10px 12px;margin:10px 0;border-radius:0 6px 6px 0}
-a{color:var(--primary);font-weight:600}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
-.t{border:1px solid var(--border);border-radius:6px;padding:10px;text-align:center;background:#fff;cursor:pointer}.t b{font-size:26px;display:block;color:var(--primary)}
-.bar{height:8px;background:#e0d8c4;border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--primary);transition:width .3s}
-.sg{padding:10px 0;border-top:1px solid var(--border)}
-#login{position:fixed;inset:0;background:rgba(90,18,18,.95);display:grid;place-items:center;z-index:20;padding:12px;overflow:auto}
-#login .card{max-width:440px;width:100%;display:grid;gap:12px;background:var(--bg)}
-select,input{font:inherit;padding:11px;border:1px solid var(--border);border-radius:6px;width:100%;background:#fff;color:var(--text);font-family:inherit}
-select:focus,input:focus{outline:2px solid var(--accent);border-color:var(--accent)}
-.lg{display:flex;gap:14px;font-size:13px;flex-wrap:wrap}.lg i{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:4px;vertical-align:-2px}
-.sec{fill:transparent;cursor:pointer}.sec.hl{fill:rgba(90,18,18,.25);stroke:var(--err);stroke-width:3;stroke-dasharray:8 4}.sec.edit{stroke:var(--err);stroke-width:1.5;stroke-dasharray:5 3;fill:transparent}
-.vertex{cursor:grab}.vertex:hover{r:9;stroke-width:3}.vertex:active{cursor:grabbing}
-.vadd{cursor:pointer;opacity:.5}.vadd:hover{opacity:1}
-.vlabel{cursor:grab}.vlabel:hover rect{stroke-width:3}
-.t.hl{border:2px solid var(--primary);background:#faeaea}.dim{opacity:.4}
-.capin{width:70px;padding:6px;font-size:15px;text-align:center;border:1px solid var(--border);border-radius:4px}
-.histbox{background:#f0e8d4;border-left:4px solid var(--primary);padding:10px 12px;margin:10px 0;font-size:14px;border-radius:0 6px 6px 0}
-.vbtn{display:inline-block;margin:4px;padding:10px 12px;border:1px solid var(--ok);background:var(--ok-bg);color:var(--ok);border-radius:6px;cursor:pointer;font-size:14px;text-align:left;font-weight:600}.vbtn:hover{background:var(--ok);color:#fff}
-.rules{background:var(--warn-bg);border:1px solid #f0d090;color:#8a5a00;padding:10px 12px;border-radius:6px;font-size:14px;margin:10px 0;line-height:1.6}
-details summary{cursor:pointer;color:var(--text-muted);font-size:14px;margin-top:10px}
-.spill{cursor:pointer}
-.spill-panel{background:#fff;border:2px solid var(--accent);border-radius:8px;padding:14px;margin:8px 0}
-.spill-counter{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 8px;text-align:center}.spill-counter b{display:block;font-size:32px;line-height:1}.spill-counter small{font-size:12px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-.spill-item{background:#fff;border:1px solid var(--border);border-left:4px solid var(--spill);border-radius:6px;padding:12px;margin:8px 0;font-size:14px}
-.spill-item.proc{border-left-color:var(--spillP);background:var(--warn-bg)}
-.spill-item.done{border-left-color:var(--spillD);background:var(--ok-bg);opacity:.75}
-
-#walkersView{max-width:1100px;margin:12px auto;padding:12px}
-#mapbox{overflow:hidden;border:2px solid var(--primary);border-radius:8px;background:#f0f0f0;height:65vh;touch-action:none;position:relative}
-#walkSvg{display:block;width:100%;height:100%;cursor:grab;touch-action:none}
-#walkSvg:active{cursor:grabbing}
-.slot{cursor:pointer}.slot rect{fill:#e0e0e0;stroke:#999;stroke-width:.8;transition:fill .2s}
-.slot.occ rect{fill:var(--ok);stroke:#2e4a24}
-.slot text{font:700 5px 'Noto Sans',sans-serif;fill:#555;pointer-events:none}
-.slot.occ text{fill:#fff}
-.cal label{display:block;font-size:14px;margin-top:8px}.cal input{width:100%}
-.stats{display:flex;gap:10px;font-weight:700;flex-wrap:wrap}.stats span{flex:1;min-width:90px;text-align:center;padding:10px;border-radius:6px;background:var(--card-alt)}
-
-.wslot{padding:12px 6px;font-size:13px;border-radius:6px;display:flex;flex-direction:column;align-items:center;gap:2px;border:2px solid var(--border);background:#fff;cursor:pointer;transition:all .15s;min-width:0}
-.wslot:hover{border-color:var(--accent)}
-.wslot.occ{background:var(--ok-bg);border-color:var(--ok)}
-.wslot b{font-size:15px;color:var(--text);font-weight:700;line-height:1.2}
-.wslot small{font-size:11px;color:var(--text-muted);text-align:center;line-height:1.2;word-break:break-word;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.wslot.occ small{color:var(--ok);font-weight:600}
-.wslot.found{box-shadow:0 0 0 3px var(--accent);animation:bl 1.5s infinite}
-
-#adminMenuBtn{background:rgba(255,255,255,.2)!important}
-#adminMenu{position:fixed;top:60px;right:10px;background:#fff;border:2px solid var(--primary);border-radius:8px;padding:10px;z-index:100;box-shadow:0 4px 16px rgba(0,0,0,.3);display:flex;flex-direction:column;gap:8px;min-width:200px}
-#adminMenu button{text-align:left;justify-content:flex-start}
+.card h2{margin:0 0 12px;font-size:16px;color:var(--primary);font-weight:700}
+button{font:inherit;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:6px;padding:9px 14px;cursor:pointer;font-weight:600;transition:background .15s}
+button:hover{background:var(--card-alt)}
+button.pri{background:var(--primary);color:#fff;border-color:var(--primary)}
+button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
+button.warn{background:var(--err);color:#fff;border-color:var(--err)}
+button.sub{background:var(--warn);color:#fff;border-color:var(--warn)}
+input,select{font:inherit;padding:10px;border:1px solid var(--border);border-radius:6px;width:100%;background:#fff;color:var(--text)}
+input:focus,select:focus{outline:2px solid var(--accent);border-color:var(--accent)}
+/* Login */
+#loginScreen{position:fixed;inset:0;background:rgba(90,18,18,.97);display:grid;place-items:center;z-index:100;padding:12px;overflow-y:auto}
+#loginBox{background:var(--bg);border-radius:10px;padding:24px;width:100%;max-width:420px;display:grid;gap:12px}
+#loginBox h2{margin:0;color:var(--primary);font-size:20px;text-align:center;font-weight:700}
+#loginBox p{margin:0;color:var(--muted);font-size:13px;text-align:center}
+.login-section{border-top:1px solid var(--border);padding-top:12px;margin-top:4px}
+.login-section b{font-size:12px;color:var(--muted);display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+/* Tabs */
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{flex:1;min-width:90px;padding:11px 8px;font-size:14px}
+.tabs button.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+/* Stats */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.stat-box{background:var(--card-alt);border-radius:8px;padding:14px;text-align:center;border:2px solid transparent}
+.stat-box b{display:block;font-size:28px;line-height:1;margin-bottom:4px;font-weight:700}
+.stat-box small{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.stat-box.ok{border-color:#a5d6a7}.stat-box.ok b{color:var(--ok)}
+.stat-box.warn b{color:var(--warn)}.stat-box.err b{color:var(--err)}
+/* Cap sections */
+.cap-section{margin-bottom:16px}
+.cap-header{color:#fff;padding:10px 14px;border-radius:6px 6px 0 0;font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px}
+.cap-header span{font-size:12px;opacity:.85;font-weight:400}
+.pos-row{background:#fff;border:1px solid var(--border);border-top:none;padding:12px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pos-row:last-child{border-radius:0 0 6px 6px}
+.pos-row.my-pos{background:#fffde7;border-left:4px solid var(--accent)}
+.pos-num{width:34px;height:34px;border-radius:50%;background:var(--primary);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pos-num.orange{background:var(--warn)}
+.pos-info{flex:1;min-width:140px}
+.pos-name{font-weight:700;font-size:15px}
+.pos-desc{font-size:12px;color:var(--muted);margin-top:2px}
+.badge{font-size:12px;padding:4px 10px;border-radius:99px;font-weight:700}
+.badge.present{background:var(--ok-bg);color:var(--ok);border:1px solid #a5d6a7}
+.badge.absent{background:var(--err-bg);color:var(--err);border:1px solid #ef9a9a}
+.badge.sub{background:var(--warn-bg);color:var(--warn);border:1px solid #ffcc80}
+.badge.pending{background:var(--card-alt);color:var(--muted);border:1px solid var(--border)}
+.pos-row .actions{display:flex;gap:6px;flex-wrap:wrap}
+.pos-row .actions button{padding:7px 12px;font-size:13px}
+/* QR Camera */
+#reader{width:100%;max-width:480px;margin:auto;border-radius:10px;overflow:hidden;background:#000}
+.result{border-radius:8px;padding:22px;text-align:center;margin:10px 0;border:3px solid}
+.result.green{background:var(--ok-bg);border-color:var(--ok)}
+.result.red{background:var(--err-bg);border-color:var(--err)}
+.result h2{margin:0 0 8px;font-size:19px;font-weight:700;text-transform:uppercase}
+.result.green h2{color:var(--ok)}.result.red h2{color:var(--err)}
+.result .rname{font-size:22px;font-weight:700;margin:10px 0 4px}
+.result .rrole{font-size:14px;color:var(--muted)}
+.result .rreason{font-size:15px;color:var(--err);font-weight:600;margin-top:8px}
+.result .rhint{font-size:13px;color:var(--muted);font-style:italic;margin-top:10px}
+/* Conteo */
+.count-area{background:var(--card-alt);border-radius:8px;padding:16px;text-align:center;margin-bottom:12px}
+.count-area .cnum{font-size:52px;font-weight:700;color:var(--primary);line-height:1;display:block}
+.count-area small{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px}
+/* Spill */
+.spill-row{border:1px solid var(--border);border-left:4px solid var(--err);border-radius:6px;padding:12px;margin-bottom:7px;background:#fff}
+.spill-row.inprogress{border-left-color:var(--warn);background:var(--warn-bg)}
+.spill-row.done{border-left-color:var(--ok);background:var(--ok-bg);opacity:.85}
+/* Rep search */
+.rep-item{padding:10px 12px;border:1px solid var(--border);border-radius:6px;cursor:pointer;margin-bottom:5px;display:flex;justify-content:space-between;align-items:center}
+.rep-item:hover{background:var(--card-alt)}
+/* Modal */
 #modal{position:fixed;inset:0;background:rgba(26,15,10,.85);display:grid;place-items:center;padding:14px;z-index:9999}
 #modal[hidden]{display:none}
-#modal .box{background:var(--bg);border-radius:10px;padding:22px;width:100%;max-width:480px;display:grid;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.5);max-height:90vh;overflow-y:auto}
-#modal h2{margin:0;color:var(--primary);font-size:19px;font-weight:700}
-
-#floatScan{position:fixed;bottom:20px;right:20px;width:76px;height:76px;border-radius:50%;background:var(--primary);color:#fff;border:none;box-shadow:0 6px 24px rgba(90,18,18,.5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;z-index:95;cursor:pointer;padding:0;animation:floatPulse 2.5s ease-in-out infinite}
-@keyframes floatPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-#floatScan:hover{background:var(--primary-dark);animation:none;transform:scale(1.1)}
-#floatScan svg{width:26px;height:26px}
-
-#quickActions{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border-radius:8px;padding:16px}
-#quickActions .title{font-size:12px;text-transform:uppercase;letter-spacing:1px;opacity:.85;margin-bottom:10px;font-weight:700}
-#quickActions .qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-#quickActions .qa-btn{padding:16px;background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.3);font-weight:700;font-size:15px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;border-radius:8px;font-family:inherit}
-#quickActions .qa-btn:hover{background:rgba(255,255,255,.25)}
-#quickActions .qa-btn svg{width:28px;height:28px}
-
-#mapControls{display:flex;gap:6px;padding:10px;background:var(--card-alt);border-bottom:1px solid var(--border);align-items:center;flex-wrap:wrap}
-#mapControls button{padding:8px 14px;font-size:13px}
-#mapControls .spacer{flex:1}
-.list-filters{display:flex;gap:6px;flex-wrap:wrap;padding:10px;border-bottom:1px solid var(--border);background:var(--card-alt)}
-.list-filters button{padding:8px 12px;font-size:13px;border-radius:6px}
-.list-filters button.on{background:var(--primary);color:#fff;border-color:var(--primary)}
-.list-table{width:100%;border-collapse:collapse;font-size:14px}
-.list-table th{background:var(--card-alt);padding:10px 8px;text-align:left;font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--border);font-weight:700}
-.list-table td{padding:10px 8px;border-bottom:1px solid var(--border);vertical-align:middle}
-.list-table tr:hover td{background:var(--card-alt);cursor:pointer}
-.list-table .pos{font-weight:700;color:var(--primary);width:50px}
-.list-table .tarea{font-size:13px;color:var(--text-muted)}
-.list-table .estado{font-weight:600;font-size:13px;white-space:nowrap}
-#listContainer{max-height:520px;overflow-y:auto}
-.plan-row{display:flex;align-items:center;gap:8px;padding:10px;border:1px solid var(--border);border-radius:6px;margin-bottom:6px;background:#fff;flex-wrap:wrap}
-.plan-row .tname{flex:1;font-weight:600;font-size:14px;min-width:140px}
-.plan-row .asig{font-size:13px;color:var(--text-muted)}
-.plan-row.active{border-color:var(--ok);background:var(--ok-bg)}
+#modal .box{background:var(--bg);border-radius:10px;padding:22px;width:100%;max-width:460px;display:grid;gap:12px;box-shadow:0 20px 50px rgba(0,0,0,.5);max-height:90vh;overflow-y:auto}
+#modal h2{margin:0;color:var(--primary);font-size:18px;font-weight:700}
+.modal-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.modal-btns button{flex:1}
+/* Toast */
+.toast-wrap{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:var(--ok);color:#fff;padding:13px 20px;border-radius:6px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;font-size:14px;max-width:340px;text-align:center}
+.toast.err{background:var(--err)}.toast.show{opacity:1}
+/* Notice */
+.notice{background:var(--warn-bg);border-left:4px solid var(--warn);padding:10px 14px;border-radius:6px;font-size:13px;line-height:1.6;margin-bottom:10px}
+/* Inside list */
+.inside-row{border:1px solid var(--border);border-left:4px solid var(--ok);border-radius:6px;padding:10px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;background:#fff}
+.inside-row.long{border-left-color:var(--warn);background:var(--warn-bg)}
 </style>
 </head>
 <body>
-<div id="toast-container"></div>
+<div class="toast-wrap" id="toastWrap"></div>
 <div id="modal" hidden><div class="box" id="modalBox"></div></div>
 
-<button id="floatScan" onclick="window.open('acceso.html','_blank')" hidden title="Escanear QR">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-  <span>Escanear</span>
-</button>
+<!-- ===== LOGIN ===== -->
+<div id="loginScreen">
+  <div id="loginBox">
+    <h2>Dept. de Acomodadores</h2>
+    <p>Asamblea de Circuito · La Feria, TX</p>
 
-<header>
-  <h1 id="appTitle">Acomodadores · La Feria, TX</h1>
-  <span id="net" class="net"></span>
-  <span id="usr"></span>
-  <button onclick="window.open('acceso.html','_blank')" title="Control de Acceso" style="padding:8px 10px">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-  </button>
-  <button id="btn-mode-toggle" onclick="toggleAppMode()" hidden>Vista Voluntaria</button>
-  <button onclick="toggleBigText()" title="Aumentar texto" style="padding:8px 12px;font-weight:700">A+</button>
-  <button onclick="window.open('dashboard.html','_blank')" style="background:var(--ok);border-color:var(--ok)" id="btnPanelDash" hidden>Panel</button>
-  <button id="adminMenuBtn" onclick="toggleAdminMenu()" hidden>Admin</button>
-  <button id="out" onclick="logout()" hidden>Salir</button>
-</header>
+    <!-- Staff login -->
+    <div class="login-section">
+      <b>Personal del Departamento</b>
+      <select id="staffSel" style="margin-bottom:8px" onchange="onStaffChange()">
+        <option value="">Selecciona tu nombre...</option>
+        <optgroup label="Superintendencia">
+          <option value="sergio">Sergio E. Vazquez Jr. — Superintendente</option>
+        </optgroup>
+        <optgroup label="Auxiliares">
+          <option value="jaime">Jaime Palestina — Aux. Entradas</option>
+          <option value="steven">Steven Snyder — Aux. Asientos</option>
+          <option value="abdiel">Abdiel Juarez Jr. — Hombre Clave</option>
+        </optgroup>
+        <optgroup label="Otros">
+          <option value="carlos_v">Carlos Vasquez — Limpieza</option>
+        </optgroup>
+      </select>
+      <input type="password" id="staffPass" placeholder="Contraseña" style="margin-bottom:8px" onkeydown="if(event.key==='Enter')loginStaff()">
+      <button class="pri" style="width:100%" onclick="loginStaff()">Entrar</button>
+    </div>
 
-<div id="adminMenu" hidden>
-  <button class="${edit?'on':''}" onclick="edit=!edit;spillMode=false;draw();toggleAdminMenu()">Mover Posiciones</button>
-  <button class="${secEditMode?'on':''}" onclick="secEditMode=!secEditMode;spillMode=false;hl=null;draw();toggleAdminMenu()">Editar Zonas</button>
-  <button onclick="reset();toggleAdminMenu()" class="warn">Reiniciar Día</button>
+    <!-- Regular acomodador search -->
+    <div class="login-section">
+      <b>Acomodadores — busca tu nombre</b>
+      <input id="brotherSearch" placeholder="Escribe tu nombre..." oninput="searchBrother(this.value)" autocomplete="off" style="margin-bottom:6px">
+      <div id="brotherResults"></div>
+    </div>
+
+    <div id="loginErr" style="color:var(--err);font-weight:600;font-size:14px;min-height:16px;text-align:center"></div>
+  </div>
 </div>
 
-<div id="login"><div class="card">
-  <h2 style="margin:0;color:var(--primary);font-size:20px">Dept. de Acomodadores</h2>
-  <b style="font-size:14px">Soy acomodador</b>
-  <input id="us" placeholder="Escribe tu nombre para buscarlo" autocomplete="off">
-  <div id="res"></div>
-  <button id="goU" class="pri" onclick="enterU()" hidden></button>
-  <hr style="width:100%;border:0;border-top:1px solid var(--border)">
-  <b style="font-size:14px">Administración</b>
-  <select id="ad"></select>
-  <input id="pw" type="password" placeholder="Contraseña" autocomplete="off" onkeydown="if(event.key==='Enter')enterA()">
-  <button class="pri" onclick="enterA()">Entrar</button>
-  <span id="err" style="color:var(--err);font-weight:600"></span>
-  <hr style="width:100%;border:0;border-top:1px solid var(--border)">
-  <button onclick="enterVoluntaria()" style="width:100%;padding:14px;font-size:16px;background:var(--primary);color:#fff;border-color:var(--primary);font-weight:700">Soy Voluntaria</button>
-</div></div>
+<!-- ===== APP ===== -->
+<div id="app" hidden>
+  <header>
+    <h1>Acomodadores · La Feria TX</h1>
+    <span id="net" class="net"></span>
+    <span id="whoLabel" style="font-size:12px;background:rgba(255,255,255,.18);padding:3px 10px;border-radius:99px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+    <button class="hbtn" id="btnWalkers" hidden onclick="window.open('walkers.html','_blank')">♿ Walkers</button>
+    <button class="hbtn" id="btnDash" hidden onclick="window.open('dashboard.html','_blank')">📊 Panel</button>
+    <button class="hbtn" onclick="doLogout()">Salir</button>
+  </header>
 
-<main id="app" hidden>
-  <div id="quickActions" hidden>
-    <div class="title">Acciones rápidas</div>
-    <div class="qa-grid">
-      <button class="qa-btn" onclick="window.open('acceso.html','_blank')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-        Escanear QR
-      </button>
-      <button class="qa-btn" onclick="toggleSpillMode()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6m0 12v-6m-8-4h6m12 0h-6"></path><circle cx="12" cy="12" r="3"></circle></svg>
-        Reportar Derrame
-      </button>
-    </div>
-  </div>
+  <main>
+    <div class="card" id="statsCard" hidden><div class="stats-grid" id="statsGrid"></div></div>
 
-  <div id="mine" class="card" hidden></div>
-  <div id="alert" class="card" hidden></div>
-  <div id="spillPanel" hidden></div>
-  <div id="bar" class="card row"></div>
+    <div class="card" style="padding:10px"><div class="tabs" id="mainTabs"></div></div>
 
-  <div class="card" id="mapw" style="padding:0">
-    <div id="mapControls">
-      <button id="btnMapView" class="on" onclick="setMapView('map')">Mapa</button>
-      <button id="btnListView" onclick="setMapView('list')">Lista</button>
-      <div class="spacer"></div>
-      <button onclick="zoomMain(-0.2)" style="padding:6px 14px;font-weight:700;font-size:16px">−</button>
-      <button onclick="zoomMain(0.2)" style="padding:6px 14px;font-weight:700;font-size:16px">+</button>
+    <!-- Tab: Posiciones completas (sergio only) -->
+    <div id="tabPositions" hidden>
+      <div class="card" style="padding:10px 16px">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <span style="font-size:14px;color:var(--muted);font-weight:600">Ver:</span>
+          <button onclick="filterPos('all')" id="fAll" class="on" style="padding:6px 12px;font-size:13px">Todos</button>
+          <button onclick="filterPos('absent')" id="fAbsent" style="padding:6px 12px;font-size:13px;color:var(--err);border-color:var(--err)">Sin confirmar</button>
+          <button onclick="filterPos('present')" id="fPresent" style="padding:6px 12px;font-size:13px;color:var(--ok);border-color:var(--ok)">Presentes</button>
+        </div>
+      </div>
+      <div id="positionsList"></div>
     </div>
-    <div id="mapContainer">
-      <svg id="svg" viewBox="0 0 1310 926" class="map-svg"><image id="mi" width="1310" height="926" href="map.jpg" preserveAspectRatio="none"/><g id="sl"></g><g id="vl"></g><g id="pl"></g><g id="spl"></g></svg>
-    </div>
-    <div id="listContainer" hidden></div>
-  </div>
 
-  <div class="lg card" id="legend"></div>
-  <div class="card" id="panel"></div>
-  <div class="card" id="cntCard"><h3>Conteo por sección</h3><div id="expEd" class="row" hidden><label for="exp">Esperados</label><input id="exp" type="number" min="1" style="width:110px"><button class="pri" onclick="const v=+$('exp').value;if(v>0)put('expect',v)">Guardar</button></div><div id="cnt"></div></div>
-  <div class="card" id="bench" hidden></div>
-</main>
+    <!-- Tab: Mis Capitanes (jaime / steven / abdiel) -->
+    <div id="tabMisCaps" hidden>
+      <div class="card" style="padding:10px 16px">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <span style="font-size:14px;color:var(--muted);font-weight:600">Ver:</span>
+          <button onclick="filterPos('all')" id="fAll2" class="on" style="padding:6px 12px;font-size:13px">Todos</button>
+          <button onclick="filterPos('absent')" id="fAbsent2" style="padding:6px 12px;font-size:13px;color:var(--err);border-color:var(--err)">Sin confirmar</button>
+          <button onclick="filterPos('present')" id="fPresent2" style="padding:6px 12px;font-size:13px;color:var(--ok);border-color:var(--ok)">Presentes</button>
+        </div>
+      </div>
+      <div id="misCapsPositions"></div>
+    </div>
 
-<div id="walkersView" hidden><div class="card">
-  <div class="row" style="justify-content:space-between">
-    <button onclick="closeWalkers()" class="pri">Volver</button>
-    <span id="walkCount" style="font-weight:700;color:var(--primary)"></span>
-  </div>
-  <div id="walkerHelper" hidden style="background:var(--ok-bg);border-left:4px solid var(--ok);padding:12px;border-radius:6px;margin:12px 0;font-size:15px;line-height:1.5">
-    <b>¿Necesitas ayuda con tu walker?</b><br>
-    Habla con <b>Damian Fernandez</b> · Congregación Los Cedros
-  </div>
-  <div class="row" style="justify-content:space-between;margin-top:14px">
-    <h2 style="margin:0;color:var(--primary);font-size:20px">Estacionamiento Walkers y Sillas</h2>
-    <div>
-      <button id="btnVaciarWalk" onclick="resetWalkers()" class="warn" style="padding:8px 14px;font-size:13px" hidden>Vaciar</button>
-      <button id="btnCalib" hidden onclick="toggleCalib()" style="background:var(--text);color:#fff;border:none;font-size:16px;padding:8px 12px">Ajustar</button>
+    <!-- Tab: Mi Posición (acomodador regular) -->
+    <div id="tabMiPos" hidden>
+      <div id="myPositionCard"></div>
     </div>
-  </div>
-  <div id="calibMenu" class="cal card" hidden style="background:var(--card-alt);border-color:var(--border);margin-top:12px">
-    <b style="color:var(--primary)">Ajustes de Administrador</b>
-    <div class="row" style="margin-top:8px;margin-bottom:8px">
-      <button onclick="saveWalkCam()" class="ok" style="flex:1">Guardar Vista</button>
-      <button onclick="resetWalkCam()" class="warn" style="flex:1">Resetear Vista</button>
-    </div>
-    <label>Mover cuadrícula izq/der <input type="range" id="cDx" min="-100" max="100" step="1"></label>
-    <label>Mover cuadrícula arr/abj <input type="range" id="cDy" min="-100" max="100" step="1"></label>
-    <label>Distancia a la pared <input type="range" id="cOff" min="2" max="50" step="1"></label>
-    <label>Largo de la cuadrícula <input type="range" id="cLen" min="50" max="150" step="1"></label>
-  </div>
-  <div class="row" style="margin-top:15px">
-    <button id="tabMap" class="on" onclick="setWalkTab('map')">Mapa</button>
-    <button id="tabList" onclick="setWalkTab('list')">Lista</button>
-  </div>
-  <input id="walkerSearch" placeholder="Buscar hermano por nombre..." oninput="searchWalker(this.value)" style="margin-top:12px;font-size:16px;padding:12px">
-  <div id="walkSearchRes" style="font-weight:700;color:var(--ok);margin-top:6px;min-height:20px"></div>
-  <div id="walkMapBox" style="margin-top:10px">
-    <div id="mapbox">
-      <svg id="walkSvg" viewBox="440 250 240 330">
-        <image id="mi2" href="map.jpg" x="0" y="0" width="1310" height="926" preserveAspectRatio="none"/>
-        <path id="curve" fill="none" stroke="var(--primary)" stroke-width="2" stroke-dasharray="4 3" opacity=".8"/>
-        <g id="slots"></g><g id="mk"></g>
-      </svg>
-    </div>
-    <div class="lg" style="margin-top:8px">
-      <span><i style="background:#e0e0e0;border:1px solid #999"></i>Libre</span>
-      <span><i style="background:var(--ok)"></i>Con walker</span>
-      <span style="color:var(--text-muted);font-size:12px">Usa 1 dedo para mover, 2 dedos para zoom</span>
-    </div>
-  </div>
-  <div id="walkListView" hidden style="margin-top:10px"></div>
-</div></div>
 
-<div id="volPanel" hidden style="max-width:900px;margin:12px auto"><div class="card">
-  <h2 style="margin-top:0;color:var(--primary)">Portal de Voluntarias</h2>
-  <input type="text" id="volSearch" placeholder="Buscar mi nombre para ver mi posición..." style="padding:15px;font-size:17px;margin-bottom:15px;border:2px solid var(--primary)" oninput="buscarVoluntaria(this.value)">
-  <div id="volResults" style="text-align:left;margin-top:10px"></div>
-  <button onclick="openWalkers('vol')" style="width:100%;padding:14px;font-size:16px;background:var(--primary);color:#fff;border-color:var(--primary);font-weight:700;margin-top:15px">Estacionamiento de Walkers y Sillas</button>
-  <button onclick="logout()" class="warn" style="width:100%;padding:16px;font-size:17px;margin-top:20px;border-radius:8px">Cerrar Sesión</button>
-</div></div>
+    <!-- Tab: Conteo (eliud / jimmy / abdiel) -->
+    <div id="tabConteo" hidden>
+      <div class="card">
+        <h2>Conteo de Asistentes — <span id="conteoAreaLabel"></span></h2>
+        <div class="count-area">
+          <span class="cnum" id="countDisplay">0</span>
+          <small>personas contadas ahora</small>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin-bottom:16px">
+          <input type="number" id="newCountInput" placeholder="Nuevo número" style="width:120px;text-align:center;font-size:20px;font-weight:700;padding:10px">
+          <button class="pri" onclick="saveCount()">Guardar Conteo</button>
+        </div>
+        <h2 style="margin-top:0">Historial</h2>
+        <div id="conteoHistory"></div>
+      </div>
+    </div>
 
-<div id="volMapView" hidden style="max-width:900px;margin:12px auto">
-  <div class="card">
-    <div class="row" style="justify-content:space-between;margin-bottom:12px">
-      <button onclick="closeVolMap()" class="pri">Volver</button>
-      <span id="volMapTitle" style="font-weight:700;color:var(--primary);font-size:18px"></span>
+    <!-- Tab: Cámara QR -->
+    <div id="tabQR" hidden>
+      <div class="card">
+        <h2>Escáner QR · Detrás de Plataforma</h2>
+        <div id="reader"></div>
+        <div id="qrResult"></div>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="pri" onclick="startCamera()">▶ Iniciar cámara</button>
+          <button onclick="stopCamera()">⏹ Detener</button>
+          <button onclick="manualQRSearch()">🔍 Buscar nombre</button>
+        </div>
+        <div style="margin-top:14px">
+          <h2>Dentro ahora</h2>
+          <div id="insideListQR"></div>
+        </div>
+      </div>
     </div>
-    <div class="card" style="overflow:auto;padding:0;border:2px solid var(--primary)">
-      <svg id="volMapSvg" viewBox="0 0 1310 926" class="map-svg">
-        <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
-        <g id="volMapPl"></g>
-      </svg>
+
+    <!-- Tab: Derrames -->
+    <div id="tabDerrames" hidden>
+      <div class="card" id="spillReportCard">
+        <h2>Reportar Derrame</h2>
+        <div style="display:grid;gap:10px">
+          <select id="spillType">
+            <option value="">Tipo de derrame...</option>
+            <option>Agua</option><option>Refresco</option><option>Café</option>
+            <option>Otro líquido</option><option>Basura</option>
+          </select>
+          <input id="spillLocation" placeholder="Ubicación (ej: Pasillo norte, sección 3)">
+          <button class="pri" onclick="reportSpill()">📢 Reportar</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Derrames Activos</h2>
+        <div id="spillsList"></div>
+      </div>
+      <div class="card" id="spillHistCard" hidden>
+        <h2>Historial de Hoy</h2>
+        <div id="spillsHistList"></div>
+      </div>
     </div>
-  </div>
+
+    <!-- Tab: Buscar -->
+    <div id="tabSearch" hidden>
+      <div class="card">
+        <h2>Buscar Hermano / Posición</h2>
+        <input id="searchInput" placeholder="Nombre, posición o número..." oninput="doSearch(this.value)" style="margin-bottom:12px">
+        <div id="searchResults"></div>
+      </div>
+    </div>
+  </main>
 </div>
 
 <script>
-const CFG={DB:"https://voluntariastx20-default-rtdb.firebaseio.com"};
-const TURNOS={"1":{name:"7:45 – 8:45 a.m.",vol:["Ana Sofia Bejerano","Ariane Agustin","Bridyit Perez","Cynthia Paola Gayosso","Elizabeth Snyder","Esther Morales","Geraldine Alison Perez","Jackelin Luna","Jaqueline Echavarria","Karla Garcia","Laura Esmeralda Amador Saucedo","Maria Rosa Garcia Zapata","Mirsa Elizabeth Silva","Nicasia Bravo De Gonzalez","Reyna Jetcél Hernandez Madrid","Sarah Martinez","Sandra Vazquez"]},"2":{name:"8:45 – 9:45 a.m.",vol:["Alicia González","Ana Sofia Bejerano","Bridyit Perez","Cynthia Paola Gayosso","Elizabeth Lopez","Elizabeth Snyder","Geraldine Alison Perez","Jackelin Luna","Jaqueline Echavarria","Karla Garcia","Laura Esmeralda Amador Saucedo","Leticia Fernández","Maria Fernanda Obispo","Maria Rosa Garcia Zapata","María Rosario Vizcarra","Mirsa Elizabeth Silva","Reyna Jetcél Hernandez Madrid","Sandra Vazquez","Sarah Martinez"]},"3":{name:"9:45 – 11:05 a.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Snyder","Geraldine Alison Perez","Irene Avila","Jaqueline Echavarria","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Sara del Carmen Gutierrez","Sarah Martinez"]},"4":{name:"11:05 a.m. – 12:05 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Snyder","Elizabeth Torres","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Mirsa Elizabeth Silva","Nicasia Bravo De Gonzalez"]},"5":{name:"12:05 – 12:40 p.m. (Int 1ra)",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Reyna Jetcél Hernandez Madrid"]},"6":{name:"12:40 – 1:20 p.m. (Int 2da)",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Mirsa Elizabeth Silva"]},"7":{name:"1:20 – 3:30 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Torres","Geraldine Alison Perez","Gloria (Gigi) Mastropole","Gloria Palmira Mastropole","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Nicasia Bravo De Gonzalez","Susana Zuñiga"]},"8":{name:"3:30 – 4:15 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Jaqueline Echavarria","Laura Esmeralda Amador Saucedo","Leticia Fernández","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Reyna Jetcél Hernandez Madrid","Sarah Martinez"]}};
-const VOL_SECTIONS=[{id:"vest-norte",label:"Vestíbulo Norte",pos:[101,102,103,104,105],color:"#5a1212",labelX:300,labelY:150},{id:"vest-portico",label:"Vestíbulo Pórtico",pos:[106,107,108,109],color:"#3d5a80",labelX:255,labelY:350},{id:"vest-sur",label:"Vestíbulo Sur",pos:[110,111,112,113,114],color:"#4a6b3a",labelX:300,labelY:550},{id:"aud-sur",label:"Auditorio Sur",pos:[115,116],color:"#c28a1c",labelX:780,labelY:680},{id:"aud-contra",label:"Auditorio Contrapared",pos:[117,118],color:"#a8251c",labelX:780,labelY:460},{id:"aud-norte",label:"Auditorio Norte",pos:[119,120],color:"#2c6e6e",labelX:780,labelY:260}];
-const VOL_POS_COORDS={101:{x:120,y:170},102:{x:210,y:170},103:{x:300,y:170},104:{x:390,y:170},105:{x:480,y:170},106:{x:120,y:370},107:{x:210,y:370},108:{x:300,y:370},109:{x:390,y:370},110:{x:120,y:570},111:{x:210,y:570},112:{x:300,y:570},113:{x:390,y:570},114:{x:480,y:570},115:{x:730,y:700},116:{x:830,y:700},117:{x:730,y:480},118:{x:830,y:480},119:{x:730,y:280},120:{x:830,y:280}};
-const WALKER_SLOTS=[];const LETTERS="ABCDEFGHIJKLMNOPQRST".split("");for(let row=1;row<=3;row++){for(const L of LETTERS){WALKER_SLOTS.push(L+row)}}
-const D={"caps":["Eliud Luna","Hugo Galvan","Jimmy Vasquez","José A. González","Raúl Quintero"],"sec":{"A2":"809,127 805,144 796,144 786,152 778,152 777,147 772,147 769,141 766,147 759,150 758,156 753,157 752,162 742,166 736,180 722,191 715,200 715,206 705,213 693,238 688,240 682,261 673,269 667,293 674,293 676,299 685,297 686,300 703,300 704,312 709,309 725,311 729,318 748,320 749,324 759,324 761,328 780,330 781,334 798,337 799,354 827,354 828,351 845,351 843,337 849,324 856,316 860,303 872,302 879,294 881,278 906,253 921,252 916,243 916,226 910,224 910,232 903,235 890,234 890,225 895,224 898,218 892,217 891,209 884,207 884,201 878,198 878,192 872,189 871,182 864,180 864,174 858,172 858,166 851,164 851,157 845,155 845,149 834,148 834,135 831,135 832,147 822,147 815,143 815,128 828,127","A3":"833,375 798,368 785,359 764,357 763,352 756,352 755,349 744,349 742,346 733,346 730,342 713,339 712,324 684,324 683,330 676,330 663,383 659,450 664,503 674,543 680,544 680,561 684,561 685,557 700,558 701,546 707,545 711,538 720,539 723,535 731,535 733,531 743,531 745,527 774,521 776,514 796,514 797,511 808,510 809,505 826,505 836,500 827,494 821,446 828,442 827,433 821,430 822,409 827,384 835,380","A4":"844,524 826,529 793,529 793,538 782,541 779,546 770,546 725,562 708,563 705,560 702,570 695,570 694,574 681,576 669,584 676,604 684,614 690,634 700,637 700,650 710,665 714,659 723,660 727,671 727,679 723,682 734,692 743,708 751,716 755,716 756,720 760,720 762,728 770,730 771,734 783,731 784,727 793,727 799,733 820,729 821,749 849,748 851,713 857,712 858,705 864,703 864,696 871,694 872,687 877,687 884,669 891,668 888,662 889,649 904,650 905,642 911,641 911,634 919,631 922,618 940,618 921,617 920,602 929,601 930,608 939,608 944,603 954,601 931,597 929,600 921,600 920,589 925,585 954,586 909,570 880,548 895,571 920,597 920,622 906,622 896,612 892,615 876,613 875,601 881,600 880,585 874,576 864,576 848,553 843,540","B2":"948,292 921,301 887,322 878,330 865,359 876,360 879,365 897,367 900,371 909,371 910,375 912,372 921,372 922,377 931,377 933,382 936,382 937,376 951,375 952,384 941,387 941,393 936,395 936,404 932,406 957,422 965,417 960,413 960,405 964,404 964,393 973,376 991,356 992,351 1007,351 1007,334 976,330 975,321 970,320 970,313 964,312 963,304 957,304 956,296","B3":"857,384 848,435 850,463 858,495 862,495 863,491 871,491 872,488 891,485 895,480 914,479 916,474 924,474 947,460 949,454 957,453 955,421 931,406 916,403 914,399 882,392 871,385","B4":"1004,522 986,520 984,512 966,486 962,490 942,489 940,496 931,496 929,500 922,500 921,504 910,502 908,508 898,507 897,510 865,517 876,543 887,554 921,575 953,585 957,582 958,575 964,571 964,565 971,563 971,555 976,547 984,545 985,539 1003,538","B1":"935,239 1022,346 1064,322 1063,250 1030,239 999,234 965,234","A1":"865,151 934,238 965,233 999,233 1030,238 1063,249 1060,139 879,139","B5":"1060,545 1023,532 1014,532 954,608 954,618 946,620 931,640 963,646 1001,646 1027,642 1061,631","A5":"1061,632 1039,640 1001,647 963,647 930,641 876,712 877,747 1060,751"},
-"roster":[
-{"n":"Alfonso Hernández","c":"Boca Chica","p":"A"},{"n":"Eliu de la Garza","c":"Boca Chica","p":"P"},{"n":"Isaias Martinez","c":"Boca Chica","p":"P"},{"n":"Juan F Garza","c":"Boca Chica","p":"P"},{"n":"Martin Davila","c":"Boca Chica","p":"P"},{"n":"Rey Castillo","c":"Boca Chica","p":"S"},{"n":"Roberto Quiroga","c":"Boca Chica","p":"S"},{"n":"Norberto Cardenas","c":"Central","p":"S"},{"n":"Felipe Ortiz","c":"El Jardin Heights","p":"P"},{"n":"Francisco Montoya","c":"El Jardin Heights","p":"P"},{"n":"Juan Salinas","c":"El Jardin Heights","p":"S"},{"n":"Reynaldo Perez","c":"El Jardin Heights","p":"A"},{"n":"Roberto Borjas","c":"El Jardin Heights","p":"A"},{"n":"Servando Sustaita","c":"El Jardin Heights","p":"P"},{"n":"Carlos Leonardo Salas Zuñiga","c":"Galaxia","p":"P"},{"n":"Celestino Chavez","c":"Galaxia","p":"S"},{"n":"Gustavo Saucedo","c":"Galaxia","p":"P"},{"n":"Jose Duran","c":"Galaxia","p":"P"},{"n":"Luis Duran","c":"Galaxia","p":"P"},{"n":"Otilio Ramirez","c":"Galaxia","p":"P"},{"n":"Orlando Benavidez","c":"Galaxia","p":"A"},{"n":"Adrián Mota Arcos","c":"Laguna Vista","p":"P"},{"n":"José A. González","c":"Laguna Vista","p":"S"},{"n":"Jose González Jr","c":"Laguna Vista","p":"S"},{"n":"Vianney Morales López","c":"Laguna Vista","p":"P"},{"n":"Valente Alejandro","c":"Laguna Vista","p":"P"},{"n":"Hugo Galvan","c":"Laguna Vista","p":"A"},{"n":"Luis Barberena","c":"Laguna Vista","p":"S"},{"n":"Alex Vazquez","c":"Los Cedros","p":"S"},{"n":"Eliud Luna","c":"Los Cedros","p":"S"},{"n":"Jimmy Vasquez","c":"Los Cedros","p":"A"},{"n":"Guadalupe De La Cruz","c":"Los Cedros","p":"S"},{"n":"Javier Borjas","c":"North","p":"A"},{"n":"Abisai Muniz","c":"North","p":"S"},{"n":"Carlos Martínez","c":"North","p":"S"},{"n":"Oziel Rodriguez","c":"North","p":"P"},{"n":"Josue Campos","c":"Paraiso","p":"S"},{"n":"Ricardo Altamirano","c":"Paraiso","p":"S"},{"n":"Eulogio Montelongo","c":"Paraiso","p":"S"},{"n":"Alfredo Garza","c":"Paraiso","p":"P"},{"n":"Jamin Muñiz","c":"Sunrise","p":"P"},{"n":"Raúl Quintero","c":"Sunrise","p":"S"},{"n":"Gonzalo Mejia Sr.","c":"Sunrise","p":"P"},{"n":"Macario Martinez","c":"Sunrise","p":"A"},
-{"n":"Alfredo Jiménez","c":"Central","p":"S"},{"n":"Jose Luis Camarillo Rangel","c":"Los Cedros","p":"S"},{"n":"Luis Rodolfo Lerma","c":"Los Cedros","p":"S"},{"n":"Osiel Agustin","c":"Laguna Vista","p":"P"},
-{"n":"Tony Duran","c":"Boca Chica","p":"P"},
-{"n":"Osiel Ramirez","c":"Galaxia","p":"P"},
-{"n":"Jose Gonzalez Sr.","c":"Laguna Vista","p":"A"},
-{"n":"Abdiel Juarez Jr.","c":"Sunrise","p":"S"},
-{"n":"Damian Fernandez","c":"Los Cedros","p":"P"},
-{"n":"Alexia Ramirez","c":"Voluntaria","p":"P"},{"n":"Alicia González","c":"Voluntaria","p":"P"},{"n":"Ana Sofia Bejerano","c":"Voluntaria","p":"P"},{"n":"Ariane Agustin","c":"Voluntaria","p":"P"},{"n":"Bridyit Perez","c":"Voluntaria","p":"P"},{"n":"Cynthia Paola Gayosso","c":"Voluntaria","p":"P"},{"n":"Elizabeth Lopez","c":"Voluntaria","p":"P"},{"n":"Elizabeth Snyder","c":"Voluntaria","p":"P"},{"n":"Elizabeth Torres","c":"Voluntaria","p":"P"},{"n":"Esther Morales","c":"Voluntaria","p":"P"},{"n":"Geraldine Alison Perez","c":"Voluntaria","p":"P"},{"n":"Gloria (Gigi) Mastropole","c":"Voluntaria","p":"P"},{"n":"Gloria Palmira Mastropole","c":"Voluntaria","p":"P"},{"n":"Irene Avila","c":"Voluntaria","p":"P"},{"n":"Jackelin Luna","c":"Voluntaria","p":"P"},{"n":"Jaqueline Echavarria","c":"Voluntaria","p":"P"},{"n":"Karla Garcia","c":"Voluntaria","p":"P"},{"n":"Laura Esmeralda Amador Saucedo","c":"Voluntaria","p":"P"},{"n":"Maria avila","c":"Voluntaria","p":"P"},{"n":"Maria Fernanda Obispo","c":"Voluntaria","p":"P"},{"n":"Maria Gayosso","c":"Voluntaria","p":"P"},{"n":"Maria Rosa Garcia Zapata","c":"Voluntaria","p":"P"},{"n":"María Rosario Vizcarra","c":"Voluntaria","p":"P"},{"n":"Mirsa Elizabeth Silva","c":"Voluntaria","p":"P"},{"n":"Nicasia Bravo De Gonzalez","c":"Voluntaria","p":"P"},{"n":"Reyna Jetcél Hernandez Madrid","c":"Voluntaria","p":"P"},{"n":"Sara del Carmen Gutierrez","c":"Voluntaria","p":"P"},{"n":"Sarah Martinez","c":"Voluntaria","p":"P"},{"n":"Sandra Vazquez","c":"Voluntaria","p":"P"},{"n":"Susana Zuñiga","c":"Voluntaria","p":"P"},{"n":"Leticia Fernández","c":"Voluntaria","p":"P"}],
-"pos":{"1":{"who":"Luis Barberena","t":"Alarma Multiusos","x":1172,"y":220,"l":1,"a":"alm"},"2":{"who":"Guadalupe De La Cruz","t":"Salida emergencia","x":1172,"y":404,"l":1,"a":"alm"},"3":{"who":"Macario Martinez","t":"Detras plataforma","x":1100,"y":432,"l":1,"a":"ctl"},"4":{"who":"Celestino Chavez","t":"Escaleras plat.","x":1172,"y":490,"l":1,"a":"ctl"},"5":{"who":"Valente Alejandro","t":"Entrada sur plataforma","x":1172,"y":660,"l":1,"a":"alm"},"6":{"who":"Norberto Cardenas","t":"Alarma Sur","x":1073,"y":775,"l":1,"a":"alm"},"7":{"who":"Alfonso Hernández","t":"Puerta Principal","x":1073,"y":657,"l":1,"a":"ent"},"8":{"who":"Osiel Agustin","t":"Alternando","x":1073,"y":553,"l":1,"a":"ctl"},"9":{"who":"Alfredo Jiménez","t":"Alternando","x":993,"y":527,"l":1,"a":"ctl"},"10":{"who":"Gustavo Saucedo","t":"Escenario","x":981,"y":438,"l":1,"a":"ctl"},"11":{"who":"Josue Campos","t":"Frente NE","x":994,"y":341,"l":1,"a":"ctl"},"12":{"who":"Rey Castillo","t":"Frente Norte","x":1073,"y":336,"l":1,"a":"ctl"},"13":{"who":"Jose González Jr","t":"Puerta Secundaria","x":1073,"y":238,"l":1,"a":"ent"},"14":{"who":"Carlos Leonardo Salas Zuñiga","t":"Alarma Norte","x":1073,"y":141,"l":1,"a":"alm"},"15":{"who":"Vianney Morales López","t":"Alarma Audio","x":693,"y":141,"l":1,"a":"alm"},"16":{"who":"Ricardo Altamirano","t":"Alarma","x":612,"y":347,"l":1,"a":"ent"},"17":{"who":"Luis Duran","t":"Alarma","x":612,"y":548,"l":1,"a":"ent"},"18":{"who":"Jamin Muñiz","t":"Alarma Sur","x":693,"y":775,"l":1,"a":"alm"},"19":{"who":"Adrián Mota Arcos","t":"Entrada Sur","x":551,"y":577,"l":1,"a":"ent"},"20":{"who":"Francisco Montoya","t":"Entrada Sur","x":463,"y":577,"l":1,"a":"ent"},"21":{"who":"Roberto Quiroga","t":"Portico","x":211,"y":473,"l":1,"a":"ent"},"22":{"who":"Eulogio Montelongo","t":"Portico/Alberca","x":428,"y":604,"l":1,"a":"ent"},"23":{"who":"Tony Duran","t":"Entrada Norte","x":463,"y":320,"l":1,"a":"ent"},"24":{"who":"Abisai Muniz","t":"Entrada Norte","x":551,"y":318,"l":1,"a":"ent"},"25":{"who":"Gonzalo Mejia Sr.","t":"Auditorio","x":818,"y":153,"l":0,"a":"aud"},"26":{"who":"Carlos Martínez","t":"Auditorio","x":697,"y":340,"l":0,"a":"aud"},"27":{"who":"Felipe Ortiz","t":"Auditorio","x":690,"y":548,"l":0,"a":"aud"},"28":{"who":"Juan Salinas","t":"Auditorio","x":833,"y":735,"l":0,"a":"aud"},"29":{"who":"Javier Borjas","t":"Auditorio","x":807,"y":544,"l":0,"a":"aud"},"30":{"who":"Martin Davila","t":"Auditorio","x":813,"y":342,"l":0,"a":"aud"},"31":{"who":"Juan F Garza","t":"Auditorio","x":902,"y":239,"l":0,"a":"aud"},"32":{"who":"Isaias Martinez","t":"Auditorio","x":947,"y":388,"l":0,"a":"aud"},"33":{"who":"Alex Vazquez","t":"Auditorio","x":941,"y":462,"l":0,"a":"aud"},"34":{"who":"Alfredo Garza","t":"Auditorio","x":936,"y":601,"l":0,"a":"aud"},"35":{"who":"","t":"Entrada vestíbulo","x":146,"y":456,"l":0,"a":"ent"}},
-"runners":["Eliu de la Garza","Reynaldo Perez","Roberto Borjas","Servando Sustaita","Jose Duran","Otilio Ramirez","Orlando Benavidez","Oziel Rodriguez","Jose Luis Camarillo Rangel"],
-"cap":{"A1":0,"A2":464,"A3":475,"A4":464,"A5":0,"B1":0,"B2":158,"B3":156,"B4":158,"B5":0},"expect":2474};
-for(const k in VOL_POS_COORDS){D.pos[k]={who:"",t:"Voluntaria "+k,x:VOL_POS_COORDS[k].x,y:VOL_POS_COORDS[k].y,l:0,a:"vol",v:1}}
-const ADM=[
-  {"n":"Sergio E. Vazquez Jr.","pwd":"acomodadores2026","all":1,"cnt":1,"adm":1,"areas":[]},
-  {"n":"Alberto Herrera","pwd":"seccion@","all":1,"cnt":1,"adm":1,"areas":[]},
-  {"n":"Steven Snyder","pwd":"auxiliar2026","areas":["ctl","aud"],"adm":1},
-  {"n":"Jaime Palestina","pwd":"superaux2026","areas":["alm","ent"],"adm":1},
-  {"n":"Abdiel Juarez Jr.","pwd":"clave2026","areas":["aud"],"cnt":1,"adm":1},
-  {"n":"José A. González","pwd":"capitan2026","areas":["vol"],"adm":1},
-  {"n":"Carlos Vasquez","pwd":"limpieza2026","spillOnly":1,"spill":1,"areas":[]},
-  {"n":"Damian Fernandez","pwd":"damian2026","walkers":1,"spill":1,"limited":1,"adm":1,"areas":[]}
+const DB = "https://voluntariastx20-default-rtdb.firebaseio.com";
+const APP_SECRET = "asam-laf-2026-secret-v1";
+const ZONE = "detras";
+
+// ── STAFF USERS ───────────────────────────────────────────────
+// role definitions:
+//   super   = Sergio: everything
+//   jaime   = Aux. Entradas: cap1 + cap2 positions + derrames + QR
+//   steven  = Aux. Asientos: cap5 + cap6 positions + derrames + QR
+//   abdiel  = Hombre Clave: cap6 positions + conteo auditorio + derrames + QR
+//   eliud   = Cap. 6: conteo auditorio only
+//   jimmy   = Cap. 4: conteo plataforma only + QR
+//   limpieza = Carlos Vasquez: derrames only (read + manage)
+const STAFF = {
+  sergio:   { name:"Sergio E. Vazquez Jr.", pass:"acomodadores2026", role:"super"    },
+  jaime:    { name:"Jaime Palestina",       pass:"superauxiliar2026",role:"jaime"    },
+  steven:   { name:"Steven Snyder",         pass:"auxiliar2026",     role:"steven"   },
+  abdiel:   { name:"Abdiel Juarez Jr.",     pass:"clave2026",        role:"abdiel"   },
+  carlos_v: { name:"Carlos Vasquez",        pass:"limpieza2026",     role:"limpieza" },
+};
+
+// Role → tabs
+const ROLE_TABS = {
+  super:    ['positions','search','derrames','qr'],
+  jaime:    ['miscaps','derrames','qr'],
+  steven:   ['miscaps','derrames','qr'],
+  abdiel:   ['miscaps','conteo','derrames','qr'],
+  eliud:    ['conteo'],
+  jimmy:    ['conteo','qr'],
+  limpieza: ['derrames'],
+  acom:     ['mipos','derrames','qr'],
+  count:    ['mipos','conteo'],
+};
+
+const TAB_META = {
+  positions: { label:'📋 Todas las Posiciones', el:'tabPositions' },
+  miscaps:   { label:'📋 Mis Capitanes',         el:'tabMisCaps'  },
+  mipos:     { label:'📍 Mi Posición',           el:'tabMiPos'    },
+  conteo:    { label:'🔢 Conteo',                el:'tabConteo'   },
+  derrames:  { label:'🧹 Derrames',              el:'tabDerrames' },
+  qr:        { label:'📷 Cámara QR',             el:'tabQR'       },
+  search:    { label:'🔍 Buscar',                el:'tabSearch'   },
+};
+
+// ── CAPTAINS ──────────────────────────────────────────────────
+const CAPITANES = [
+  { id:"cap1", name:"Hugo Galvan",        label:"Capitán 1 — Alarmas / Detrás de Plataforma",           color:"#5a1212" },
+  { id:"cap2", name:"Raul Quintero",      label:"Capitán 2 — Entradas / Salidas / Vestíbulo",            color:"#7a1a1a" },
+  { id:"cap3", name:"Jose Gonzalez Sr.",  label:"Capitán 3 — Mayores y Discapacitados",                  color:"#4a6b3a" },
+  { id:"cap4", name:"Jimmy Vasquez",      label:"Capitán 4 — Control de Acceso a la Plataforma",         color:"#3d5a80" },
+  { id:"cap5", name:"Javier Borjas",      label:"Capitán 5 — Área Reservada / Bautismo",                 color:"#8a4000" },
+  { id:"cap6", name:"Eliud Luna",         label:"Capitán 6 — Auditorio (H.Clave: Abdiel Juarez Jr.)",    color:"#1a4a1a" },
 ];
 
-const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const POS=Object.keys(D.pos).map(Number),SEC=[1,2,3,4,5].flatMap(i=>[['A',i,'Anillo 2'],['B',i,'Anillo 1']].map(([r,i,l])=>({id:r+i,l:l+' · Sección '+i})));
-const PRIV={A:'Anciano',S:'Siervo Ministerial',P:'Publicador bautizado'};
-let iv=null,me=null,hl=null,sel=null,edit=false,drag=null,dragV=null,dragL=null,S={},isVolunteerMode=false,mapView='acom',secEditMode=false,currentTurno=1,spillMode=false;
-let walkerReturn='app', volQuery='';
-let walkTab='map';
-let currentView='map'; window.listFilter='all';
-let cam = { x: 440, y: 250, w: 240, h: 330 };
-try { Object.assign(cam, JSON.parse(localStorage.wcam || '{}')); } catch(e) {}
-let touchState={mode:null,startDist:0,startScale:1,startX:0,startY:0,lastX:0,lastY:0,cx:0,cy:0};
-let mainZoom = 1;
-let panelLocked = false; // FIX: bloquea re-render del panel mientras hay un select activo
-
-const LET="ABCDEFGHIJKLMNOPQRST".split("");
-const W_P0=[580,304],W_PC=[556,423],W_P2=[581,542];
-let W_DATA={},W_HIST={},W_CAL={dx:0,dy:0,off:9,len:100},W_Flash=null;
-try{Object.assign(W_CAL,JSON.parse(localStorage.wcal||'{}'))}catch(e){}
-const wShort=n=>{const p=n.trim().split(/\s+/);return p.length>1?p[0]+' '+p[1][0]+'.':p[0]};
-
-const sectionOf=pos=>VOL_SECTIONS.find(s=>s.pos.includes(+pos))||{label:"Extra",color:"#888"};
-const labelPos=sec=>{const l=S.labels&&S.labels[sec.id];return l?{x:l.x,y:l.y}:{x:sec.labelX,y:sec.labelY}};
-const P=n=>{const d=D.pos[n];const base=Object.assign({},d,(S.pos||{})[n]);if(d.v===1){const who=(S.volTurnos&&S.volTurnos[currentTurno]&&S.volTurnos[currentTurno][n])||"";return Object.assign({},base,{who})}return base};
-const coordsOf=pos=>{const d=D.pos[pos];const s=(S.pos||{})[pos]||{};return{x:s.x!==undefined?s.x:d.x,y:s.y!==undefined?s.y:d.y}};
-const eff=n=>{const p=P(n);return p.sub||p.who||''},ppl=n=>D.roster.find(r=>r.n===n);
-const isPosActive=n=>{const p=S.pos&&S.pos[n];return p?p.active!==false:true};
-const isLimited = () => me && me.limited && !me.all;
-const isSpillOnly = () => me && me.spillOnly && !me.all;
-const canEd=n=>{if(!me||!me.adm)return false;if(me.all)return true;const area=D.pos[n].a;return(me.areas||[]).includes(area)};
-const canCnt=()=>me&&(me.cnt||(!me.adm&&S.cntOpen&&(me.n==='Eliud Luna'||POS.some(n=>n>=25&&n<=34&&eff(n)===me.n))));
-const occ=()=>new Set(POS.flatMap(n=>[P(n).who,P(n).sub]).filter(Boolean));
-const watch=n=>{
-  if(!me) return false;
-  if(me.all) return true;
-  if(me.adm) return (me.areas||[]).includes(D.pos[n].a);
-  return eff(n)===me.n;
+// Role → which caps they manage
+const ROLE_CAPS = {
+  super:  ["cap1","cap2","cap3","cap4","cap5","cap6"],
+  jaime:  ["cap1","cap2"],
+  steven: ["cap5","cap6"],
+  abdiel: ["cap6"],
 };
-const vacant=n=>watch(n)&&isPosActive(n)&&!D.pos[n].v&&(D.pos[n].l?S.arm!==false:S.arm2===true)&&!['ok','sub'].includes(P(n).st);
 
-function showModal(title, bodyHtml, buttons) {
-  $('modalBox').innerHTML = `<h2>${esc(title)}</h2><div>${bodyHtml}</div><div class="row" style="margin-top:14px" id="mdlBtns"></div>`;
-  const btnContainer = $('mdlBtns');
-  buttons.forEach(b => {
-    const btn = document.createElement('button');
-    btn.textContent = b.text;
-    btn.className = b.class || '';
-    btn.style.flex = '1';
-    btn.onclick = () => { if (b.action) b.action(); if (!b.keepOpen) $('modal').hidden = true; };
-    btnContainer.appendChild(btn);
-  });
-  $('modal').hidden = false;
+// ── POSITIONS ─────────────────────────────────────────────────
+const POSITIONS = [
+  // Cap 1 — Hugo Galvan — bajo Jaime Palestina
+  { id:1,  cap:"cap1", name:"Luis Barberena",      desc:"Alarma Incendios · Cuarto Multiusos",                     type:"always" },
+  { id:2,  cap:"cap1", name:"Guadalupe De La Cruz",desc:"Salida emergencia plataforma",                            type:"always" },
+  { id:5,  cap:"cap1", name:"Valente Alejandro",   desc:"Entrada principal lado sur plataforma",                   type:"always" },
+  { id:6,  cap:"cap1", name:"Norberto Cardenas",   desc:"Alarma incendios lado sur plataforma · Evac. secc.6",     type:"always" },
+  { id:14, cap:"cap1", name:"Carlos Salas",         desc:"Alarma incendios lado norte plataforma · Evac. secc.1",  type:"always" },
+  { id:15, cap:"cap1", name:"Vianney Morales",      desc:"Alarma incendios lado norte Audio · Evac. secc.2",       type:"always" },
+  { id:18, cap:"cap1", name:"Jamin Muñiz",          desc:"Alarma incendios lado sur Instalación · Evac. secc.5",   type:"always" },
+  // Cap 2 — Raul Quintero — bajo Jaime Palestina
+  { id:7,  cap:"cap2", name:"Alfonso Hernandez",   desc:"Puerta Acceso Principal Plataforma",                     type:"always" },
+  { id:13, cap:"cap2", name:"Jose Gonzalez Jr",    desc:"Puerta Acceso Secundaria Plataforma",                    type:"always" },
+  { id:16, cap:"cap2", name:"Ricardo Altamirano",  desc:"Alarma de Incendios",                                    type:"always" },
+  { id:17, cap:"cap2", name:"Luis Duran",           desc:"Alarma de Incendios",                                    type:"always" },
+  { id:19, cap:"cap2", name:"Adrian Mota",          desc:"Entrada Lado Sur",                                       type:"always" },
+  { id:20, cap:"cap2", name:"Francisco Montoya",    desc:"Entrada Lado Sur",                                       type:"always" },
+  { id:21, cap:"cap2", name:"Roberto Quiroga",      desc:"Pórtico",                                                type:"always" },
+  { id:22, cap:"cap2", name:"Eulogio Montelongo",   desc:"Pórtico / Alberca",                                      type:"always" },
+  { id:23, cap:"cap2", name:"Tony Duran",            desc:"Entrada Lado Norte · Evac. secc.3",                     type:"always" },
+  { id:24, cap:"cap2", name:"Abisai Muñiz",          desc:"Entrada Lado Norte",                                    type:"always" },
+  { id:"corredor1", cap:"cap2", name:"Orlando Benavidez",   desc:"Corredor — Alterna posiciones · Rep. a Aux. Entradas", type:"special" },
+  { id:"corredor2", cap:"cap2", name:"Jose Luis Camarillo", desc:"Corredor — Alterna posiciones · Rep. a Aux. Entradas", type:"special" },
+  { id:"camaras",   cap:"cap2", name:"Osiel Agustin",        desc:"Cámaras — Alterna posiciones",                           type:"special" },
+  // Cap 4 — Jimmy Vasquez — bajo Sergio (acceso plataforma)
+  { id:3,  cap:"cap4", name:"Macario Martinez",    desc:"Detrás de plataforma",                                   type:"always" },
+  { id:4,  cap:"cap4", name:"Celestino Chavez",    desc:"Detrás de plataforma / Escaleras plataforma",            type:"always" },
+  { id:8,  cap:"cap4", name:"Osiel Ramirez",       desc:"Auditorio · Frente Lado Sur · Alterna c/pos.10 · Evac. Admin",    type:"session" },
+  { id:9,  cap:"cap4", name:"Otilio Ramirez",      desc:"Auditorio · Frente Lado SE · Alterna c/pos.10 · Evac. secc.5,6", type:"session" },
+  { id:10, cap:"cap4", name:"Gustavo Saucedo",     desc:"Frente al Escenario · Alterna c/8-12 · Evac. secc.3,4",          type:"session" },
+  { id:11, cap:"cap4", name:"Josue Campos",        desc:"Auditorio · Frente Lado NE · Alterna c/pos.10 · Evac. secc.1,2", type:"session" },
+  { id:12, cap:"cap4", name:"Rey Castillo",        desc:"Auditorio · Frente Lado Norte · Alterna c/pos.10 · Evac. Multiusos", type:"session" },
+  // Cap 5 — Javier Borjas — bajo Steven Snyder
+  { id:29, cap:"cap5", name:"Javier Borjas",       desc:"Auditorio Asientos · Capitán ruta Bautismo",             type:"session" },
+  { id:33, cap:"cap5", name:"Alex Vazquez",        desc:"Auditorio Asientos · Auxiliar ruta Bautismo",            type:"session" },
+  // Cap 6 — Eliud Luna — bajo Steven Snyder / Abdiel Juarez
+  { id:25, cap:"cap6", name:"Gonzalo Mejia Sr",    desc:"Auditorio — Asientos",                                   type:"session" },
+  { id:26, cap:"cap6", name:"Carlos Martinez",     desc:"Auditorio — Asientos",                                   type:"session" },
+  { id:27, cap:"cap6", name:"Felipe Ortiz",        desc:"Auditorio — Asientos",                                   type:"session" },
+  { id:28, cap:"cap6", name:"Juan Salinas",        desc:"Auditorio — Asientos",                                   type:"session" },
+  { id:30, cap:"cap6", name:"Martin Davila",       desc:"Auditorio — Asientos",                                   type:"session" },
+  { id:31, cap:"cap6", name:"Juan F Garza",        desc:"Auditorio — Asientos",                                   type:"session" },
+  { id:32, cap:"cap6", name:"Isaias Martinez",     desc:"Auditorio — Asientos",                                   type:"session" },
+  { id:34, cap:"cap6", name:"Alfredo Garza",       desc:"Auditorio — Asientos",                                   type:"session" },
+  { id:"alt1", cap:"cap6", name:"Roberto Borjas",   desc:"Alterna posiciones en Auditorio",                       type:"special" },
+  { id:"alt2", cap:"cap6", name:"Reynaldo Perez",   desc:"Alterna posiciones en Auditorio",                       type:"special" },
+  { id:"alt3", cap:"cap6", name:"Eliu De La Garza", desc:"Alterna posiciones en Auditorio",                       type:"special" },
+];
+
+const ALL_BROTHERS = [
+  "Alfonso Hernández","Eliu de la Garza","Isaias Martinez","Juan F Garza","Martin Davila","Rey Castillo",
+  "Roberto Quiroga","Norberto Cardenas","Felipe Ortiz","Francisco Montoya","Juan Salinas","Reynaldo Perez",
+  "Roberto Borjas","Servando Sustaita","Carlos Leonardo Salas Zuñiga","Celestino Chavez","Gustavo Saucedo",
+  "Jose Duran","Luis Duran","Otilio Ramirez","Orlando Benavidez","Adrian Mota","José A. González",
+  "Jose González Jr","Vianney Morales","Valente Alejandro","Hugo Galvan","Luis Barberena",
+  "Alex Vazquez","Eliud Luna","Jimmy Vasquez","Guadalupe De La Cruz","Javier Borjas","Abisai Muniz",
+  "Carlos Martinez","Oziel Rodriguez","Josue Campos","Ricardo Altamirano","Eulogio Montelongo",
+  "Alfredo Garza","Jamin Muñiz","Raúl Quintero","Gonzalo Mejia Sr.","Macario Martinez",
+  "Tony Duran","Osiel Agustin","Osiel Ramirez","Jose Luis Camarillo","Carlos Salas",
+  "Abdiel Juarez Jr.","Jaime Palestina","Steven Snyder","Sergio E. Vazquez Jr."
+];
+
+// Captains that only get conteo when they search their name (no password needed)
+const COUNT_CAPTAINS = {
+  "Eliud Luna":    "eliud",
+  "Jimmy Vasquez": "jimmy",
+};
+
+const COUNT_AREAS = {
+  eliud:  { id:"auditorio",  label:"Auditorio (Capitán 6)" },
+  jimmy:  { id:"plataforma", label:"Plataforma (Capitán 4)" },
+  abdiel: { id:"auditorio",  label:"Auditorio (Hombre Clave)" },
+};
+
+// ── STATE ─────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+let ME = null, S = {}, ACC = {}, Counts = {}, pollIv = null, posFilter = 'all';
+let scanMode = false, scanner = null, lastScan = "", lastScanTs = 0;
+let currentTab = '';
+
+function esc(s){ return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function net(on){ const e=$('net'); e.textContent=on?'En línea':'Sin conexión'; e.className='net '+(on?'on':'off'); }
+async function fb(path){ const r=await fetch(`${DB}/${path}.json?t=${Date.now()}`); return r.json(); }
+async function put(path,val){ await fetch(`${DB}/${path}.json`,{method:'PUT',body:JSON.stringify(val)}); }
+async function del(path){ await fetch(`${DB}/${path}.json`,{method:'DELETE'}); }
+
+// ── LOGIN ─────────────────────────────────────────────────────
+function onStaffChange() {
+  $('loginErr').textContent = '';
+  $('staffPass').value = '';
 }
 
-// FIX: se llama al final de cada render de panel para bloquear updates
-// mientras el usuario tiene un select enfocado
-function attachPanelFocusLock(){
-  const panel = $('panel');
-  if(!panel) return;
-  panel.querySelectorAll('select, input').forEach(el => {
-    el.addEventListener('focus', () => { panelLocked = true; });
-    el.addEventListener('blur', () => {
-      setTimeout(() => {
-        const active = document.activeElement;
-        if(!panel.contains(active) || (active.tagName !== 'SELECT' && active.tagName !== 'INPUT')){
-          panelLocked = false;
-        }
-      }, 200);
+function searchBrother(q) {
+  if (!q.trim()) { $('brotherResults').innerHTML=''; return; }
+  const ql = q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const matches = ALL_BROTHERS.filter(n =>
+    n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(ql)
+  );
+  $('brotherResults').innerHTML = matches.slice(0,6).map(name => {
+    const isCountCap = name in COUNT_CAPTAINS;
+    const badge = isCountCap
+      ? `<span style="font-size:12px;background:var(--ok-bg);color:var(--ok);border:1px solid #a5d6a7;border-radius:99px;padding:2px 8px;font-weight:700">🔢 Conteo</span>`
+      : `<span style="font-size:12px;color:var(--muted)">📍 Mi Posición</span>`;
+    return `<div onclick="loginAsBrother('${esc(name)}')" style="padding:10px 12px;border:1px solid var(--border);border-radius:6px;cursor:pointer;margin-bottom:4px;background:#fff;display:flex;justify-content:space-between;align-items:center;gap:8px">
+      <span style="font-weight:600">${esc(name)}</span>
+      ${badge}
+    </div>`;
+  }).join('') + (matches.length===0?'<p style="color:var(--muted);font-size:13px;padding:6px 0">No encontrado</p>':'');
+}
+
+function loginAsBrother(name) {
+  const isCountCap = name in COUNT_CAPTAINS;
+  const role = isCountCap ? COUNT_CAPTAINS[name] : 'acom';
+  ME = { name, role };
+  enterApp();
+}
+
+function loginStaff() {
+  const key = $('staffSel').value;
+  const pass = $('staffPass').value;
+  if (!key) { $('loginErr').textContent='Selecciona tu nombre'; return; }
+  const u = STAFF[key];
+  if (!u || u.pass !== pass) { $('loginErr').textContent='Contraseña incorrecta'; return; }
+  ME = { key, name:u.name, role:u.role };
+  enterApp();
+}
+
+function enterApp() {
+  $('loginScreen').hidden = true;
+  $('app').hidden = false;
+  $('whoLabel').textContent = ME.name;
+
+  // Show walkers button for roles that need it
+  if (['super','jaime','steven'].includes(ME.role)) $('btnWalkers').hidden = false;
+  // Show dashboard button only for Sergio
+  if (ME.role === 'super') $('btnDash').hidden = false;
+  // Show stats for admin-level roles
+  if (['super','jaime','steven','abdiel'].includes(ME.role)) $('statsCard').hidden = false;
+  // Limpieza sees full history on derrames
+  if (ME.role === 'limpieza') {
+    $('spillReportCard').hidden = true;
+    $('spillHistCard').hidden = false;
+  }
+
+  buildTabs();
+  loadAll();
+  pollIv = setInterval(loadAll, 6000);
+}
+
+function doLogout() {
+  clearInterval(pollIv);
+  stopCamera();
+  location.reload();
+}
+
+// ── TABS ──────────────────────────────────────────────────────
+function buildTabs() {
+  const tabs = ROLE_TABS[ME.role] || ROLE_TABS.acom;
+  $('mainTabs').innerHTML = tabs.map(t =>
+    `<button data-tab="${t}" onclick="setTab('${t}')">${TAB_META[t].label}</button>`
+  ).join('');
+  setTab(tabs[0]);
+}
+
+function setTab(t) {
+  currentTab = t;
+  document.querySelectorAll('#mainTabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+  Object.values(TAB_META).forEach(m => { const el=$(m.el); if(el) el.hidden=true; });
+  const el = $(TAB_META[t]?.el);
+  if (el) el.hidden = false;
+  renderTab(t);
+}
+
+function renderTab(t) {
+  if (t==='positions') renderPositions(ROLE_CAPS.super);
+  else if (t==='miscaps') renderPositions(ROLE_CAPS[ME.role] || []);
+  else if (t==='mipos') renderMyPosition();
+  else if (t==='conteo') renderConteo();
+  else if (t==='derrames') renderSpills();
+  else if (t==='qr') renderInsideList();
+}
+
+// ── LOAD ──────────────────────────────────────────────────────
+async function loadAll() {
+  try {
+    const [sData, accData, cData] = await Promise.all([fb('s'), fb('access'), fb('counts')]);
+    S = sData || {};
+    ACC = accData || {};
+    Counts = cData || {};
+    net(true);
+    if (!$('statsCard').hidden) renderStats();
+    renderTab(currentTab);
+  } catch(e) { net(false); }
+}
+
+// ── STATS ─────────────────────────────────────────────────────
+function renderStats() {
+  const capFilter = ROLE_CAPS[ME.role] || ROLE_CAPS.super;
+  const myPos = POSITIONS.filter(p => capFilter.includes(p.cap) && p.type !== 'special');
+  const pos = S.pos || {};
+  let present=0, absent=0, sub=0, pending=0;
+  myPos.forEach(p => {
+    const st = (pos[String(p.id)]||{}).status;
+    if (st==='present') present++;
+    else if (st==='absent') absent++;
+    else if (st==='sub') sub++;
+    else pending++;
+  });
+  const spills = Object.values(S.spills||{}).filter(s=>s.status!=='done').length;
+  $('statsGrid').innerHTML = `
+    <div class="stat-box ok"><b>${present}</b><small>Presentes</small></div>
+    <div class="stat-box ${pending+absent>0?'warn':'ok'}"><b>${pending+absent}</b><small>Sin confirmar</small></div>
+    <div class="stat-box ${sub>0?'warn':''}"><b>${sub}</b><small>Con sustituto</small></div>
+    <div class="stat-box ${spills>0?'err':'ok'}"><b>${spills}</b><small>Derrames activos</small></div>
+  `;
+}
+
+// ── POSITIONS ─────────────────────────────────────────────────
+function filterPos(f) {
+  posFilter = f;
+  ['fAll','fAbsent','fPresent','fAll2','fAbsent2','fPresent2'].forEach(id => $(id)?.classList.remove('on'));
+  const map = {all:'fAll',absent:'fAbsent',present:'fPresent'};
+  $(map[f])?.classList.add('on');
+  $('fAll2') && ($(map[f].replace('f','f')+'2') || $((map[f])+'2'))?.classList.add('on');
+  // simpler: just re-render
+  if (currentTab==='positions') renderPositions(ROLE_CAPS.super);
+  else if (currentTab==='miscaps') renderPositions(ROLE_CAPS[ME.role]||[]);
+}
+
+function renderPositions(capFilter) {
+  const pos = S.pos || {};
+  const targetEl = currentTab==='positions' ? $('positionsList') : $('misCapsPositions');
+  let html = '';
+
+  CAPITANES.forEach(cap => {
+    if (!capFilter.includes(cap.id)) return;
+    const capPos = POSITIONS.filter(p => p.cap === cap.id);
+    if (!capPos.length) return;
+    const visible = capPos.filter(p => {
+      const st = (pos[String(p.id)]||{}).status;
+      if (posFilter==='absent') return !st||st==='absent'||st==='pending';
+      if (posFilter==='present') return st==='present'||st==='sub';
+      return true;
     });
+    if (!visible.length) return;
+
+    html += `<div class="cap-section">
+      <div class="cap-header" style="background:${cap.color}">${cap.label}<span>Cap: ${cap.name}</span></div>`;
+    visible.forEach(p => {
+      const st = pos[String(p.id)] || {};
+      const status = st.status || 'pending';
+      html += `<div class="pos-row">
+        <div class="pos-num ${p.type==='session'?'orange':''}">${typeof p.id==='number'?p.id:'—'}</div>
+        <div class="pos-info">
+          <div class="pos-name">${esc(p.name)}</div>
+          <div class="pos-desc">${esc(p.desc)}</div>
+          ${st.subName?`<div style="font-size:12px;color:var(--warn);font-weight:600;margin-top:2px">↔ Sustituto: ${esc(st.subName)}</div>`:''}
+          ${st.updatedBy?`<div style="font-size:11px;color:var(--muted);margin-top:1px">Por: ${esc(st.updatedBy)}</div>`:''}
+        </div>
+        <span class="badge ${status==='present'?'present':status==='sub'?'sub':status==='absent'?'absent':'pending'}">
+          ${status==='present'?'✓ Presente':status==='sub'?'↔ Sustituto':status==='absent'?'✗ Ausente':'— Pendiente'}
+        </span>
+        <div class="actions">
+          <button class="ok" onclick="markStatus('${p.id}','present','${esc(p.name)}')">✓</button>
+          <button class="warn" onclick="markStatus('${p.id}','absent','${esc(p.name)}')">✗</button>
+          <button onclick="openReplace('${p.id}','${esc(p.name)}')">↔ Reemplazo</button>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  });
+
+  if (!html) html = '<div class="card" style="text-align:center;color:var(--muted);padding:30px">No hay posiciones que mostrar con este filtro.</div>';
+  targetEl.innerHTML = html;
+}
+
+async function markStatus(posId, status, name) {
+  await put(`s/pos/${posId}`,{ status, name, updatedAt:Date.now(), updatedBy:ME.name });
+  toast(status==='present'?`✓ ${name} confirmado`:`✗ ${name} marcado ausente`);
+  await loadAll();
+}
+
+function openReplace(posId, posName) {
+  const pos = S.pos || {};
+  const html = `<input placeholder="Filtrar nombre..." oninput="filterRepList(this.value)" style="margin-bottom:10px">
+    <div id="repList" style="max-height:300px;overflow-y:auto">${ALL_BROTHERS.map(name => {
+      const taken = POSITIONS.some(p => {
+        const st = pos[String(p.id)]||{};
+        return (st.subName||'').toLowerCase()===name.toLowerCase() && (st.status==='present'||st.status==='sub');
+      });
+      return `<div class="rep-item" onclick="assignSub('${posId}','${esc(posName)}','${esc(name)}')">
+        <div><b>${esc(name)}</b></div>
+        <span style="font-size:12px;font-weight:700;color:${taken?'var(--warn)':'var(--ok)'}">${taken?'Ya asignado':'Disponible'}</span>
+      </div>`;
+    }).join('')}</div>`;
+  showModal(`Reemplazo: ${posName}`, html, [{text:'Cancelar'}]);
+}
+
+function filterRepList(q) {
+  document.querySelectorAll('.rep-item').forEach(el => {
+    el.style.display = el.textContent.toLowerCase().includes(q.toLowerCase())?'':'none';
   });
 }
 
-function promptWalker(id, name) {
-  if(!name) {
-    showModal(`Espacio ${id}`, `<p>¿Cómo se llama el hermano/a?</p><input id="nm" placeholder="Nombre" autocomplete="off">`, [
-      {text:"Guardar", class:"ok", action: () => {
-        const val = $('nm').value.trim();
-        if(!val) return;
-        const ts=Date.now();
-        W_DATA[id]={name:val,ts}; W_HIST[ts]={slot:id,name:val,act:'in',ts};
-        W_Flash=id; drawWalkers();
-        setTimeout(()=>{W_Flash=null;drawWalkMap()},6000);
-        fetch(`${CFG.DB}/walkersTest/w/${id}.json`,{method:'PUT',body:JSON.stringify({name:val,ts})});
-        fetch(`${CFG.DB}/walkersTest/h/${ts}.json`,{method:'PUT',body:JSON.stringify({slot:id,name:val,act:'in',ts})});
-      }},
-      {text:"Cancelar"}
-    ]);
-  } else {
-    showModal(`Espacio ${id}`, `<p>Estacionado: <b>${esc(name)}</b></p>`, [
-      {text:"Aceptar", class:"pri"},
-      {text:"Retirar", class:"warn", action: () => {
-        delete W_DATA[id]; W_HIST[Date.now()]={slot:id,name:name,act:'out',ts:Date.now()};
-        drawWalkers();
-        fetch(`${CFG.DB}/walkersTest/w/${id}.json`,{method:'DELETE'});
-        fetch(`${CFG.DB}/walkersTest/h/${Date.now()}.json`,{method:'PUT',body:JSON.stringify({slot:id,name:name,act:'out',ts:Date.now()})});
-      }},
-      {text:"Cancelar"}
-    ]);
+async function assignSub(posId, posName, subName) {
+  await put(`s/pos/${posId}`,{ status:'sub', name:posName, subName, updatedAt:Date.now(), updatedBy:ME.name });
+  $('modal').hidden = true;
+  toast(`↔ ${subName} asignado a posición ${posId}`);
+  await loadAll();
+}
+
+// ── MY POSITION ───────────────────────────────────────────────
+function renderMyPosition() {
+  const pos = S.pos || {};
+  const firstName = ME.name.split(' ')[0].toLowerCase();
+  const myPos = POSITIONS.filter(p => p.name.toLowerCase().includes(firstName));
+  if (!myPos.length) {
+    $('myPositionCard').innerHTML=`<div class="card">
+      <h2>Mi Posición</h2>
+      <p style="color:var(--muted)">No se encontró tu posición. Consulta con tu Capitán.</p>
+    </div>`;
+    return;
   }
-}
-
-function promptSpill(x,y) {
-  showModal("Reportar Derrame", `<p>¿Qué se derramó?</p><select id="spillType"><option value="Comida">Comida</option><option value="Bebida">Bebida</option><option value="Otro">Otro</option></select>`, [
-    {text:"Reportar", class:"warn", action: () => {
-      const tipo = $('spillType').value;
-      const id=Date.now();
-      put(`spills/${id}`,{x:Math.round(x),y:Math.round(y),tipo,status:'pendiente',quien:me.n,ts:id});
-      showToast(`Derrame reportado: ${tipo}`);
-      spillMode=false; draw();
-    }},
-    {text:"Cancelar"}
-  ]);
-}
-
-function zoomMain(d) {
-  mainZoom = Math.max(1, Math.min(3, mainZoom + d));
-  $('svg').style.width = (mainZoom*100) + '%';
-}
-
-function toggleAdminMenu() { $('adminMenu').hidden = !$('adminMenu').hidden; }
-
-function setMapView(v){
-  currentView = v;
-  $('mapContainer').hidden = v !== 'map';
-  $('listContainer').hidden = v !== 'list';
-  $('btnMapView').classList.toggle('on', v === 'map');
-  $('btnListView').classList.toggle('on', v === 'list');
-  if(v === 'list') renderList();
-}
-
-function renderList(){
-  const filter = window.listFilter || 'all';
-  let list = POS.filter(watch).filter(n => isPosActive(n));
-  if(filter === 'fijas') list = list.filter(n => D.pos[n].l);
-  else if(filter === 'inter') list = list.filter(n => !D.pos[n].l);
-  else if(filter === 'vol') list = list.filter(n => D.pos[n].v === 1);
-  else if(filter !== 'all') list = list.filter(n => D.pos[n].a === filter);
-
-  const rows = list.map(n => {
-    const p = P(n);
-    const w = eff(n);
-    let st='Sin check-in', stColor='var(--warn)';
-    if(p.st==='ok'){st='Presente';stColor='var(--ok)'}
-    else if(p.st==='sub'){st='Sustituto';stColor='var(--ok)'}
-    else if(p.st==='abs'){st='Ausente';stColor='var(--err)'}
-    const tarea = D.pos[n].v===1 ? sectionOf(n).label : D.pos[n].t;
-    return `<tr onclick="sel=${n};setMapView('map');draw();">
-      <td class="pos">${n}</td>
-      <td class="tarea">${esc(tarea)}</td>
-      <td>${esc(w || '—')}</td>
-      <td class="estado" style="color:${stColor}">${st}</td>
-    </tr>`;
-  }).join('');
-
-  $('listContainer').innerHTML = `
-    <div class="list-filters">
-      <button class="${(!window.listFilter||window.listFilter==='all')?'on':''}" onclick="window.listFilter='all';renderList()">Todas</button>
-      <button class="${window.listFilter==='fijas'?'on':''}" onclick="window.listFilter='fijas';renderList()">Fijas</button>
-      <button class="${window.listFilter==='inter'?'on':''}" onclick="window.listFilter='inter';renderList()">Intermitentes</button>
-      <button class="${window.listFilter==='ctl'?'on':''}" onclick="window.listFilter='ctl';renderList()">Control</button>
-      <button class="${window.listFilter==='alm'?'on':''}" onclick="window.listFilter='alm';renderList()">Alarmas</button>
-      <button class="${window.listFilter==='ent'?'on':''}" onclick="window.listFilter='ent';renderList()">Entradas</button>
-      <button class="${window.listFilter==='aud'?'on':''}" onclick="window.listFilter='aud';renderList()">Auditorio</button>
-      <button class="${window.listFilter==='vol'?'on':''}" onclick="window.listFilter='vol';renderList()">Voluntarias</button>
-    </div>
-    <table class="list-table">
-      <thead><tr><th>Pos</th><th>Tarea</th><th>Asignado</th><th>Estado</th></tr></thead>
-      <tbody>${rows || '<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--text-muted)">No hay posiciones en este filtro</td></tr>'}</tbody>
-    </table>`;
-}
-
-function volHistory(name){const res=[],vt=S.volTurnos||{};for(const t in vt)for(const p in vt[t])if(vt[t][p]===name)res.push({turno:+t,posicion:+p});return res.sort((a,b)=>a.turno-b.turno)}
-function volPosInTurno(name, t){const vt=S.volTurnos||{};return Object.entries(vt[t]||{}).find(([p,n])=>n===name)?.[0]}
-function canAssign(turno,pos,name){const t=+turno,volList=TURNOS[t]?TURNOS[t].vol:[];if(!volList.includes(name))return{ok:false,msg:"No disponible en este turno"};const hist=volHistory(name);if(hist.find(h=>h.turno===t))return{ok:false,msg:"Ya está en este turno"};const sigCount=Object.values(TURNOS).filter(tt=>tt.vol.includes(name)).length;const maxT=Math.min(4,sigCount);if(hist.length>=maxT)return{ok:false,msg:`Máximo ${maxT} turnos`};const consec=hist.find(h=>Math.abs(h.turno-t)===1);if(consec){const ok12=(t===1&&consec.turno===2)||(t===2&&consec.turno===1);if(!ok12)return{ok:false,msg:`Consecutivo con T${consec.turno}`}}if((t===5&&hist.find(h=>h.turno===6))||(t===6&&hist.find(h=>h.turno===5)))return{ok:false,msg:"T5 y T6 excluyentes"};return{ok:true,msg:`OK (${hist.length+1}/${maxT})`}}
-function doAssign(turno,pos,name){const chk=canAssign(turno,pos,name);if(!chk.ok){showToast(`${esc(name)}: ${chk.msg}`,true);return}if(!S.volTurnos)S.volTurnos={};if(!S.volTurnos[turno])S.volTurnos[turno]={};S.volTurnos[turno][pos]=name;put(`volTurnos/${turno}/${pos}`,name);showToast(`${esc(name)} asignada a T${turno}`)}
-function unassignVol(turno,pos){
-  if(!S.volTurnos||!S.volTurnos[turno])return;
-  const name = S.volTurnos[turno][pos];
-  delete S.volTurnos[turno][pos];
-  fetch(U(`volTurnos/${turno}/${pos}`),{method:'DELETE'}).then(()=>load());
-  showToast(`Quitada del T${turno}: ${name||'?'}`);
-  // Refrescar plan completo si está abierto
-  const body = $('modalBox');
-  if(body && body.querySelector('[data-plan-name]')) {
-    const name2 = body.querySelector('[data-plan-name]').dataset.planName;
-    if(name2) openFullPlan(name2);
-  }
-}
-function toggleSpillMode(){spillMode=!spillMode;if(spillMode){secEditMode=false;edit=false}draw()}
-
-// ============ VER PLAN COMPLETO DE UNA VOLUNTARIA ============
-function openFullPlan(name){
-  if(!name) return;
-  const hist = volHistory(name);
-  const disponibleEn = Object.entries(TURNOS).filter(([t,tt])=>tt.vol.includes(name)).map(([t])=>+t);
-  let rows = '';
-  for(let t=1;t<=8;t++){
-    const posAsignado = volPosInTurno(name, t);
-    const disponible = disponibleEn.includes(t);
-    const isActive = posAsignado !== undefined;
-    rows += `<div class="plan-row ${isActive?'active':''}">
-      <div class="tname">T${t} · ${TURNOS[t].name}</div>
-      <div class="asig">${isActive ? `Posición ${posAsignado}` : disponible ? 'Disponible' : 'No disponible'}</div>
-      <div class="row" style="margin-left:auto">
-        ${isActive ? `<button class="warn" style="padding:6px 10px;font-size:12px" onclick="unassignVol(${t},${posAsignado})">Quitar</button>` : ''}
-        ${!isActive && disponible ? `<select onchange="if(this.value)doAssign(${t},this.value,'${esc(name).replace(/'/g,"\\'")}');this.value=''" style="min-width:130px;font-size:13px;padding:6px"><option value="">Asignar a...</option>${[101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120].map(p=>`<option value="${p}">Pos ${p}</option>`).join('')}</select>` : ''}
+  $('myPositionCard').innerHTML = myPos.map(p => {
+    const st = pos[String(p.id)]||{};
+    const status = st.status||'pending';
+    const cap = CAPITANES.find(c=>c.id===p.cap);
+    return `<div class="card" style="border-left:4px solid ${cap?.color||'var(--primary)'}">
+      <h2>Mi Posición — #${typeof p.id==='number'?p.id:'—'}</h2>
+      <div style="font-size:17px;font-weight:700;margin-bottom:4px">${esc(p.name)}</div>
+      <div style="font-size:14px;color:var(--muted);margin-bottom:6px">${esc(p.desc)}</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:12px">Grupo: ${esc(cap?.label||'')}</div>
+      <span class="badge ${status==='present'?'present':status==='sub'?'sub':status==='absent'?'absent':'pending'}" style="font-size:14px;padding:8px 16px">
+        ${status==='present'?'✓ Presente':status==='sub'?'↔ Sustituto asignado':status==='absent'?'✗ Ausente':'— Pendiente confirmación'}
+      </span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+        <button class="ok" onclick="markStatus('${p.id}','present','${esc(p.name)}')">✓ Estoy en mi lugar</button>
+        <button class="warn" onclick="markStatus('${p.id}','absent','${esc(p.name)}')">✗ No puedo estar</button>
       </div>
     </div>`;
-  }
-  const asistio = hist.length;
-  showModal(`Plan de ${name}`,
-    `<div data-plan-name="${esc(name)}" style="font-size:13px;color:var(--text-muted);margin-bottom:8px">Disponible en ${disponibleEn.length} turnos · Asignada en ${asistio} turnos</div>${rows}`,
-    [{text:'Cerrar'}]
-  );
-}
-
-function takeSpill(id){put(`spills/${id}/status`,'proceso');put(`spills/${id}/quienLimpia`,me.n);put(`spills/${id}/tsProc`,Date.now());showToast('Derrame tomado');draw()}
-function doneSpill(id){put(`spills/${id}/status`,'terminado');put(`spills/${id}/tsDone`,Date.now());showToast('Derrame limpiado');draw()}
-function cancelSpill(id){put(`spills/${id}/status`,'pendiente');put(`spills/${id}/quienLimpia`,null);put(`spills/${id}/tsProc`,null);showToast('Regresado a pendiente');draw()}
-function deleteSpill(id){showModal("Borrar Derrame", "<p>¿Borrar este derrame del historial?</p>", [{text:"Borrar", class:"warn", action:()=>fetch(U('spills/'+id),{method:'DELETE'}).then(()=>load())},{text:"Cancelar"}])}
-
-function showSpillPanel(id){
-  const sp=S.spills&&S.spills[id];if(!sp)return;
-  const e=$('panel');
-  const fecha=new Date(sp.ts);
-  const hora=fecha.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
-  const fechaStr=fecha.toLocaleDateString('es-MX',{day:'2-digit',month:'short'});
-  let h=`<h3 style="color:var(--accent)">Derrame · ${esc(sp.tipo)}</h3>`;
-  h+=`<div class="who" style="border-left-color:var(--accent);background:var(--warn-bg)"><b>Reportado por:</b> ${esc(sp.quien)}<br><b>Hora:</b> ${hora} (${fechaStr})<br><b>Estado:</b> <span style="color:${sp.status==='pendiente'?'var(--err)':sp.status==='proceso'?'var(--warn)':'var(--ok)'};font-weight:700">${sp.status.toUpperCase()}</span>${sp.quienLimpia?'<br><b>Limpiando:</b> '+esc(sp.quienLimpia):''}</div>`;
-  if(sp.status==='pendiente'){h+=`<button onclick="takeSpill('${id}')" style="background:var(--warn);color:#fff;border-color:var(--warn);padding:12px 16px;width:100%;font-weight:700;font-size:15px">Voy a limpiarlo</button>`}
-  else if(sp.status==='proceso'){h+=`<div class="row"><button onclick="doneSpill('${id}')" class="ok" style="padding:12px 16px;font-weight:700;flex:1">Terminado</button><button onclick="cancelSpill('${id}')" style="padding:12px 16px;flex:1">Regresar</button></div>`}
-  else{h+=`<button onclick="deleteSpill('${id}')" style="padding:12px 16px;width:100%">Borrar del historial</button>`}
-  e.innerHTML=h;
-}
-const U=p=>CFG.DB.replace(/\/$/,'')+'/s'+(p?'/'+p:'')+'.json';
-function net(v){const e=$('net');if(!CFG.DB){e.textContent='Sin conexión';e.className='net loc';return}e.textContent=v?'En línea':'Sin conexión';e.className='net '+(v?'on':'off')}
-function setPath(o,p,v){const k=p.split('/');let c=o;k.slice(0,-1).forEach(x=>c=c[x]=c[x]||{});v===null?delete c[k.at(-1)]:c[k.at(-1)]=v}
-function put(p,v){setPath(S,p,v);draw();if(!CFG.DB){try{localStorage.acom=JSON.stringify(S)}catch(e){}return}fetch(U(p),{method:'PUT',body:JSON.stringify(v)}).then(r=>net(r.ok)).catch(()=>net(false))}
-async function load(){
-  if(!CFG.DB){try{S=JSON.parse(localStorage.acom||'{}')}catch(e){}return draw()}
-  try{
-    const r=await fetch(U('')+'?t='+Date.now());S=(await r.json())||{};net(true);
-    const wRes = await fetch(`${CFG.DB}/walkersTest/w.json`);
-    W_DATA = await wRes.json() || {};
-    const hRes = await fetch(`${CFG.DB}/walkersTest/h.json`);
-    W_HIST = await hRes.json() || {};
-    if(isVolunteerMode){renderVolList()}else{draw()}
-    if(!$('walkersView').hidden) drawWalkers();
-  }catch(e){net(false)}
-}
-function start(){net(false);if(!CFG.DB){net();window.onstorage=load;load();return}load();clearInterval(iv);iv=setInterval(load,5000)}
-const nrm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();let pick='';
-$('us').oninput=()=>{pick='';$('goU').hidden=true;const q=nrm($('us').value.trim());$('res').innerHTML=q?(D.roster.filter(r=>r.c!=='Voluntaria'&&nrm(r.n).includes(q)).slice(0,6).map(r=>`<button type="button" data-n="${esc(r.n)}" style="width:100%;text-align:left;margin-top:4px">${esc(r.n)}</button>`).join('')||'<span class="mut">No aparece.</span>'):''};
-$('res').onclick=e=>{const b=e.target.closest('button');if(!b)return;pick=b.dataset.n;$('us').value=pick;$('res').innerHTML='';$('goU').textContent='Entrar como '+pick;$('goU').hidden=false};
-$('ad').innerHTML='<option value="">Seleccione su nombre</option>'+ADM.map(a=>`<option>${esc(a.n)}</option>`).join('');
-
-function enter(u){
-  me=u;
-  try{if(!u.adm)localStorage.me=u.n}catch(e){}
-  $('login').hidden=true;$('app').hidden=false;$('out').hidden=false;$('usr').textContent=u.n;
-  $('btn-mode-toggle').hidden=!(u.adm && !u.limited && !u.spillOnly);
-  $('adminMenuBtn').hidden=!(u.all);
-  $('btnPanelDash').hidden=!(u.all);
-  $('floatScan').hidden=false;
-  $('quickActions').hidden=!((u.all) || (u.adm && !u.limited && !u.spillOnly));
-  start();
-}
-function enterU(){if(pick)enter({n:pick})}
-function enterA(){
-  const a = ADM.find(x => x.n === $('ad').value);
-  if(!a){ $('err').textContent = 'Seleccione su nombre'; return; }
-  const pw = $('pw').value;
-  const ok = a.h ? (H(pw) === a.h) : (a.pwd === pw);
-  if(!ok){ $('err').textContent = 'Contraseña incorrecta'; return; }
-  enter(a);
-}
-function logout(){
-  try{delete localStorage.me}catch(e){}
-  clearInterval(iv);onstorage=null;me=null;sel=null;hl=null;edit=false;pick='';spillMode=false;
-  $('us').value='';$('res').innerHTML='';$('goU').hidden=true;$('pw').value='';$('ad').value='';$('err').textContent='';
-  $('usr').textContent='';$('out').hidden=true;$('app').hidden=true;$('walkersView').hidden=true;$('volMapView').hidden=true;$('spillPanel').hidden=true;
-  $('login').hidden=false;$('btn-mode-toggle').hidden=true;$('volPanel').hidden=true;$('floatScan').hidden=true;$('quickActions').hidden=true;
-  $('btnPanelDash').hidden=true;
-  isVolunteerMode=false;secEditMode=false;$('adminMenuBtn').hidden=true;$('adminMenu').hidden=true;
-  const t=document.getElementById('appTitle');if(t)t.textContent='Acomodadores · La Feria, TX';
-}
-try{if(localStorage.me)enter({n:localStorage.me})}catch(e){}
-
-function enterVoluntaria(){
-  me=null;$('login').hidden=true;$('app').hidden=true;$('volPanel').hidden=false;$('out').hidden=false;$('usr').textContent='Voluntaria';
-  $('btn-mode-toggle').hidden=true;$('adminMenuBtn').hidden=true;$('floatScan').hidden=true;$('quickActions').hidden=true;$('btnPanelDash').hidden=true;
-  isVolunteerMode=true;
-  const t=document.getElementById('appTitle');if(t)t.textContent='Portal de Voluntarias';
-  $('volSearch').value='';volQuery='';renderVolList();start();
-}
-function toggleBigText(){document.body.classList.toggle('big');try{localStorage.bigText=document.body.classList.contains('big')?'1':'0'}catch(e){}}
-try{if(localStorage.bigText==='1')document.body.classList.add('big')}catch(e){}
-
-function buscarVoluntaria(q){ volQuery = q; renderVolList(); }
-
-function renderVolList(){
-  const res=$('volResults');
-  if(volQuery && volQuery.length>=2){
-    const q=volQuery.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-    const matches=D.roster.filter(r=>r.c==='Voluntaria'&&r.n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q));
-    if(!matches.length){res.innerHTML='<p class="mut" style="padding:20px;text-align:center">No se encontró a nadie.</p>';return}
-    let html='';
-    for(const v of matches.slice(0,5)){
-      const hist=volHistory(v.n);
-      html+=`<div class="card" style="margin-bottom:12px;border-left:4px solid var(--primary)"><h3 style="color:var(--primary);margin-top:0">${esc(v.n)}</h3>`;
-      if(hist.length){
-        html+='<p style="margin:4px 0"><b>Toca una asignación para ver tu lugar en el mapa:</b></p>';
-        for(const h of hist){
-          const sec=sectionOf(h.posicion);
-          html+=`<button class="card" style="width:100%;text-align:left;margin-bottom:8px;border-left:4px solid ${sec.color};background:#fff;cursor:pointer" onclick="showVolMap(${h.posicion}, '${esc(TURNOS[h.turno].name)}', '${esc(sec.label)}')">
-            <div style="font-size:15px;margin-bottom:4px;color:#333"><b>Turno ${h.turno}</b> · ${esc(TURNOS[h.turno].name)}</div>
-            <div style="color:${sec.color};font-weight:700;font-size:16px">${sec.label} · Posición <span style="font-size:20px">${h.posicion}</span></div>
-          </button>`;
-        }
-      }else{ html+=`<p>No tienes posición asignada todavía.</p>`; }
-      html+=`</div>`;
-    }
-    res.innerHTML=html;
-  }else{
-    res.innerHTML=`<p class="mut" style="text-align:center;padding:20px">Escribe tu nombre arriba para ver tus asignaciones.</p>`;
-  }
-}
-
-function showVolMap(pos, turnName, secLabel) {
-  $('volPanel').hidden = true;
-  $('volMapView').hidden = false;
-  $('volMapTitle').textContent = `${secLabel} · Posición ${pos}`;
-  const c = coordsOf(pos);
-  const sec = sectionOf(pos);
-  let h = `<g transform="translate(${c.x} ${c.y})">
-    <circle class="pulse" r="45" fill="none" stroke="${sec.color}" stroke-width="10"/>
-    <circle r="30" fill="${sec.color}" stroke="#fff" stroke-width="4"/>
-    <text text-anchor="middle" dy=".35em" font-size="22" font-weight="700" fill="#fff">${pos}</text>
-  </g>`;
-  $('volMapPl').innerHTML = h;
-}
-function closeVolMap() { $('volMapView').hidden = true; $('volPanel').hidden = false; }
-
-function openWalkers(from){
-  walkerReturn = from || 'app';
-  $('app').hidden = true;
-  $('volPanel').hidden = true;
-  $('walkersView').hidden = false;
-  $('btnCalib').hidden = !(me && me.all);
-  $('walkerHelper').hidden = (from !== 'vol') || !!me;
-  window.canEditWalkers = me && (me.all || me.walkers || me.n === 'José A. González');
-  $('btnVaciarWalk').hidden = !window.canEditWalkers;
-  drawWalkers();
-}
-function closeWalkers(){ $('walkersView').hidden=true; if(walkerReturn==='vol'){$('volPanel').hidden=false;renderVolList()}else{$('app').hidden=false;draw()} }
-function setWalkTab(t){ walkTab=t;$('walkMapBox').hidden=t!=='map';$('walkListView').hidden=t!=='list'; $('tabMap').classList.toggle('on',t==='map');$('tabList').classList.toggle('on',t==='list'); if(t==='map')drawWalkMap();else drawWalkList() }
-function toggleCalib(){$('calibMenu').hidden=!$('calibMenu').hidden}
-
-function wBez(t){const u=1-t;return[u*u*W_P0[0]+2*u*t*W_PC[0]+t*t*W_P2[0], u*u*W_P0[1]+2*u*t*W_PC[1]+t*t*W_P2[1]]}
-function wTan(t){return[2*(1-t)*(W_PC[0]-W_P0[0])+2*t*(W_P2[0]-W_PC[0]), 2*(1-t)*(W_PC[1]-W_P0[1])+2*t*(W_P2[1]-W_PC[1])]}
-
-function wSlotXY(id){
-  const ci=LET.indexOf(id[0]),r=+id[1];
-  const mid=(W_P0[1]+W_P2[1])/2,k=W_CAL.len/100;
-  const t=(ci+.5)/20,b=wBez(t),T=wTan(t),m=Math.hypot(T[0],T[1]),n=[T[1]/m,-T[0]/m];
-  const d=W_CAL.off+(r-1)*13;
-  let x=b[0]+n[0]*d,y=b[1]+n[1]*d;
-  y=mid-(y-mid)*k;
-  return{x:x+W_CAL.dx, y:y+W_CAL.dy, a:Math.atan2(T[1],T[0])*180/Math.PI*(-1)};
-}
-
-function updateCam(){ $('walkSvg').setAttribute('viewBox', `${cam.x} ${cam.y} ${cam.w} ${cam.h}`); }
-
-function drawWalkMap(){
-  const k=W_CAL.len/100,mid=(W_P0[1]+W_P2[1])/2;
-  const f=p=>[p[0]+W_CAL.dx, mid-(mid-(p[1]+W_CAL.dy))*k];
-  const a=f(W_P0),c=f(W_PC),b=f(W_P2);
-  $('curve').setAttribute('d',`M${a[0]} ${a[1]} Q${c[0]} ${c[1]} ${b[0]} ${b[1]}`);
-  const step=(W_CAL.len/100)*(W_P2[1]-W_P0[1])/20;const sz=Math.min(12,Math.max(8,step-1.5));
-  let h='';
-  for(const id of WALKER_SLOTS){
-    const p=wSlotXY(id),occ=W_DATA[id];
-    h+=`<g class="slot${occ?' occ':''}" data-id="${id}" transform="translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) rotate(${p.a.toFixed(1)})"><rect x="${-sz/2}" y="${-sz/2}" width="${sz}" height="${sz}" rx="1.5"/><text text-anchor="middle" dy="1.6" transform="rotate(${-p.a.toFixed(1)})">${id}</text></g>`;
-  }
-  $('slots').innerHTML=h;
-  let mk='';
-  if(W_Flash&&W_DATA[W_Flash]){const p=wSlotXY(W_Flash);mk+=`<circle class="latest" cx="${p.x}" cy="${p.y}" r="10" fill="var(--accent)" opacity=".6"/>`}
-  $('mk').innerHTML=mk;
-  const total=WALKER_SLOTS.length;const occCount=Object.keys(W_DATA).length;
-  $('walkCount').textContent=`${occCount}/${total} ocupados`;
-  updateCam();
-}
-
-function drawWalkList(){
-  let h='';
-  for(let b=0;b<4;b++){
-    const cols=LET.slice(b*5,b*5+5);
-    h+=`<div style="margin-bottom:14px"><h4 style="margin:0 0 6px;color:var(--primary);font-size:14px">Columnas ${cols[0]} – ${cols[4]}</h4><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px">`;
-    for(const r of [1,2,3])for(const L of cols){
-      const id=L+r,c=W_DATA[id];
-      if(c){h+=`<button class="wslot occ" data-id="${id}" onclick="promptWalker('${id}','${esc(c.name)}')"><b>${id}</b><small>${esc(wShort(c.name))}</small></button>`}
-      else{h+=`<button class="wslot empty" data-id="${id}" onclick="promptWalker('${id}','')"><b>${id}</b><small>Libre</small></button>`}
-    }
-    h+='</div></div>';
-  }
-  $('walkListView').innerHTML=h;
-}
-
-function drawWalkers(){ if(walkTab==='map') drawWalkMap(); else drawWalkList(); }
-
-function searchWalker(q){
-  const norm=q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  const on=norm.length>=2;
-  let foundStr = '';
-  document.querySelectorAll('.wslot, .slot').forEach(el=>{
-    const c=W_DATA[el.dataset.id];
-    const isMatch = on && c && c.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(norm);
-    el.classList.toggle('found', !!isMatch);
-    if(isMatch && !foundStr) foundStr = `${c.name} está en el espacio ${el.dataset.id}`;
-  });
-  $('walkSearchRes').textContent = on ? (foundStr || 'No se encontró a nadie') : '';
-}
-
-function resetWalkers(){
-  if(!window.canEditWalkers){
-    showToast('Solo administradores pueden vaciar el estacionamiento', true);
-    return;
-  }
-  showModal("Vaciar Estacionamiento", "<p>¿Borrar todos los walkers?</p>", [
-    {text:"Vaciar", class:"warn", action:()=>{
-      W_DATA = {};
-      fetch(`${CFG.DB}/walkersTest/w.json`,{method:'DELETE'});
-      drawWalkers();
-      showToast('Estacionamiento vaciado');
-    }},
-    {text:"Cancelar"}
-  ]);
-}
-function saveWalkCam() { localStorage.wcam = JSON.stringify(cam); showToast("Vista guardada"); }
-function resetWalkCam() { cam = { x: 440, y: 250, w: 240, h: 330 }; updateCam(); localStorage.removeItem('wcam'); showToast("Vista restablecida"); }
-
-const wSvg = $('walkSvg');
-wSvg.addEventListener('touchstart', e => {
-  if (e.touches.length === 2) {
-    touchState.mode = 'pinch';
-    touchState.startDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-    touchState.startScale = cam.w;
-    touchState.cx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-    touchState.cy = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-  } else if (e.touches.length === 1) {
-    touchState.mode = 'pan';
-    touchState.startX = e.touches[0].clientX;
-    touchState.startY = e.touches[0].clientY;
-    touchState.lastX = cam.x; touchState.lastY = cam.y;
-  }
-}, {passive: false});
-wSvg.addEventListener('touchmove', e => {
-  e.preventDefault();
-  if (touchState.mode === 'pinch' && e.touches.length === 2) {
-    const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-    const scale = touchState.startDist / dist;
-    let newW = touchState.startScale * scale;
-    newW = Math.max(60, Math.min(600, newW));
-    const newH = newW * (330/240);
-    const p = wSvg.createSVGPoint(); p.x = touchState.cx; p.y = touchState.cy;
-    const svgP = p.matrixTransform(wSvg.getScreenCTM().inverse());
-    cam.x = svgP.x - (touchState.cx - wSvg.getBoundingClientRect().left) / wSvg.getBoundingClientRect().width * newW;
-    cam.y = svgP.y - (touchState.cy - wSvg.getBoundingClientRect().top) / wSvg.getBoundingClientRect().height * newH;
-    cam.w = newW; cam.h = newH; updateCam();
-  } else if (touchState.mode === 'pan' && e.touches.length === 1) {
-    const dx = (e.touches[0].clientX - touchState.startX) / wSvg.getBoundingClientRect().width * cam.w;
-    const dy = (e.touches[0].clientY - touchState.startY) / wSvg.getBoundingClientRect().height * cam.h;
-    cam.x = touchState.lastX - dx; cam.y = touchState.lastY - dy; updateCam();
-  }
-}, {passive: false});
-wSvg.addEventListener('touchend', e => { if (e.touches.length === 0) touchState.mode = null; });
-wSvg.addEventListener('mousedown', e => { touchState.mode = 'pan'; touchState.startX = e.clientX; touchState.startY = e.clientY; touchState.lastX = cam.x; touchState.lastY = cam.y; });
-window.addEventListener('mousemove', e => {
-  if (touchState.mode !== 'pan') return;
-  const dx = (e.clientX - touchState.startX) / wSvg.getBoundingClientRect().width * cam.w;
-  const dy = (e.clientY - touchState.startY) / wSvg.getBoundingClientRect().height * cam.h;
-  cam.x = touchState.lastX - dx; cam.y = touchState.lastY - dy; updateCam();
-});
-window.addEventListener('mouseup', () => { touchState.mode = null; });
-wSvg.addEventListener('click', e => { const g = e.target.closest('.slot'); if(g) promptWalker(g.dataset.id, W_DATA[g.dataset.id]?.name || ''); });
-
-function calInit(){
-  const m={cDx:'dx',cDy:'dy',cOff:'off',cLen:'len'};
-  for(const id in m){const el=$(id);el.value=W_CAL[m[id]];el.oninput=()=>{W_CAL[m[id]]=+el.value;try{localStorage.wcal=JSON.stringify(W_CAL)}catch(e){}drawWalkMap()}}
-}
-function calReset(){W_CAL={dx:0,dy:0,off:9,len:100};try{delete localStorage.wcal}catch(e){}calInit();drawWalkMap()}
-calInit();
-
-function togglePosActive(n) {
-  const current = isPosActive(n);
-  put(`pos/${n}/active`, !current);
-  showToast(!current ? `Posición ${n} activada` : `Posición ${n} desactivada`);
-}
-
-function draw(){
-  if(!me||drag||dragV||dragL)return;
-  if(isSpillOnly()){
-    $('mine').hidden=true;$('alert').hidden=true;$('spillPanel').hidden=true;
-    $('cntCard').hidden=true;$('bench').hidden=true;
-    drawSpillOnlyMap();
-    drawBar();
-    drawSpills();
-    $('legend').innerHTML='<span><i style="background:#b8860b"></i>Derrame pendiente</span><span><i style="background:#c28a1c"></i>En proceso</span>';
-    $('panel').innerHTML='<span class="mut">Toca un pin de derrame para gestionarlo.</span>';
-    return;
-  }
-  if(isLimited()){
-    $('mine').hidden=true;$('alert').hidden=true;$('spillPanel').hidden=true;
-    $('cntCard').hidden=true;$('bench').hidden=true;
-    drawBar();drawMap();drawSpills();
-    $('panel').innerHTML='<span class="mut">Modo limitado. Usa los botones de arriba.</span>';
-    $('legend').innerHTML='<span><i style="background:#b8860b"></i>Derrame pendiente</span><span><i style="background:#c28a1c"></i>En proceso</span>';
-    if(!$('walkersView').hidden)drawWalkers();
-    return;
-  }
-  $('cntCard').hidden=false;
-  drawMap();drawPanel();drawBar();drawCnt();drawMine();drawLegend();drawSpills();
-  if(currentView==='list')renderList();
-  if(!$('walkersView').hidden)drawWalkers();
-}
-function drawSpillOnlyMap(){
-  $('sl').innerHTML='';
-  $('vl').innerHTML='';
-  $('pl').innerHTML='';
-  let sh='';
-  if(S.spills){
-    for(const id in S.spills){
-      const sp=S.spills[id];
-      if(sp.status==='terminado')continue;
-      const isProc=sp.status==='proceso';
-      const color=isProc?'#c28a1c':'#b8860b';
-      sh+=`<g class="spill" data-spill="${id}" style="cursor:pointer" onclick="showSpillPanel('${id}')" transform="translate(${sp.x} ${sp.y})"><polygon points="0,-26 24,20 -24,20" fill="${color}" stroke="#fff" stroke-width="2" opacity="0.95"><animate attributeName="opacity" values="0.95;0.6;0.95" dur="1.5s" repeatCount="indefinite"/></polygon><text text-anchor="middle" y="6" font-size="20" fill="#fff" font-weight="700" pointer-events="none">!</text></g>`;
-    }
-  }
-  $('spl').innerHTML=sh;
-}
-function showToast(m,err){const c=document.getElementById('toast-container'),t=document.createElement('div');t.className='toast'+(err?' err':'');t.innerHTML=m;c.appendChild(t);setTimeout(()=>t.classList.add('show'),10);setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},3500)}
-function stamp(n){put(`pos/${n}/stAt`,Date.now())}
-function setSt(n,s){put(`pos/${n}/st`,s);stamp(n);const nom=eff(n)||('Posición '+n);if(s==='ok'||s==='sub')showToast(`${nom} presente`);else if(s==='abs')showToast(`${nom} ausente`)}
-function here(n){if(P(n).sub===me.n||P(n).who===me.n)setSt(n,P(n).sub?'sub':'ok')}
-function useSub(n,name){
-  if(!S.pos) S.pos = {};
-  if(!S.pos[n]) S.pos[n] = {};
-  S.pos[n].sub = name; S.pos[n].st = 'sub'; S.pos[n].stAt = Date.now();
-  draw();
-  fetch(U(`pos/${n}`), { method:'PUT', body: JSON.stringify(S.pos[n]) });
-  showToast(`Sustituto: ${name}`);
-}
-function back(n){
-  if(!S.pos) S.pos = {};
-  if(!S.pos[n]) S.pos[n] = {};
-  S.pos[n].sub = null; S.pos[n].st = 'ok'; S.pos[n].stAt = Date.now();
-  draw();
-  fetch(U(`pos/${n}`), { method:'PUT', body: JSON.stringify(S.pos[n]) });
-}
-function setWho(n,v){
-  if(!S.pos) S.pos = {};
-  if(!S.pos[n]) S.pos[n] = {};
-  S.pos[n].who = v; S.pos[n].sub = null; S.pos[n].st = 'pend'; S.pos[n].stAt = Date.now();
-  draw();
-  fetch(U(`pos/${n}`), { method:'PUT', body: JSON.stringify(S.pos[n]) });
-  if(v) showToast(`Asignado: ${v}`);
-}
-function secPts(k){return((S.sec&&S.sec[k])||D.sec[k]).split(' ').map(p=>p.split(',').map(Number))}
-function secSave(k,pts){const str=pts.map(p=>`${Math.round(p[0])},${Math.round(p[1])}`).join(' ');if(!S.sec)S.sec={};S.sec[k]=str;put('sec/'+k,str)}
-function moveVertex(k,idx,x,y){const pts=secPts(k);pts[idx]=[x,y];secSave(k,pts)}
-function addVertex(k,idx,x,y){const pts=secPts(k);pts.splice(idx+1,0,[x,y]);secSave(k,pts);showToast(`Punto agregado`)}
-function delVertex(k,idx){const pts=secPts(k);if(pts.length<=3){showToast('Mínimo 3 puntos',true);return}pts.splice(idx,1);secSave(k,pts);showToast(`Punto eliminado`)}
-function resetSec(k){showModal(`Restaurar ${k}`, "<p>¿Restaurar esta zona a su estado original?</p>", [{text:"Restaurar", class:"ok", action:()=>{if(!S.sec)S.sec={};delete S.sec[k];fetch(U('sec/'+k),{method:'DELETE'}).then(()=>load())}}, {text:"Cancelar"}])}
-function setCap(k,v){const n=Math.max(0,parseInt(v)||0);if(!S.cap)S.cap={};S.cap[k]=n;put('cap/'+k,n);draw()}
-function moveLabel(lid,x,y){if(!S.labels)S.labels={};S.labels[lid]={x:Math.round(x),y:Math.round(y)};put('labels/'+lid,S.labels[lid])}
-function drawLegend(){const lg=$('legend');if(!lg)return;if(mapView==='vol'&&me&&me.adm){lg.innerHTML=VOL_SECTIONS.map(s=>`<span><i style="background:${s.color}"></i>${s.label}</span>`).join('')+'<span><i style="background:var(--spill)"></i>Derrame</span>'}else{lg.innerHTML=`<span><i style="background:var(--blue)"></i>Fija</span><span><i style="background:var(--org)"></i>Intermitente</span><span><i style="background:var(--ok)"></i>Presente</span><span><i style="background:var(--err)"></i>Ausente</span><span><i style="background:#777"></i>Sustituto</span><span><i style="background:var(--spill)"></i>Derrame</span>`}}
-function drawSpills(){
-  const e=$('spillPanel');if(!e||!me)return;
-  const arr=Object.entries(S.spills||{}).sort((a,b)=>b[1].ts-a[1].ts);
-  const pend=arr.filter(([id,s])=>s.status==='pendiente');
-  const proc=arr.filter(([id,s])=>s.status==='proceso');
-  const done=arr.filter(([id,s])=>s.status==='terminado');
-  if(!arr.length){e.hidden=true;return}
-  e.hidden=false;
-  let h=`<div class="spill-panel"><h3 style="color:var(--accent);margin-top:0">Derrames</h3>`;
-  h+=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px"><div class="spill-counter" style="background:var(--err-bg)"><b style="color:var(--err)">${pend.length}</b><small>Pendientes</small></div><div class="spill-counter" style="background:var(--warn-bg)"><b style="color:var(--warn)">${proc.length}</b><small>En proceso</small></div><div class="spill-counter" style="background:var(--ok-bg)"><b style="color:var(--ok)">${done.length}</b><small>Terminados</small></div></div>`;
-  const active=[...pend,...proc];
-  for(const [id,sp] of active){
-    const fecha=new Date(sp.ts),hora=fecha.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
-    const isProc=sp.status==='proceso';
-    h+=`<div class="spill-item ${isProc?'proc':''}"><div><b>${esc(sp.tipo)}</b> · <span style="color:${isProc?'var(--warn)':'var(--err)'};font-weight:700">${sp.status.toUpperCase()}</span></div><div style="font-size:13px;color:var(--text-muted);margin-top:4px">Reportado por ${esc(sp.quien)} · ${hora}${sp.quienLimpia?' · Limpia: '+esc(sp.quienLimpia):''}</div><div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><button onclick="showSpillPanel('${id}')" style="font-size:13px;padding:8px 12px">Ver</button>${!isProc?`<button onclick="takeSpill('${id}')" style="font-size:13px;padding:8px 12px;background:var(--warn);border-color:var(--warn);color:#fff;font-weight:700">Tomar</button>`:''}${isProc?`<button onclick="doneSpill('${id}')" style="font-size:13px;padding:8px 12px;background:var(--ok);color:#fff;border-color:var(--ok);font-weight:700">Terminado</button>`:''}</div></div>`;
-  }
-  if(done.length){
-    h+=`<details style="margin-top:12px"><summary>${done.length} terminados hoy</summary>`;
-    for(const [id,sp] of done){
-      const fecha=new Date(sp.ts),hora=fecha.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
-      h+=`<div class="spill-item done" style="margin-top:6px"><div><b>${esc(sp.tipo)}</b></div><div style="font-size:13px;color:var(--text-muted);margin-top:4px">Por ${esc(sp.quien)} · ${hora}${sp.quienLimpia?' · Limpió: '+esc(sp.quienLimpia):''}</div><button onclick="deleteSpill('${id}')" style="font-size:12px;padding:6px 10px;margin-top:6px">Borrar</button></div>`;
-    }
-    h+='</details>';
-  }
-  h+='</div>';e.innerHTML=h;
-}
-
-function drawMap(){
-  let s='';
-  for(const k in D.sec){
-    const cls=secEditMode?('sec edit'+(hl===k?' hl':'')):'sec'+(hl===k?' hl':'');
-    s+=`<polygon class="${cls}" data-s="${k}" points="${(S.sec&&S.sec[k])||D.sec[k]}"/>`;
-  }
-  $('sl').innerHTML=s;
-  let vh='';
-  if(secEditMode&&hl&&D.sec[hl]){
-    const pts=secPts(hl);
-    pts.forEach((pt,i)=>{vh+=`<circle class="vertex" data-sec="${hl}" data-idx="${i}" cx="${pt[0]}" cy="${pt[1]}" r="7" fill="#fff" stroke="#a8251c" stroke-width="2"/>`});
-    for(let i=0;i<pts.length;i++){
-      const a=pts[i],b=pts[(i+1)%pts.length];
-      const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2;
-      vh+=`<circle class="vadd" data-sec="${hl}" data-after="${i}" data-mx="${Math.round(mx)}" data-my="${Math.round(my)}" cx="${mx}" cy="${my}" r="4" fill="#888" stroke="#fff" stroke-width="1.5"/>`;
-    }
-  }
-  $('vl').innerHTML=vh;
-
-  let h='';
-  if(!isLimited() && !isSpillOnly()){
-    if(mapView==='vol'&&me&&me.adm){
-      for(const sec of VOL_SECTIONS){
-        const lp=labelPos(sec);
-        if(secEditMode){
-          h+=`<g class="vlabel" data-lid="${sec.id}" transform="translate(${lp.x} ${lp.y})"><rect x="-85" y="-18" width="170" height="28" rx="6" fill="#ffffffdd" stroke="${sec.color}" stroke-width="2"/><text text-anchor="middle" dy=".35em" font-size="15" font-weight="700" fill="${sec.color}" pointer-events="none">${sec.label}</text></g>`;
-        }else{
-          h+=`<text x="${lp.x}" y="${lp.y}" text-anchor="middle" font-size="15" font-weight="700" fill="${sec.color}" pointer-events="none" style="text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 3px #fff">${sec.label}</text>`;
-        }
-      }
-    }
-    for(const n of POS){
-      const raw=D.pos[n],isVol=raw.v===1;
-      if((mapView==='acom'&&isVol)||(mapView==='vol'&&!isVol))continue;
-      const p=P(n);
-      const b=p.st==='ok'?['#4a6b3a','✓']:p.st==='abs'?['#a8251c','✕']:p.st==='sub'?['#777','S']:null;
-      const isAct=isPosActive(n);
-      const fill=isVol?sectionOf(n).color:(isAct?(raw.l?'var(--blue)':'var(--org)'):'#ccc');
-      h+=`<g class="pc${watch(n)||me.all?'':' dim'}" data-n="${n}" transform="translate(${p.x} ${p.y})">${vacant(n)?'<circle class="pulse" r="27"/>':''}<circle r="19" fill="${fill}" stroke="${sel===n?'#000':'#fff'}" stroke-width="${sel===n?4.5:2.5}"/><text text-anchor="middle" dy=".35em">${n}</text>${b?`<circle cx="15" cy="-15" r="9" fill="${b[0]}" stroke="#fff" stroke-width="1.5"/><text x="15" y="-15" dy=".35em" text-anchor="middle" style="font-size:11px;font-weight:700;fill:#fff">${b[1]}</text>`:''}</g>`;
-    }
-  }
-  $('pl').innerHTML=h;
-
-  let sh='';
-  if(S.spills){
-    for(const id in S.spills){
-      const sp=S.spills[id];
-      if(sp.status==='terminado')continue;
-      const isProc=sp.status==='proceso';
-      const color=isProc?'#c28a1c':'#b8860b';
-      sh+=`<g class="spill" data-spill="${id}" transform="translate(${sp.x} ${sp.y})"><polygon points="0,-26 24,20 -24,20" fill="${color}" stroke="#fff" stroke-width="2" opacity="0.95"><animate attributeName="opacity" values="0.95;0.6;0.95" dur="1.5s" repeatCount="indefinite"/></polygon><text text-anchor="middle" y="6" font-size="20" fill="#fff" font-weight="700" pointer-events="none">!</text></g>`;
-    }
-  }
-  $('spl').innerHTML=sh;
-}
-
-function drawBar(){
-  if(isSpillOnly()){
-    $('bar').innerHTML = `<button class="${spillMode?'on':''}" onclick="toggleSpillMode()" style="background:${spillMode?'var(--warn)':'#fff'};color:${spillMode?'#fff':'var(--warn)'};border-color:var(--warn);font-weight:700;padding:14px 22px;font-size:15px">${spillMode?'Derrame (ACTIVO)':'Reportar Derrame'}</button>${spillMode?'<div style="width:100%;font-size:13px;background:var(--warn-bg);padding:10px;border-radius:4px;margin-top:4px;color:var(--warn);font-weight:600">Toca el mapa donde está el derrame</div>':''}`;
-    $('alert').hidden = true;
-    return;
-  }
-  if(isLimited()){
-    $('bar').innerHTML = `
-      <button onclick="openWalkers('app')" style="background:var(--primary);color:#fff;border-color:var(--primary);font-weight:700;padding:14px 22px;font-size:15px">Walkers</button>
-      <button class="${spillMode?'on':''}" onclick="toggleSpillMode()" style="background:${spillMode?'var(--warn)':'#fff'};color:${spillMode?'#fff':'var(--warn)'};border-color:var(--warn);font-weight:700;padding:14px 22px;font-size:15px">${spillMode?'Derrame (ACTIVO)':'Reportar Derrame'}</button>
-      ${spillMode?'<div style="width:100%;font-size:13px;background:var(--warn-bg);padding:10px;border-radius:4px;margin-top:4px;color:var(--warn);font-weight:600">Toca el mapa donde está el derrame</div>':''}
-    `;
-    $('alert').hidden = true;
-    return;
-  }
-  const viewBtns = me.adm ? `<button class="${mapView==='acom'?'on':''}" onclick="mapView='acom';sel=null;draw()">Acomodadores</button><button class="${mapView==='vol'?'on':''}" onclick="mapView='vol';sel=null;draw()">Voluntarias</button>` : '';
-  const walkersBtn = `<button onclick="openWalkers('app')" style="background:var(--primary);color:#fff;border-color:var(--primary);font-weight:700">Walkers</button>`;
-  const spillBtn = `<button class="${spillMode?'on':''}" onclick="toggleSpillMode()" style="background:${spillMode?'var(--warn)':'#fff'};color:${spillMode?'#fff':'var(--warn)'};border-color:var(--warn);font-weight:700">${spillMode?'Derrame (ACTIVO)':'Derrame'}</button>`;
-  const helpEdit = secEditMode ? `<div style="width:100%;font-size:13px;background:var(--warn-bg);padding:8px;border-radius:4px;margin-top:4px;color:var(--warn)"><b>Modo edición:</b> Toca una zona, arrastra puntos blancos. Toca sin arrastrar para borrar.</div>` : spillMode ? `<div style="width:100%;font-size:13px;background:var(--warn-bg);padding:8px;border-radius:4px;margin-top:4px;color:var(--warn)"><b>Modo derrame:</b> Toca el mapa donde está el derrame.</div>` : '';
-  if(mapView==='vol' && me.adm){
-    $('bar').innerHTML = viewBtns + `<b style="color:var(--primary)">Turno actual: T${currentTurno} · ${TURNOS[currentTurno].name}</b><span style="flex:1"></span><button onclick="currentTurno=Math.max(1,currentTurno-1);draw()" style="padding:8px 16px;font-weight:700">◀</button><button onclick="currentTurno=Math.min(8,currentTurno+1);draw()" style="padding:8px 16px;font-weight:700">▶</button>` + helpEdit;
-    $('alert').hidden = true;
-    return;
-  }
-  const sc=POS.filter(watch).filter(n=>isPosActive(n));
-  const L=sc.filter(n=>D.pos[n].l),O=sc.filter(n=>!D.pos[n].l);
-  const ok=a=>a.filter(n=>['ok','sub'].includes(P(n).st)).length;
-  const v=L.filter(n=>!D.pos[n].v&&vacant(n));
-  $('bar').innerHTML = viewBtns + walkersBtn + spillBtn + `<b style="color:var(--primary)">${me.all?'Todas':'Tu área'} · Fijas: ${ok(L)}/${L.length}</b><span>Inter: ${ok(O)}/${O.length}</span><span style="flex:1"></span>` + helpEdit;
-  const a=$('alert');
-  a.hidden = !v.length;
-  a.innerHTML = 'Sin cubrir: ' + v.map(n=>`<a href="#" onclick="sel=${n};draw();return false">${n}</a>`).join(', ');
-}
-
-function drawMine(){
-  const e=$('mine');
-  if(isLimited()||isSpillOnly()){e.hidden=true;return}
-  const n=POS.find(n=>eff(n)===me.n);
-  e.hidden=me.adm||me.all;
-  if(me.adm||me.all)return;
-  e.innerHTML=n?`<h3>Tu posición: ${n}</h3><p>${esc(D.pos[n].t)}</p>`+(['ok','sub'].includes(P(n).st)?'<b style="color:var(--ok)">Registrado.</b>':`<button class="ok" style="width:100%;padding:18px;font-size:20px" onclick="here(${n})">Estoy aquí</button>`):D.caps.includes(me.n)?'<h3>Capitán</h3>':'<h3>Corredor</h3>';
-}
-
-function drawPanel(){
-  if(isLimited()||isSpillOnly()) return;
-  const e=$('panel');
-  if(!sel){e.innerHTML='<span class="mut">Toca un número del mapa.</span>';return}
-  // FIX: no re-renderizar si el usuario tiene un select enfocado en el panel
-  if(panelLocked) return;
-
-  const n=sel,p=P(n),d=D.pos[n],w=eff(n),r=ppl(w),ad=canEd(n),isVol=d.v===1,isAct=isPosActive(n);
-  const sec=isVol?sectionOf(n):null;
-  if(isVol){
-    let h=`<h3 style="color:${sec.color}">Voluntaria ${n} · ${sec.label}</h3>`;
-    h += `<div style="margin-bottom:12px"><b>Turno actual (para asignar):</b><div class="row" style="margin-top:6px">`;
-    for(let t=1;t<=8;t++){
-      h += `<button onclick="currentTurno=${t};draw()" style="padding:6px 12px;font-size:13px" class="${currentTurno===t?'on':''}">T${t}</button>`;
-    }
-    h += `</div></div>`;
-    h+=`<p style="margin:6px 0;font-size:14px"><b>Turno ${currentTurno}: ${TURNOS[currentTurno].name}</b></p>`;
-    h+=`<div class="rules"><b>Reglas:</b> No consecutivos (excepto T1+T2). Máximo 4 turnos. T5 y T6 excluyentes.</div>`;
-
-    // Botón "Ver plan completo" SIEMPRE disponible
-    if(w){
-      h+=`<button class="pri" onclick="openFullPlan('${esc(w).replace(/'/g,"\\'")}')" style="width:100%;padding:12px;margin:8px 0;font-weight:700">Ver plan completo de ${esc(w)}</button>`;
-    }
-
-    if(w){
-      const hist=volHistory(w).filter(x=>!(+x.turno===+currentTurno&&+x.posicion===+n));
-      h+=`<div class="who" style="border-left-color:${sec.color}"><b>${esc(w)}</b></div>`;
-      if(hist.length){h+=`<div class="histbox"><b>También está en:</b><ul style="margin:6px 0;padding-left:18px">${hist.map(x=>`<li>T${x.turno} · ${sectionOf(x.posicion).label} (${x.posicion}) <button style="padding:2px 8px;font-size:11px;margin-left:6px" onclick="unassignVol(${x.turno},${x.posicion})" class="warn">Quitar</button></li>`).join('')}</ul></div>`}
-      else h+='<p class="mut" style="font-size:14px">No está en otros turnos.</p>';
-      h+=`<button onclick="unassignVol(${currentTurno},${n})" class="warn" style="margin-top:6px;width:100%">Quitar del turno actual</button>`;
-    }else{h+='<p class="mut">Sin asignar en este turno.</p>'}
-
-    const vols=TURNOS[currentTurno].vol.map(name=>{const chk=canAssign(currentTurno,n,name);return{name,ok:chk.ok,msg:chk.msg}});
-    const avail=vols.filter(v=>v.ok),blocked=vols.filter(v=>!v.ok);
-    h+=`<div class="sg"><b>Disponibles para T${currentTurno} (${avail.length}):</b><div style="margin-top:6px">`;
-    if(avail.length===0)h+='<p class="mut" style="font-size:14px">Ninguna puede asignarse aquí.</p>';
-    else h+=avail.map(v=>`<button class="vbtn" data-vname="${esc(v.name)}" onclick="doAssign(${currentTurno},${n},this.dataset.vname)">${esc(v.name)}</button>`).join('');
-    h+='</div>';
-
-    // FIX: bloqueadas con opción de quitar donde sí están
-    if(blocked.length){
-      h+=`<details style="margin-top:10px"><summary>${blocked.length} bloqueadas (con opción de quitar)</summary><ul style="margin:6px 0;padding-left:0;font-size:13px;list-style:none">${blocked.map(v=>{
-        const histFull=volHistory(v.name);
-        const histOther=histFull.filter(x=>!(+x.turno===+currentTurno&&+x.posicion===+n));
-        const lugares=histOther.map(x=>`T${x.turno} · Pos ${x.posicion} <button class="warn" style="padding:2px 8px;font-size:11px;margin-left:4px" onclick="unassignVol(${x.turno},${x.posicion})">Quitar</button>`).join(' · ');
-        return `<li style="padding:8px;border-bottom:1px solid var(--border)"><b>${esc(v.name)}</b> — <span class="mut">${v.msg}</span><br><span style="font-size:12px">Está en: ${lugares || 'ningún otro turno'}</span></li>`;
-      }).join('')}</ul></details>`;
-    }
-    h+='</div>';
-    e.innerHTML=h;
-    attachPanelFocusLock();
-    return;
-  }
-
-  // Panel de acomodador (no voluntaria)
-  let h=`<h3>Posición ${n} <span class="tag ${d.l?'b':'o'}">${d.l?'Fija':'Intermitente'}</span> <span class="tag ${isAct?'g':'p'}">${isAct?'Activa':'Inactiva'}</span></h3><div>${esc(d.t)}</div>`;
-  h+=w?`<div class="who"><b>${esc(w)}</b>${r?`<br>${PRIV[r.p]} · ${esc(r.c)}`:''}${p.sub?`<br><span class="mut">Sustituto de ${esc(p.who)}</span>`:''}</div>`:'<p class="mut">Sin asignar</p>';
-  if(ad){
-    h+=`<div class="row"><button class="ok" onclick="setSt(${n},'${p.sub?'sub':'ok'}')">Presente</button><button onclick="setSt(${n},'abs')">Ausente</button>${p.sub?`<button onclick="back(${n})">Llegó titular</button>`:''}</div>`;
-    const list=D.roster.filter(r=>r.c!=='Voluntaria');
-    h+=`<div class="sg"><b>Asignar Acomodador</b><select onchange="if(this.value)setWho(${n},this.value)"><option value="">Elegir...</option>${list.map(x=>`<option ${x.n===p.who?'selected':''}>${esc(x.n)}</option>`).join('')}</select></div>`;
-    const freeRunners = D.runners.filter(x=>!occ().has(x) && eff(n)!==x);
-    if(freeRunners.length){
-      h+=`<div class="sg"><b>Asignar corredor como sustituto</b><select onchange="if(this.value)useSub(${n},this.value)"><option value="">Elegir corredor...</option>${freeRunners.map(x=>`<option ${x===p.sub?'selected':''}>${esc(x)}</option>`).join('')}</select></div>`;
-    }
-    h+=`<div class="sg"><button class="${isAct?'warn':'ok'}" onclick="togglePosActive(${n})">${isAct?'Desactivar Posición':'Activar Posición'}</button></div>`;
-  }
-  e.innerHTML=h;
-  attachPanelFocusLock();
-}
-
-function drawCnt(){
-  if(isLimited()||isSpillOnly())return;
-  $('expEd').hidden=!(me.all||me.cnt);
-  if(document.activeElement!==$('exp'))$('exp').value=S.expect||D.expect;
-  const t=SEC.reduce((a,s)=>a+((S.cnt||{})[s.id]||0),0),ex=S.expect||D.expect,cc=canCnt(),editable=me.all;
-  let toggleBtn='';
-  if(me.all||me.cnt){
-    toggleBtn = `<button onclick="put('cntOpen',${!S.cntOpen})" class="${S.cntOpen?'warn':'ok'}" style="padding:10px 16px;font-weight:700;margin-bottom:10px;width:100%">${S.cntOpen?'Cerrar conteo para acomodadores':'Abrir conteo para acomodadores'}</button>`;
-  }
-  $('cnt').innerHTML = toggleBtn + `<p><b>${t}</b> / <b>${ex}</b> (${Math.round(100*t/ex)}%)</p><div class="bar"><i style="width:${Math.min(100,100*t/ex)}%"></i></div><div class="grid" style="margin-top:10px">`+SEC.map(s=>{const v=(S.cnt||{})[s.id]||0,cap=(S.cap&&S.cap[s.id]!==undefined)?S.cap[s.id]:D.cap[s.id];return`<div class="t${hl===s.id?' hl':''}" onclick="hl=hl==='${s.id}'?null:'${s.id}';draw()"><small>${s.l}</small><b>${v}</b>${editable?`<div style="font-size:12px;margin-top:4px">Sillas: <input class="capin" type="number" min="0" value="${cap}" onchange="event.stopPropagation();setCap('${s.id}',this.value)" onclick="event.stopPropagation()"/></div>`:`<small class="mut">Sillas: ${cap}</small>`}${cc?`<div class="row" style="justify-content:center;margin-top:4px"><button onclick="event.stopPropagation();cnt('${s.id}',-1)">−</button><button onclick="event.stopPropagation();cnt('${s.id}',1)">+</button></div>`:''}</div>`}).join('')+'</div>';
-}
-
-function drawBench(){
-  const e=$('bench');
-  e.hidden=!me.adm || isLimited() || isSpillOnly();
-  if(!me.adm || isLimited() || isSpillOnly())return;
-  e.innerHTML='<h3>Corredores</h3>'+D.runners.map(x=>{
-    const n=POS.find(n=>P(n).sub===x);
-    return `<div class="row sg"><span style="flex:1"><b>${esc(x)}</b></span><span class="mut">${n?'Cubriendo posición '+n:'Libre'}</span></div>`;
   }).join('');
 }
 
-const _d=draw;draw=function(){_d();if(me&&!drag&&!dragV&&!dragL)drawBench()};
+// ── CONTEO ────────────────────────────────────────────────────
+function renderConteo() {
+  const areaKey = COUNT_AREAS[ME.role];
+  if (!areaKey) return;
+  $('conteoAreaLabel').textContent = areaKey.label;
+  const areaData = (Counts||{})[areaKey.id]||{};
+  const current = areaData.count||0;
+  $('countDisplay').textContent = current;
+  if ($('newCountInput')) $('newCountInput').placeholder = String(current);
+  const hist = Object.entries(areaData.history||{}).sort((a,b)=>b[1].ts-a[1].ts).slice(0,8);
+  $('conteoHistory').innerHTML = hist.length
+    ? hist.map(([,h])=>{
+        const t=new Date(h.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+        return `<div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--card-alt);border-radius:6px;margin-bottom:4px;font-size:14px"><b>${h.count} personas</b><span style="color:var(--muted)">${t}</span></div>`;
+      }).join('')
+    : '<p style="color:var(--muted)">Sin historial aún.</p>';
+}
 
-const svg=$('svg');
-svg.addEventListener('pointerdown',e=>{
-  const sp=e.target.closest('.spill');if(sp&&!spillMode){showSpillPanel(sp.dataset.spill);return}
-  if(spillMode){const q=svg.createSVGPoint();q.x=e.clientX;q.y=e.clientY;const r=q.matrixTransform(svg.getScreenCTM().inverse());promptSpill(r.x,r.y);return}
-  if(isLimited()||isSpillOnly())return;
-  const lbl=e.target.closest('.vlabel');
-  if(lbl){dragL={lid:lbl.dataset.lid,startX:e.clientX,startY:e.clientY,x:0,y:0,moved:false};try{svg.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault();return}
-  const vtx=e.target.closest('.vertex');
-  if(vtx){dragV={sec:vtx.dataset.sec,idx:+vtx.dataset.idx,startX:e.clientX,startY:e.clientY,moved:false,x:0,y:0};try{svg.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault();return}
-  const add=e.target.closest('.vadd');if(add){addVertex(add.dataset.sec,+add.dataset.after,+add.dataset.mx,+add.dataset.my);return}
-  const z=e.target.closest('.sec');if(z&&!e.target.closest('.pc')){hl=secEditMode?z.dataset.s:(hl===z.dataset.s?null:z.dataset.s);draw();return}
-  const g=e.target.closest('.pc');if(!g)return;const n=+g.dataset.n;
-  if(edit&&canEd(n)){drag={n,m:0};try{svg.setPointerCapture(e.pointerId)}catch(_){}}else{sel=n;draw()}
-});
-svg.addEventListener('pointermove',e=>{
-  if(dragL){if(!dragL.moved&&(Math.abs(e.clientX-dragL.startX)>6||Math.abs(e.clientY-dragL.startY)>6))dragL.moved=true;if(dragL.moved){const q=svg.createSVGPoint();q.x=e.clientX;q.y=e.clientY;const r=q.matrixTransform(svg.getScreenCTM().inverse());dragL.x=Math.round(r.x);dragL.y=Math.round(r.y);const el=svg.querySelector(`.vlabel[data-lid="${dragL.lid}"]`);if(el)el.setAttribute('transform',`translate(${dragL.x} ${dragL.y})`)}return}
-  if(dragV){if(!dragV.moved&&(Math.abs(e.clientX-dragV.startX)>6||Math.abs(e.clientY-dragV.startY)>6))dragV.moved=true;if(dragV.moved){const q=svg.createSVGPoint();q.x=e.clientX;q.y=e.clientY;const r=q.matrixTransform(svg.getScreenCTM().inverse());dragV.x=Math.round(r.x);dragV.y=Math.round(r.y);const el=svg.querySelector(`.vertex[data-sec="${dragV.sec}"][data-idx="${dragV.idx}"]`);if(el){el.setAttribute('cx',dragV.x);el.setAttribute('cy',dragV.y)}}return}
-  if(!drag)return;drag.m=1;const q=svg.createSVGPoint();q.x=e.clientX;q.y=e.clientY;const r=q.matrixTransform(svg.getScreenCTM().inverse());drag.x=Math.round(r.x);drag.y=Math.round(r.y);const el=svg.querySelector(`[data-n="${drag.n}"]`);if(el)el.setAttribute('transform',`translate(${drag.x} ${drag.y})`)
-});
-svg.addEventListener('pointerup',()=>{
-  if(dragL){if(dragL.moved)moveLabel(dragL.lid,dragL.x,dragL.y);dragL=null;return}
-  if(dragV){if(dragV.moved)moveVertex(dragV.sec,dragV.idx,dragV.x,dragV.y);else delVertex(dragV.sec,dragV.idx);dragV=null;return}
-  if(!drag)return;const d=drag;drag=null;sel=d.n;if(d.m){put(`pos/${d.n}/x`,d.x);put(`pos/${d.n}/y`,d.y)}else draw()
-});
+async function saveCount() {
+  const areaKey = COUNT_AREAS[ME.role];
+  if (!areaKey) return;
+  const count = +$('newCountInput').value;
+  if (isNaN(count)||count<0){toast('Número inválido',true);return;}
+  const ts = Date.now();
+  const histId = ts+'_'+Math.random().toString(36).slice(2,5);
+  await put(`counts/${areaKey.id}/count`,count);
+  await put(`counts/${areaKey.id}/updatedAt`,ts);
+  await put(`counts/${areaKey.id}/updatedBy`,ME.name);
+  await put(`counts/${areaKey.id}/history/${histId}`,{count,ts,by:ME.name});
+  $('newCountInput').value='';
+  toast(`Conteo guardado: ${count} personas`);
+  await loadAll();
+}
 
-function toggleAppMode(){
-  isVolunteerMode=!isVolunteerMode;
-  const btn=$('btn-mode-toggle'),app=$('app'),vp=$('volPanel'),title=$('appTitle');
-  if(isVolunteerMode){
-    btn.textContent='Volver';app.hidden=true;vp.hidden=false;title.textContent='Portal de Voluntarias';
-    $('volSearch').value='';volQuery='';renderVolList();$('adminMenuBtn').hidden=true;
-    $('floatScan').hidden=true;$('quickActions').hidden=true;
-  }else{
-    btn.textContent='Vista Voluntaria';app.hidden=false;vp.hidden=true;title.textContent='Acomodadores · La Feria, TX';
-    if(me)draw();$('adminMenuBtn').hidden=!(me&&me.all);
-    $('floatScan').hidden=!me;$('quickActions').hidden=!(me&&(me.adm||me.all)&&!me.limited&&!me.spillOnly);
+// ── SPILLS ────────────────────────────────────────────────────
+async function reportSpill() {
+  const type=$('spillType').value;
+  const loc=$('spillLocation').value.trim();
+  if(!type){toast('Selecciona el tipo',true);return;}
+  if(!loc){toast('Escribe la ubicación',true);return;}
+  const id=Date.now()+'_'+Math.random().toString(36).slice(2,5);
+  await put(`s/spills/${id}`,{type,location:loc,reportedBy:ME.name,status:'pending',ts:Date.now()});
+  $('spillType').value='';$('spillLocation').value='';
+  toast('Derrame reportado');
+  await loadAll();
+}
+
+function renderSpills() {
+  const spills=Object.entries(S.spills||{}).sort((a,b)=>b[1].ts-a[1].ts);
+  const active=spills.filter(([,s])=>s.status!=='done');
+  const done=spills.filter(([,s])=>s.status==='done').slice(0,10);
+
+  if(!active.length){
+    $('spillsList').innerHTML='<p style="color:var(--ok);font-weight:600;padding:10px">✓ Sin derrames activos</p>';
+  } else {
+    $('spillsList').innerHTML=active.map(([id,s])=>spillRow(id,s,false)).join('');
+  }
+
+  // History (always visible for limpieza, hidden for others unless they scroll)
+  if($('spillHistCard')&&!$('spillHistCard').hidden){
+    $('spillsHistList').innerHTML=done.length
+      ?done.map(([,s])=>{
+          const t=new Date(s.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+          const td=s.doneAt?new Date(s.doneAt).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}):'—';
+          return `<div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--ok-bg);border-left:3px solid var(--ok);border-radius:6px;margin-bottom:4px;font-size:13px;flex-wrap:wrap;gap:4px">
+            <span><b>${esc(s.type)}</b> · ${esc(s.location)}</span>
+            <span style="color:var(--muted)">${t} → ${td} · ${esc(s.takenBy||'?')}</span>
+          </div>`;
+        }).join('')
+      :'<p style="color:var(--muted)">Sin derrames resueltos hoy.</p>';
   }
 }
 
-function cnt(sec,delta){
-  if(!canCnt()) return;
-  const val = Math.max(0, ((S.cnt||{})[sec]||0) + delta);
-  if(!S.cnt) S.cnt = {};
-  S.cnt[sec] = val;
-  draw();
-  fetch(U(`cnt/${sec}`), { method:'PUT', body: JSON.stringify(val) });
+function spillRow(id,s,isDone){
+  const t=new Date(s.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+  const color=isDone?'var(--ok)':s.status==='inprogress'?'var(--warn)':'var(--err)';
+  const label=isDone?'Resuelto':s.status==='inprogress'?'En proceso':'Pendiente';
+  const canAct=['super','jaime','steven','abdiel','limpieza'].includes(ME.role)||ME.role==='acom';
+  return `<div class="spill-row${isDone?' done':s.status==='inprogress'?' inprogress':''}">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px">
+      <b>${esc(s.type)}</b><span style="font-size:12px;font-weight:700;color:${color}">${label}</span>
+    </div>
+    <div style="font-size:13px;color:var(--muted);margin-top:3px">📍 ${esc(s.location)} · ${t} · ${esc(s.reportedBy)}</div>
+    ${s.takenBy?`<div style="font-size:13px;color:var(--warn);font-weight:600;margin-top:3px">🧹 Limpiando: ${esc(s.takenBy)}</div>`:''}
+    ${!isDone&&canAct?`<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+      ${s.status==='pending'?`<button class="sub" onclick="takeSpill('${id}')" style="padding:7px 12px;font-size:13px">🧹 Limpiar</button>`:''}
+      ${s.status==='inprogress'?`<button class="ok" onclick="doneSpill('${id}')" style="padding:7px 12px;font-size:13px">✓ Terminado</button>`:''}
+      ${ME.role==='super'?`<button onclick="delSpill('${id}')" style="padding:7px 12px;font-size:13px;color:var(--err)">Eliminar</button>`:''}
+    </div>`:''}
+  </div>`;
 }
 
-function reset(){
-  showModal("Reiniciar Día", "<p>Esto borra los check-ins, derrames terminados y reinicia los conteos. Solo debe hacerse entre asambleas o al final del día.</p>",
-    [{text:"Cancelar"},
-     {text:"Reiniciar", class:"warn", action: async () => {
-      const pos = S.pos || {};
-      for(const k in pos){
-        pos[k].st = 'pend';
-        delete pos[k].stAt;
-        delete pos[k].sub;
-        await fetch(U(`pos/${k}`), { method:'PUT', body: JSON.stringify(pos[k]) });
-      }
-      const spills = S.spills || {};
-      for(const id in spills){
-        if(spills[id].status === 'terminado') await fetch(U(`spills/${id}`), { method:'DELETE' });
-      }
-      await fetch(U('cnt'), { method:'DELETE' });
-      showToast('Día reiniciado');
-      load();
-    }}]);
+async function takeSpill(id){
+  await put(`s/spills/${id}/status`,'inprogress');
+  await put(`s/spills/${id}/takenBy`,ME.name);
+  await put(`s/spills/${id}/takenAt`,Date.now());
+  toast('Tomaste el derrame para limpiar');
+  await loadAll();
+}
+async function doneSpill(id){
+  await put(`s/spills/${id}/status`,'done');
+  await put(`s/spills/${id}/doneAt`,Date.now());
+  toast('Derrame resuelto ✓');
+  await loadAll();
+}
+async function delSpill(id){
+  await del(`s/spills/${id}`);
+  toast('Derrame eliminado');
+  await loadAll();
+}
+
+// ── QR SCANNER ────────────────────────────────────────────────
+async function sign(msg){
+  if(!crypto.subtle)throw new Error("Requiere HTTPS para firmar QRs.");
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,16);
+}
+function todayStr(){return new Date().toISOString().slice(0,10);}
+
+async function validateQR(content){
+  const parts=content.split('|');
+  if(parts[0]==='TMP'){
+    if(parts.length!==5)return{valid:false,reason:"Formato QR temporal inválido"};
+    const[,tempId,zone,expiresAt,sig]=parts;
+    let exp;try{exp=await sign(`${tempId}|${zone}|${expiresAt}|${APP_SECRET}`);}catch(e){return{valid:false,reason:e.message};}
+    if(sig!==exp)return{valid:false,reason:"Firma inválida"};
+    if(Date.now()>+expiresAt)return{valid:false,reason:"QR temporal expirado"};
+    const tmp=(ACC.tempQr||{})[tempId];
+    if(!tmp)return{valid:false,reason:"QR temporal no encontrado"};
+    if(zone!==ZONE)return{valid:false,reason:"QR es para otra zona"};
+    return{valid:true,temp:true,name:tmp.name,role:'QR Temporal'};
+  }
+  if(parts[0]==='ASM'){
+    if(parts.length!==4)return{valid:false,reason:"Formato QR inválido"};
+    const[,uid,dateStr,sig]=parts;
+    if(dateStr!==todayStr())return{valid:false,reason:"Código de otro día"};
+    let exp;try{exp=await sign(`${uid}|${dateStr}|${APP_SECRET}`);}catch(e){return{valid:false,reason:e.message};}
+    if(sig!==exp)return{valid:false,reason:"Firma inválida"};
+    const u=(ACC.users||{})[uid];
+    if(!u)return{valid:false,reason:"Hermano no registrado"};
+    if(u.active===false)return{valid:false,reason:"Acceso revocado"};
+    return{valid:true,uid,user:u};
+  }
+  return{valid:false,reason:"Formato desconocido"};
+}
+
+async function startCamera(){
+  if(scanMode)return;
+  try{
+    scanner=new Html5Qrcode("reader");
+    scanMode=true;
+    await scanner.start({facingMode:"environment"},{fps:10,qrbox:{width:250,height:250}},onScanSuccess,()=>{});
+  }catch(e){toast("No se pudo iniciar la cámara",true);scanMode=false;}
+}
+async function stopCamera(){
+  if(scanner&&scanMode){try{await scanner.stop();scanner.clear();}catch(e){}}
+  scanMode=false;
+}
+
+async function onScanSuccess(text){
+  if(text===lastScan&&Date.now()-lastScanTs<3000)return;
+  lastScan=text;lastScanTs=Date.now();
+  const parts=text.split('|');
+  if(parts[0]==='TMP'&&parts[1]){
+    try{const f=await fb(`access/tempQr/${parts[1]}`);if(f){if(!ACC.tempQr)ACC.tempQr={};ACC.tempQr[parts[1]]=f;}}catch(e){}
+  }
+  const res=await validateQR(text);
+  if(!res.valid){showQRResult(false,res.reason);return;}
+  const name=res.temp?res.name:res.user.name;
+  const role=res.temp?'QR Temporal':res.user.role||'Autorizado';
+  const uid=res.temp?`temp:${text.split('|')[1]}`:res.uid;
+  await logEntry(uid,name,!!res.temp);
+  showQRResult(true,null,name,role);
+  toast(`Entrada: ${name}`);
+}
+
+async function logEntry(uid,name,isTemp){
+  const id=Date.now()+'_'+Math.random().toString(36).slice(2,5);
+  await put(`access/entries/${id}`,{uid,zone:ZONE,name,entryTime:Date.now(),exitTime:null,isTemp:!!isTemp});
+  await loadAll();
+}
+
+function showQRResult(ok,reason,name,role){
+  if(ok){
+    const now=new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+    $('qrResult').innerHTML=`<div class="result green"><h2>✓ Acceso Permitido</h2><div class="rname">${esc(name)}</div><div class="rrole">${esc(role)}</div><div style="font-size:13px;color:var(--muted);margin-top:8px">Entrada: ${now}</div></div>`;
+  }else{
+    $('qrResult').innerHTML=`<div class="result red"><h2>✗ Acceso Denegado</h2><div class="rreason">${esc(reason)}</div><div class="rhint">Diríjase al Superintendente de Acomodadores</div></div>`;
+  }
+}
+
+function renderInsideList(){
+  const now=Date.now();
+  const inside=Object.entries(ACC.entries||{}).filter(([,e])=>!e.exitTime).sort((a,b)=>b[1].entryTime-a[1].entryTime);
+  if(!inside.length){$('insideListQR').innerHTML='<p style="color:var(--muted);text-align:center;padding:16px">Nadie dentro en este momento.</p>';return;}
+  $('insideListQR').innerHTML=inside.map(([id,e])=>{
+    const mins=Math.floor((now-e.entryTime)/60000);
+    const t=new Date(e.entryTime).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+    return `<div class="inside-row${mins>=30?' long':''}">
+      <div><b>${esc(e.name)}</b><div style="font-size:12px;color:var(--muted)">Entró ${t} · ${mins} min</div></div>
+      <button class="ok" onclick="markExit('${id}')" style="padding:7px 12px;font-size:13px">Salió</button>
+    </div>`;
+  }).join('');
+}
+
+async function markExit(id){
+  await put(`access/entries/${id}/exitTime`,Date.now());
+  toast('Salida registrada');
+  await loadAll();
+}
+
+function manualQRSearch(){
+  const users=ACC.users||{};
+  const html=`<input placeholder="Buscar nombre..." oninput="filterManualList(this.value)" style="margin-bottom:10px">
+    <div id="manualList" style="max-height:320px;overflow-y:auto">${Object.entries(users).map(([uid,u])=>
+      `<div onclick="manualGrant('${uid}')" style="padding:10px 12px;border:1px solid var(--border);border-radius:6px;cursor:pointer;margin-bottom:5px;display:flex;justify-content:space-between;align-items:center" class="mitem">
+        <div><b>${esc(u.name)}</b><div style="font-size:12px;color:var(--muted)">${esc(u.role||'')}</div></div>
+        <span style="font-size:12px;font-weight:700;color:${u.active===false?'var(--err)':'var(--ok)'}">${u.active===false?'Revocado':'✓ Autorizado'}</span>
+      </div>`
+    ).join('')}</div>`;
+  showModal('Buscar Hermano Autorizado',html,[{text:'Cancelar'}]);
+}
+
+function filterManualList(q){
+  document.querySelectorAll('.mitem').forEach(el=>{
+    el.style.display=el.textContent.toLowerCase().includes(q.toLowerCase())?'':'none';
+  });
+}
+
+async function manualGrant(uid){
+  const u=(ACC.users||{})[uid];
+  if(!u)return;
+  if(u.active===false){toast(`${u.name} tiene acceso revocado`,true);$('modal').hidden=true;return;}
+  await logEntry(uid,u.name,false);
+  $('modal').hidden=true;
+  showQRResult(true,null,u.name,u.role||'');
+}
+
+// ── SEARCH ────────────────────────────────────────────────────
+function doSearch(q){
+  if(!q.trim()){$('searchResults').innerHTML='';return;}
+  const ql=q.toLowerCase();
+  const pos=S.pos||{};
+  const results=POSITIONS.filter(p=>
+    p.name.toLowerCase().includes(ql)||p.desc.toLowerCase().includes(ql)||String(p.id).includes(ql)
+  );
+  if(!results.length){$('searchResults').innerHTML='<p style="color:var(--muted)">Sin resultados</p>';return;}
+  $('searchResults').innerHTML=results.map(p=>{
+    const st=pos[String(p.id)]||{};
+    const status=st.status||'pending';
+    const cap=CAPITANES.find(c=>c.id===p.cap);
+    return `<div class="pos-row" style="border:1px solid var(--border);border-radius:6px;margin-bottom:8px">
+      <div class="pos-num ${p.type==='session'?'orange':''}">${typeof p.id==='number'?p.id:'—'}</div>
+      <div class="pos-info">
+        <div class="pos-name">${esc(p.name)}</div>
+        <div class="pos-desc">${esc(p.desc)}</div>
+        <div style="font-size:12px;color:var(--muted)">${esc(cap?.label||'')}</div>
+        ${st.subName?`<div style="font-size:12px;color:var(--warn);font-weight:600">Sustituto: ${esc(st.subName)}</div>`:''}
+      </div>
+      <span class="badge ${status==='present'?'present':status==='sub'?'sub':status==='absent'?'absent':'pending'}">
+        ${status==='present'?'✓':status==='sub'?'↔':status==='absent'?'✗':'—'}
+      </span>
+    </div>`;
+  }).join('');
+}
+
+// ── MODAL / TOAST ─────────────────────────────────────────────
+function showModal(title,bodyHtml,buttons){
+  $('modalBox').innerHTML=`<h2>${esc(title)}</h2><div>${bodyHtml}</div><div class="modal-btns" id="mdlBtns"></div>`;
+  buttons.forEach(b=>{
+    const btn=document.createElement('button');
+    btn.textContent=b.text;btn.className=b.cls||'';
+    btn.onclick=()=>{if(b.action)b.action();if(!b.keepOpen)$('modal').hidden=true;};
+    $('mdlBtns').appendChild(btn);
+  });
+  $('modal').hidden=false;
+  const inp=$('modalBox').querySelector('input');
+  if(inp)setTimeout(()=>inp.focus(),50);
+}
+
+function toast(msg,err){
+  const t=document.createElement('div');
+  t.className='toast'+(err?' err':'');t.textContent=msg;
+  $('toastWrap').appendChild(t);
+  setTimeout(()=>t.classList.add('show'),10);
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},3200);
 }
 </script>
 </body>
