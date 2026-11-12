@@ -260,6 +260,26 @@ input:focus,select:focus{outline:2px solid var(--accent);border-color:var(--acce
       </div>
     </div>
 
+    <!-- Tab: Mapa de Posiciones (visible to ALL roles, read-only for acom/eliud/jimmy) -->
+    <div id="tabMapa" hidden>
+      <div class="card" style="padding:0;overflow:auto;border:2px solid var(--primary);border-radius:8px">
+        <div style="background:var(--primary);color:#fff;padding:10px 14px;font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+          <span>🗺 Mapa de Posiciones — Salón de Asambleas La Feria TX</span>
+          <span style="font-size:12px;opacity:.8">Toca una posición para ver detalles</span>
+        </div>
+        <div style="overflow:auto;-webkit-overflow-scrolling:touch;position:relative">
+          <svg id="mapSvg" viewBox="0 0 1310 926" style="width:100%;max-width:1310px;height:auto;display:block;min-width:600px">
+            <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
+            <g id="mapPins"></g>
+          </svg>
+        </div>
+      </div>
+      <div class="card" style="margin-top:0">
+        <h2>Lista de Posiciones</h2>
+        <div id="mapaList"></div>
+      </div>
+    </div>
+
     <!-- Tab: Buscar -->
     <div id="tabSearch" hidden>
       <div class="card">
@@ -294,21 +314,25 @@ const STAFF = {
 };
 
 // Role → tabs
+// NOTE: ALL roles get 'mapa' tab so everyone can see position map
+// 'positions' = full edit access (super only)
+// 'miscaps' = edit only their captains (jaime/steven/abdiel)
+// 'mapa' = read-only map for everyone else
 const ROLE_TABS = {
-  super:    ['positions','search','derrames','qr'],
-  jaime:    ['miscaps','derrames','qr'],
-  steven:   ['miscaps','derrames','qr'],
-  abdiel:   ['miscaps','conteo','derrames','qr'],
-  eliud:    ['conteo'],
-  jimmy:    ['conteo','qr'],
-  limpieza: ['derrames'],
-  acom:     ['mipos','derrames','qr'],
-  count:    ['mipos','conteo'],
+  super:    ['positions','mapa','search','derrames','qr'],
+  jaime:    ['miscaps','mapa','derrames','qr'],
+  steven:   ['miscaps','mapa','derrames','qr'],
+  abdiel:   ['miscaps','mapa','conteo','derrames','qr'],
+  eliud:    ['mapa','conteo'],
+  jimmy:    ['mapa','conteo','qr'],
+  limpieza: ['mapa','derrames'],
+  acom:     ['mapa','mipos','derrames','qr'],
 };
 
 const TAB_META = {
   positions: { label:'📋 Todas las Posiciones', el:'tabPositions' },
   miscaps:   { label:'📋 Mis Capitanes',         el:'tabMisCaps'  },
+  mapa:      { label:'🗺 Mapa',                  el:'tabMapa'     },
   mipos:     { label:'📍 Mi Posición',           el:'tabMiPos'    },
   conteo:    { label:'🔢 Conteo',                el:'tabConteo'   },
   derrames:  { label:'🧹 Derrames',              el:'tabDerrames' },
@@ -510,6 +534,7 @@ function setTab(t) {
 function renderTab(t) {
   if (t==='positions') renderPositions(ROLE_CAPS.super);
   else if (t==='miscaps') renderPositions(ROLE_CAPS[ME.role] || []);
+  else if (t==='mapa') renderMapa();
   else if (t==='mipos') renderMyPosition();
   else if (t==='conteo') renderConteo();
   else if (t==='derrames') renderSpills();
@@ -551,14 +576,98 @@ function renderStats() {
   `;
 }
 
-// ── POSITIONS ─────────────────────────────────────────────────
+// ── MAPA ──────────────────────────────────────────────────────
+const POS_COORDS = {
+  1:{x:1240,y:220}, 2:{x:1180,y:420}, 3:{x:1140,y:380}, 4:{x:1140,y:450},
+  5:{x:1100,y:580}, 6:{x:1050,y:650}, 7:{x:1100,y:300}, 8:{x:960,y:570},
+  9:{x:960,y:620}, 10:{x:900,y:470}, 11:{x:950,y:380}, 12:{x:950,y:310},
+  13:{x:1140,y:300}, 14:{x:1200,y:160}, 15:{x:900,y:140},
+  16:{x:1050,y:230}, 17:{x:1050,y:280}, 18:{x:850,y:760},
+  19:{x:570,y:620}, 20:{x:570,y:660}, 21:{x:400,y:390},
+  22:{x:400,y:340}, 23:{x:530,y:220}, 24:{x:570,y:220},
+  25:{x:800,y:160}, 26:{x:710,y:300}, 27:{x:650,y:510},
+  28:{x:680,y:760}, 29:{x:830,y:530}, 30:{x:750,y:380},
+  31:{x:780,y:230}, 32:{x:870,y:420}, 33:{x:850,y:480},
+  34:{x:900,y:620},
+};
+
+function renderMapa() {
+  const pos = S.pos || {};
+  const canEdit = ['super','jaime','steven','abdiel'].includes(ME.role);
+  const pins = POSITIONS.filter(p => typeof p.id === 'number' && POS_COORDS[p.id]).map(p => {
+    const coords = POS_COORDS[p.id];
+    const st = (pos[String(p.id)]||{}).status || 'pending';
+    const color = st==='present'?'#2e7d32':st==='absent'?'#c62828':st==='sub'?'#e68a00':'#5a1212';
+    return `<g style="cursor:pointer" onclick="showPosDetail('${p.id}')" transform="translate(${coords.x},${coords.y})">
+      <circle r="${p.type==='session'?14:16}" fill="${color}" stroke="#fff" stroke-width="2.5" opacity="0.92"/>
+      <text text-anchor="middle" dy="5" font-size="${p.id>=10?11:13}" fill="#fff" font-weight="700" font-family="'Noto Sans',sans-serif" pointer-events="none">${p.id}</text>
+    </g>`;
+  }).join('');
+  const mapPins = document.getElementById('mapPins');
+  if (mapPins) mapPins.innerHTML = pins;
+
+  const legend = `<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;font-size:13px;padding:8px 0">
+    <span><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#2e7d32;vertical-align:-2px;margin-right:4px"></span>Presente</span>
+    <span><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#c62828;vertical-align:-2px;margin-right:4px"></span>Ausente</span>
+    <span><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#e68a00;vertical-align:-2px;margin-right:4px"></span>Sustituto</span>
+    <span><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#5a1212;vertical-align:-2px;margin-right:4px"></span>Pendiente</span>
+  </div>`;
+
+  let listHtml = legend;
+  CAPITANES.forEach(cap => {
+    const capPos = POSITIONS.filter(p => p.cap === cap.id && p.type !== 'special');
+    if (!capPos.length) return;
+    listHtml += `<div style="margin-bottom:14px"><div style="background:${cap.color};color:#fff;padding:8px 12px;border-radius:6px 6px 0 0;font-weight:700;font-size:13px">${cap.label}</div>`;
+    capPos.forEach(p => {
+      const st = pos[String(p.id)]||{};
+      const status = st.status||'pending';
+      const color = status==='present'?'var(--ok)':status==='absent'?'var(--err)':status==='sub'?'var(--warn)':'var(--muted)';
+      const label = status==='present'?'✓ Presente':status==='absent'?'✗ Ausente':status==='sub'?`↔ ${st.subName||'Sustituto'}`:'— Pendiente';
+      listHtml += `<div style="border:1px solid var(--border);border-top:none;padding:10px 12px;background:#fff;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <div style="width:28px;height:28px;border-radius:50%;background:${cap.color};color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${typeof p.id==='number'?p.id:'—'}</div>
+        <div style="flex:1;min-width:120px"><div style="font-weight:700;font-size:14px">${esc(p.name)}</div><div style="font-size:12px;color:var(--muted)">${esc(p.desc)}</div></div>
+        <span style="font-size:12px;font-weight:700;color:${color}">${label}</span>
+        ${canEdit?`<div style="display:flex;gap:5px">
+          <button class="ok" onclick="markStatus('${p.id}','present','${esc(p.name)}')" style="padding:5px 10px;font-size:12px">✓</button>
+          <button class="warn" onclick="markStatus('${p.id}','absent','${esc(p.name)}')" style="padding:5px 10px;font-size:12px">✗</button>
+          <button onclick="openReplace('${p.id}','${esc(p.name)}')" style="padding:5px 10px;font-size:12px">↔</button>
+        </div>`:''}
+      </div>`;
+    });
+    listHtml += '</div>';
+  });
+  $('mapaList').innerHTML = listHtml;
+}
+
+function showPosDetail(posId) {
+  const p = POSITIONS.find(x => String(x.id) === String(posId));
+  if (!p) return;
+  const st = (S.pos||{})[String(posId)]||{};
+  const status = st.status||'pending';
+  const cap = CAPITANES.find(c=>c.id===p.cap);
+  const canEdit = ['super','jaime','steven','abdiel'].includes(ME.role);
+  const color = status==='present'?'var(--ok)':status==='absent'?'var(--err)':status==='sub'?'var(--warn)':'var(--muted)';
+  const label = status==='present'?'✓ Presente':status==='absent'?'✗ Ausente':status==='sub'?`↔ Sustituto: ${st.subName||''}`:'— Pendiente';
+  const btns = canEdit ? [
+    { text:'✓ Presente', cls:'ok', action:()=>{ markStatus(posId,'present',p.name); $('modal').hidden=true; }},
+    { text:'✗ Ausente', cls:'warn', action:()=>{ markStatus(posId,'absent',p.name); $('modal').hidden=true; }},
+    { text:'↔ Reemplazo', action:()=>{ $('modal').hidden=true; openReplace(posId,p.name); }},
+    { text:'Cerrar' }
+  ] : [{ text:'Cerrar' }];
+  showModal(`Posición #${posId} — ${p.name}`,
+    `<div style="font-size:13px;color:var(--muted);margin-bottom:6px">${esc(p.desc)}</div>
+     <div style="font-size:13px;color:var(--muted);margin-bottom:10px">${esc(cap?.label||'')}</div>
+     <span style="font-size:14px;font-weight:700;color:${color}">${label}</span>`,
+    btns);
+}
+
+// ── POSITIONS (staff only) ────────────────────────────────────
 function filterPos(f) {
   posFilter = f;
   ['fAll','fAbsent','fPresent','fAll2','fAbsent2','fPresent2'].forEach(id => $(id)?.classList.remove('on'));
   const map = {all:'fAll',absent:'fAbsent',present:'fPresent'};
   $(map[f])?.classList.add('on');
   $('fAll2') && ($(map[f].replace('f','f')+'2') || $((map[f])+'2'))?.classList.add('on');
-  // simpler: just re-render
   if (currentTab==='positions') renderPositions(ROLE_CAPS.super);
   else if (currentTab==='miscaps') renderPositions(ROLE_CAPS[ME.role]||[]);
 }
