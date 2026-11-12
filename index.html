@@ -3,413 +3,943 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Acomodadores · La Feria, TX</title>
+<title>Asamblea de Circuito · La Feria, TX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--red:#6e1414;--red2:#9b1c1c;--ink:#1f1f1f;--mut:#555;--line:#d6d6d6;--bg:#e9e9e9;--blue:#2c6cb0;--org:#e07b00;--ok:#2e7d32;--purple:#5B3C88;--spill:#ff9800;--spillP:#fbc02d;--spillD:#4caf50}
-[hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;font:17px/1.5 "Segoe UI",Roboto,system-ui,sans-serif;background:var(--bg);color:var(--ink)}body.big{zoom:1.2}
-header{background:var(--red);color:#fff;padding:10px 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:5}header h1{font-size:18px;margin:0;flex:1;min-width:180px}
-.net{font-size:12px;padding:3px 9px;border-radius:99px;background:#ffffff33}.net.on::before{content:"● ";color:#7fe08a}.net.off{background:#fff;color:var(--red2);font-weight:700}.net.loc{background:#fff;color:#555}
-button{font:inherit;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:6px;padding:10px 14px;cursor:pointer}button.pri{background:var(--red2);color:#fff;border-color:var(--red2)}button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}button.on{background:#333;color:#fff}
+:root{
+  --red:#5a1212;--red-dark:#3d0c0c;--red-bg:#fbeae9;
+  --blue:#2c4a6b;--blue-dark:#1a2f47;--blue-bg:#e8f0f8;
+  --brown:#7a5c2e;--brown-dark:#5a4420;--brown-bg:#f5ede0;
+  --gold:#b8860b;--gold-dark:#8a6508;
+  --bg:#f9f5e9;--card:#fff;--card-alt:#f0e8d4;
+  --text:#1a1a1a;--muted:#6b5d4f;--border:#d4c9b0;
+  --ok:#4a6b3a;--ok-bg:#edf4e8;--err:#a8251c;--err-bg:#fbeae9;
+  --warn:#c28a1c;--warn-bg:#fdf8e8;
+  --blue-a:#3d5a80;--org-a:#c28a1c;--purple-a:#5a1212;--spill:#b8860b;--spillP:#c28a1c;--spillD:#4a6b3a;
+}
+[hidden]{display:none!important}*{box-sizing:border-box}
+body{margin:0;font:16px/1.5 'Noto Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text)}
+body.big{zoom:1.15}
+header{background:var(--red);color:#fff;padding:12px 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+header h1{font-size:17px;margin:0;flex:1;min-width:180px;font-weight:600}
+.net{font-size:12px;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.18)}
+.net.on::before{content:"● ";color:#9fd49f}.net.off{background:#fff;color:var(--err);font-weight:700}.net.loc{background:#fff;color:var(--muted)}
+button{font:inherit;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:6px;padding:10px 14px;cursor:pointer;font-weight:600;transition:background .15s;font-family:inherit}
+button:hover{background:var(--card-alt)}
+button.pri{background:var(--red);color:#fff;border-color:var(--red)}
+button.pri:hover{background:var(--red-dark)}
+button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
+button.warn{background:var(--err);color:#fff;border-color:var(--err)}
+button.on{background:var(--text);color:#fff;border-color:var(--text)}
+header button{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.3)}
+header button:hover{background:rgba(255,255,255,.25)}
 main{max-width:1100px;margin:auto;padding:12px;display:grid;gap:12px}
-.card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}
+.card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-#alert{border:2px solid var(--red2);color:var(--red2);font-weight:600}
-#mapw{overflow:auto;padding:0;-webkit-overflow-scrolling:touch}
-svg{width:100%;max-width:100%;height:auto;display:block;touch-action:pan-x pan-y pinch-zoom}
+
+/* ============ HOME SCREEN ============ */
+#homeScreen{
+  min-height:100vh;
+  background:linear-gradient(160deg,var(--red) 0%, var(--red-dark) 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px 16px;gap:32px;
+}
+.home-header{text-align:center;color:#fff;max-width:600px}
+.home-header h1{margin:0 0 8px;font-size:32px;font-weight:700;letter-spacing:.5px}
+.home-header .sub{font-size:15px;opacity:.85;font-weight:400;letter-spacing:.5px}
+.home-header .gold-line{width:80px;height:3px;background:var(--gold);margin:16px auto;border-radius:2px}
+.mode-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;max-width:920px;width:100%}
+.mode-card{
+  border:none;border-radius:12px;padding:32px 20px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  color:#fff;transition:all .2s;text-align:center;font-family:inherit;
+  box-shadow:0 4px 20px rgba(0,0,0,.15);
+  min-height:220px;justify-content:center;
+}
+.mode-card:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,.25)}
+.mode-card .mode-icon{width:64px;height:64px;opacity:.95}
+.mode-card .mode-title{font-size:22px;font-weight:700;letter-spacing:.5px}
+.mode-card .mode-desc{font-size:14px;opacity:.85;font-weight:400;line-height:1.4;max-width:200px}
+.mode-acom{background:linear-gradient(160deg,var(--red),var(--red-dark));border:2px solid rgba(255,255,255,.15)}
+.mode-vol{background:linear-gradient(160deg,var(--blue),var(--blue-dark));border:2px solid rgba(255,255,255,.15)}
+.mode-admin{background:linear-gradient(160deg,var(--brown),var(--brown-dark));border:2px solid rgba(255,255,255,.15)}
+.home-footer{color:#fff;opacity:.6;font-size:13px;text-align:center;margin-top:20px}
+
+/* ============ LOGIN PANELS ============ */
+#acomLoginScreen,#volLoginScreen,#adminLoginScreen{
+  min-height:100vh;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.login-card{max-width:480px;width:100%;background:#fff;border:1px solid var(--border);border-radius:12px;padding:28px;box-shadow:0 8px 40px rgba(0,0,0,.1)}
+.login-card h2{margin:0 0 4px;font-size:24px;color:var(--red);font-weight:700}
+.login-card .lg-sub{font-size:14px;color:var(--muted);margin-bottom:20px}
+.login-card input,.login-card select{font:inherit;padding:14px;border:1px solid var(--border);border-radius:8px;width:100%;background:#fff;color:var(--text);font-family:inherit;font-size:16px;margin-bottom:10px}
+.login-card input:focus,.login-card select:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+.login-card .back-btn{background:transparent;color:var(--muted);border:none;padding:8px 0;cursor:pointer;font-weight:600;font-size:14px;margin-bottom:16px;text-align:left}
+.login-card .back-btn:hover{color:var(--red)}
+.res-item{width:100%;text-align:left;margin-top:6px;padding:14px;font-size:16px}
+.admin-input-group{display:grid;gap:10px}
+
+/* ============ VOLUNTARIA VIEW ============ */
+.vol-info-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:12px}
+.vol-info-card h2{margin:0 0 4px;font-size:22px;color:var(--blue)}
+.vol-info-card .sub{font-size:14px;color:var(--muted);margin-bottom:16px}
+.turno-pill{display:inline-flex;align-items:center;gap:8px;background:var(--blue-bg);color:var(--blue);border:1px solid #90b8e0;border-radius:6px;padding:8px 14px;margin:4px 4px 0 0;font-weight:600;font-size:14px}
+.turno-pill b{color:var(--blue-dark);font-size:13px;text-transform:uppercase;letter-spacing:.5px}
+.turno-pill .pos-num{background:var(--blue);color:#fff;border-radius:4px;padding:2px 8px;font-size:13px;font-weight:700}
+#volMapView{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:12px}
+#volMapView h3{margin:0 0 12px;font-size:16px;color:var(--blue)}
+
+/* ============ MAP ============ */
+#alert{border:2px solid var(--err);color:var(--err);font-weight:600;background:#fff}
+#mapw{overflow:auto;padding:0;-webkit-overflow-scrolling:touch;border:2px solid var(--red);border-radius:8px;position:relative}
+svg.map-svg{width:100%;height:auto;display:block;transition:width 0.2s}
 #toast-container{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none}
-.toast{background:#2e7d32;color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,.3);opacity:0;transition:opacity .3s,transform .3s;transform:translateY(20px);display:flex;align-items:center;gap:8px;max-width:340px;font-size:16px}
-.toast.err{background:#b71c1c}.toast.show{opacity:1;transform:translateY(0)}
-.pc{cursor:pointer}.pc text{font:700 18px sans-serif;fill:#fff;pointer-events:none}
-@keyframes bl{50%{opacity:.05}}.pulse{fill:none;stroke:#d11;stroke-width:6;animation:bl .8s infinite}@media(prefers-reduced-motion:reduce){.pulse{animation:none;opacity:.8}}
-.tag{font-size:14px;padding:3px 9px;border-radius:99px;color:#fff}.tag.b{background:var(--blue)}.tag.o{background:var(--org)}.tag.p{background:var(--purple)}
-.mut{color:var(--mut)}h3{margin:0 0 6px;font-size:19px}
-.who{background:#f3f3f3;border-left:4px solid var(--red2);padding:10px 12px;margin:10px 0}
-a{color:var(--red2);font-weight:600}
+.toast{background:var(--ok);color:#fff;padding:14px 22px;border-radius:6px;font-weight:700;box-shadow:0 4px 16px rgba(0,0,0,.3);opacity:0;transition:opacity .3s,transform .3s;transform:translateY(20px);max-width:340px;font-size:15px}
+.toast.err{background:var(--err)}.toast.show{opacity:1;transform:translateY(0)}
+.pc{cursor:pointer}.pc text{font:700 15px 'Noto Sans',sans-serif;fill:#fff;pointer-events:none}
+@keyframes bl{50%{opacity:.15}}.pulse{fill:none;stroke:var(--err);stroke-width:8;animation:bl 1s infinite}@media(prefers-reduced-motion:reduce){.pulse{animation:none;opacity:.6}}
+.tag{font-size:13px;padding:3px 9px;border-radius:99px;color:#fff;font-weight:700}.tag.b{background:var(--blue-a)}.tag.o{background:var(--org-a)}.tag.p{background:var(--purple-a)}.tag.g{background:#999}
+.mut{color:var(--muted)}h3{margin:0 0 6px;font-size:18px;color:var(--red)}
+.who{background:var(--card-alt);border-left:4px solid var(--red);padding:10px 12px;margin:10px 0;border-radius:0 6px 6px 0}
+a{color:var(--red);font-weight:600}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
-.t{border:1px solid var(--line);border-radius:6px;padding:10px;text-align:center}.t b{font-size:26px;display:block}
-.bar{height:8px;background:#ddd;border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;background:var(--red2)}
-.sg{padding:10px 0;border-top:1px solid var(--line)}
-#login{position:fixed;inset:0;background:#3a0b0bf2;display:grid;place-items:center;z-index:20;padding:12px;overflow:auto}
-#login .card{max-width:440px;width:100%;display:grid;gap:12px}
-select,input{font:inherit;padding:11px;border:1px solid #bbb;border-radius:6px;width:100%}
-.lg{display:flex;gap:14px;font-size:14px;flex-wrap:wrap}.lg i{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:4px;vertical-align:-2px}
-.sec{fill:transparent;cursor:pointer}.sec.hl{fill:#9b1c1c55;stroke:#d11;stroke-width:3;stroke-dasharray:8 4}.sec.edit{stroke:#d11;stroke-width:1.5;stroke-dasharray:5 3;fill:transparent}
+.t{border:1px solid var(--border);border-radius:6px;padding:10px;text-align:center;background:#fff;cursor:pointer}.t b{font-size:26px;display:block;color:var(--red)}
+.bar{height:8px;background:#e0d8c4;border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--red);transition:width .3s}
+.sg{padding:10px 0;border-top:1px solid var(--border)}
+select,input{font:inherit;padding:11px;border:1px solid var(--border);border-radius:6px;width:100%;background:#fff;color:var(--text);font-family:inherit}
+select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+.lg{display:flex;gap:14px;font-size:13px;flex-wrap:wrap}.lg i{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:4px;vertical-align:-2px}
+.sec{fill:transparent;cursor:pointer}.sec.hl{fill:rgba(90,18,18,.25);stroke:var(--err);stroke-width:3;stroke-dasharray:8 4}.sec.edit{stroke:var(--err);stroke-width:1.5;stroke-dasharray:5 3;fill:transparent}
 .vertex{cursor:grab}.vertex:hover{r:9;stroke-width:3}.vertex:active{cursor:grabbing}
 .vadd{cursor:pointer;opacity:.5}.vadd:hover{opacity:1}
 .vlabel{cursor:grab}.vlabel:hover rect{stroke-width:3}
-.t{cursor:pointer}.t.hl{border:2px solid var(--red2);background:#faeaea}.dim{opacity:.4}
-.capin{width:70px;padding:6px;font-size:15px;text-align:center;border:1px solid #ccc;border-radius:4px}
-.turnsel{display:flex;gap:4px;flex-wrap:wrap;width:100%}.turnsel button{padding:8px 12px;font-size:14px}.turnsel button.on{background:var(--purple);color:#fff;border-color:var(--purple)}
-.histbox{background:#f5f0ff;border-left:4px solid var(--purple);padding:10px 12px;margin:10px 0;font-size:14px}
-.vbtn{display:inline-block;margin:4px;padding:10px 12px;border:1px solid var(--ok);background:#e8f5e9;color:var(--ok);border-radius:6px;cursor:pointer;font-size:15px;text-align:left}.vbtn:hover{background:var(--ok);color:#fff}
-.rules{background:#fff3e0;border:1px solid #ffb74d;color:#bf5a00;padding:10px 12px;border-radius:6px;font-size:14px;margin:10px 0;line-height:1.6}
-details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
+.t.hl{border:2px solid var(--red);background:#faeaea}.dim{opacity:.4}
+.capin{width:70px;padding:6px;font-size:15px;text-align:center;border:1px solid var(--border);border-radius:4px}
+.histbox{background:var(--card-alt);border-left:4px solid var(--red);padding:10px 12px;margin:10px 0;font-size:14px;border-radius:0 6px 6px 0}
+.vbtn{display:inline-block;margin:4px;padding:10px 12px;border:1px solid var(--ok);background:var(--ok-bg);color:var(--ok);border-radius:6px;cursor:pointer;font-size:14px;text-align:left;font-weight:600}.vbtn:hover{background:var(--ok);color:#fff}
+.rules{background:var(--warn-bg);border:1px solid #f0d090;color:#8a5a00;padding:10px 12px;border-radius:6px;font-size:14px;margin:10px 0;line-height:1.6}
+details summary{cursor:pointer;color:var(--muted);font-size:14px;margin-top:10px}
 .spill{cursor:pointer}
-.spill-panel{background:#fff;border:2px solid var(--spill);border-radius:8px;padding:14px;margin:8px 0}
-.spill-counter{background:#fff;border:1px solid #ddd;border-radius:8px;padding:14px 8px;text-align:center}.spill-counter b{display:block;font-size:32px;line-height:1}.spill-counter small{font-size:13px;color:#666;font-weight:600}
-.spill-item{background:#fff;border:1px solid #ddd;border-left:4px solid var(--spill);border-radius:6px;padding:12px;margin:8px 0;font-size:14px}
-.spill-item.proc{border-left-color:var(--spillP);background:#fffde7}
-.spill-item.done{border-left-color:var(--spillD);background:#f1f8e9;opacity:.75}
+.spill-panel{background:#fff;border:2px solid var(--gold);border-radius:8px;padding:14px;margin:8px 0}
+.spill-counter{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 8px;text-align:center}.spill-counter b{display:block;font-size:32px;line-height:1}.spill-counter small{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.spill-item{background:#fff;border:1px solid var(--border);border-left:4px solid var(--spill);border-radius:6px;padding:12px;margin:8px 0;font-size:14px}
+.spill-item.proc{border-left-color:var(--spillP);background:var(--warn-bg)}
+.spill-item.done{border-left-color:var(--spillD);background:var(--ok-bg);opacity:.75}
+
+/* ============ ADMIN PORTAL ============ */
+#adminApp{
+  min-height:100vh;background:var(--bg);
+}
+#adminApp header{background:var(--brown)}
+#adminApp main{max-width:1400px}
+.admin-tabs{display:flex;gap:6px;flex-wrap:wrap;background:#fff;border:1px solid var(--border);border-radius:8px;padding:6px}
+.admin-tabs button{flex:1;min-width:140px;padding:12px 16px;font-size:15px;border-radius:6px}
+.admin-tabs button.on{background:var(--brown);color:#fff;border-color:var(--brown)}
+.admin-container{display:grid;grid-template-columns:1fr 320px;gap:14px;align-items:start}
+@media (max-width:900px){.admin-container{grid-template-columns:1fr}}
+.turno-selector{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.turno-selector button{flex:1;min-width:90px;padding:10px 8px;font-size:13px;border-radius:6px;line-height:1.2}
+.turno-selector button.on{background:var(--brown);color:#fff;border-color:var(--brown)}
+.turno-selector button small{display:block;font-size:11px;opacity:.7;margin-top:2px;font-weight:400}
+.turno-selector button.on small{opacity:.85}
+.pos-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;font-size:14px}
+.pos-table th{background:var(--brown-bg);padding:10px 8px;text-align:left;font-size:11px;color:var(--brown-dark);text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--border);font-weight:700}
+.pos-table td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:middle}
+.pos-table tr:last-child td{border-bottom:none}
+.pos-table tr:hover td{background:#faf8f2}
+.pos-table .pos-num{font-weight:700;color:var(--brown);width:44px;font-size:15px}
+.pos-table .pos-sec{font-size:12px;color:var(--muted)}
+.pos-table select{padding:6px 8px;font-size:13px;border-radius:4px}
+.pos-table .row-empty{color:var(--muted);font-style:italic}
+.pos-table tr.conflict td{background:#fffaf0}
+.pos-table tr.assigned td{background:#f0f5eb}
+.side-panel{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto}
+.side-panel h3{margin:0 0 10px;font-size:14px;color:var(--brown);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.side-panel .stat-line{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.side-panel .stat-line:last-child{border-bottom:none}
+.side-panel .stat-line b{color:var(--brown)}
+.side-panel .rule-box{background:var(--warn-bg);border-left:3px solid var(--warn);padding:8px 10px;font-size:12px;line-height:1.5;color:#8a5a00;border-radius:4px;margin-bottom:10px}
+.side-panel .avail-list{font-size:13px;line-height:1.8;color:var(--text)}
+.side-panel .avail-list .conflict{color:var(--err);font-size:11px;margin-left:4px}
+.side-panel .avail-list .ok-mark{color:var(--ok);margin-right:4px}
+
+/* ============ WALKERS ============ */
 #walkersView{max-width:1100px;margin:12px auto;padding:12px}
-.wslot{min-height:80px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:6px 4px;border-radius:8px;background:#f5f5f5;border:2px solid #ddd;cursor:pointer;font:inherit;transition:all .15s}
-.wslot.empty:hover{background:#e8e8e8}
-.wslot.occ{background:#c8e6c9;border-color:#2e7d32}.wslot.occ:hover{background:#a5d6a7}
-.wslot.found{background:#fff59d;border-color:#f57f17;box-shadow:0 0 0 3px #f57f1755}
-.wslot b{font-size:15px;font-weight:700;color:#333}.wslot.occ b{color:#1b5e20}
-.wslot small{font-size:12px;color:#666;margin-top:2px;text-align:center;line-height:1.2;word-break:break-word}.wslot.occ small{color:#1b5e20;font-weight:600}
-#walkGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(75px,1fr));gap:6px;margin-top:12px}
+#walkGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px;margin-top:12px}
+.wslot{padding:12px 6px;border-radius:6px;background:#fff;border:2px solid var(--border);cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all .15s;min-width:0}
+.wslot:hover{border-color:var(--gold)}
+.wslot.occ{background:var(--ok-bg);border-color:var(--ok)}
+.wslot b{font-size:15px;font-weight:700}
+.wslot.occ b{color:var(--ok)}
+.wslot small{font-size:11px;color:var(--muted);text-align:center;word-break:break-word}
+.wslot.occ small{color:var(--ok);font-weight:600}
+#walkCroquis{max-width:440px;margin:0 auto 10px;display:block}
 
-/* Estilos para la nueva Lista de Voluntarias */
-.vol-list-card{border:1px solid #ddd;border-radius:8px;margin-bottom:12px;background:#fafafa;overflow:hidden}
-.vol-list-head{background:#f0f0f0;padding:10px 12px;font-weight:bold;font-size:16px;border-bottom:1px solid #ddd;color:#333}
-.vol-list-item{padding:10px 12px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center;font-size:16px}
-.vol-list-item:last-child{border-bottom:none}
-.vol-list-item.occ{background:#fff}
-.vol-list-item.empty{color:#888;font-style:italic}
-@keyframes blinkBg { 50% { background-color: #e1bee7; border-color: var(--purple); } }
-.blink-row { animation: blinkBg 1s infinite; border: 2px solid transparent; border-radius:8px; padding:10px; margin:8px 0; background:#fafafa; transition:all 0.3s; }
-
-/* --- simplificado para hermanos mayores --- */
-#bar button{padding:14px 18px;font-size:18px}
-#bar .turnsel button{padding:12px 14px;font-size:17px}
-#bar details{width:100%}#bar details summary{font-size:17px;padding:10px 0;color:var(--mut)}
-#bar details .row{margin-top:8px}
-#login .card button.big{width:100%;padding:18px;font-size:22px;border-radius:10px}
-#login input#us{font-size:21px;padding:16px}
-#login #res button{font-size:20px;padding:16px}
-#login details summary{cursor:pointer;color:#777;font-size:15px;padding:8px 0}
-.sheet{position:sticky;bottom:8px;z-index:6;box-shadow:0 -6px 22px #0004;border:2px solid var(--red2)!important}
-.sheet h3{font-size:22px}.sheet .who{font-size:19px}
-@media(max-width:900px){#mapw svg{min-width:1000px}}
-.cq-lg{display:flex;gap:14px;justify-content:center;font-size:14px;flex-wrap:wrap;margin-bottom:4px}
-.cq-lg i{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:4px;vertical-align:-2px}
-.cslot{cursor:pointer}.cslot rect{fill:#e0e0e0;stroke:#9a9a9a;stroke-width:1}
-.cslot.occ rect{fill:#43a047;stroke:#1b5e20}.cslot.found rect{fill:#fdd835;stroke:#e65100;stroke-width:2.5}
-.cslot text{pointer-events:none;font-family:sans-serif;fill:#666}.cslot.occ text{fill:#fff}
-@keyframes cqp{50%{opacity:.15}}.cq-latest{fill:none;stroke:#d11;stroke-width:3;animation:cqp .9s infinite;pointer-events:none}
-@media(prefers-reduced-motion:reduce){.cq-latest{animation:none}}
+/* ============ MODAL ============ */
+#modal{position:fixed;inset:0;background:rgba(26,15,10,.85);display:grid;place-items:center;padding:14px;z-index:9999}
+#modal[hidden]{display:none}
+#modal .box{background:var(--bg);border-radius:10px;padding:22px;width:100%;max-width:480px;display:grid;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.5);max-height:90vh;overflow-y:auto}
+#modal h2{margin:0;color:var(--red);font-size:19px;font-weight:700}
 </style>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 </head>
 <body>
 <div id="toast-container"></div>
-<header>
-  <h1 id="appTitle">Acomodadores · La Feria, TX</h1>
-  <span id="net" class="net"></span>
-  <span id="usr"></span>
-  <button id="btn-mode-toggle" onclick="toggleAppMode()" hidden>👥 Vista Voluntaria</button>
-  <button onclick="toggleBigText()" style="background:#4A6DA7;color:#fff;border-color:#4A6DA7;font-weight:bold" title="Texto grande">🔍 A</button>
-  <button id="out" onclick="logout()" hidden>Salir</button>
-</header>
+<div id="modal" hidden><div class="box" id="modalBox"></div></div>
 
-<div id="login"><div class="card">
-  <h2 style="margin:0;font-size:28px">Acomodadores</h2>
-  <b style="font-size:20px">Busca tu nombre</b>
-  <input id="us" placeholder="Escribe tu nombre" autocomplete="off">
-  <div id="res"></div>
-  <button id="goU" class="pri big" onclick="enterU()" hidden></button>
-  <hr style="width:100%;border:0;border-top:1px solid #ddd">
-  <button class="ok big" style="background:var(--purple);border-color:var(--purple)" onclick="enterVoluntaria()">👥 Soy Voluntaria</button>
-  <details>
-    <summary>Administración</summary>
-    <div style="display:grid;gap:10px;margin-top:8px">
-      <select id="ad"></select>
-      <input id="pw" type="password" placeholder="Contraseña" autocomplete="off" onkeydown="if(event.key==='Enter')enterA()">
-      <button class="pri" onclick="enterA()">Entrar</button>
-      <span id="err" style="color:#b00"></span>
+<!-- ============ HOME SCREEN ============ -->
+<div id="homeScreen">
+  <div class="home-header">
+    <h1>Asamblea de Circuito</h1>
+    <div class="gold-line"></div>
+    <p class="sub">La Feria, Texas · Dept. de Acomodadores</p>
+  </div>
+  <div class="mode-grid">
+    <button class="mode-card mode-acom" onclick="goMode('acom')">
+      <svg class="mode-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/></svg>
+      <span class="mode-title">Acomodador</span>
+      <span class="mode-desc">Ver mi posición y registrar mi llegada</span>
+    </button>
+    <button class="mode-card mode-vol" onclick="goMode('vol')">
+      <svg class="mode-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <span class="mode-title">Voluntaria</span>
+      <span class="mode-desc">Ver mis turnos y mi ubicación</span>
+    </button>
+    <button class="mode-card mode-admin" onclick="goMode('admin')">
+      <svg class="mode-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      <span class="mode-title">Administración</span>
+      <span class="mode-desc">Gestión de asignaciones y conteo</span>
+    </button>
+  </div>
+  <div class="home-footer">Uso interno · Dept. de Acomodadores</div>
+</div>
+
+<!-- ============ ACOMODADOR LOGIN ============ -->
+<div id="acomLoginScreen" hidden>
+  <div class="login-card">
+    <button class="back-btn" onclick="goHome()">← Volver al inicio</button>
+    <h2>Acomodador</h2>
+    <p class="lg-sub">Escribe tu nombre para buscar tu posición</p>
+    <input id="acomNameInput" placeholder="Escribe tu nombre..." autocomplete="off" oninput="acomSearch(this.value)">
+    <div id="acomResults"></div>
+  </div>
+</div>
+
+<!-- ============ VOLUNTARIA LOGIN ============ -->
+<div id="volLoginScreen" hidden>
+  <div class="login-card">
+    <button class="back-btn" onclick="goHome()">← Volver al inicio</button>
+    <h2>Voluntaria</h2>
+    <p class="lg-sub">Escribe tu nombre para ver tus turnos y ubicación</p>
+    <input id="volNameInput" placeholder="Escribe tu nombre..." autocomplete="off" oninput="volSearch(this.value)">
+    <div id="volResults"></div>
+  </div>
+</div>
+
+<!-- ============ VOLUNTARIA VIEW ============ -->
+<div id="volView" hidden style="max-width:900px;margin:12px auto;padding:12px">
+  <div class="row" style="margin-bottom:12px">
+    <button onclick="goHome()" style="background:var(--blue);color:#fff;border-color:var(--blue);font-weight:700">← Volver</button>
+    <span id="volViewName" style="font-weight:700;font-size:16px;color:var(--blue)"></span>
+  </div>
+  <div id="volInfoContent"></div>
+  <div id="volMapView" hidden>
+    <h3 id="volMapTitle">Tu ubicación en el mapa</h3>
+    <div style="border:2px solid var(--blue);border-radius:8px;overflow:hidden">
+      <svg id="volMapSvg" viewBox="0 0 1310 926" class="map-svg">
+        <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
+        <g id="volMapMarkers"></g>
+      </svg>
     </div>
-  </details>
-</div></div>
-
-<main id="app" hidden>
-  <div id="mine" class="card" hidden></div>
-  <div id="alert" class="card" hidden></div>
-  <div id="spillPanel" hidden></div>
-  <div id="bar" class="card row"></div>
-  <div class="card" id="mapw"><svg id="svg" viewBox="0 0 1310 926"><image id="mi" width="1310" height="926" href="map.jpg" preserveAspectRatio="none"/><g id="sl"></g><g id="vl"></g><g id="pl"></g><g id="spl"></g></svg></div>
-  <div class="card" id="panel"></div>
-  <div class="lg card" id="legend"></div>
-  <div class="card" id="cntCard"><h3>Conteo por sección</h3><div id="expEd" class="row" hidden><label for="exp">Esperados</label><input id="exp" type="number" min="1" style="width:110px"><button class="pri" onclick="const v=+$('exp').value;if(v>0)put('expect',v)">Guardar</button></div><div id="cnt"></div></div>
-  <div class="card" id="bench" hidden></div>
-</main>
-
-<div id="walkersView" hidden><div class="card">
-  <div class="row" style="justify-content:space-between">
-    <button onclick="closeWalkers()" style="background:#5B3C88;color:#fff;border-color:#5B3C88;font-weight:bold">← Volver</button>
-    <span id="walkCount" style="font-weight:bold;color:#5B3C88"></span>
   </div>
-  <h2 style="margin:12px 0 4px;color:#5B3C88;font-size:22px">🦽 Estacionamiento Walkers/Sillas</h2>
-  <p style="margin:0 0 12px;color:#666">Contra pared Auditorio · Sección 117-118</p>
-  <svg id="walkCroquis" viewBox="0 0 440 700" style="width:100%;max-width:440px;display:block;margin:0 auto 6px;border:2px solid #5B3C88;border-radius:10px;background:#faf7f0"></svg>
-  <div class="cq-lg"><span><i style="background:#e0e0e0;border:1px solid #999"></i>Libre</span><span><i style="background:#43a047"></i>Con walker</span><span><i style="background:#fff;border:2px solid #d11"></i>Último en llegar</span></div>
-  <p style="margin:0 0 14px;text-align:center;color:#777;font-size:13px">Croquis aproximado, no está a escala. Toca un espacio para anotar o recoger.</p>
-  <input type="text" id="walkerSearch" placeholder="🔍 Buscar por nombre..." oninput="searchWalker(this.value)" style="margin-bottom:12px;font-size:16px;padding:12px">
-  <div id="walkGrid"></div>
-</div></div>
+</div>
 
-<div id="volPanel" hidden style="max-width:900px;margin:12px auto"><div class="card">
-  <h2 style="margin-top:0;color:var(--purple)">Portal de Voluntarias</h2>
-  <input type="text" id="volSearch" placeholder="🔍 Buscar mi nombre para ver mi posición..." style="width:100%;padding:15px;font-size:18px;margin-bottom:15px;border:2px solid var(--purple)" oninput="buscarVoluntaria(this.value)">
-  <div style="margin-bottom:15px">
-    <b style="font-size:15px;color:#555">O selecciona un turno para ver la lista completa:</b>
-    <div id="volTurnBtns" class="turnsel" style="margin-top:8px"></div>
+<!-- ============ ADMIN LOGIN ============ -->
+<div id="adminLoginScreen" hidden>
+  <div class="login-card">
+    <button class="back-btn" onclick="goHome()">← Volver al inicio</button>
+    <h2>Administración</h2>
+    <p class="lg-sub">Ingrese su contraseña para acceder al panel</p>
+    <div class="admin-input-group">
+      <select id="adminUserSel">
+        <option value="">Seleccione su nombre</option>
+      </select>
+      <input id="adminPassInput" type="password" placeholder="Contraseña" onkeydown="if(event.key==='Enter')adminLogin()">
+      <button class="pri" onclick="adminLogin()" style="padding:14px">Entrar</button>
+      <div id="adminLoginErr" style="color:var(--err);font-weight:600;font-size:14px;min-height:20px;text-align:center"></div>
+    </div>
   </div>
-  <button onclick="openWalkers('vol')" style="width:100%;padding:14px;font-size:17px;background:#5B3C88;color:#fff;border-color:#5B3C88;font-weight:bold;margin-bottom:15px">🦽 Estacionamiento de Walkers/Sillas</button>
-  <div id="volResults" style="text-align:left;margin-top:10px"></div>
-</div></div>
+</div>
+
+<!-- ============ ADMIN APP ============ -->
+<div id="adminApp" hidden>
+  <header>
+    <h1>Panel de Administración</h1>
+    <span id="adminWhoLabel" class="net"></span>
+    <button onclick="openWalkers()">Walkers</button>
+    <button onclick="adminLogout()">Salir</button>
+  </header>
+  <main>
+    <div class="admin-tabs">
+      <button data-admin-tab="asignaciones" onclick="setAdminTab('asignaciones')" class="on">Asignaciones</button>
+      <button data-admin-tab="conteo" onclick="setAdminTab('conteo')">Conteo</button>
+      <button data-admin-tab="mapa" onclick="setAdminTab('mapa')">Mapa</button>
+    </div>
+
+    <div id="adminTabAsignaciones">
+      <div class="turno-selector" id="adminTurnoSelector"></div>
+      <div class="admin-container">
+        <div>
+          <table class="pos-table">
+            <thead><tr><th>Pos</th><th>Sección</th><th>Asignada</th></tr></thead>
+            <tbody id="adminPosTable"></tbody>
+          </table>
+        </div>
+        <div class="side-panel" id="adminSidePanel"></div>
+      </div>
+    </div>
+
+    <div id="adminTabConteo" hidden>
+      <div class="card" id="adminCntCard"></div>
+    </div>
+
+    <div id="adminTabMapa" hidden>
+      <div class="card" style="padding:0;overflow:hidden;border:2px solid var(--brown)">
+        <svg id="adminMapSvg" viewBox="0 0 1310 926" class="map-svg">
+          <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
+          <g id="adminMapPl"></g>
+          <g id="adminMapSpl"></g>
+        </svg>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ============ ACOMODADOR APP (existing) ============ -->
+<div id="acomApp" hidden>
+  <header>
+    <h1 id="appTitle">Acomodadores</h1>
+    <span id="net" class="net"></span>
+    <span id="usr" style="font-size:13px;opacity:.85"></span>
+    <button onclick="openWalkers()" id="btnWalkers" hidden>Walkers</button>
+    <button onclick="acomLogout()">Salir</button>
+  </header>
+
+  <main>
+    <div id="mine" class="card" hidden></div>
+    <div id="alert" class="card" hidden></div>
+    <div id="spillPanel" hidden></div>
+    <div id="bar" class="card row"></div>
+
+    <div class="card" id="mapw" style="padding:0">
+      <div style="display:flex;gap:6px;padding:10px;background:var(--card-alt);border-bottom:1px solid var(--border);align-items:center;flex-wrap:wrap">
+        <button onclick="zoomMain(-0.2)" style="padding:6px 14px;font-weight:700;font-size:16px">−</button>
+        <button onclick="zoomMain(0.2)" style="padding:6px 14px;font-weight:700;font-size:16px">+</button>
+        <span style="flex:1"></span>
+        <span style="font-size:13px;color:var(--muted)">Toca un número para ver detalles</span>
+      </div>
+      <svg id="svg" viewBox="0 0 1310 926" class="map-svg">
+        <image id="mi" width="1310" height="926" href="map.jpg" preserveAspectRatio="none"/>
+        <g id="sl"></g><g id="vl"></g><g id="pl"></g><g id="spl"></g>
+      </svg>
+    </div>
+
+    <div class="lg card" id="legend"></div>
+    <div class="card" id="panel"></div>
+    <div class="card" id="cntCard" hidden>
+      <h3>Conteo por sección</h3>
+      <div id="expEd" class="row" hidden><label for="exp">Esperados</label><input id="exp" type="number" min="1" style="width:110px"><button class="pri" onclick="const v=+$('exp').value;if(v>0)put('expect',v)">Guardar</button></div>
+      <div id="cnt"></div>
+    </div>
+  </main>
+</div>
+
+<!-- ============ WALKERS VIEW ============ -->
+<div id="walkersView" hidden>
+  <header style="background:var(--ok)">
+    <h1>Walkers y Sillas</h1>
+    <button onclick="closeWalkers()">← Volver</button>
+  </header>
+  <div style="max-width:1100px;margin:12px auto;padding:12px">
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <h2 style="margin:0;font-size:18px;color:var(--ok)">Estacionamiento · Contra pared Auditorio</h2>
+        <span id="walkCount" style="font-weight:700;color:var(--ok)"></span>
+      </div>
+      <svg id="walkCroquis" viewBox="0 0 440 700" style="width:100%;max-width:440px;display:block;margin:14px auto;border:2px solid var(--ok);border-radius:10px;background:#faf7f0"></svg>
+      <input id="walkerSearch" placeholder="Buscar nombre..." oninput="searchWalker(this.value)" style="margin-bottom:12px">
+      <div id="walkGrid"></div>
+    </div>
+  </div>
+</div>
 
 <script>
 const CFG={DB:"https://voluntariastx20-default-rtdb.firebaseio.com"};
-const TURNOS={"1":{name:"7:45 – 8:45 a.m.",vol:["Ana Sofia Bejerano","Ariane Agustin","Bridyit Perez","Cynthia Paola Gayosso","Elizabeth Snyder","Esther Morales","Geraldine Alison Perez","Jackelin Luna","Jaqueline Echavarria","Karla Garcia","Laura Esmeralda Amador Saucedo","Maria Rosa Garcia Zapata","Mirsa Elizabeth Silva","Nicasia Bravo De Gonzalez","Reyna Jetcél Hernandez Madrid","Sandra Vazquez","Sarah Martinez","Susana Zuñiga"]},"2":{name:"8:45 – 9:45 a.m.",vol:["Alicia González","Ana Sofia Bejerano","Bridyit Perez","Cynthia Paola Gayosso","Elizabeth Lopez","Elizabeth Snyder","Geraldine Alison Perez","Jackelin Luna","Jaqueline Echavarria","Karla Garcia","Laura Esmeralda Amador Saucedo","Leticia Fernández","Maria Fernanda Obispo","Maria Rosa Garcia Zapata","María Rosario Vizcarra","Mirsa Elizabeth Silva","Reyna Jetcél Hernandez Madrid","Sandra Vazquez","Sarah Martinez"]},"3":{name:"9:45 – 11:05 a.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Snyder","Geraldine Alison Perez","Irene Avila","Jaqueline Echavarria","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Sara del Carmen Gutierrez","Sarah Martinez"]},"4":{name:"11:05 a.m. – 12:05 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Snyder","Elizabeth Torres","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Mirsa Elizabeth Silva","Nicasia Bravo De Gonzalez"]},"5":{name:"12:05 – 12:40 p.m. (Int 1ra)",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Reyna Jetcél Hernandez Madrid"]},"6":{name:"12:40 – 1:20 p.m. (Int 2da)",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Mirsa Elizabeth Silva"]},"7":{name:"1:20 – 3:30 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Torres","Geraldine Alison Perez","Gloria (Gigi) Mastropole","Gloria Palmira Mastropole","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Nicasia Bravo De Gonzalez"]},"8":{name:"3:30 – 4:15 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Jaqueline Echavarria","Laura Esmeralda Amador Saucedo","Leticia Fernández","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Reyna Jetcél Hernandez Madrid","Sarah Martinez"]}};
-const VOL_SECTIONS=[{id:"vest-norte",label:"Vestíbulo Norte",pos:[101,102,103,104,105],color:"#5B3C88",labelX:300,labelY:150},{id:"vest-portico",label:"Vestíbulo Pórtico",pos:[106,107,108,109],color:"#4A6DA7",labelX:255,labelY:350},{id:"vest-sur",label:"Vestíbulo Sur",pos:[110,111,112,113,114],color:"#28B04A",labelX:300,labelY:550},{id:"aud-sur",label:"Auditorio Sur",pos:[115,116],color:"#F18100",labelX:780,labelY:680},{id:"aud-contra",label:"Auditorio Contrapared",pos:[117,118],color:"#C0392B",labelX:780,labelY:460},{id:"aud-norte",label:"Auditorio Norte",pos:[119,120],color:"#16A085",labelX:780,labelY:260}];
+const TURNOS={"1":{name:"7:45 – 8:45 a.m.",vol:["Ana Sofia Bejerano","Ariane Agustin","Bridyit Perez","Cynthia Paola Gayosso","Elizabeth Snyder","Esther Morales","Geraldine Alison Perez","Jackelin Luna","Jaqueline Echavarria","Karla Garcia","Laura Esmeralda Amador Saucedo","Maria Rosa Garcia Zapata","Mirsa Elizabeth Silva","Nicasia Bravo De Gonzalez","Reyna Jetcél Hernandez Madrid","Sandra Vazquez","Sarah Martinez","Susana Zuñiga"]},"2":{name:"8:45 – 9:45 a.m.",vol:["Alicia González","Ana Sofia Bejerano","Bridyit Perez","Cynthia Paola Gayosso","Elizabeth Lopez","Elizabeth Snyder","Geraldine Alison Perez","Jackelin Luna","Jaqueline Echavarria","Karla Garcia","Laura Esmeralda Amador Saucedo","Leticia Fernández","Maria Fernanda Obispo","Maria Rosa Garcia Zapata","María Rosario Vizcarra","Mirsa Elizabeth Silva","Reyna Jetcél Hernandez Madrid","Sandra Vazquez","Sarah Martinez"]},"3":{name:"9:45 – 11:05 a.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Snyder","Geraldine Alison Perez","Irene Avila","Jaqueline Echavarria","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Sara del Carmen Gutierrez","Sarah Martinez"]},"4":{name:"11:05 a.m. – 12:05 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Snyder","Elizabeth Torres","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Mirsa Elizabeth Silva","Nicasia Bravo De Gonzalez"]},"5":{name:"12:05 – 12:40 p.m. (Int 1ra)",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Reyna Jetcél Hernandez Madrid"]},"6":{name:"12:40 – 1:20 p.m. (Int 2da)",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Mirsa Elizabeth Silva"]},"7":{name:"1:20 – 3:30 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Torres","Geraldine Alison Perez","Gloria (Gigi) Mastropole","Gloria Palmira Mastropole","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Nicasia Bravo De Gonzalez","Susana Zuñiga"]},"8":{name:"3:30 – 4:15 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Jaqueline Echavarria","Laura Esmeralda Amador Saucedo","Leticia Fernández","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Reyna Jetcél Hernandez Madrid","Sarah Martinez"]}};
+const VOL_SECTIONS=[{id:"vest-norte",label:"Vestíbulo Norte",pos:[101,102,103,104,105],color:"#5a1212",labelX:300,labelY:150},{id:"vest-portico",label:"Vestíbulo Pórtico",pos:[106,107,108,109],color:"#3d5a80",labelX:255,labelY:350},{id:"vest-sur",label:"Vestíbulo Sur",pos:[110,111,112,113,114],color:"#4a6b3a",labelX:300,labelY:550},{id:"aud-sur",label:"Auditorio Sur",pos:[115,116],color:"#c28a1c",labelX:780,labelY:680},{id:"aud-contra",label:"Auditorio Contrapared",pos:[117,118],color:"#a8251c",labelX:780,labelY:460},{id:"aud-norte",label:"Auditorio Norte",pos:[119,120],color:"#2c6e6e",labelX:780,labelY:260}];
 const VOL_POS_COORDS={101:{x:120,y:170},102:{x:210,y:170},103:{x:300,y:170},104:{x:390,y:170},105:{x:480,y:170},106:{x:120,y:370},107:{x:210,y:370},108:{x:300,y:370},109:{x:390,y:370},110:{x:120,y:570},111:{x:210,y:570},112:{x:300,y:570},113:{x:390,y:570},114:{x:480,y:570},115:{x:730,y:700},116:{x:830,y:700},117:{x:730,y:480},118:{x:830,y:480},119:{x:730,y:280},120:{x:830,y:280}};
 const WALKER_SLOTS=[];const LETTERS="ABCDEFGHIJKLMNOPQRST".split("");for(let row=1;row<=3;row++){for(const L of LETTERS){WALKER_SLOTS.push(L+row)}}
-const D={"caps":["Eliud Luna","Hugo Galvan","Jimmy Vasquez","José A. González","Raúl Quintero"],"sec":{"A2":"809,127 805,144 796,144 786,152 778,152 777,147 772,147 769,141 766,147 759,150 758,156 753,157 752,162 742,166 736,180 722,191 715,200 715,206 705,213 693,238 688,240 682,261 673,269 667,293 674,293 676,299 685,297 686,300 703,300 704,312 709,309 725,311 729,318 748,320 749,324 759,324 761,328 780,330 781,334 798,337 799,354 827,354 828,351 845,351 843,337 849,324 856,316 860,303 872,302 879,294 881,278 906,253 921,252 916,243 916,226 910,224 910,232 903,235 890,234 890,225 895,224 898,218 892,217 891,209 884,207 884,201 878,198 878,192 872,189 871,182 864,180 864,174 858,172 858,166 851,164 851,157 845,155 845,149 834,148 834,135 831,135 832,147 822,147 815,143 815,128 828,127","A3":"833,375 798,368 785,359 764,357 763,352 756,352 755,349 744,349 742,346 733,346 730,342 713,339 712,324 684,324 683,330 676,330 663,383 659,450 664,503 674,543 680,544 680,561 684,561 685,557 700,558 701,546 707,545 711,538 720,539 723,535 731,535 733,531 743,531 745,527 774,521 776,514 796,514 797,511 808,510 809,505 826,505 836,500 827,494 821,446 828,442 827,433 821,430 822,409 827,384 835,380","A4":"844,524 826,529 793,529 793,538 782,541 779,546 770,546 725,562 708,563 705,560 702,570 695,570 694,574 681,576 669,584 676,604 684,614 690,634 700,637 700,650 710,665 714,659 723,660 727,671 727,679 723,682 734,692 743,708 751,716 755,716 756,720 760,720 762,728 770,730 771,734 783,731 784,727 793,727 799,733 820,729 821,749 849,748 851,713 857,712 858,705 864,703 864,696 871,694 872,687 877,687 884,669 891,668 888,662 889,649 904,650 905,642 911,641 911,634 919,631 922,618 940,618 921,617 920,602 929,601 930,608 939,608 944,603 954,601 931,597 929,600 921,600 920,589 925,585 954,586 909,570 880,548 895,571 920,597 920,622 906,622 896,612 892,615 876,613 875,601 881,600 880,585 874,576 864,576 848,553 843,540","B2":"948,292 921,301 887,322 878,330 865,359 876,360 879,365 897,367 900,371 909,371 910,375 912,372 921,372 922,377 931,377 933,382 936,382 937,376 951,375 952,384 941,387 941,393 936,395 936,404 932,406 957,422 965,417 960,413 960,405 964,404 964,393 973,376 991,356 992,351 1007,351 1007,334 976,330 975,321 970,320 970,313 964,312 963,304 957,304 956,296","B3":"857,384 848,435 850,463 858,495 862,495 863,491 871,491 872,488 891,485 895,480 914,479 916,474 924,474 947,460 949,454 957,453 955,421 931,406 916,403 914,399 882,392 871,385","B4":"1004,522 986,520 984,512 966,486 962,490 942,489 940,496 931,496 929,500 922,500 921,504 910,502 908,508 898,507 897,510 865,517 876,543 887,554 921,575 953,585 957,582 958,575 964,571 964,565 971,563 971,555 976,547 984,545 985,539 1003,538","B1":"935,239 1022,346 1064,322 1063,250 1030,239 999,234 965,234","A1":"865,151 934,238 965,233 999,233 1030,238 1063,249 1060,139 879,139","B5":"1060,545 1023,532 1014,532 954,608 954,618 946,620 931,640 963,646 1001,646 1027,642 1061,631","A5":"1061,632 1039,640 1001,647 963,647 930,641 876,712 877,747 1060,751"},
+const D={"caps":["Eliud Luna","Hugo Galvan","Jimmy Vasquez","José A. González","Raúl Quintero","Gonzalo Mejia Sr.","Gonzalo Mejia Sr","Macario Martinez","Luis Barberena","Raúl Quintero","Roberto Quiroga","Rey Castillo","Abisai Muniz"],"sec":{"A2":"809,127 805,144 796,144 786,152 778,152 777,147 772,147 769,141 766,147 759,150 758,156 753,157 752,162 742,166 736,180 722,191 715,200 715,206 705,213 693,238 688,240 682,261 673,269 667,293 674,293 676,299 685,297 686,300 703,300 704,312 709,309 725,311 729,318 748,320 749,324 759,324 761,328 780,330 781,334 798,337 799,354 827,354 828,351 845,351 843,337 849,324 856,316 860,303 872,302 879,294 881,278 906,253 921,252 916,243 916,226 910,224 910,232 903,235 890,234 890,225 895,224 898,218 892,217 891,209 884,207 884,201 878,198 878,192 872,189 871,182 864,180 864,174 858,172 858,166 851,164 851,157 845,155 845,149 834,148 834,135 831,135 832,147 822,147 815,143 815,128 828,127","A3":"833,375 798,368 785,359 764,357 763,352 756,352 755,349 744,349 742,346 733,346 730,342 713,339 712,324 684,324 683,330 676,330 663,383 659,450 664,503 674,543 680,544 680,561 684,561 685,557 700,558 701,546 707,545 711,538 720,539 723,535 731,535 733,531 743,531 745,527 774,521 776,514 796,514 797,511 808,510 809,505 826,505 836,500 827,494 821,446 828,442 827,433 821,430 822,409 827,384 835,380","A4":"844,524 826,529 793,529 793,538 782,541 779,546 770,546 725,562 708,563 705,560 702,570 695,570 694,574 681,576 669,584 676,604 684,614 690,634 700,637 700,650 710,665 714,659 723,660 727,671 727,679 723,682 734,692 743,708 751,716 755,716 756,720 760,720 762,728 770,730 771,734 783,731 784,727 793,727 799,733 820,729 821,749 849,748 851,713 857,712 858,705 864,703 864,696 871,694 872,687 877,687 884,669 891,668 888,662 889,649 904,650 905,642 911,641 911,634 919,631 922,618 940,618 921,617 920,602 929,601 930,608 939,608 944,603 954,601 931,597 929,600 921,600 920,589 925,585 954,586 909,570 880,548 895,571 920,597 920,622 906,622 896,612 892,615 876,613 875,601 881,600 880,585 874,576 864,576 848,553 843,540","B2":"948,292 921,301 887,322 878,330 865,359 876,360 879,365 897,367 900,371 909,371 910,375 912,372 921,372 922,377 931,377 933,382 936,382 937,376 951,375 952,384 941,387 941,393 936,395 936,404 932,406 957,422 965,417 960,413 960,405 964,404 964,393 973,376 991,356 992,351 1007,351 1007,334 976,330 975,321 970,320 970,313 964,312 963,304 957,304 956,296","B3":"857,384 848,435 850,463 858,495 862,495 863,491 871,491 872,488 891,485 895,480 914,479 916,474 924,474 947,460 949,454 957,453 955,421 931,406 916,403 914,399 882,392 871,385","B4":"1004,522 986,520 984,512 966,486 962,490 942,489 940,496 931,496 929,500 922,500 921,504 910,502 908,508 898,507 897,510 865,517 876,543 887,554 921,575 953,585 957,582 958,575 964,571 964,565 971,563 971,555 976,547 984,545 985,539 1003,538","B1":"935,239 1022,346 1064,322 1063,250 1030,239 999,234 965,234","A1":"865,151 934,238 965,233 999,233 1030,238 1063,249 1060,139 879,139","B5":"1060,545 1023,532 1014,532 954,608 954,618 946,620 931,640 963,646 1001,646 1027,642 1061,631","A5":"1061,632 1039,640 1001,647 963,647 930,641 876,712 877,747 1060,751"},
 "roster":[
 {"n":"Alfonso Hernández","c":"Boca Chica","p":"A"},{"n":"Eliu de la Garza","c":"Boca Chica","p":"P"},{"n":"Isaias Martinez","c":"Boca Chica","p":"P"},{"n":"Juan F Garza","c":"Boca Chica","p":"P"},{"n":"Martin Davila","c":"Boca Chica","p":"P"},{"n":"Rey Castillo","c":"Boca Chica","p":"S"},{"n":"Roberto Quiroga","c":"Boca Chica","p":"S"},{"n":"Norberto Cardenas","c":"Central","p":"S"},{"n":"Felipe Ortiz","c":"El Jardin Heights","p":"P"},{"n":"Francisco Montoya","c":"El Jardin Heights","p":"P"},{"n":"Juan Salinas","c":"El Jardin Heights","p":"S"},{"n":"Reynaldo Perez","c":"El Jardin Heights","p":"A"},{"n":"Roberto Borjas","c":"El Jardin Heights","p":"A"},{"n":"Servando Sustaita","c":"El Jardin Heights","p":"P"},{"n":"Carlos Leonardo Salas Zuñiga","c":"Galaxia","p":"P"},{"n":"Celestino Chavez","c":"Galaxia","p":"S"},{"n":"Gustavo Saucedo","c":"Galaxia","p":"P"},{"n":"Jose Duran","c":"Galaxia","p":"P"},{"n":"Luis Duran","c":"Galaxia","p":"P"},{"n":"Otilio Ramirez","c":"Galaxia","p":"P"},{"n":"Orlando Benavidez","c":"Galaxia","p":"A"},{"n":"Adrián Mota Arcos","c":"Laguna Vista","p":"P"},{"n":"José A. González","c":"Laguna Vista","p":"S"},{"n":"Jose González Jr","c":"Laguna Vista","p":"S"},{"n":"Vianney Morales López","c":"Laguna Vista","p":"P"},{"n":"Valente Alejandro","c":"Laguna Vista","p":"P"},{"n":"Hugo Galvan","c":"Laguna Vista","p":"A"},{"n":"Luis Barberena","c":"Laguna Vista","p":"S"},{"n":"Alex Vazquez","c":"Los Cedros","p":"S"},{"n":"Eliud Luna","c":"Los Cedros","p":"S"},{"n":"Jimmy Vasquez","c":"Los Cedros","p":"A"},{"n":"Guadalupe De La Cruz","c":"Los Cedros","p":"S"},{"n":"Javier Borjas","c":"North","p":"A"},{"n":"Abisai Muniz","c":"North","p":"S"},{"n":"Carlos Martínez","c":"North","p":"S"},{"n":"Oziel Rodriguez","c":"North","p":"P"},{"n":"Josue Campos","c":"Paraiso","p":"S"},{"n":"Ricardo Altamirano","c":"Paraiso","p":"S"},{"n":"Eulogio Montelongo","c":"Paraiso","p":"S"},{"n":"Alfredo Garza","c":"Paraiso","p":"P"},{"n":"Jamin Muñiz","c":"Sunrise","p":"P"},{"n":"Raúl Quintero","c":"Sunrise","p":"S"},{"n":"Gonzalo Mejia Sr.","c":"Sunrise","p":"P"},{"n":"Macario Martinez","c":"Sunrise","p":"A"},
 {"n":"Alfredo Jiménez","c":"Central","p":"S"},{"n":"Jose Luis Camarillo Rangel","c":"Los Cedros","p":"S"},{"n":"Luis Rodolfo Lerma","c":"Los Cedros","p":"S"},{"n":"Osiel Agustin","c":"Laguna Vista","p":"P"},
+{"n":"Tony Duran","c":"Boca Chica","p":"P"},
+{"n":"Osiel Ramirez","c":"Galaxia","p":"P"},
+{"n":"Jose Gonzalez Sr.","c":"Laguna Vista","p":"A"},
+{"n":"Abdiel Juarez Jr.","c":"Sunrise","p":"S"},
+{"n":"Damian Fernandez","c":"Los Cedros","p":"P"},
 {"n":"Alexia Ramirez","c":"Voluntaria","p":"P"},{"n":"Alicia González","c":"Voluntaria","p":"P"},{"n":"Ana Sofia Bejerano","c":"Voluntaria","p":"P"},{"n":"Ariane Agustin","c":"Voluntaria","p":"P"},{"n":"Bridyit Perez","c":"Voluntaria","p":"P"},{"n":"Cynthia Paola Gayosso","c":"Voluntaria","p":"P"},{"n":"Elizabeth Lopez","c":"Voluntaria","p":"P"},{"n":"Elizabeth Snyder","c":"Voluntaria","p":"P"},{"n":"Elizabeth Torres","c":"Voluntaria","p":"P"},{"n":"Esther Morales","c":"Voluntaria","p":"P"},{"n":"Geraldine Alison Perez","c":"Voluntaria","p":"P"},{"n":"Gloria (Gigi) Mastropole","c":"Voluntaria","p":"P"},{"n":"Gloria Palmira Mastropole","c":"Voluntaria","p":"P"},{"n":"Irene Avila","c":"Voluntaria","p":"P"},{"n":"Jackelin Luna","c":"Voluntaria","p":"P"},{"n":"Jaqueline Echavarria","c":"Voluntaria","p":"P"},{"n":"Karla Garcia","c":"Voluntaria","p":"P"},{"n":"Laura Esmeralda Amador Saucedo","c":"Voluntaria","p":"P"},{"n":"Maria avila","c":"Voluntaria","p":"P"},{"n":"Maria Fernanda Obispo","c":"Voluntaria","p":"P"},{"n":"Maria Gayosso","c":"Voluntaria","p":"P"},{"n":"Maria Rosa Garcia Zapata","c":"Voluntaria","p":"P"},{"n":"María Rosario Vizcarra","c":"Voluntaria","p":"P"},{"n":"Mirsa Elizabeth Silva","c":"Voluntaria","p":"P"},{"n":"Nicasia Bravo De Gonzalez","c":"Voluntaria","p":"P"},{"n":"Reyna Jetcél Hernandez Madrid","c":"Voluntaria","p":"P"},{"n":"Sara del Carmen Gutierrez","c":"Voluntaria","p":"P"},{"n":"Sarah Martinez","c":"Voluntaria","p":"P"},{"n":"Sandra Vazquez","c":"Voluntaria","p":"P"},{"n":"Susana Zuñiga","c":"Voluntaria","p":"P"},{"n":"Leticia Fernández","c":"Voluntaria","p":"P"}],
 "pos":{"1":{"who":"Luis Barberena","t":"Alarma Multiusos","x":1172,"y":220,"l":1,"a":"alm"},"2":{"who":"Guadalupe De La Cruz","t":"Salida emergencia","x":1172,"y":404,"l":1,"a":"alm"},"3":{"who":"Macario Martinez","t":"Detras plataforma","x":1100,"y":432,"l":1,"a":"ctl"},"4":{"who":"Celestino Chavez","t":"Escaleras plat.","x":1172,"y":490,"l":1,"a":"ctl"},"5":{"who":"Valente Alejandro","t":"Entrada sur plataforma","x":1172,"y":660,"l":1,"a":"alm"},"6":{"who":"Norberto Cardenas","t":"Alarma Sur","x":1073,"y":775,"l":1,"a":"alm"},"7":{"who":"Alfonso Hernández","t":"Puerta Principal","x":1073,"y":657,"l":1,"a":"ent"},"8":{"who":"Osiel Agustin","t":"Alternando","x":1073,"y":553,"l":1,"a":"ctl"},"9":{"who":"Alfredo Jiménez","t":"Alternando","x":993,"y":527,"l":1,"a":"ctl"},"10":{"who":"Gustavo Saucedo","t":"Escenario","x":981,"y":438,"l":1,"a":"ctl"},"11":{"who":"Josue Campos","t":"Frente NE","x":994,"y":341,"l":1,"a":"ctl"},"12":{"who":"Rey Castillo","t":"Frente Norte","x":1073,"y":336,"l":1,"a":"ctl"},"13":{"who":"Jose González Jr","t":"Puerta Secundaria","x":1073,"y":238,"l":1,"a":"ent"},"14":{"who":"Carlos Leonardo Salas Zuñiga","t":"Alarma Norte","x":1073,"y":141,"l":1,"a":"alm"},"15":{"who":"Vianney Morales López","t":"Alarma Audio","x":693,"y":141,"l":1,"a":"alm"},"16":{"who":"Ricardo Altamirano","t":"Alarma","x":612,"y":347,"l":1,"a":"ent"},"17":{"who":"Luis Duran","t":"Alarma","x":612,"y":548,"l":1,"a":"ent"},"18":{"who":"Jamin Muñiz","t":"Alarma Sur","x":693,"y":775,"l":1,"a":"alm"},"19":{"who":"Adrián Mota Arcos","t":"Entrada Sur","x":551,"y":577,"l":1,"a":"ent"},"20":{"who":"Francisco Montoya","t":"Entrada Sur","x":463,"y":577,"l":1,"a":"ent"},"21":{"who":"Roberto Quiroga","t":"Portico","x":211,"y":473,"l":1,"a":"ent"},"22":{"who":"Eulogio Montelongo","t":"Portico/Alberca","x":428,"y":604,"l":1,"a":"ent"},"23":{"who":"Tony Duran","t":"Entrada Norte","x":463,"y":320,"l":1,"a":"ent"},"24":{"who":"Abisai Muniz","t":"Entrada Norte","x":551,"y":318,"l":1,"a":"ent"},"25":{"who":"Gonzalo Mejia Sr.","t":"Auditorio","x":818,"y":153,"l":0,"a":"aud"},"26":{"who":"Carlos Martínez","t":"Auditorio","x":697,"y":340,"l":0,"a":"aud"},"27":{"who":"Felipe Ortiz","t":"Auditorio","x":690,"y":548,"l":0,"a":"aud"},"28":{"who":"Juan Salinas","t":"Auditorio","x":833,"y":735,"l":0,"a":"aud"},"29":{"who":"Javier Borjas","t":"Auditorio","x":807,"y":544,"l":0,"a":"aud"},"30":{"who":"Martin Davila","t":"Auditorio","x":813,"y":342,"l":0,"a":"aud"},"31":{"who":"Juan F Garza","t":"Auditorio","x":902,"y":239,"l":0,"a":"aud"},"32":{"who":"Isaias Martinez","t":"Auditorio","x":947,"y":388,"l":0,"a":"aud"},"33":{"who":"Alex Vazquez","t":"Auditorio","x":941,"y":462,"l":0,"a":"aud"},"34":{"who":"Alfredo Garza","t":"Auditorio","x":936,"y":601,"l":0,"a":"aud"},"35":{"who":"","t":"Entrada vestíbulo","x":146,"y":456,"l":0,"a":"ent"}},
-"runners":["Eliu de la Garza","Reynaldo Perez","Roberto Borjas","Servando Sustaita","Jose Duran","Otilio Ramirez","Orlando Benavidez","Oziel Rodriguez"],
 "cap":{"A1":0,"A2":464,"A3":475,"A4":464,"A5":0,"B1":0,"B2":158,"B3":156,"B4":158,"B5":0},"expect":2474};
 for(const k in VOL_POS_COORDS){D.pos[k]={who:"",t:"Voluntaria "+k,x:VOL_POS_COORDS[k].x,y:VOL_POS_COORDS[k].y,l:0,a:"vol",v:1}}
-const ADM=[{"n":"Sergio E. Vazquez Jr.","h":"2b237f81057f2acac2ba3e136e8dd2d745feeead65a6611f97e2a438415cf35c","all":1,"cnt":1,"adm":1,"areas":[]},{"n":"Alberto Herrera","h":"8e3c2e206f443daa54153c6c7900f286bc24634e0e87d3b01b426e285e5cba14","all":1,"cnt":1,"adm":1,"areas":[]},{"n":"Steven Snyder","h":"a23fb1df7a98cabc8566bcea018cbc17d59300c7bec63d72329ef460a5e97195","areas":["ctl","aud"],"adm":1},{"n":"Jaime Palestina","h":"00446873cad36ee3f1a105ceffbef634e9ea9455761800021a3a85a47b67b986","areas":["alm","ent"],"adm":1},{"n":"Abdiel Juarez Jr.","h":"0d74318c460961d7760ddef47722423214f3d4125487d03333f5131af51f2342","areas":["aud"],"cnt":1,"adm":1},{"n":"José A. González","h":"9c3209c3cf96fb3ca3d17fc18d37a777e23572d059ce5239899a17b9a8d58b00","areas":["vol"],"adm":1},{"n":"Carlos Vasquez","h":"805e2a1a486d2a086d35a7561b195e9e6d53b06901943497de88f7d42de4cbf1","areas":[],"spill":1,"adm":1}];
-function sha256(s){
-const K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
-let h=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
-const b=unescape(encodeURIComponent(s)),l=b.length,w=[];
-for(let i=0;i<l;i++)w[i>>2]|=b.charCodeAt(i)<<(24-(i%4)*8);
-w[l>>2]|=0x80<<(24-(l%4)*8);w[(((l+8)>>6)<<4)+15]=l*8;
-const r=(x,n)=>(x>>>n)|(x<<(32-n));
-for(let o=0;o<w.length;o+=16){
-const t=new Array(64);let [a,b2,c,d,e,f,g,hh]=h;
-for(let i=0;i<64;i++){
-if(i<16)t[i]=w[o+i]|0;else{const s0=r(t[i-15],7)^r(t[i-15],18)^(t[i-15]>>>3),s1=r(t[i-2],17)^r(t[i-2],19)^(t[i-2]>>>10);t[i]=(t[i-16]+s0+t[i-7]+s1)|0}
-const S1=r(e,6)^r(e,11)^r(e,25),ch=(e&f)^(~e&g),t1=(hh+S1+ch+K[i]+t[i])|0,S0=r(a,2)^r(a,13)^r(a,22),mj=(a&b2)^(a&c)^(b2&c),t2=(S0+mj)|0;
-hh=g;g=f;f=e;e=(d+t1)|0;d=c;c=b2;b2=a;a=(t1+t2)|0}
-h=[(h[0]+a)|0,(h[1]+b2)|0,(h[2]+c)|0,(h[3]+d)|0,(h[4]+e)|0,(h[5]+f)|0,(h[6]+g)|0,(h[7]+hh)|0]}
-return h.map(x=>(x>>>0).toString(16).padStart(8,'0')).join('')}
-function H(pw){let x='acom-tx20|'+pw;for(let i=0;i<1500;i++)x=sha256(x+'|'+i);return x}
+const ADM=[
+  {"n":"Sergio E. Vazquez Jr.","pwd":"acomodadores2026","all":1,"cnt":1,"adm":1,"areas":[]},
+  {"n":"Alberto Herrera","pwd":"seccion@","all":1,"cnt":1,"adm":1,"areas":[]},
+  {"n":"Steven Snyder","pwd":"auxiliar2026","areas":["ctl","aud"],"adm":1,"cnt":1},
+  {"n":"Jaime Palestina","pwd":"superaux2026","areas":["alm","ent"],"adm":1,"cnt":1},
+  {"n":"Abdiel Juarez Jr.","pwd":"clave2026","areas":["aud"],"cnt":1,"adm":1},
+  {"n":"José A. González","pwd":"capitan2026","areas":["vol"],"adm":1},
+  {"n":"Carlos Vasquez","pwd":"limpieza2026","spillOnly":1,"spill":1,"areas":[]},
+  {"n":"Damian Fernandez","pwd":"damian2026","walkers":1,"spill":1,"limited":1,"adm":1,"areas":[]}
+];
 
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const POS=Object.keys(D.pos).map(Number),SEC=[1,2,3,4,5].flatMap(i=>[['A',i,'Anillo 2'],['B',i,'Anillo 1']].map(([r,i,l])=>({id:r+i,l:l+' · Sección '+i})));
+const POS=Object.keys(D.pos).map(Number);
+const VOL_POS=[101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120];
 const PRIV={A:'Anciano',S:'Siervo Ministerial',P:'Publicador bautizado'};
-let iv=null,me=null,hl=null,sel=null,edit=false,drag=null,dragV=null,dragL=null,S={},isVolunteerMode=false,mapView='acom',secEditMode=false,currentTurno=1,spillMode=false;
-let walkerReturn='app', lastWalkerData='', volTurn='1', volQuery='';
+let iv=null,me=null,sel=null,S={},adminMe=null,adminCurrentTurno='1',adminTab='asignaciones';
+let walkerReturn='app';
+let cam={x:440,y:250,w:240,h:330};
+try{Object.assign(cam,JSON.parse(localStorage.wcam||'{}'))}catch(e){}
+let touchState={mode:null,startDist:0,startScale:1,startX:0,startY:0,lastX:0,lastY:0,cx:0,cy:0};
+let mainZoom=1,panelLocked=false;
+
+const LET="ABCDEFGHIJKLMNOPQRST".split("");
+const W_P0=[580,304],W_PC=[556,423],W_P2=[581,542];
+let W_DATA={},W_HIST={},W_CAL={dx:0,dy:0,off:9,len:100};
+try{Object.assign(W_CAL,JSON.parse(localStorage.wcal||'{}'))}catch(e){}
+const wShort=n=>{const p=n.trim().split(/\s+/);return p.length>1?p[0]+' '+p[1][0]+'.':p[0]};
 
 const sectionOf=pos=>VOL_SECTIONS.find(s=>s.pos.includes(+pos))||{label:"Extra",color:"#888"};
-const labelPos=sec=>{const l=S.labels&&S.labels[sec.id];return l?{x:l.x,y:l.y}:{x:sec.labelX,y:sec.labelY}};
-const P=n=>{const d=D.pos[n];const base=Object.assign({},d,(S.pos||{})[n]);if(d.v===1){const who=(S.volTurnos&&S.volTurnos[currentTurno]&&S.volTurnos[currentTurno][n])||"";return Object.assign({},base,{who})}return base};
+const P=n=>{const d=D.pos[n];const base=Object.assign({},d,(S.pos||{})[n]);if(d.v===1){const who=(S.volTurnos&&S.volTurnos[currentTurnoGlobal]&&S.volTurnos[currentTurnoGlobal][n])||"";return Object.assign({},base,{who})}return base};
+let currentTurnoGlobal=1;
 const coordsOf=pos=>{const d=D.pos[pos];const s=(S.pos||{})[pos]||{};return{x:s.x!==undefined?s.x:d.x,y:s.y!==undefined?s.y:d.y}};
 const eff=n=>{const p=P(n);return p.sub||p.who||''},ppl=n=>D.roster.find(r=>r.n===n);
-const canEd=n=>{if(!me||!me.adm)return false;if(me.all)return true;const area=D.pos[n].a;if(area==='vol')return(me.areas||[]).includes('vol');return(me.areas||[]).includes(area)};
-const canCnt=()=>me&&(me.cnt||(!me.adm&&S.cntOpen&&(me.n==='Eliud Luna'||POS.some(n=>n>=25&&n<=34&&eff(n)===me.n))));
+const isLimited=()=>me&&me.limited&&!me.all;
+const isSpillOnly=()=>me&&me.spillOnly&&!me.all;
+const canEd=n=>{if(!me||!me.adm)return false;if(me.all)return true;const area=D.pos[n].a;return(me.areas||[]).includes(area)};
+const canCnt=()=>me&&(me.cnt||(!me.adm&&S.cntOpen&&(D.caps.includes(me.n)||VOL_POS.some(n=>eff(n)===me.n))));
 const occ=()=>new Set(POS.flatMap(n=>[P(n).who,P(n).sub]).filter(Boolean));
-const watch=n=>me&&(me.all||(me.adm?(D.pos[n].a==='vol'||me.areas.includes(D.pos[n].a)):eff(n)===me.n));
-const vacant=n=>watch(n)&&!D.pos[n].v&&(D.pos[n].l?S.arm!==false:S.arm2===true)&&!['ok','sub'].includes(P(n).st);
+const watch=n=>{if(!me)return false;if(me.all)return true;if(me.adm)return(me.areas||[]).includes(D.pos[n].a);return eff(n)===me.n};
 
 function volHistory(name){const res=[],vt=S.volTurnos||{};for(const t in vt)for(const p in vt[t])if(vt[t][p]===name)res.push({turno:+t,posicion:+p});return res.sort((a,b)=>a.turno-b.turno)}
-function canAssign(turno,pos,name){const t=+turno,volList=TURNOS[t]?TURNOS[t].vol:[];if(!volList.includes(name))return{ok:false,msg:"No se apuntó a este turno"};const hist=volHistory(name);if(hist.find(h=>h.turno===t))return{ok:false,msg:"Ya está en este turno"};const sigCount=Object.values(TURNOS).filter(tt=>tt.vol.includes(name)).length;const maxT=Math.min(4,sigCount);if(hist.length>=maxT)return{ok:false,msg:`Máximo ${maxT} turnos`};const consec=hist.find(h=>Math.abs(h.turno-t)===1);if(consec){const ok12=(t===1&&consec.turno===2)||(t===2&&consec.turno===1);if(!ok12)return{ok:false,msg:`Consecutivo con T${consec.turno}`}}if((t===5&&hist.find(h=>h.turno===6))||(t===6&&hist.find(h=>h.turno===5)))return{ok:false,msg:"T5 y T6 excluyentes"};return{ok:true,msg:`OK (${hist.length+1}/${maxT})`}}
-function doAssign(turno,pos,name){const chk=canAssign(turno,pos,name);if(!chk.ok){showToast(`❌ ${esc(name)}: ${chk.msg}`,true);return}if(!S.volTurnos)S.volTurnos={};if(!S.volTurnos[turno])S.volTurnos[turno]={};S.volTurnos[turno][pos]=name;put(`volTurnos/${turno}/${pos}`,name);showToast(`✓ ${esc(name)} → ${sectionOf(pos).label}`)}
-function unassignVol(turno,pos){if(!S.volTurnos||!S.volTurnos[turno])return;delete S.volTurnos[turno][pos];fetch(U(`volTurnos/${turno}/${pos}`),{method:'DELETE'}).then(()=>load());showToast("Asignación eliminada")}
-function toggleSpillMode(){spillMode=!spillMode;if(spillMode){secEditMode=false;edit=false}draw()}
-function promptSpill(x,y){const tipo=prompt("🧹 REPORTAR DERRAME\n\n¿Qué se derramó?\n\n1 = Comida\n2 = Bebida\n3 = Otro\n\n(Escribe el número o el texto)");if(!tipo||!tipo.trim())return;let tipoText;const t=tipo.trim().toLowerCase();if(t==='1'||t.includes('comida')||t.includes('food'))tipoText='Comida';else if(t==='2'||t.includes('bebida')||t.includes('drink'))tipoText='Bebida';else tipoText=tipo.trim();const id=Date.now();put(`spills/${id}`,{x:Math.round(x),y:Math.round(y),tipo:tipoText,status:'pendiente',quien:me.n,ts:id});showToast(`🧹 Derrame reportado: ${tipoText}`);spillMode=false;draw()}
-function takeSpill(id){put(`spills/${id}/status`,'proceso');put(`spills/${id}/quienLimpia`,me.n);put(`spills/${id}/tsProc`,Date.now());showToast('👷 Derrame tomado');draw()}
-function doneSpill(id){put(`spills/${id}/status`,'terminado');put(`spills/${id}/tsDone`,Date.now());showToast('✓ Derrame limpiado');draw()}
-function cancelSpill(id){put(`spills/${id}/status`,'pendiente');put(`spills/${id}/quienLimpia`,null);put(`spills/${id}/tsProc`,null);showToast('↩️ Regresado a pendiente');draw()}
-function deleteSpill(id){if(!confirm('¿Borrar este derrame del historial?'))return;fetch(U('spills/'+id),{method:'DELETE'}).then(()=>load())}
-function showSpillPanel(id){const sp=S.spills&&S.spills[id];if(!sp)return;const e=$('panel');const fecha=new Date(sp.ts);const hora=fecha.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});const fechaStr=fecha.toLocaleDateString('es-MX',{day:'2-digit',month:'short'});let h=`<h3 style="color:#e65100">🧹 Derrame · ${esc(sp.tipo)}</h3>`;h+=`<div class="who" style="border-left-color:var(--spill);background:#fff8e1"><b>Reportado por:</b> ${esc(sp.quien)}<br><b>Hora:</b> ${hora} (${fechaStr})<br><b>Estado:</b> <span style="color:${sp.status==='pendiente'?'#e65100':sp.status==='proceso'?'#f57f17':'#2e7d32'};font-weight:bold">${sp.status.toUpperCase()}</span>${sp.quienLimpia?'<br><b>Limpiando:</b> '+esc(sp.quienLimpia):''}</div>`;if(sp.status==='pendiente'){h+=`<button onclick="takeSpill('${id}')" style="background:#ffd54f;color:#333;border-color:#fbc02d;padding:12px 16px;width:100%;font-weight:bold;font-size:16px">🖐️ Voy a limpiarlo</button>`}else if(sp.status==='proceso'){h+=`<div class="row"><button onclick="doneSpill('${id}')" style="background:#2e7d32;color:#fff;border-color:#2e7d32;padding:12px 16px;font-weight:bold;flex:1">✓ Terminado</button><button onclick="cancelSpill('${id}')" style="padding:12px 16px;flex:1">↩️ Cancelar</button></div>`}else{h+=`<button onclick="deleteSpill('${id}')" style="padding:12px 16px;width:100%">🗑️ Borrar del historial</button>`}e.innerHTML=h}
-const U=p=>CFG.DB.replace(/\/$/,'')+'/s'+(p?'/'+p:'')+'.json';
-function net(v){const e=$('net');if(!CFG.DB){e.textContent='Sin conexión';e.className='net loc';return}e.textContent=v?'En línea':'Sin conexión';e.className='net '+(v?'on':'off')}
-function setPath(o,p,v){const k=p.split('/');let c=o;k.slice(0,-1).forEach(x=>c=c[x]=c[x]||{});v===null?delete c[k.at(-1)]:c[k.at(-1)]=v}
-function put(p,v){setPath(S,p,v);draw();if(!CFG.DB){try{localStorage.acom=JSON.stringify(S)}catch(e){}return}fetch(U(p),{method:'PUT',body:JSON.stringify(v)}).then(r=>net(r.ok)).catch(()=>net(false))}
-async function load(){if(!CFG.DB){try{S=JSON.parse(localStorage.acom||'{}')}catch(e){}return draw()}try{const r=await fetch(U('')+'?t='+Date.now());S=(await r.json())||{};net(true);if(isVolunteerMode){renderVolList()}else{draw()}}catch(e){net(false)}}
-function start(){net(false);if(!CFG.DB){net();window.onstorage=load;load();return}load();clearInterval(iv);iv=setInterval(load,5000)}
-const nrm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();let pick='';
-$('us').oninput=()=>{pick='';$('goU').hidden=true;const q=nrm($('us').value.trim());$('res').innerHTML=q?(D.roster.filter(r=>r.c!=='Voluntaria'&&nrm(r.n).includes(q)).slice(0,6).map(r=>`<button type="button" data-n="${esc(r.n)}" style="width:100%;text-align:left;margin-top:6px">${esc(r.n)}</button>`).join('')||'<span class="mut">No aparece.</span>'):''};
-$('res').onclick=e=>{const b=e.target.closest('button');if(!b)return;pick=b.dataset.n;$('us').value=pick;$('res').innerHTML='';$('goU').textContent='Entrar como '+pick;$('goU').hidden=false};
-$('ad').innerHTML='<option value="">Seleccione su nombre</option>'+ADM.map(a=>`<option>${esc(a.n)}</option>`).join('');
-function enter(u){me=u;try{if(!u.adm)localStorage.me=u.n}catch(e){}$('login').hidden=true;$('app').hidden=false;$('out').hidden=false;$('usr').textContent=u.n;$('btn-mode-toggle').hidden=!u.adm;start()}
-function enterU(){if(pick)enter({n:pick})}
-function enterA(){const a=ADM.find(x=>x.n===$('ad').value);if(!a){$('err').textContent='Seleccione su nombre';return}const pw=$('pw').value;const ok=a.h?(H(pw)===a.h):(a.pwd===pw);if(!ok){$('err').textContent='Contraseña incorrecta';return}enter(a.adm?a:{...a,adm:1})}
-function logout(){centered=false;moreOpen=false;try{delete localStorage.me}catch(e){}clearInterval(iv);onstorage=null;me=null;sel=null;hl=null;edit=false;pick='';spillMode=false;$('us').value='';$('res').innerHTML='';$('goU').hidden=true;$('pw').value='';$('ad').value='';$('err').textContent='';$('usr').textContent='';$('out').hidden=true;$('app').hidden=true;$('walkersView').hidden=true;$('spillPanel').hidden=true;$('login').hidden=false;$('btn-mode-toggle').hidden=true;$('volPanel').hidden=true;isVolunteerMode=false;secEditMode=false;const t=document.getElementById('appTitle');if(t)t.textContent='Acomodadores · La Feria, TX'}
-try{if(localStorage.me)enter({n:localStorage.me})}catch(e){}
+function canAssign(turno,pos,name){
+  const t=+turno,volList=TURNOS[t]?TURNOS[t].vol:[];
+  if(!volList.includes(name))return{ok:false,msg:"No se apuntó a este turno"};
+  const hist=volHistory(name);
+  if(hist.find(h=>h.turno===t))return{ok:false,msg:"Ya está en este turno"};
+  const sigCount=Object.values(TURNOS).filter(tt=>tt.vol.includes(name)).length;
+  const maxT=Math.min(4,sigCount);
+  if(hist.length>=maxT)return{ok:false,msg:`Máximo ${maxT} turnos`};
+  const consec=hist.find(h=>Math.abs(h.turno-t)===1);
+  if(consec){const ok12=(t===1&&consec.turno===2)||(t===2&&consec.turno===1);if(!ok12)return{ok:false,msg:`Consecutivo con T${consec.turno}`}}
+  if((t===5&&hist.find(h=>h.turno===6))||(t===6&&hist.find(h=>h.turno===5)))return{ok:false,msg:"T5 y T6 excluyentes"};
+  return{ok:true,msg:`OK (${hist.length+1}/${maxT})`};
+}
+function doAssign(turno,pos,name){const chk=canAssign(turno,pos,name);if(!chk.ok){showToast(`${esc(name)}: ${chk.msg}`,true);return false}if(!S.volTurnos)S.volTurnos={};if(!S.volTurnos[turno])S.volTurnos[turno]={};S.volTurnos[turno][pos]=name;put(`volTurnos/${turno}/${pos}`,name);return true}
+function unassignVol(turno,pos){if(!S.volTurnos||!S.volTurnos[turno])return;delete S.volTurnos[turno][pos];fetch(U(`volTurnos/${turno}/${pos}`),{method:'DELETE'}).then(()=>load());}
 
-function enterVoluntaria(){me=null;$('login').hidden=true;$('app').hidden=true;$('volPanel').hidden=false;$('out').hidden=false;$('usr').textContent='Voluntaria';$('btn-mode-toggle').hidden=true;isVolunteerMode=true;const t=document.getElementById('appTitle');if(t)t.textContent='Portal de Voluntarias';renderVolTurnBtns();volTurn='1';volQuery='';$('volSearch').value='';renderVolList();start()}
-function toggleBigText(){document.body.classList.toggle('big');try{localStorage.bigText=document.body.classList.contains('big')?'1':'0'}catch(e){}}
-try{if(localStorage.bigText==='1')document.body.classList.add('big')}catch(e){}
-
-function renderVolTurnBtns(){
-  const c=$('volTurnBtns');
-  c.innerHTML=Object.keys(TURNOS).map(t=>`<button class="${volTurn==t?'on':''}" onclick="volTurn='${t}';volQuery='';$('volSearch').value='';renderVolTurnBtns();renderVolList()">T${t}</button>`).join('');
+// ============ NAVIGATION ============
+function goMode(mode){
+  hideAll();
+  if(mode==='acom'){$('acomLoginScreen').hidden=false;setTimeout(()=>$('acomNameInput').focus(),100);}
+  if(mode==='vol'){$('volLoginScreen').hidden=false;setTimeout(()=>$('volNameInput').focus(),100);}
+  if(mode==='admin'){$('adminLoginScreen').hidden=false;renderAdminLoginOptions();}
+}
+function goHome(){hideAll();$('homeScreen').hidden=false;}
+function hideAll(){
+  ['homeScreen','acomLoginScreen','acomApp','volLoginScreen','volView','adminLoginScreen','adminApp','walkersView'].forEach(id=>{if($(id))$(id).hidden=true});
 }
 
-function buscarVoluntaria(q){
-  volQuery=q;
-  renderVolList();
+// ============ ACOMODADOR LOGIN ============
+function acomSearch(q){
+  const n=nrm(q.trim());
+  if(n.length<2){$('acomResults').innerHTML='';return;}
+  const matches=D.roster.filter(r=>r.c!=='Voluntaria'&&nrm(r.n).includes(n)).slice(0,8);
+  $('acomResults').innerHTML=matches.map(r=>`<button class="res-item" onclick="acomEnter('${esc(r.n).replace(/'/g,"\\'")}')">${esc(r.n)}</button>`).join('') || '<p class="mut">No se encontró.</p>';
+}
+function acomEnter(name){
+  const u=ADM.find(x=>x.n===name) || {n:name};
+  me=u;
+  hideAll();
+  $('acomApp').hidden=false;
+  $('usr').textContent=name;
+  $('btnWalkers').hidden=!(u.all||u.walkers||name==='José A. González'||u.adm);
+  start();
 }
 
-function renderVolList(){
-  const res=$('volResults');
-  if(volQuery && volQuery.length>=2){
-    const q=volQuery.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-    const matches=D.roster.filter(r=>r.c==='Voluntaria'&&r.n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q));
-    if(!matches.length){res.innerHTML='<p class="mut" style="padding:20px;text-align:center">No se encontró a nadie.</p>';return}
-    let html='';
-    for(const v of matches.slice(0,5)){
-      const hist=volHistory(v.n);
-      html+=`<div class="card" style="margin-bottom:12px;border-left:4px solid var(--purple);"><h3 style="color:var(--purple);margin-top:0">${esc(v.n)}</h3>`;
-      if(hist.length){
-        html+='<p style="margin:4px 0"><b>Tus asignaciones:</b></p>';
-        for(const h of hist){
-          const sec=sectionOf(h.posicion);
-          html+=`<div class="blink-row" style="border-left:4px solid ${sec.color}">
-            <div style="font-size:15px;margin-bottom:4px"><b>Turno ${h.turno}</b> · ${esc(TURNOS[h.turno].name)}</div>
-            <div style="color:${sec.color};font-weight:bold;font-size:16px">📍 ${sec.label} · Posición <span style="font-size:22px">${h.posicion}</span></div>
-          </div>`;
-        }
-      }else{
-        html+=`<p>No tienes posición asignada todavía.</p>`;
-      }
-      html+=`</div>`;
-    }
-    res.innerHTML=html;
+// ============ VOLUNTARIA LOGIN ============
+function volSearch(q){
+  const n=nrm(q.trim());
+  if(n.length<2){$('volResults').innerHTML='';return;}
+  const matches=D.roster.filter(r=>r.c==='Voluntaria'&&nrm(r.n).includes(n)).slice(0,8);
+  $('volResults').innerHTML=matches.map(r=>`<button class="res-item" onclick="volEnter('${esc(r.n).replace(/'/g,"\\'")}')">${esc(r.n)}</button>`).join('') || '<p class="mut">No se encontró.</p>';
+}
+function volEnter(name){
+  hideAll();
+  $('volView').hidden=false;
+  $('volViewName').textContent=name;
+  renderVolInfo(name);
+}
+
+function renderVolInfo(name){
+  const hist=volHistory(name);
+  let html=`<div class="vol-info-card"><h2>${esc(name)}</h2><div class="sub">Tus turnos y ubicación</div>`;
+  if(!hist.length){
+    html+=`<p class="mut">Aún no tienes asignaciones. Consulta con el Superintendente de Acomodadores.</p>`;
   }else{
-    let html=`<h3 style="color:var(--purple);margin-bottom:12px;text-align:center">Turno ${volTurn} · ${TURNOS[volTurn].name}</h3>`;
-    for(const sec of VOL_SECTIONS){
-      html+=`<div class="vol-list-card"><div class="vol-list-head" style="color:${sec.color}">${sec.label}</div>`;
-      for(const pos of sec.pos){
-        const who=(S.volTurnos&&S.volTurnos[volTurn]&&S.volTurnos[volTurn][pos])||'';
-        if(who){html+=`<div class="vol-list-item occ"><span><b>${pos}</b></span><span>${esc(who)}</span></div>`}
-        else{html+=`<div class="vol-list-item empty"><span><b>${pos}</b></span><span>(Sin asignar)</span></div>`}
-      }
-      html+='</div>';
-    }
-    res.innerHTML=html;
+    html+=`<h3 style="font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:0 0 8px">Turnos asignados</h3>`;
+    hist.forEach(h=>{
+      const sec=sectionOf(h.posicion);
+      html+=`<div class="turno-pill">
+        <b>T${h.turno}</b> · ${esc(TURNOS[h.turno].name)}
+        <span class="pos-num">${h.posicion}</span>
+        <span style="font-size:12px;color:var(--muted);font-weight:400">${esc(sec.label)}</span>
+      </div>`;
+    });
+    html+=`<div class="rules" style="margin-top:14px"><b>Reglas:</b> No consecutivos (excepto T1+T2). Máximo 4 turnos. T5 y T6 excluyentes.</div>`;
+  }
+  html+='</div>';
+  $('volInfoContent').innerHTML=html;
+
+  // Show map with positions
+  if(hist.length){
+    $('volMapView').hidden=false;
+    renderVolMap(hist);
+  }else{
+    $('volMapView').hidden=true;
   }
 }
 
-function openWalkers(from){walkerReturn=from||'app';$('app').hidden=true;$('volPanel').hidden=true;$('walkersView').hidden=false;drawWalkers()}
-function closeWalkers(){$('walkersView').hidden=true;if(walkerReturn==='vol'){$('volPanel').hidden=false;renderVolList()}else{$('app').hidden=false;draw()}}
+function renderVolMap(hist){
+  const markers=$('volMapMarkers');
+  markers.innerHTML=hist.map(h=>{
+    const c=coordsOf(h.posicion);
+    const sec=sectionOf(h.posicion);
+    return `<g transform="translate(${c.x} ${c.y})">
+      <circle class="pulse" r="48" fill="none" stroke="${sec.color}" stroke-width="10"/>
+      <circle r="32" fill="${sec.color}" stroke="#fff" stroke-width="4"/>
+      <text text-anchor="middle" dy=".35em" font-size="22" font-weight="700" fill="#fff">${h.posicion}</text>
+      <text y="52" text-anchor="middle" font-size="14" font-weight="700" fill="${sec.color}" style="paint-order:stroke;stroke:#fff;stroke-width:3">T${h.turno}</text>
+    </g>`;
+  }).join('');
+}
 
+// ============ ADMIN LOGIN ============
+function renderAdminLoginOptions(){
+  const sel=$('adminUserSel');
+  sel.innerHTML='<option value="">Seleccione su nombre</option>'+ADM.filter(a=>a.adm&&!a.spillOnly&&!a.limited).map(a=>`<option>${esc(a.n)}</option>`).join('');
+}
+function adminLogin(){
+  const name=$('adminUserSel').value;
+  const pass=$('adminPassInput').value;
+  const u=ADM.find(x=>x.n===name);
+  if(!u){$('adminLoginErr').textContent='Seleccione su nombre';return;}
+  if(u.pwd!==pass){$('adminLoginErr').textContent='Contraseña incorrecta';return;}
+  adminMe=u;
+  me=u;
+  hideAll();
+  $('adminApp').hidden=false;
+  $('adminWhoLabel').textContent=u.n;
+  start();
+  renderAdminTurnoSelector();
+  renderAdminView();
+}
+
+function adminLogout(){
+  adminMe=null;me=null;
+  clearInterval(iv);
+  goHome();
+}
+
+function setAdminTab(t){
+  adminTab=t;
+  document.querySelectorAll('.admin-tabs button').forEach(b=>b.classList.toggle('on',b.dataset.adminTab===t));
+  $('adminTabAsignaciones').hidden=t!=='asignaciones';
+  $('adminTabConteo').hidden=t!=='conteo';
+  $('adminTabMapa').hidden=t!=='mapa';
+  renderAdminView();
+}
+
+function renderAdminTurnoSelector(){
+  const c=$('adminTurnoSelector');
+  c.innerHTML=Object.entries(TURNOS).map(([t,tt])=>{
+    const asg=S.volTurnos&&S.volTurnos[t]?Object.values(S.volTurnos[t]).filter(Boolean).length:0;
+    return `<button class="${adminCurrentTurno===t?'on':''}" onclick="setAdminTurno('${t}')">T${t}<small>${asg}/20 asignadas</small></button>`;
+  }).join('');
+}
+
+function setAdminTurno(t){
+  adminCurrentTurno=t;
+  currentTurnoGlobal=+t;
+  renderAdminView();
+}
+
+function renderAdminView(){
+  if(adminTab==='asignaciones') renderAdminAsignaciones();
+  if(adminTab==='conteo') renderAdminConteo();
+  if(adminTab==='mapa') renderAdminMapa();
+}
+
+function renderAdminAsignaciones(){
+  const t=adminCurrentTurno;
+  const available=TURNOS[t].vol;
+  const asg=S.volTurnos&&S.volTurnos[t]||{};
+
+  // Table
+  const rows=VOL_POS.map(pos=>{
+    const sec=sectionOf(pos);
+    const current=asg[pos]||'';
+    // Build options: available volunteers first, then blocked
+    const opts=['<option value="">— Sin asignar —</option>'];
+    const availableNames=[];
+    const blockedNames=[];
+    available.forEach(name=>{
+      if(current===name) return; // handled by 'current' option
+      const chk=canAssign(t,pos,name);
+      if(chk.ok) availableNames.push(name);
+      else blockedNames.push({name,msg:chk.msg});
+    });
+    // Current first
+    if(current){
+      opts.push(`<option value="${esc(current)}" selected>${esc(current)}</option>`);
+    }
+    availableNames.sort().forEach(n=>{opts.push(`<option value="${esc(n)}">${esc(n)}</option>`)});
+    if(blockedNames.length){
+      opts.push(`<optgroup label="No disponibles">`);
+      blockedNames.forEach(b=>{opts.push(`<option value="${esc(b.name)}" disabled>${esc(b.name)} — ${b.msg}</option>`)});
+      opts.push(`</optgroup>`);
+    }
+    const cls=current?'assigned':(blockedNames.length<available.length?'':'');
+    return `<tr class="${cls}">
+      <td class="pos-num">${pos}</td>
+      <td class="pos-sec">${esc(sec.label)}</td>
+      <td><select onfocus="panelLocked=true" onblur="setTimeout(()=>panelLocked=false,200)" onchange="adminAssign(${pos},this.value)">${opts.join('')}</select></td>
+    </tr>`;
+  }).join('');
+
+  $('adminPosTable').innerHTML=rows;
+
+  // Side panel
+  const total=VOL_POS.length;
+  const assigned=Object.values(asg).filter(Boolean).length;
+  const availableNow=available.filter(name=>!Object.values(asg).includes(name));
+  const blockedInfo=availableNow.map(name=>{
+    const chk=canAssign(t,1,name); // any position, just to check rules
+    return{name,chk};
+  });
+
+  let sideHtml=`
+    <div class="stat-line"><span>Total posiciones</span><b>${total}</b></div>
+    <div class="stat-line"><span>Asignadas</span><b>${assigned}</b></div>
+    <div class="stat-line"><span>Sin asignar</span><b style="color:${total-assigned>0?'var(--err)':'var(--ok)'}">${total-assigned}</b></div>
+    <div class="stat-line"><span>Voluntarias turno</span><b>${available.length}</b></div>
+  `;
+
+  if(blockedInfo.length){
+    sideHtml+=`<div class="rule-box" style="margin-top:12px"><b>Reglas activas:</b> No consecutivos (excepto T1+T2). Máximo 4 turnos. T5/T6 excluyentes.</div>`;
+    sideHtml+=`<h3 style="margin-top:14px">Estado de voluntarias</h3><div class="avail-list">`;
+    blockedInfo.forEach(b=>{
+      if(b.chk.ok){
+        sideHtml+=`<div><span class="ok-mark">✓</span>${esc(b.name)}</div>`;
+      }else{
+        sideHtml+=`<div><span style="color:var(--err);margin-right:4px">✕</span>${esc(b.name)}<span class="conflict">(${b.chk.msg})</span></div>`;
+      }
+    });
+    sideHtml+=`</div>`;
+  }else{
+    sideHtml+=`<p class="mut" style="margin-top:12px;font-size:13px">No hay voluntarias disponibles para este turno.</p>`;
+  }
+  $('adminSidePanel').innerHTML=sideHtml;
+}
+
+async function adminAssign(pos, name){
+  const t=adminCurrentTurno;
+  if(!name){
+    // Clear
+    if(S.volTurnos&&S.volTurnos[t]){
+      delete S.volTurnos[t][pos];
+      await fetch(U(`volTurnos/${t}/${pos}`),{method:'DELETE'});
+      showToast('Asignación eliminada');
+      await load();
+    }
+    return;
+  }
+  const chk=canAssign(t,pos,name);
+  if(!chk.ok){showToast(`${name}: ${chk.msg}`,true);await load();return;}
+  if(!S.volTurnos)S.volTurnos={};
+  if(!S.volTurnos[t])S.volTurnos[t]={};
+  S.volTurnos[t][pos]=name;
+  await fetch(U(`volTurnos/${t}/${pos}`),{method:'PUT',body:JSON.stringify(name)});
+  showToast(`${name} → T${t} · Pos ${pos}`);
+  await load();
+}
+
+function renderAdminConteo(){
+  const t=Object.keys(S.cnt||{});
+  const cnt=S.cnt||{}, exp=S.expect||D.expect;
+  const total=Object.values(cnt).reduce((a,b)=>a+(+b||0),0);
+  let html=`<h2 style="margin:0 0 12px;color:var(--brown)">Conteo por sección</h2>`;
+  html+=`<p style="font-size:20px;margin:0 0 12px"><b>${total}</b> / <b>${exp}</b> (${Math.round(100*total/exp)}%)</p>`;
+  html+=`<div class="bar" style="margin-bottom:16px"><i style="width:${Math.min(100,100*total/exp)}%"></i></div>`;
+  html+=`<div class="grid">`;
+  ['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5'].forEach(sec=>{
+    const v=cnt[sec]||0;
+    html+=`<div class="t">
+      <small style="font-size:12px;color:var(--muted)">${sec}</small>
+      <b>${v}</b>
+      <div class="row" style="justify-content:center;margin-top:6px">
+        <button onclick="adminCnt('${sec}',-1)">−</button>
+        <button onclick="adminCnt('${sec}',1)">+</button>
+      </div>
+    </div>`;
+  });
+  html+=`</div>`;
+  html+=`<div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+    <button onclick="put('cnt',null)" style="padding:12px">Reiniciar conteo</button>
+    <button onclick="put('cntOpen',${!S.cntOpen})" style="padding:12px;background:${S.cntOpen?'var(--err)':'var(--ok)'};color:#fff;border-color:${S.cntOpen?'var(--err)':'var(--ok)'}">${S.cntOpen?'Cerrar conteo a capitanes':'Abrir conteo a capitanes'}</button>
+  </div>`;
+  $('adminCntCard').innerHTML=html;
+}
+function adminCnt(sec,d){
+  const v=Math.max(0,((S.cnt||{})[sec]||0)+d);
+  if(!S.cnt)S.cnt={};
+  S.cnt[sec]=v;
+  put('cnt/'+sec,v);
+  renderAdminConteo();
+}
+
+function renderAdminMapa(){
+  const t=adminCurrentTurno;
+  const asg=S.volTurnos&&S.volTurnos[t]||{};
+  let h='';
+  VOL_POS.forEach(pos=>{
+    const c=coordsOf(pos);
+    const sec=sectionOf(pos);
+    const who=asg[pos]||'';
+    h+=`<g transform="translate(${c.x} ${c.y})">
+      <circle r="22" fill="${sec.color}" stroke="#fff" stroke-width="3"/>
+      <text text-anchor="middle" dy=".35em" font-size="15" font-weight="700" fill="#fff">${pos}</text>
+      ${who?`<text y="38" text-anchor="middle" font-size="11" font-weight="600" fill="${sec.color}" style="paint-order:stroke;stroke:#fff;stroke-width:3">${esc(who.split(' ')[0])}</text>`:''}
+    </g>`;
+  });
+  $('adminMapPl').innerHTML=h;
+}
+
+// ============ UTILS ============
+function showToast(m,err){const c=document.getElementById('toast-container'),t=document.createElement('div');t.className='toast'+(err?' err':'');t.textContent=m;c.appendChild(t);setTimeout(()=>t.classList.add('show'),10);setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},3500);}
+function net(v){const e=$('net');if(!e)return;if(!CFG.DB){e.textContent='Sin conexión';e.className='net loc';return}e.textContent=v?'En línea':'Sin conexión';e.className='net '+(v?'on':'off');}
+function setPath(o,p,v){const k=p.split('/');let c=o;k.slice(0,-1).forEach(x=>c=c[x]=c[x]||{});v===null?delete c[k.at(-1)]:c[k.at(-1)]=v;}
+function put(p,v){setPath(S,p,v);if(adminMe)renderAdminView();if(!CFG.DB)return;fetch(U(p),{method:'PUT',body:JSON.stringify(v)}).then(r=>net(r.ok)).catch(()=>net(false));}
+const U=p=>CFG.DB.replace(/\/$/,'')+'/s'+(p?'/'+p:'')+'.json';
+async function load(){
+  if(!CFG.DB)return;
+  try{
+    const r=await fetch(U('')+'?t='+Date.now());
+    S=(await r.json())||{};
+    net(true);
+    if(adminMe){
+      renderAdminTurnoSelector();
+      renderAdminView();
+    }else if(me){
+      draw();
+    }
+    if(!$('walkersView').hidden)drawWalkers();
+  }catch(e){net(false);}
+}
+function start(){net(false);load();clearInterval(iv);iv=setInterval(load,5000);}
+const nrm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+
+// ============ ACOMODADOR APP (map, spills) ============
+function draw(){
+  if(!me)return;
+  drawMap();drawPanel();drawBar();drawMine();drawLegend();drawSpills();
+}
+function setSt(n,s){put(`pos/${n}/st`,s);put(`pos/${n}/stAt`,Date.now());}
+function here(n){if(P(n).sub===me.n||P(n).who===me.n)setSt(n,P(n).sub?'sub':'ok');}
+function zoomMain(d){mainZoom=Math.max(1,Math.min(3,mainZoom+d));$('svg').style.width=(mainZoom*100)+'%';}
+
+function drawMap(){
+  let h='';
+  for(const n of POS){
+    const raw=D.pos[n];const isVol=raw.v===1;
+    const p=P(n);
+    const b=p.st==='ok'?['#4a6b3a','✓']:p.st==='abs'?['#a8251c','✕']:p.st==='sub'?['#777','S']:null;
+    const fill=isVol?sectionOf(n).color:(raw.l?'var(--blue-a)':'var(--org-a)');
+    h+=`<g class="pc" data-n="${n}" transform="translate(${p.x} ${p.y})">
+      <circle r="19" fill="${fill}" stroke="${sel===n?'#000':'#fff'}" stroke-width="${sel===n?4.5:2.5}"/>
+      <text text-anchor="middle" dy=".35em">${n}</text>
+      ${b?`<circle cx="15" cy="-15" r="9" fill="${b[0]}" stroke="#fff" stroke-width="1.5"/><text x="15" y="-15" dy=".35em" text-anchor="middle" style="font-size:11px;font-weight:700;fill:#fff">${b[1]}</text>`:''}
+    </g>`;
+  }
+  $('pl').innerHTML=h;
+  // Spills
+  let sh='';
+  if(S.spills){
+    for(const id in S.spills){
+      const sp=S.spills[id];
+      if(sp.status==='terminado')continue;
+      const color=sp.status==='proceso'?'#c28a1c':'#b8860b';
+      sh+=`<g class="spill" data-spill="${id}" transform="translate(${sp.x} ${sp.y})"><polygon points="0,-26 24,20 -24,20" fill="${color}" stroke="#fff" stroke-width="2" opacity="0.95"/><text text-anchor="middle" y="6" font-size="20" fill="#fff" font-weight="700" pointer-events="none">!</text></g>`;
+    }
+  }
+  $('spl').innerHTML=sh;
+  // Bind
+  $('svg').querySelectorAll('.pc').forEach(el=>{
+    el.onclick=()=>{sel=+el.dataset.n;draw();};
+  });
+  $('svg').querySelectorAll('.spill').forEach(el=>{
+    el.onclick=()=>showSpillPanel(el.dataset.spill);
+  });
+}
+
+function drawBar(){
+  if(isSpillOnly()){
+    $('bar').innerHTML=`<button onclick="toggleSpillMode()" style="background:var(--warn);color:#fff;border-color:var(--warn);font-weight:700;padding:14px 22px">Reportar Derrame</button>`;
+    return;
+  }
+  const spillBtn=`<button onclick="toggleSpillMode()" style="background:#fff;color:var(--warn);border-color:var(--warn);font-weight:700">Reportar Derrame</button>`;
+  const cntBtn=canCnt()?`<button onclick="drawCntPanel()" style="background:var(--gold);color:#fff;border-color:var(--gold);font-weight:700">Conteo</button>`:'';
+  $('bar').innerHTML=`${spillBtn}${cntBtn}`;
+}
+function toggleSpillMode(){showToast('Toca el mapa donde está el derrame');}
+
+function drawMine(){
+  const e=$('mine');if(!e)return;
+  if(isSpillOnly()){e.hidden=true;return;}
+  const n=POS.find(n=>eff(n)===me.n);
+  e.hidden=me.adm||me.all;
+  if(me.adm||me.all)return;
+  e.innerHTML=n?`<h3>Tu posición: ${n}</h3><p>${esc(D.pos[n].t)}</p>`+(['ok','sub'].includes(P(n).st)?'<b style="color:var(--ok)">Registrado</b>':`<button class="ok" style="width:100%;padding:18px;font-size:20px" onclick="here(${n})">Aquí estoy</button>`):(D.caps.includes(me.n)?'<h3>Capitán</h3>':'');
+}
+
+function drawPanel(){
+  const e=$('panel');if(!e)return;
+  if(panelLocked)return;
+  if(!sel){e.innerHTML='<span class="mut">Toca un número para ver detalles.</span>';return;}
+  const n=sel,p=P(n),w=eff(n),d=D.pos[n];
+  let h=`<h3>Posición ${n}</h3><div>${esc(d.t)}</div>`;
+  h+=w?`<div class="who"><b>${esc(w)}</b></div>`:'<p class="mut">Sin asignar</p>';
+  e.innerHTML=h;
+}
+
+function drawLegend(){
+  $('legend').innerHTML=`<span><i style="background:var(--blue-a)"></i>Fija</span><span><i style="background:var(--org-a)"></i>Intermitente</span><span><i style="background:var(--ok)"></i>Presente</span><span><i style="background:var(--err)"></i>Ausente</span>`;
+}
+
+function drawSpills(){
+  const e=$('spillPanel');if(!e)return;
+  const arr=Object.entries(S.spills||{}).filter(([,s])=>s.status!=='terminado').sort((a,b)=>b[1].ts-a[1].ts);
+  if(!arr.length){e.hidden=true;return;}
+  e.hidden=false;
+  let h=`<div class="spill-panel"><h3>Derrames activos</h3>`;
+  arr.forEach(([id,sp])=>{
+    const hora=new Date(sp.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+    h+=`<div class="spill-item${sp.status==='proceso'?' proc':''}"><b>${esc(sp.tipo)}</b> · ${sp.status.toUpperCase()}<div style="font-size:13px;color:var(--muted)">${esc(sp.quien)} · ${hora}</div></div>`;
+  });
+  h+='</div>';e.innerHTML=h;
+}
+
+function showSpillPanel(id){
+  const sp=S.spills&&S.spills[id];if(!sp)return;
+  showModal(`Derrame · ${sp.tipo}`,
+    `<div class="who"><b>Reportado por:</b> ${esc(sp.quien)}<br><b>Estado:</b> ${sp.status.toUpperCase()}</div>`,
+    [{text:'Cerrar'}]
+  );
+}
+
+function drawCntPanel(){
+  if(!canCnt())return;
+  const cnt=S.cnt||{};
+  let h=`<div class="card"><h3>Conteo por sección</h3><div class="grid">`;
+  ['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5'].forEach(sec=>{
+    h+=`<div class="t"><small>${sec}</small><b>${cnt[sec]||0}</b>
+      <div class="row" style="justify-content:center;margin-top:4px"><button onclick="put('cnt/${sec}',Math.max(0,${cnt[sec]||0}-1));">−</button><button onclick="put('cnt/${sec}',${(cnt[sec]||0)+1})">+</button></div>
+    </div>`;
+  });
+  h+=`</div></div>`;
+  showModal('Conteo',h,[{text:'Cerrar'}]);
+}
+
+// ============ WALKERS ============
 const CQ_A=[190,90],CQ_C=[112,365],CQ_B=[190,640];
 function cqPt(t){const u=1-t;return[u*u*CQ_A[0]+2*u*t*CQ_C[0]+t*t*CQ_B[0],u*u*CQ_A[1]+2*u*t*CQ_C[1]+t*t*CQ_B[1]]}
 function cqTan(t){return[2*(1-t)*(CQ_C[0]-CQ_A[0])+2*t*(CQ_B[0]-CQ_C[0]),2*(1-t)*(CQ_C[1]-CQ_A[1])+2*t*(CQ_B[1]-CQ_C[1])]}
-function cqGeo(slot){const ci=LETTERS.indexOf(slot[0]),r=+slot[1],t=(ci+.5)/20,p=cqPt(t),T=cqTan(t),m=Math.hypot(T[0],T[1]),n=[T[1]/m,-T[0]/m],d=32+(r-1)*50;return{x:p[0]+n[0]*d,y:p[1]+n[1]*d,a:Math.atan2(T[1],T[0])*180/Math.PI-90}}
-function cqFirst(n){const p=String(n||'').trim().split(/\s+/)[0]||'';return p.length>7?p.slice(0,6)+'.':p}
-function drawCroquis(wk){
-  const el=document.getElementById('walkCroquis');if(!el)return;
+function cqGeo(slot){const ci=LET.indexOf(slot[0]),r=+slot[1],t=(ci+.5)/20,p=cqPt(t),T=cqTan(t),m=Math.hypot(T[0],T[1]),n=[T[1]/m,-T[0]/m],d=32+(r-1)*50;return{x:p[0]+n[0]*d,y:p[1]+n[1]*d,a:Math.atan2(T[1],T[0])*180/Math.PI-90}}
+
+function openWalkers(){walkerReturn='app';hideAll();$('walkersView').hidden=false;drawWalkers();}
+function closeWalkers(){$('walkersView').hidden=true;if(me&&me.adm)$('adminApp').hidden=false;else $('acomApp').hidden=false;}
+function drawWalkers(){renderWalkGrid();renderCroquis();}
+function renderCroquis(){
+  const wk=W_DATA||{};const el=$('walkCroquis');if(!el)return;
   let h='';
-  // asientos del auditorio (sugerencia de filas)
-  for(const o of [172,194,216,238]){h+=`<path d="M${CQ_A[0]+o} ${CQ_A[1]} Q${CQ_C[0]+o} ${CQ_C[1]} ${CQ_B[0]+o} ${CQ_B[1]}" fill="none" stroke="#d8c9a3" stroke-width="10" stroke-dasharray="7 4" opacity=".8"/>`}
-  h+=`<text x="428" y="365" font-size="14" font-weight="700" fill="#a08a50" text-anchor="middle" transform="rotate(90 428 365)">AUDITORIO · ASIENTOS</text>`;
-  // contrapared curva
-  h+=`<path d="M${CQ_A[0]} ${CQ_A[1]} Q${CQ_C[0]} ${CQ_C[1]} ${CQ_B[0]} ${CQ_B[1]}" fill="none" stroke="#555" stroke-width="9" stroke-linecap="round"/>`;
-  h+=`<text x="130" y="365" font-size="12" font-weight="700" fill="#555" text-anchor="middle" transform="rotate(90 130 365)">CONTRAPARED</text>`;
-  // muro del vestibulo con puertas
-  const doors=[[180,235],[275,330],[370,425],[465,520]];
-  let y0=30;for(const [a,b] of doors){h+=`<line x1="64" y1="${y0}" x2="64" y2="${a}" stroke="#6e1414" stroke-width="7" stroke-linecap="round"/>`;y0=b}
-  h+=`<line x1="64" y1="${y0}" x2="64" y2="680" stroke="#6e1414" stroke-width="7" stroke-linecap="round"/>`;
-  for(const [a,b] of doors){const m=(a+b)/2;h+=`<path d="M64 ${a} Q86 ${a+6} 86 ${a+27}" fill="none" stroke="#6e1414" stroke-width="2" opacity=".6"/><path d="M64 ${b} Q86 ${b-6} 86 ${b-27}" fill="none" stroke="#6e1414" stroke-width="2" opacity=".6"/><path d="M14 ${m} H48 M40 ${m-7} L50 ${m} L40 ${m+7}" fill="none" stroke="#6e1414" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`}
-  h+=`<text x="12" y="20" font-size="14" font-weight="700" fill="#6e1414">VESTÍBULO</text>`;
-  h+=`<text x="12" y="694" font-size="11" fill="#6e1414">◀ puertas de entrada (aprox.)</text>`;
-  // pasos hacia los asientos (alrededor de los extremos de la curva)
-  h+=`<path d="M100 44 H330 M318 37 L330 44 L318 51" fill="none" stroke="#2c6cb0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 7"/><path d="M100 672 H330 M318 665 L330 672 L318 679" fill="none" stroke="#2c6cb0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 7"/>`;
-  h+=`<text x="215" y="36" font-size="11" fill="#2c6cb0" text-anchor="middle">a los asientos ▶</text><text x="215" y="692" font-size="11" fill="#2c6cb0" text-anchor="middle">a los asientos ▶</text>`;
-  // espacios
-  let latest=null,lts=0;
+  h+=`<path d="M${CQ_A[0]} ${CQ_A[1]} Q${CQ_C[0]} ${CQ_C[1]} ${CQ_B[0]} ${CQ_B[1]}" fill="none" stroke="#555" stroke-width="9"/>`;
   for(const slot of WALKER_SLOTS){
     const g=cqGeo(slot),cur=wk[slot];
-    if(cur&&(cur.ts||0)>=lts){lts=cur.ts||0;latest=slot}
-    h+=`<g class="cslot${cur?' occ':''}" data-slot="${slot}" transform="translate(${g.x.toFixed(1)} ${g.y.toFixed(1)}) rotate(${g.a.toFixed(1)})" onclick="walkerTap('${slot}')"><rect x="-22" y="-12" width="44" height="24" rx="4"/>`+
-      (cur?`<text text-anchor="middle" y="-2" font-size="8" opacity=".85" transform="rotate(${(-g.a).toFixed(1)})">${slot}</text><text text-anchor="middle" y="8" font-size="10" font-weight="700" transform="rotate(${(-g.a).toFixed(1)})">${esc(cqFirst(cur.name))}</text>`
-          :`<text text-anchor="middle" y="4" font-size="11" font-weight="700" transform="rotate(${(-g.a).toFixed(1)})">${slot}</text>`)+`</g>`;
+    h+=`<g class="cslot${cur?' occ':''}" transform="translate(${g.x.toFixed(1)} ${g.y.toFixed(1)}) rotate(${g.a.toFixed(1)})"><rect x="-22" y="-12" width="44" height="24" rx="4"/><text text-anchor="middle" y="4" font-size="11" font-weight="700" transform="rotate(${-g.a.toFixed(1)})">${slot}</text></g>`;
   }
-  if(latest&&Date.now()-lts<1800000){const g=cqGeo(latest);h+=`<circle class="cq-latest" cx="${g.x.toFixed(1)}" cy="${g.y.toFixed(1)}" r="28"/>`}
   el.innerHTML=h;
 }
-function walkerShort(full){const parts=full.trim().split(/\s+/);if(parts.length===1)return parts[0];return parts[0]+' '+(parts[1]||'')[0]+'.'}
-function drawWalkers(){
-  const wk=S.walkers||{};const current=JSON.stringify(wk);if(current===lastWalkerData&&document.getElementById('walkGrid').innerHTML!=='')return;lastWalkerData=current;
-  const total=WALKER_SLOTS.length;const occCount=Object.keys(wk).length;$('walkCount').textContent=`${occCount}/${total} ocupados`;
-  let h='';
-  for(const slot of WALKER_SLOTS){
+function renderWalkGrid(){
+  const wk=W_DATA||{};let h='';
+  WALKER_SLOTS.forEach(slot=>{
     const cur=wk[slot];
-    if(cur){h+=`<button class="wslot occ" data-slot="${slot}" title="${esc(cur.name)}" onclick="walkerTap('${slot}')"><b>${slot}</b><small>${esc(walkerShort(cur.name))}</small></button>`}
-    else{h+=`<button class="wslot empty" data-slot="${slot}" onclick="walkerTap('${slot}')"><b>${slot}</b><small>Vacío</small></button>`}
-  }
-  $('walkGrid').innerHTML=h;drawCroquis(wk);
+    if(cur){h+=`<button class="wslot occ" onclick="walkerTap('${slot}')"><b>${slot}</b><small>${esc(wShort(cur.name))}</small></button>`}
+    else{h+=`<button class="wslot" onclick="walkerTap('${slot}')"><b>${slot}</b><small>Vacío</small></button>`}
+  });
+  $('walkGrid').innerHTML=h;
+  $('walkCount').textContent=`${Object.keys(wk).length}/${WALKER_SLOTS.length} ocupados`;
 }
-function walkerTap(slot){const cur=S.walkers&&S.walkers[slot];if(cur){if(confirm(`Retirar walker de "${cur.name}"?\n\nAceptar = retirado\nCancelar = mantener`)){fetch(U('walkers/'+slot),{method:'DELETE'}).then(()=>{load();drawWalkers()})}}else{const name=prompt(`Estacionamiento ${slot} - ¿Cómo se llama el hermano/a?`);if(!name||!name.trim())return;put(`walkers/${slot}`,{name:name.trim(),ts:Date.now()});showToast(`✓ ${slot} → ${name.trim()}`);setTimeout(drawWalkers,100)}}
-function searchWalker(q){const els=document.querySelectorAll('.wslot,.cslot');if(!q||q.length<2){els.forEach(el=>el.classList.remove('found'));return}const norm=q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');els.forEach(el=>{const slot=el.dataset.slot,cur=S.walkers&&S.walkers[slot];if(!cur){el.classList.remove('found');return}const n=cur.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');if(n.includes(norm))el.classList.add('found');else el.classList.remove('found')})}
+async function walkerTap(slot){
+  const cur=W_DATA&&W_DATA[slot];
+  if(cur){
+    if(confirm(`Retirar walker de ${cur.name}?`)){
+      await fetch(`${CFG.DB}/walkersTest/w/${slot}.json`,{method:'DELETE'});
+      await loadWalkers();
+    }
+  }else{
+    const name=prompt(`Estacionamiento ${slot} - ¿Nombre?`);
+    if(!name)return;
+    await fetch(`${CFG.DB}/walkersTest/w/${slot}.json`,{method:'PUT',body:JSON.stringify({name:name.trim(),ts:Date.now()})});
+    await loadWalkers();
+  }
+}
+function searchWalker(q){if(!q||q.length<2)return;}
 
-const stamp=n=>put(`pos/${n}/ts`,Date.now());
-function cnt(id,d){hl=id;const v=Math.max(0,((S.cnt||{})[id]||0)+d);put('cnt/'+id,v)}
-function reset(){if(!confirm('¿Reiniciar?'))return;const o={};POS.forEach(n=>{const p=P(n);o[n]={x:p.x,y:p.y,who:p.who}});put('pos',o);put('cnt',null)}
-function draw(){if(!me||drag||dragV||dragL)return;drawMap();centerMine();drawPanel();drawBar();drawCnt();drawMine();drawLegend();drawSpills();if(!$('walkersView').hidden)drawWalkers()}
-function showToast(m,err){const c=document.getElementById('toast-container'),t=document.createElement('div');t.className='toast'+(err?' err':'');t.innerHTML=m;c.appendChild(t);setTimeout(()=>t.classList.add('show'),10);setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},3500)}
-function setSt(n,s){put(`pos/${n}/st`,s);stamp(n);const nom=eff(n)||('Posición '+n);if(s==='ok'||s==='sub')showToast(`✓ ${nom} Presente`);else if(s==='abs')showToast(`✕ ${nom} Ausente`)}
-function here(n){if(P(n).sub===me.n||P(n).who===me.n)setSt(n,P(n).sub?'sub':'ok')}
-function useSub(n,name){put(`pos/${n}/sub`,name);setSt(n,'sub');showToast(`✓ Sustituto: ${name}`)}
-function back(n){put(`pos/${n}/sub`,null);setSt(n,'ok')}
-function setWho(n,v){put(`pos/${n}/who`,v);put(`pos/${n}/sub`,null);setSt(n,'pend');if(v)showToast(`✓ Asignado: ${v}`)}
-function secPts(k){return((S.sec&&S.sec[k])||D.sec[k]).split(' ').map(p=>p.split(',').map(Number))}
-function secSave(k,pts){const str=pts.map(p=>`${Math.round(p[0])},${Math.round(p[1])}`).join(' ');if(!S.sec)S.sec={};S.sec[k]=str;put('sec/'+k,str)}
-function moveVertex(k,idx,x,y){const pts=secPts(k);pts[idx]=[x,y];secSave(k,pts)}
-function addVertex(k,idx,x,y){const pts=secPts(k);pts.splice(idx+1,0,[x,y]);secSave(k,pts);showToast(`➕ Punto agregado`)}
-function delVertex(k,idx){const pts=secPts(k);if(pts.length<=3){showToast('⚠ Mínimo 3 puntos',true);return}pts.splice(idx,1);secSave(k,pts);showToast(`🗑️ Punto eliminado`)}
-function resetSec(k){if(!confirm(`¿Restaurar ${k}?`))return;if(!S.sec)S.sec={};delete S.sec[k];fetch(U('sec/'+k),{method:'DELETE'}).then(()=>load())}
-function setCap(k,v){const n=Math.max(0,parseInt(v)||0);if(!S.cap)S.cap={};S.cap[k]=n;put('cap/'+k,n);draw()}
-function moveLabel(lid,x,y){if(!S.labels)S.labels={};S.labels[lid]={x:Math.round(x),y:Math.round(y)};put('labels/'+lid,S.labels[lid])}
-function drawLegend(){const lg=$('legend');if(!lg)return;if(mapView==='vol'&&me&&me.adm){lg.innerHTML=VOL_SECTIONS.map(s=>`<span><i style="background:${s.color}"></i>${s.label}</span>`).join('')+'<span><i style="background:var(--spill)"></i>🧹 Derrame</span>'}else{lg.innerHTML=`<span><i style="background:var(--blue)"></i>Fija</span><span><i style="background:var(--org)"></i>Intermitente</span><span><i style="background:#2e7d32"></i>Presente</span><span><i style="background:#d11"></i>Ausente</span><span><i style="background:#777"></i>Sustituto</span><span><i style="background:var(--spill)"></i>🧹 Derrame</span>`}}
-function drawSpills(){const e=$('spillPanel');if(!e||!me)return;const arr=Object.entries(S.spills||{}).sort((a,b)=>b[1].ts-a[1].ts);const pend=arr.filter(([id,s])=>s.status==='pendiente');const proc=arr.filter(([id,s])=>s.status==='proceso');const done=arr.filter(([id,s])=>s.status==='terminado');if(!arr.length){e.hidden=true;return}e.hidden=false;let h=`<div class="spill-panel"><h3 style="color:#e65100;margin-top:0">🧹 Derrames</h3>`;h+=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px"><div class="spill-counter" style="background:#fff3cd"><b style="color:#e65100">${pend.length}</b><small>Pendientes</small></div><div class="spill-counter" style="background:#fff59d"><b style="color:#f57f17">${proc.length}</b><small>En proceso</small></div><div class="spill-counter" style="background:#c8e6c9"><b style="color:#2e7d32">${done.length}</b><small>Terminadas</small></div></div>`;const active=[...pend,...proc];for(const [id,sp] of active){const fecha=new Date(sp.ts),hora=fecha.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});const isProc=sp.status==='proceso';h+=`<div class="spill-item ${isProc?'proc':''}"><div><b>${esc(sp.tipo)}</b> · <span style="color:${isProc?'#f57f17':'#e65100'};font-weight:600">${sp.status.toUpperCase()}</span></div><div style="font-size:13px;color:#666;margin-top:4px">Reportado por ${esc(sp.quien)} · ${hora}${sp.quienLimpia?' · Limpia: '+esc(sp.quienLimpia):''}</div><div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><button onclick="showSpillPanel('${id}')" style="font-size:14px;padding:8px 12px">Ver detalles</button>${!isProc?`<button onclick="takeSpill('${id}')" style="font-size:14px;padding:8px 12px;background:#ffd54f;border-color:#fbc02d;font-weight:bold">🖐️ Tomar</button>`:''}${isProc?`<button onclick="doneSpill('${id}')" style="font-size:14px;padding:8px 12px;background:#2e7d32;color:#fff;border-color:#2e7d32;font-weight:bold">✓ Terminado</button>`:''}</div></div>`}if(done.length){h+=`<details style="margin-top:12px"><summary>✅ ${done.length} terminadas hoy</summary>`;for(const [id,sp] of done){const fecha=new Date(sp.ts),hora=fecha.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});h+=`<div class="spill-item done" style="margin-top:6px"><div><b>${esc(sp.tipo)}</b></div><div style="font-size:13px;color:#666;margin-top:4px">Por ${esc(sp.quien)} · ${hora}${sp.quienLimpia?' · Limpió: '+esc(sp.quienLimpia):''}</div><button onclick="deleteSpill('${id}')" style="font-size:13px;padding:6px 10px;margin-top:6px">🗑️ Borrar</button></div>`}h+='</details>'}h+='</div>';e.innerHTML=h}
-function drawMap(){let s='';for(const k in D.sec){const cls=secEditMode?('sec edit'+(hl===k?' hl':'')):'sec'+(hl===k?' hl':'');s+=`<polygon class="${cls}" data-s="${k}" points="${(S.sec&&S.sec[k])||D.sec[k]}"/>`}$('sl').innerHTML=s;let vh='';if(secEditMode&&hl&&D.sec[hl]){const pts=secPts(hl);pts.forEach((pt,i)=>{vh+=`<circle class="vertex" data-sec="${hl}" data-idx="${i}" cx="${pt[0]}" cy="${pt[1]}" r="7" fill="#fff" stroke="#d11" stroke-width="2"/>`});for(let i=0;i<pts.length;i++){const a=pts[i],b=pts[(i+1)%pts.length];const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2;vh+=`<circle class="vadd" data-sec="${hl}" data-after="${i}" data-mx="${Math.round(mx)}" data-my="${Math.round(my)}" cx="${mx}" cy="${my}" r="4" fill="#888" stroke="#fff" stroke-width="1.5"/>`}}$('vl').innerHTML=vh;let h='';if(mapView==='vol'&&me&&me.adm){for(const sec of VOL_SECTIONS){const lp=labelPos(sec);if(secEditMode){h+=`<g class="vlabel" data-lid="${sec.id}" transform="translate(${lp.x} ${lp.y})"><rect x="-85" y="-18" width="170" height="28" rx="6" fill="#ffffffdd" stroke="${sec.color}" stroke-width="2"/><text text-anchor="middle" dy=".35em" font-size="15" font-weight="bold" fill="${sec.color}" pointer-events="none">${sec.label}</text></g>`}else{h+=`<text x="${lp.x}" y="${lp.y}" text-anchor="middle" font-size="15" font-weight="bold" fill="${sec.color}" pointer-events="none" style="text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 3px #fff">${sec.label}</text>`}}}for(const n of POS){const raw=D.pos[n],isVol=raw.v===1;if((mapView==='acom'&&isVol)||(mapView==='vol'&&!isVol))continue;const p=P(n);const b=p.st==='ok'?['#2e7d32','✓']:p.st==='abs'?['#d11','✕']:p.st==='sub'?['#777','S']:null;const fill=isVol?sectionOf(n).color:(raw.l?'var(--blue)':'var(--org)');const mineP=!me.adm&&eff(n)===me.n;h+=`<g class="pc${(watch(n)||me.all||!me.adm)?'':' dim'}" data-n="${n}" transform="translate(${p.x} ${p.y})">${vacant(n)?'<circle class="pulse" r="32"/>':''}${mineP?'<circle r="34" fill="none" stroke="#b8860b" stroke-width="6"/>':''}<circle r="23" fill="${fill}" stroke="${sel===n?'#000':'#fff'}" stroke-width="${sel===n?4.5:2.5}"/><text text-anchor="middle" dy=".35em">${n}</text>${b?`<circle cx="18" cy="-18" r="11" fill="${b[0]}" stroke="#fff" stroke-width="1.5"/><text x="18" y="-18" dy=".35em" text-anchor="middle" style="font-size:13px">${b[1]}</text>`:''}</g>`}$('pl').innerHTML=h;let sh='';if(S.spills){for(const id in S.spills){const sp=S.spills[id];if(sp.status==='terminado')continue;const isProc=sp.status==='proceso';const color=isProc?'#fbc02d':'#ff9800';const icon=isProc?'⏳':'!';sh+=`<g class="spill" data-spill="${id}" transform="translate(${sp.x} ${sp.y})"><polygon points="0,-26 24,20 -24,20" fill="${color}" stroke="#fff" stroke-width="2" opacity="0.95"><animate attributeName="opacity" values="0.95;0.55;0.95" dur="1.5s" repeatCount="indefinite"/></polygon><text text-anchor="middle" y="6" font-size="18" fill="#fff" font-weight="bold" pointer-events="none">${icon}</text></g>`}}$('spl').innerHTML=sh}
-let moreOpen=false,centered=false;
-function drawBar(){const sc=POS.filter(watch),L=sc.filter(n=>D.pos[n].l),O=sc.filter(n=>!D.pos[n].l),ok=a=>a.filter(n=>['ok','sub'].includes(P(n).st)).length,v=L.filter(n=>!D.pos[n].v&&vacant(n));
-const spillBtn=`<button class="${spillMode?'on':''}" onclick="toggleSpillMode()" style="background:${spillMode?'#ff9800':'#fff'};color:${spillMode?'#fff':'#e65100'};border-color:#ff9800;font-weight:bold">🧹 Derrame${spillMode?' (ACTIVO)':''}</button>`;
-const spillHelp=spillMode?`<div style="width:100%;font-size:16px;background:#fff3cd;padding:10px;border-radius:6px">🧹 <b>Toca el mapa donde está el derrame.</b></div>`:'';
-const a=$('alert');
-if(!me.adm){$('bar').innerHTML=spillBtn+spillHelp;a.hidden=true;return}
-const viewBtns=`<button class="${mapView==='acom'?'on':''}" onclick="mapView='acom';sel=null;draw()">🗺️ Acomodadores</button><button class="${mapView==='vol'?'on':''}" onclick="mapView='vol';sel=null;draw()">👥 Voluntarias</button>`;
-let turnSel='';if(mapView==='vol'){turnSel=`<div class="turnsel"><b style="width:100%;font-size:15px;margin:4px 0">Turno actual:</b>`+Object.keys(TURNOS).map(t=>{const total=TURNOS[t].vol.length;const asg=S.volTurnos&&S.volTurnos[t]?Object.keys(S.volTurnos[t]).length:0;return `<button class="${currentTurno==t?'on':''}" onclick="currentTurno=${t};sel=null;draw()">T${t} (${asg}/${total})</button>`}).join('')+`</div>`}
-const walkersBtn=`<button onclick="openWalkers('app')" style="background:#5B3C88;color:#fff;border-color:#5B3C88;font-weight:bold">🦽 Walkers</button>`;
-const editBtn=me.all?`<button class="${secEditMode?'on':''}" onclick="secEditMode=!secEditMode;spillMode=false;hl=null;draw()">✏️ Zonas</button>`:'';
-const helpEdit=secEditMode?`<div style="width:100%;font-size:14px;background:#fff7cc;padding:8px;border-radius:4px;margin-top:4px">✏️ <b>Modo edición:</b> Toca una zona, arrastra puntos blancos. Toca sin arrastrar para borrar.${mapView==='vol'?' Las etiquetas también se pueden arrastrar.':''}${hl?` <button style="font-size:13px;padding:4px 10px" onclick="resetSec('${hl}')">↺ Restaurar ${hl}</button>`:''}</div>`:'';
-const more=`<details ${(moreOpen||edit||secEditMode)?'open':''} ontoggle="moreOpen=this.open"><summary>⚙️ Más opciones</summary><div class="row"><button class="${edit?'on':''}" onclick="edit=!edit;spillMode=false;draw()">${edit?'Listo de mover':'Mover círculos'}</button>`+(me.all&&mapView==='acom'?`<button onclick="reset()">Reiniciar día</button>`:'')+editBtn+`</div></details>`;
-$('bar').innerHTML=viewBtns+walkersBtn+spillBtn+turnSel+`<div style="width:100%;font-size:17px"><b>${me.all?'Todas':'Tu área'}</b> · Fijas: <b>${ok(L)}/${L.length}</b> · Intermitentes: <b>${ok(O)}/${O.length}</b></div>`+spillHelp+helpEdit+more;
-a.hidden=!v.length;a.innerHTML='⚠ Sin cubrir: '+v.map(n=>`<a href="#" onclick="sel=${n};draw();return false">${n}</a>`).join(', ')}
-function centerMine(){if(centered||!me||me.adm)return;const n=POS.find(n=>eff(n)===me.n);if(!n)return;const w=$('mapw'),k=$('svg').getBoundingClientRect().width/1310;if(!k)return;w.scrollLeft=Math.max(0,P(n).x*k-w.clientWidth/2);centered=true}
-function drawMine(){const e=$('mine'),n=POS.find(n=>eff(n)===me.n);e.hidden=me.adm||me.all;if(me.adm||me.all)return;const done=n&&['ok','sub'].includes(P(n).st);e.innerHTML=n?`<div style="font-size:16px;color:var(--mut)">Tu posición</div><div style="font-size:72px;font-weight:700;line-height:1;color:var(--red2)">${n}</div><div style="font-size:21px;margin:6px 0 16px">${esc(D.pos[n].t)}</div>`+(done?'<div style="background:#e8f5e9;color:var(--ok);font-weight:700;font-size:26px;padding:20px;border-radius:12px;text-align:center">✓ Ya estás registrado</div>':`<button class="ok" style="width:100%;padding:26px;font-size:30px;border-radius:14px" onclick="here(${n})">✋ Aquí estoy</button>`)+'<div style="margin-top:14px;color:var(--mut);font-size:16px">Abajo está el mapa. Toca cualquier número para ver quién está ahí.</div>':(D.caps.includes(me.n)?'<h3 style="font-size:24px">Capitán</h3>':'<h3 style="font-size:24px">Corredor</h3><p style="font-size:18px">Estás para ayudar donde se necesite. Abajo puedes ver todas las posiciones.</p>')}
-function drawPanel(){const e=$('panel');e.classList.toggle('sheet',!me.adm&&!!sel);if(!me.adm){e.hidden=!sel}else e.hidden=false;if(!sel){e.innerHTML='<span class="mut">Toca un número del mapa.</span>';return}const n=sel,p=P(n),d=D.pos[n],w=eff(n),r=ppl(w),ad=canEd(n),isVol=d.v===1;const sec=isVol?sectionOf(n):null;if(isVol){let h=`<h3 style="color:${sec.color}">Voluntaria ${n} · ${sec.label}</h3>`;h+=`<p style="margin:6px 0;font-size:15px"><b>Turno: ${currentTurno} · ${TURNOS[currentTurno].name}</b></p>`;h+=`<div class="rules"><b>📋 Reglas activas:</b><br>✅ No consecutivos (excepto T1+T2)<br>✅ Máximo 4 turnos por hermana<br>✅ T5 y T6 son excluyentes (intermedio)</div>`;if(w){const hist=volHistory(w).filter(x=>!(+x.turno===+currentTurno&&+x.posicion===+n));h+=`<div class="who" style="border-left-color:${sec.color}"><b>${esc(w)}</b></div>`;if(hist.length){h+=`<div class="histbox"><b>También está en:</b><ul style="margin:6px 0;padding-left:18px">${hist.map(x=>`<li>T${x.turno} · ${sectionOf(x.posicion).label} (${x.posicion})</li>`).join('')}</ul></div>`}else h+='<p class="mut" style="font-size:14px">No está en otros turnos.</p>';h+=`<button onclick="unassignVol(${currentTurno},${n})" style="margin-top:6px">🗑️ Quitar asignación</button>`}else{h+='<p class="mut">Sin asignar en este turno.</p>'}const vols=TURNOS[currentTurno].vol.map(name=>{const chk=canAssign(currentTurno,n,name);return{name,ok:chk.ok,msg:chk.msg}});const avail=vols.filter(v=>v.ok),blocked=vols.filter(v=>!v.ok);h+=`<div class="sg"><b>Disponibles (${avail.length}):</b><div style="margin-top:6px">`;if(avail.length===0)h+='<p class="mut" style="font-size:14px">Ninguna puede asignarse aquí.</p>';else h+=avail.map(v=>`<button class="vbtn" data-vname="${esc(v.name)}" onclick="doAssign(${currentTurno},${n},this.dataset.vname)">✓ ${esc(v.name)}</button>`).join('');h+='</div>';if(blocked.length){h+=`<details style="margin-top:10px"><summary>❌ ${blocked.length} bloqueadas</summary><ul style="margin:6px 0;padding-left:18px;font-size:13px">${blocked.map(v=>`<li><b>${esc(v.name)}</b> — ${v.msg}</li>`).join('')}</ul></details>`}h+='</div>';e.innerHTML=h;return}let h=`<h3>Posición ${n} <span class="tag ${d.l?'b':'o'}">${d.l?'Fija':'Intermitente'}</span></h3><div>${esc(d.t)}</div>`;h+=w?`<div class="who"><b>${esc(w)}</b>${r?`<br>${PRIV[r.p]} · ${esc(r.c)}`:''}${p.sub?`<br><span class="mut">Sustituto de ${esc(p.who)}</span>`:''}</div>`:'<p class="mut">Sin asignar</p>';if(ad){h+=`<div class="row"><button class="ok" onclick="setSt(${n},'${p.sub?'sub':'ok'}')">Presente</button><button onclick="setSt(${n},'abs')">Ausente</button>${p.sub?`<button onclick="back(${n})">Llegó titular</button>`:''}</div>`;const list=D.roster.filter(r=>r.c!=='Voluntaria');h+=`<div class="sg"><b>Asignar Acomodador</b><select onchange="if(this.value)setWho(${n},this.value)"><option value="">Elegir…</option>${list.map(x=>`<option ${x.n===p.who?'disabled':''}>${esc(x.n)}</option>`).join('')}</select></div>`}if(!me.adm)h+='<button style="width:100%;margin-top:12px;padding:16px;font-size:20px" onclick="sel=null;draw()">Cerrar</button>';e.innerHTML=h}
-function drawCnt(){$('cntCard').hidden=!(me.adm||canCnt());$('expEd').hidden=!(me.all||me.cnt);if(document.activeElement!==$('exp'))$('exp').value=S.expect||D.expect;const t=SEC.reduce((a,s)=>a+((S.cnt||{})[s.id]||0),0),ex=S.expect||D.expect,cc=canCnt(),editable=me.all;$('cnt').innerHTML=`<p><b>${t}</b> / <b>${ex}</b> (${Math.round(100*t/ex)}%)</p><div class="bar"><i style="width:${Math.min(100,100*t/ex)}%"></i></div><div class="grid" style="margin-top:10px">`+SEC.map(s=>{const v=(S.cnt||{})[s.id]||0,cap=(S.cap&&S.cap[s.id]!==undefined)?S.cap[s.id]:D.cap[s.id];return`<div class="t${hl===s.id?' hl':''}" onclick="hl=hl==='${s.id}'?null:'${s.id}';draw()"><small>${s.l}</small><b>${v}</b>${editable?`<div style="font-size:12px;margin-top:4px">Sillas: <input class="capin" type="number" min="0" value="${cap}" onchange="event.stopPropagation();setCap('${s.id}',this.value)" onclick="event.stopPropagation()"/></div>`:`<small class="mut">Sillas: ${cap}</small>`}${cc?`<div class="row" style="justify-content:center;margin-top:4px"><button onclick="event.stopPropagation();cnt('${s.id}',-1)">−</button><button onclick="event.stopPropagation();cnt('${s.id}',1)">+</button></div>`:''}</div>`}).join('')+'</div>'}
-function drawBench(){const e=$('bench');e.hidden=!me.adm;if(!me.adm)return;e.innerHTML='<h3>Corredores</h3>'+D.runners.map(x=>{const q=ppl(x),n=POS.find(n=>P(n).sub===x);return`<div class="row sg"><span style="flex:1"><b>${esc(x)}</b></span><span class="mut">${n?'Pos '+n:'Libre'}</span></div>`}).join('')}
-const _d=draw;draw=function(){_d();if(me&&!drag&&!dragV&&!dragL)drawBench()};
-const svg=$('svg');
-svg.addEventListener('pointerdown',e=>{
-const sp=e.target.closest('.spill');if(sp&&!spillMode){showSpillPanel(sp.dataset.spill);return}
-if(spillMode){const q=svg.createSVGPoint();q.x=e.clientX;q.y=e.clientY;const r=q.matrixTransform(svg.getScreenCTM().inverse());promptSpill(r.x,r.y);return}
-const lbl=e.target.closest('.vlabel');
-if(lbl){dragL={lid:lbl.dataset.lid,startX:e.clientX,startY:e.clientY,x:0,y:0,moved:false};try{svg.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault();return}
-const vtx=e.target.closest('.vertex');
-if(vtx){dragV={sec:vtx.dataset.sec,idx:+vtx.dataset.idx,startX:e.clientX,startY:e.clientY,moved:false,x:0,y:0};try{svg.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault();return}
-const add=e.target.closest('.vadd');if(add){addVertex(add.dataset.sec,+add.dataset.after,+add.dataset.mx,+add.dataset.my);return}
-const z=e.target.closest('.sec');if(z&&!e.target.closest('.pc')){hl=secEditMode?z.dataset.s:(hl===z.dataset.s?null:z.dataset.s);draw();return}
-const g=e.target.closest('.pc');if(!g)return;const n=+g.dataset.n;
-if(edit&&canEd(n)){drag={n,m:0};try{svg.setPointerCapture(e.pointerId)}catch(_){}}else{sel=n;draw()}
-});
-svg.addEventListener('pointermove',e=>{
-if(dragL){if(!dragL.moved&&(Math.abs(e.clientX-dragL.startX)>6||Math.abs(e.clientY-dragL.startY)>6))dragL.moved=true;if(dragL.moved){const q=svg.createSVGPoint();q.x=e.clientX;q.y=e.clientY;const r=q.matrixTransform(svg.getScreenCTM().inverse());dragL.x=Math.round(r.x);dragL.y=Math.round(r.y);const el=svg.querySelector(`.vlabel[data-lid="${dragL.lid}"]`);if(el)el.setAttribute('transform',`translate(${dragL.x} ${dragL.y})`)}return}
-if(dragV){if(!dragV.moved&&(Math.abs(e.clientX-dragV.startX)>6||Math.abs(e.clientY-dragV.startY)>6))dragV.moved=true;if(dragV.moved){const q=svg.createSVGPoint();q.x=e.clientX;q.y=e.clientY;const r=q.matrixTransform(svg.getScreenCTM().inverse());dragV.x=Math.round(r.x);dragV.y=Math.round(r.y);const el=svg.querySelector(`.vertex[data-sec="${dragV.sec}"][data-idx="${dragV.idx}"]`);if(el){el.setAttribute('cx',dragV.x);el.setAttribute('cy',dragV.y)}}return}
-if(!drag)return;drag.m=1;const q=svg.createSVGPoint();q.x=e.clientX;q.y=e.clientY;const r=q.matrixTransform(svg.getScreenCTM().inverse());drag.x=Math.round(r.x);drag.y=Math.round(r.y);const el=svg.querySelector(`[data-n="${drag.n}"]`);if(el)el.setAttribute('transform',`translate(${drag.x} ${drag.y})`)
-});
-svg.addEventListener('pointerup',()=>{
-if(dragL){if(dragL.moved)moveLabel(dragL.lid,dragL.x,dragL.y);dragL=null;return}
-if(dragV){if(dragV.moved)moveVertex(dragV.sec,dragV.idx,dragV.x,dragV.y);else delVertex(dragV.sec,dragV.idx);dragV=null;return}
-if(!drag)return;const d=drag;drag=null;sel=d.n;if(d.m){put(`pos/${d.n}/x`,d.x);put(`pos/${d.n}/y`,d.y)}else draw()
-});
-function toggleAppMode(){isVolunteerMode=!isVolunteerMode;const btn=$('btn-mode-toggle'),app=$('app'),vp=$('volPanel'),title=$('appTitle');if(isVolunteerMode){btn.textContent='🚪 Volver';btn.style.background='#6e1414';app.hidden=true;vp.hidden=false;title.textContent='Portal de Voluntarias';renderVolTurnBtns();volTurn='1';volQuery='';$('volSearch').value='';renderVolList()}else{btn.textContent='👥 Vista Voluntaria';btn.style.background='#2e7d32';app.hidden=false;vp.hidden=true;title.textContent='Acomodadores · La Feria, TX';if(me)draw()}}
+async function loadWalkers(){
+  try{
+    const r=await fetch(`${CFG.DB}/walkersTest/w.json?t=${Date.now()}`);
+    W_DATA=await r.json()||{};
+    drawWalkers();
+  }catch(e){}
+}
+
+// ============ MODAL ============
+function showModal(title,body,btns){
+  $('modalBox').innerHTML=`<h2>${esc(title)}</h2><div>${body}</div><div style="display:flex;gap:8px;margin-top:12px" id="mdlBtns"></div>`;
+  btns.forEach(b=>{
+    const btn=document.createElement('button');
+    btn.textContent=b.text;btn.className=b.class||'';btn.style.flex='1';
+    btn.onclick=()=>{if(b.action)b.action();if(!b.keepOpen)$('modal').hidden=true;};
+    $('mdlBtns').appendChild(btn);
+  });
+  $('modal').hidden=false;
+}
+
+// Init
+try{ if(localStorage.acomMe){ me=ADM.find(a=>a.n===localStorage.acomMe); if(me){ hideAll(); $('acomApp').hidden=false; start(); } } }catch(e){}
+loadWalkers();
 </script>
 </body>
 </html>
