@@ -158,6 +158,24 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 @keyframes cqp{50%{opacity:.15}}
 .cq-latest{fill:none;stroke:#d11;stroke-width:3;animation:cqp .9s infinite;pointer-events:none}
 .walker-info{background:var(--ok-bg);border-left:4px solid var(--ok);padding:10px 12px;border-radius:6px;margin-bottom:10px;font-size:14px}
+/* Búsqueda de walkers */
+.wslot.hidden-search{display:none!important}
+.wslot.found{
+  background:#fff3cd!important;
+  border:3px solid #d11!important;
+  box-shadow:0 0 0 4px rgba(221,17,17,.35);
+  transform:scale(1.08);
+  z-index:2;
+  position:relative;
+  animation:foundPulse 1s infinite;
+}
+@keyframes foundPulse{
+  0%,100%{box-shadow:0 0 0 4px rgba(221,17,17,.35)}
+  50%{box-shadow:0 0 0 12px rgba(221,17,17,.05)}
+}
+.cslot.dimmed-search{opacity:.1;pointer-events:none;transition:opacity .2s}
+.cslot.found rect{fill:#fbc02d!important;stroke:#d11!important;stroke-width:2.5!important}
+.cslot.found text{fill:#333!important}
 #spillAdminApp{min-height:100vh;background:var(--bg)}
 #spillAdminApp header{background:var(--ok)}
 #spillAdminApp main{max-width:1400px}
@@ -1438,6 +1456,8 @@ function openWalkers(from){
 }
 function closeWalkers(){
   $('walkersView').hidden=true;
+  currentWalkerSearch='';
+  $('walkerSearch').value='';
   if(walkerReturn==='admin'&&adminMe&&adminMe.spillOnly){$('spillAdminApp').hidden=false;renderSpillAdmin();}
   else if(walkerReturn==='admin'&&adminMe){$('adminApp').hidden=false;renderAdminView();}
   else if(walkerReturn==='acom'&&me){$('acomApp').hidden=false;draw();}
@@ -1460,7 +1480,6 @@ async function loadWalkers(){
     const wChanged=JSON.stringify(newW)!==JSON.stringify(W_DATA);
     const lChanged=JSON.stringify(newL)!==JSON.stringify(W_LAST);
     W_DATA=newW;W_LAST=newL;
-    // Solo redibujar si cambió o es la primera vez
     if(wChanged||lChanged||!$('walkGrid').children.length){
       drawWalkers();
     }
@@ -1469,7 +1488,6 @@ async function loadWalkers(){
 function drawWalkers(){
   drawCroquis();
   drawWalkGrid();
-  // Re-aplicar búsqueda después de redibujar
   if(currentWalkerSearch) applyWalkerFilter(currentWalkerSearch);
 }
 function drawCroquis(){
@@ -1509,22 +1527,82 @@ function drawWalkGrid(){
 function searchWalker(q){
   currentWalkerSearch=q;
   applyWalkerFilter(q);
-  // Auto-scroll al primer resultado
-  if(q.length>=2){
-    const firstMatch=document.querySelector('.wslot.found, .cslot.found');
-    if(firstMatch) firstMatch.scrollIntoView({behavior:'smooth',block:'center'});
-  }
 }
 function applyWalkerFilter(q){
-  const norm=q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const norm=(q||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const isActive=norm.length>=2;
+  
+  // Limpiar overlays viejos del croquis
+  document.querySelectorAll('.search-overlay').forEach(el=>el.remove());
+  
+  // Limpiar clases
   document.querySelectorAll('.wslot,.cslot').forEach(el=>{
-    if(!q||q.length<2){el.classList.remove('found');return;}
-    const slot=el.dataset.slot;
-    const cur=W_DATA&&W_DATA[slot];
-    if(!cur){el.classList.remove('found');return;}
-    const match=cur.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(norm);
-    el.classList.toggle('found',match);
+    el.classList.remove('found','dimmed-search','hidden-search');
   });
+  
+  if(!isActive) return;
+  
+  // Buscar coincidencias
+  const matches=[];
+  WALKER_SLOTS.forEach(slot=>{
+    const cur=W_DATA&&W_DATA[slot];
+    if(cur&&cur.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(norm)){
+      matches.push(slot);
+    }
+  });
+  
+  if(!matches.length) return;
+  
+  // En el GRID: ocultar los que no coinciden
+  document.querySelectorAll('.wslot').forEach(el=>{
+    const slot=el.dataset.slot;
+    if(matches.includes(slot)) el.classList.add('found');
+    else el.classList.add('hidden-search');
+  });
+  
+  // En el CROQUIS: atenuar los que no coinciden, resaltar los que sí
+  const croquisEl=$('walkCroquis');
+  document.querySelectorAll('.cslot').forEach(el=>{
+    const slot=el.dataset.slot;
+    if(matches.includes(slot)) el.classList.add('found');
+    else el.classList.add('dimmed-search');
+  });
+  
+  // Agregar círculo rojo pulsante sobre cada coincidencia en el croquis
+  matches.forEach(slot=>{
+    const g=cqGeo(slot);
+    const circle=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    circle.setAttribute('cx',g.x.toFixed(1));
+    circle.setAttribute('cy',g.y.toFixed(1));
+    circle.setAttribute('r','30');
+    circle.setAttribute('fill','none');
+    circle.setAttribute('stroke','#d11');
+    circle.setAttribute('stroke-width','5');
+    circle.setAttribute('stroke-dasharray','8 4');
+    circle.classList.add('search-overlay');
+    
+    const anim1=document.createElementNS('http://www.w3.org/2000/svg','animate');
+    anim1.setAttribute('attributeName','r');
+    anim1.setAttribute('values','24;42;24');
+    anim1.setAttribute('dur','1.2s');
+    anim1.setAttribute('repeatCount','indefinite');
+    circle.appendChild(anim1);
+    
+    const anim2=document.createElementNS('http://www.w3.org/2000/svg','animate');
+    anim2.setAttribute('attributeName','opacity');
+    anim2.setAttribute('values','1;0.3;1');
+    anim2.setAttribute('dur','1.2s');
+    anim2.setAttribute('repeatCount','indefinite');
+    circle.appendChild(anim2);
+    
+    croquisEl.appendChild(circle);
+  });
+  
+  // Auto-scroll en el grid al primer resultado
+  setTimeout(()=>{
+    const firstEl=document.querySelector(`.wslot[data-slot="${matches[0]}"]`);
+    if(firstEl) firstEl.scrollIntoView({behavior:'smooth',block:'center'});
+  },50);
 }
 function walkerTap(slot){
   const cur=W_DATA&&W_DATA[slot],last=W_LAST&&W_LAST[slot];
