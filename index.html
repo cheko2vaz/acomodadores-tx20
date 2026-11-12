@@ -7,17 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --red:#5a1212;--red-dark:#3d0c0c;
-  --blue:#2c4a6b;--blue-dark:#1a2f47;--blue-bg:#e3eaf2;
-  --brown:#7a5c2e;--brown-dark:#5a4420;--brown-bg:#efe6d0;
-  --gold:#b8860b;
-  --bg:#f2ecd9;--card:#fbf6e8;--card-alt:#e6dcc0;
-  --text:#1a1a1a;--muted:#6b5d4f;--border:#cfc4a8;
-  --ok:#4a6b3a;--ok-bg:#e6edde;--err:#a8251c;--err-bg:#f5dedb;
-  --warn:#c28a1c;--warn-bg:#f8f1dc;
-  --blue-a:#3d5a80;--org-a:#c28a1c;
-}
+:root{--red:#5a1212;--red-dark:#3d0c0c;--blue:#2c4a6b;--blue-dark:#1a2f47;--blue-bg:#e3eaf2;--brown:#7a5c2e;--brown-dark:#5a4420;--brown-bg:#efe6d0;--gold:#b8860b;--bg:#f2ecd9;--card:#fbf6e8;--card-alt:#e6dcc0;--text:#1a1a1a;--muted:#6b5d4f;--border:#cfc4a8;--ok:#4a6b3a;--ok-bg:#e6edde;--err:#a8251c;--err-bg:#f5dedb;--warn:#c28a1c;--warn-bg:#f8f1dc;--blue-a:#3d5a80;--org-a:#c28a1c}
 [hidden]{display:none!important}*{box-sizing:border-box}
 body{margin:0;font:16px/1.5 'Noto Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text)}
 body.big{zoom:1.15}
@@ -27,8 +17,7 @@ header h1{font-size:17px;margin:0;flex:1;min-width:180px;font-weight:600}
 .net.on::before{content:"● ";color:#9fd49f}.net.off{background:#fff;color:var(--err);font-weight:700}.net.loc{background:#fff;color:var(--muted)}
 button{font:inherit;border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:6px;padding:10px 14px;cursor:pointer;font-weight:600;transition:background .15s;font-family:inherit}
 button:hover{background:var(--card-alt)}
-button.pri{background:var(--red);color:#fff;border-color:var(--red)}
-button.pri:hover{background:var(--red-dark)}
+button.pri{background:var(--red);color:#fff;border-color:var(--red)}button.pri:hover{background:var(--red-dark)}
 button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
 button.warn{background:var(--warn);color:#fff;border-color:var(--warn)}
 button.danger{background:var(--err);color:#fff;border-color:var(--err)}
@@ -39,8 +28,6 @@ header button:hover{background:rgba(255,255,255,.25)}
 main{max-width:1100px;margin:auto;padding:12px;display:grid;gap:12px}
 .card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-
-/* HOME */
 #homeScreen{min-height:100vh;background:linear-gradient(160deg,var(--red) 0%,var(--red-dark) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;gap:32px}
 .home-header{text-align:center;color:#fff;max-width:600px}
 .home-header h1{margin:0 0 8px;font-size:32px;font-weight:700;letter-spacing:.5px}
@@ -56,8 +43,6 @@ main{max-width:1100px;margin:auto;padding:12px;display:grid;gap:12px}
 .mode-vol{background:linear-gradient(160deg,var(--blue),var(--blue-dark));border:2px solid rgba(255,255,255,.15)}
 .mode-admin{background:linear-gradient(160deg,var(--brown),var(--brown-dark));border:2px solid rgba(255,255,255,.15)}
 .home-footer{color:#fff;opacity:.6;font-size:13px;margin-top:20px}
-
-/* LOGIN */
 #acomLoginScreen,#volLoginScreen,#adminLoginScreen{min-height:100vh;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px}
 .login-card{max-width:480px;width:100%;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:28px;box-shadow:0 8px 40px rgba(0,0,0,.1)}
 .login-card h2{margin:0 0 4px;font-size:24px;color:var(--red);font-weight:700}
@@ -67,8 +52,6 @@ main{max-width:1100px;margin:auto;padding:12px;display:grid;gap:12px}
 .login-card .back-btn{background:transparent;color:var(--muted);border:none;padding:8px 0;cursor:pointer;font-weight:600;font-size:14px;margin-bottom:16px;text-align:left}
 .login-card .back-btn:hover{color:var(--red)}
 .res-item{width:100%;text-align:left;margin-top:6px;padding:14px;font-size:16px}
-
-/* VOLUNTARIA */
 .vol-info-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:12px}
 .vol-info-card h2{margin:0 0 4px;font-size:22px;color:var(--blue)}
 .vol-info-card .sub{font-size:14px;color:var(--muted);margin-bottom:16px}
@@ -79,8 +62,6 @@ main{max-width:1100px;margin:auto;padding:12px;display:grid;gap:12px}
 #volMapView h3{margin:0 0 12px;font-size:16px;color:var(--blue)}
 @keyframes volBlink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.15)}}
 .vol-marker-pulse{animation:volBlink 1.2s ease-in-out infinite;transform-origin:center;transform-box:fill-box}
-
-/* ACOMODADOR */
 #alert{border:2px solid var(--err);color:var(--err);font-weight:600;background:var(--card)}
 #mapw{overflow:auto;padding:0;-webkit-overflow-scrolling:touch;border:2px solid var(--red);border-radius:8px;position:relative;background:var(--card)}
 svg.map-svg{width:100%;height:auto;display:block;transition:width 0.2s}
@@ -104,15 +85,11 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 .spill{cursor:pointer}
 .spill-panel{background:var(--card);border:2px solid var(--gold);border-radius:8px;padding:14px;margin:8px 0}
 .spill-item{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--warn);border-radius:6px;padding:12px;margin:8px 0;font-size:14px}
-
-/* MAP TOOLBAR */
 .map-toolbar{display:flex;gap:6px;padding:10px;background:var(--card-alt);border:1px solid var(--border);border-radius:8px;align-items:center;flex-wrap:wrap}
 .map-toolbar .zoom-btn{padding:8px 16px;font-weight:700;font-size:18px;min-width:50px}
 .map-toolbar .hint{font-size:13px;color:var(--muted);flex:1}
 .map-toolbar.spill-active{background:var(--warn-bg);border-color:var(--warn)}
 .map-toolbar.spill-active .hint{color:#8a5a00;font-weight:600}
-
-/* ADMIN */
 #adminApp{min-height:100vh;background:var(--bg)}
 #adminApp header{background:var(--brown)}
 #adminApp main{max-width:1400px}
@@ -145,8 +122,6 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 .side-panel .avail-list .ok-mark{color:var(--ok);margin-right:4px}
 .clear-turno-bar{background:var(--warn-bg);border:1px solid #f0d090;padding:10px 12px;border-radius:6px;margin-bottom:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .clear-turno-bar span{font-size:13px;color:#8a5a00;flex:1}
-
-/* CONTEO */
 .cnt-sec{border:1px solid var(--border);border-radius:8px;padding:12px;background:var(--card);text-align:center;position:relative;cursor:pointer;transition:all .15s}
 .cnt-sec:hover{border-color:var(--gold)}
 .cnt-sec .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
@@ -160,12 +135,9 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 .cnt-input{width:70px;padding:6px;font-size:22px;text-align:center;font-weight:700;border:2px solid var(--border);border-radius:6px;color:var(--brown);background:var(--card)}
 .cnt-input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,134,11,.2)}
 .cnt-input.over{border-color:var(--err);background:var(--err-bg);color:var(--err)}
-
-/* AUX LIST */
 .aux-item{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--card-alt);border-radius:6px;margin-bottom:6px;gap:8px}
-.aux-item span{font-weight:600}
-
-/* WALKERS */
+.aux-item .name{font-weight:600;flex:1}
+.aux-item .turns{font-size:11px;color:var(--muted);margin-top:2px;font-weight:400}
 #walkersView{max-width:1100px;margin:12px auto;padding:12px}
 #walkGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px;margin-top:12px}
 .wslot{padding:12px 6px;border-radius:6px;background:var(--card);border:2px solid var(--border);cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all .15s;min-width:0}
@@ -187,8 +159,6 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 @keyframes cqp{50%{opacity:.15}}
 .cq-latest{fill:none;stroke:#d11;stroke-width:3;animation:cqp .9s infinite;pointer-events:none}
 .walker-info{background:var(--ok-bg);border-left:4px solid var(--ok);padding:10px 12px;border-radius:6px;margin-bottom:10px;font-size:14px}
-
-/* SPILL ADMIN */
 #spillAdminApp{min-height:100vh;background:var(--bg)}
 #spillAdminApp header{background:var(--ok)}
 #spillAdminApp main{max-width:1400px}
@@ -201,8 +171,6 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 .spill-color-bebida{border-left-color:#a8251c!important;background:#f5dedb}
 @keyframes spillBlink{0%,100%{opacity:1}50%{opacity:.4}}
 .spill-pin-blink{animation:spillBlink 1s infinite;transform-origin:center;transform-box:fill-box}
-
-/* MODAL */
 #modal{position:fixed;inset:0;background:rgba(26,15,10,.85);display:grid;place-items:center;padding:14px;z-index:9999}
 #modal[hidden]{display:none}
 #modal .box{background:var(--bg);border-radius:10px;padding:22px;width:100%;max-width:480px;display:grid;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.5);max-height:90vh;overflow-y:auto}
@@ -210,20 +178,19 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 #modal h2{margin:0;color:var(--red);font-size:19px;font-weight:700}
 .modal-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
 .modal-btns button{flex:1;min-width:90px}
-
-/* MAPA ADMIN */
 .admin-map-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .admin-map-toolbar button{padding:12px 20px;font-size:14px}
 .admin-map-toolbar button.on{background:var(--brown);color:#fff;border-color:var(--brown)}
-.vol-marker{cursor:grab;transition:transform .05s}
+.vol-marker{cursor:grab;transition:none}
 .vol-marker:active{cursor:grabbing}
+#floatCamera{position:fixed;bottom:20px;right:20px;width:68px;height:68px;border-radius:50%;background:var(--gold);color:#fff;border:2px solid #fff;box-shadow:0 4px 16px rgba(184,134,11,.5);cursor:pointer;z-index:95;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:10px;font-weight:700;padding:4px;font-family:inherit}
+#floatCamera:hover{background:#8a6508;transform:scale(1.05)}
 </style>
 </head>
 <body>
 <div id="toast-container"></div>
 <div id="modal" hidden><div class="box" id="modalBox"></div></div>
 
-<!-- HOME -->
 <div id="homeScreen">
   <div class="home-header">
     <h1>Asamblea de Circuito</h1>
@@ -250,7 +217,6 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
   <div class="home-footer">Uso interno · Dept. de Acomodadores</div>
 </div>
 
-<!-- ACOMODADOR LOGIN -->
 <div id="acomLoginScreen" hidden>
   <div class="login-card">
     <button class="back-btn" onclick="goHome()">← Volver al inicio</button>
@@ -261,7 +227,6 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
   </div>
 </div>
 
-<!-- VOLUNTARIA LOGIN -->
 <div id="volLoginScreen" hidden>
   <div class="login-card">
     <button class="back-btn" onclick="goHome()">← Volver al inicio</button>
@@ -272,7 +237,6 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
   </div>
 </div>
 
-<!-- VOLUNTARIA VIEW -->
 <div id="volView" hidden style="max-width:900px;margin:12px auto;padding:12px">
   <div class="row" style="margin-bottom:12px">
     <button onclick="goHome()" style="background:var(--blue);color:#fff;border-color:var(--blue);font-weight:700">← Volver</button>
@@ -293,27 +257,24 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
   </div>
 </div>
 
-<!-- ADMIN LOGIN -->
 <div id="adminLoginScreen" hidden>
   <div class="login-card">
     <button class="back-btn" onclick="goHome()">← Volver al inicio</button>
     <h2>Administración</h2>
     <p class="lg-sub">Ingrese su contraseña para acceder al panel</p>
-    <select id="adminUserSel">
-      <option value="">Seleccione su nombre</option>
-    </select>
+    <select id="adminUserSel"><option value="">Seleccione su nombre</option></select>
     <input id="adminPassInput" type="password" placeholder="Contraseña" onkeydown="if(event.key==='Enter')adminLogin()">
     <button class="pri" onclick="adminLogin()" style="padding:14px">Entrar</button>
     <div id="adminLoginErr" style="color:var(--err);font-weight:600;font-size:14px;min-height:20px;text-align:center"></div>
   </div>
 </div>
 
-<!-- ADMIN APP -->
 <div id="adminApp" hidden>
   <header>
     <h1>Panel de Administración</h1>
     <span id="adminWhoLabel" class="net"></span>
     <button onclick="openWalkers('admin')">Walkers</button>
+    <button onclick="openCamera()" id="btnCameraAdmin" hidden style="background:var(--gold);border-color:var(--gold);color:#fff;font-weight:700">Escáner</button>
     <button onclick="adminLogout()">Salir</button>
   </header>
   <main>
@@ -325,11 +286,7 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
       <button data-admin-tab="mapa" onclick="setAdminTab('mapa')">Mapa</button>
       <button data-admin-tab="limpieza" onclick="setAdminTab('limpieza')">Limpieza</button>
     </div>
-
-    <div id="adminTabAcom" hidden>
-      <div id="adminAcomTable"></div>
-    </div>
-
+    <div id="adminTabAcom" hidden><div id="adminAcomTable"></div></div>
     <div id="adminTabAsignaciones">
       <div class="clear-turno-bar">
         <span id="clearTurnoMsg">Turno actual: <b id="clearTurnoActual">T1</b></span>
@@ -339,38 +296,22 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
       <div class="turno-selector" id="adminTurnoSelector"></div>
       <div class="admin-container">
         <div>
-          <table class="pos-table">
-            <thead><tr><th>Pos</th><th>Sección</th><th>Asignada</th></tr></thead>
-            <tbody id="adminPosTable"></tbody>
-          </table>
+          <table class="pos-table"><thead><tr><th>Pos</th><th>Sección</th><th>Asignada</th></tr></thead><tbody id="adminPosTable"></tbody></table>
         </div>
         <div class="side-panel" id="adminSidePanel"></div>
       </div>
     </div>
-
     <div id="adminTabAux" hidden>
       <div class="card">
         <h2 style="margin:0 0 12px;color:var(--brown);font-size:17px">Corredores</h2>
-        <div class="row" style="margin-bottom:12px">
-          <input id="newCorredor" placeholder="Nombre completo" style="flex:1;min-width:200px">
-          <button class="ok" onclick="addAuxPerson('corredores', 'newCorredor')">Agregar</button>
-        </div>
         <div id="corredoresList"></div>
       </div>
       <div class="card" style="margin-top:14px">
         <h2 style="margin:0 0 12px;color:var(--brown);font-size:17px">Cámaras</h2>
-        <div class="row" style="margin-bottom:12px">
-          <input id="newCamara" placeholder="Nombre completo" style="flex:1;min-width:200px">
-          <button class="ok" onclick="addAuxPerson('camaras', 'newCamara')">Agregar</button>
-        </div>
         <div id="camarasList"></div>
       </div>
     </div>
-
-    <div id="adminTabConteo" hidden>
-      <div class="card" id="adminCntCard"></div>
-    </div>
-
+    <div id="adminTabConteo" hidden><div class="card" id="adminCntCard"></div></div>
     <div id="adminTabMapa" hidden>
       <div class="card">
         <div class="admin-map-toolbar">
@@ -380,13 +321,10 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
           <button onclick="toggleAdminMove()" id="btnMoveVol" style="display:none">Mover Posiciones</button>
           <button onclick="resetVolPositions()" id="btnResetVolPos" style="display:none">Restaurar</button>
         </div>
-        <div id="adminMapArea" style="min-height:200px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px;padding:40px">
-          Selecciona un mapa arriba para ver las posiciones.
-        </div>
+        <div id="adminMapArea" style="min-height:200px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px;padding:40px">Selecciona un mapa arriba para ver las posiciones.</div>
         <p id="adminMapHint" style="font-size:13px;color:var(--muted);margin-top:10px;text-align:center"></p>
       </div>
     </div>
-
     <div id="adminTabLimpieza" hidden>
       <div class="card">
         <div class="row" style="justify-content:space-between;margin-bottom:12px">
@@ -418,7 +356,6 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
   </main>
 </div>
 
-<!-- SPILL ADMIN (Carlos) -->
 <div id="spillAdminApp" hidden>
   <header>
     <h1>Limpieza · Derrames</h1>
@@ -461,8 +398,11 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
   </main>
 </div>
 
-<!-- ACOMODADOR APP -->
 <div id="acomApp" hidden>
+  <button id="floatCamera" onclick="openCamera()" hidden title="Abrir escáner de acceso">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+    <span>Escáner</span>
+  </button>
   <header>
     <h1 id="appTitle">Acomodadores</h1>
     <span id="net" class="net"></span>
@@ -470,36 +410,28 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
     <button onclick="openWalkers('acom')" id="btnWalkers" hidden>Walkers</button>
     <button onclick="acomLogout()">Salir</button>
   </header>
-
   <main>
     <div id="mine" class="card" hidden></div>
     <div id="alert" class="card" hidden></div>
     <div id="spillPanel" hidden></div>
     <div id="bar" class="card row"></div>
-
     <div class="map-toolbar" id="mapToolbar">
       <button class="zoom-btn" onclick="zoomMain(-0.2)" title="Acercar">−</button>
       <button class="zoom-btn" onclick="zoomMain(0.2)" title="Alejar">+</button>
       <span class="hint" id="mapHint">Toca un número para ver detalles</span>
     </div>
-
     <div class="card" id="mapw" style="padding:0">
       <svg id="svg" viewBox="0 0 1310 926" class="map-svg">
         <image id="mi" width="1310" height="926" href="map.jpg" preserveAspectRatio="none"/>
         <g id="sl"></g><g id="vl"></g><g id="pl"></g><g id="spl"></g>
       </svg>
     </div>
-
     <div class="lg card" id="legend" style="display:flex;gap:14px;font-size:13px;flex-wrap:wrap"></div>
     <div class="card" id="panel"></div>
-    <div class="card" id="cntCard" hidden>
-      <h3>Conteo por sección</h3>
-      <div id="cnt"></div>
-    </div>
+    <div class="card" id="cntCard" hidden><h3>Conteo por sección</h3><div id="cnt"></div></div>
   </main>
 </div>
 
-<!-- WALKERS VIEW -->
 <div id="walkersView" hidden>
   <header style="background:var(--ok)">
     <h1>Walkers y Sillas</h1>
@@ -515,7 +447,6 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
       <div class="cq-lg">
         <span><i style="background:#ddd0b0;border:1px solid #999"></i>Libre</span>
         <span><i style="background:#43a047"></i>Con walker</span>
-        <span style="color:var(--muted);font-size:12px">Toca un slot para gestionar</span>
       </div>
       <input type="text" id="walkerSearch" placeholder="Buscar por nombre..." oninput="searchWalker(this.value)" style="margin-top:10px;font-size:15px;padding:10px">
       <div id="walkGrid"></div>
@@ -527,16 +458,17 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 const CFG={DB:"https://voluntariastx20-default-rtdb.firebaseio.com"};
 const SPILL_COLORS={'Otro':'#4a6b3a','Comida':'#c28a1c','Bebida':'#a8251c'};
 const SPILL_LABELS={'Otro':'Otro (vómito)','Comida':'Comida','Bebida':'Bebida'};
+const CAMERA_ACCESS=['Alfonso Hernández','Jimmy Vasquez','Steven Snyder'];
+const CAMERA_URL='https://abraham8a.github.io/LFAHAccess/Circuito/2026/11/14/';
+function openCamera(){window.open(CAMERA_URL,'_blank');}
+
 const TURNOS={"1":{name:"7:45 – 8:45 a.m.",vol:["Ana Sofia Bejerano","Ariane Agustin","Bridyit Perez","Cynthia Paola Gayosso","Elizabeth Snyder","Esther Morales","Geraldine Alison Perez","Jackelin Luna","Jaqueline Echavarria","Karla Garcia","Laura Esmeralda Amador Saucedo","Maria Rosa Garcia Zapata","Mirsa Elizabeth Silva","Nicasia Bravo De Gonzalez","Reyna Jetcél Hernandez Madrid","Sandra Vazquez","Sarah Martinez","Susana Zuñiga"]},"2":{name:"8:45 – 9:45 a.m.",vol:["Alicia González","Ana Sofia Bejerano","Bridyit Perez","Cynthia Paola Gayosso","Elizabeth Lopez","Elizabeth Snyder","Geraldine Alison Perez","Jackelin Luna","Jaqueline Echavarria","Karla Garcia","Laura Esmeralda Amador Saucedo","Leticia Fernández","Maria Fernanda Obispo","Maria Rosa Garcia Zapata","María Rosario Vizcarra","Mirsa Elizabeth Silva","Reyna Jetcél Hernandez Madrid","Sandra Vazquez","Sarah Martinez"]},"3":{name:"9:45 – 11:05 a.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Snyder","Geraldine Alison Perez","Irene Avila","Jaqueline Echavarria","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Sara del Carmen Gutierrez","Sarah Martinez"]},"4":{name:"11:05 a.m. – 12:05 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Snyder","Elizabeth Torres","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Mirsa Elizabeth Silva","Nicasia Bravo De Gonzalez"]},"5":{name:"12:05 – 12:40 p.m. (Int 1ra)",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Reyna Jetcél Hernandez Madrid"]},"6":{name:"12:40 – 1:20 p.m. (Int 2da)",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Mirsa Elizabeth Silva"]},"7":{name:"1:20 – 3:30 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Torres","Geraldine Alison Perez","Gloria (Gigi) Mastropole","Gloria Palmira Mastropole","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Nicasia Bravo De Gonzalez","Susana Zuñiga"]},"8":{name:"3:30 – 4:15 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Jaqueline Echavarria","Laura Esmeralda Amador Saucedo","Leticia Fernández","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Reyna Jetcél Hernandez Madrid","Sarah Martinez"]}};
 const VOL_SECTIONS=[{id:"vest-norte",label:"Vestíbulo Norte",pos:[101,102,103,104,105],color:"#5a1212"},{id:"vest-portico",label:"Vestíbulo Pórtico",pos:[106,107,108,109],color:"#3d5a80"},{id:"vest-sur",label:"Vestíbulo Sur",pos:[110,111,112,113,114],color:"#4a6b3a"},{id:"aud-sur",label:"Auditorio Sur",pos:[115,116],color:"#c28a1c"},{id:"aud-contra",label:"Auditorio Contrapared",pos:[117,118],color:"#a8251c"},{id:"aud-norte",label:"Auditorio Norte",pos:[119,120],color:"#2c6e6e"}];
 const VOL_POS_COORDS={101:{x:120,y:170},102:{x:210,y:170},103:{x:300,y:170},104:{x:390,y:170},105:{x:480,y:170},106:{x:120,y:370},107:{x:210,y:370},108:{x:300,y:370},109:{x:390,y:370},110:{x:120,y:570},111:{x:210,y:570},112:{x:300,y:570},113:{x:390,y:570},114:{x:480,y:570},115:{x:730,y:700},116:{x:830,y:700},117:{x:730,y:480},118:{x:830,y:480},119:{x:730,y:280},120:{x:830,y:280}};
 const WALKER_SLOTS=[];const LETTERS="ABCDEFGHIJKLMNOPQRST".split("");for(let row=1;row<=3;row++){for(const L of LETTERS){WALKER_SLOTS.push(L+row)}}
+const DEFAULT_AUX={corredores:["Eliu de la Garza","Reynaldo Perez","Roberto Borjas","Servando Sustaita","Jose Duran","Otilio Ramirez","Orlando Benavidez","Oziel Rodriguez","Jose Luis Camarillo Rangel"],camaras:["Osiel Agustin","Jaqueline Echavarria","Laura Esmeralda Amador Saucedo","Sarah Martinez"]};
 const D={"caps":["Eliud Luna","Hugo Galvan","Jimmy Vasquez","José A. González","Raúl Quintero","Gonzalo Mejia Sr.","Macario Martinez","Luis Barberena","Roberto Quiroga","Rey Castillo","Abisai Muniz"],"sec":{"A2":"809,127 805,144 796,144 786,152 778,152 777,147 772,147 769,141 766,147 759,150 758,156 753,157 752,162 742,166 736,180 722,191 715,200 715,206 705,213 693,238 688,240 682,261 673,269 667,293 674,293 676,299 685,297 686,300 703,300 704,312 709,309 725,311 729,318 748,320 749,324 759,324 761,328 780,330 781,334 798,337 799,354 827,354 828,351 845,351 843,337 849,324 856,316 860,303 872,302 879,294 881,278 906,253 921,252 916,243 916,226 910,224 910,232 903,235 890,234 890,225 895,224 898,218 892,217 891,209 884,207 884,201 878,198 878,192 872,189 871,182 864,180 864,174 858,172 858,166 851,164 851,157 845,155 845,149 834,148 834,135 831,135 832,147 822,147 815,143 815,128 828,127","A3":"833,375 798,368 785,359 764,357 763,352 756,352 755,349 744,349 742,346 733,346 730,342 713,339 712,324 684,324 683,330 676,330 663,383 659,450 664,503 674,543 680,544 680,561 684,561 685,557 700,558 701,546 707,545 711,538 720,539 723,535 731,535 733,531 743,531 745,527 774,521 776,514 796,514 797,511 808,510 809,505 826,505 836,500 827,494 821,446 828,442 827,433 821,430 822,409 827,384 835,380","A4":"844,524 826,529 793,529 793,538 782,541 779,546 770,546 725,562 708,563 705,560 702,570 695,570 694,574 681,576 669,584 676,604 684,614 690,634 700,637 700,650 710,665 714,659 723,660 727,671 727,679 723,682 734,692 743,708 751,716 755,716 756,720 760,720 762,728 770,730 771,734 783,731 784,727 793,727 799,733 820,729 821,749 849,748 851,713 857,712 858,705 864,703 864,696 871,694 872,687 877,687 884,669 891,668 888,662 889,649 904,650 905,642 911,641 911,634 919,631 922,618 940,618 921,617 920,602 929,601 930,608 939,608 944,603 954,601 931,597 929,600 921,600 920,589 925,585 954,586 909,570 880,548 895,571 920,597 920,622 906,622 896,612 892,615 876,613 875,601 881,600 880,585 874,576 864,576 848,553 843,540","B2":"948,292 921,301 887,322 878,330 865,359 876,360 879,365 897,367 900,371 909,371 910,375 912,372 921,372 922,377 931,377 933,382 936,382 937,376 951,375 952,384 941,387 941,393 936,395 936,404 932,406 957,422 965,417 960,413 960,405 964,404 964,393 973,376 991,356 992,351 1007,351 1007,334 976,330 975,321 970,320 970,313 964,312 963,304 957,304 956,296","B3":"857,384 848,435 850,463 858,495 862,495 863,491 871,491 872,488 891,485 895,480 914,479 916,474 924,474 947,460 949,454 957,453 955,421 931,406 916,403 914,399 882,392 871,385","B4":"1004,522 986,520 984,512 966,486 962,490 942,489 940,496 931,496 929,500 922,500 921,504 910,502 908,508 898,507 897,510 865,517 876,543 887,554 921,575 953,585 957,582 958,575 964,571 964,565 971,563 971,555 976,547 984,545 985,539 1003,538","B1":"935,239 1022,346 1064,322 1063,250 1030,239 999,234 965,234","A1":"865,151 934,238 965,233 999,233 1030,238 1063,249 1060,139 879,139","B5":"1060,545 1023,532 1014,532 954,608 954,618 946,620 931,640 963,646 1001,646 1027,642 1061,631","A5":"1061,632 1039,640 1001,647 963,647 930,641 876,712 877,747 1060,751"},
-"roster":[
-{"n":"Alfonso Hernández","c":"Boca Chica","p":"A"},{"n":"Eliu de la Garza","c":"Boca Chica","p":"P"},{"n":"Isaias Martinez","c":"Boca Chica","p":"P"},{"n":"Juan F Garza","c":"Boca Chica","p":"P"},{"n":"Martin Davila","c":"Boca Chica","p":"P"},{"n":"Rey Castillo","c":"Boca Chica","p":"S"},{"n":"Roberto Quiroga","c":"Boca Chica","p":"S"},{"n":"Norberto Cardenas","c":"Central","p":"S"},{"n":"Felipe Ortiz","c":"El Jardin Heights","p":"P"},{"n":"Francisco Montoya","c":"El Jardin Heights","p":"P"},{"n":"Juan Salinas","c":"El Jardin Heights","p":"S"},{"n":"Reynaldo Perez","c":"El Jardin Heights","p":"A"},{"n":"Roberto Borjas","c":"El Jardin Heights","p":"A"},{"n":"Servando Sustaita","c":"El Jardin Heights","p":"P"},{"n":"Carlos Leonardo Salas Zuñiga","c":"Galaxia","p":"P"},{"n":"Celestino Chavez","c":"Galaxia","p":"S"},{"n":"Gustavo Saucedo","c":"Galaxia","p":"P"},{"n":"Jose Duran","c":"Galaxia","p":"P"},{"n":"Luis Duran","c":"Galaxia","p":"P"},{"n":"Otilio Ramirez","c":"Galaxia","p":"P"},{"n":"Orlando Benavidez","c":"Galaxia","p":"A"},{"n":"Adrián Mota Arcos","c":"Laguna Vista","p":"P"},{"n":"José A. González","c":"Laguna Vista","p":"S"},{"n":"Jose González Jr","c":"Laguna Vista","p":"S"},{"n":"Vianney Morales López","c":"Laguna Vista","p":"P"},{"n":"Valente Alejandro","c":"Laguna Vista","p":"P"},{"n":"Hugo Galvan","c":"Laguna Vista","p":"A"},{"n":"Luis Barberena","c":"Laguna Vista","p":"S"},{"n":"Alex Vazquez","c":"Los Cedros","p":"S"},{"n":"Eliud Luna","c":"Los Cedros","p":"S"},{"n":"Jimmy Vasquez","c":"Los Cedros","p":"A"},{"n":"Guadalupe De La Cruz","c":"Los Cedros","p":"S"},{"n":"Javier Borjas","c":"North","p":"A"},{"n":"Abisai Muniz","c":"North","p":"S"},{"n":"Carlos Martínez","c":"North","p":"S"},{"n":"Oziel Rodriguez","c":"North","p":"P"},{"n":"Josue Campos","c":"Paraiso","p":"S"},{"n":"Ricardo Altamirano","c":"Paraiso","p":"S"},{"n":"Eulogio Montelongo","c":"Paraiso","p":"S"},{"n":"Alfredo Garza","c":"Paraiso","p":"P"},{"n":"Jamin Muñiz","c":"Sunrise","p":"P"},{"n":"Raúl Quintero","c":"Sunrise","p":"S"},{"n":"Gonzalo Mejia Sr.","c":"Sunrise","p":"P"},{"n":"Macario Martinez","c":"Sunrise","p":"A"},
-{"n":"Alfredo Jiménez","c":"Central","p":"S"},{"n":"Jose Luis Camarillo Rangel","c":"Los Cedros","p":"S"},{"n":"Luis Rodolfo Lerma","c":"Los Cedros","p":"S"},{"n":"Osiel Agustin","c":"Laguna Vista","p":"P"},
-{"n":"Tony Duran","c":"Boca Chica","p":"P"},{"n":"Osiel Ramirez","c":"Galaxia","p":"P"},{"n":"Abdiel Juarez Jr.","c":"Sunrise","p":"S"},{"n":"Damian Fernandez","c":"Los Cedros","p":"P"},
-{"n":"Alexia Ramirez","c":"Voluntaria","p":"P"},{"n":"Alicia González","c":"Voluntaria","p":"P"},{"n":"Ana Sofia Bejerano","c":"Voluntaria","p":"P"},{"n":"Ariane Agustin","c":"Voluntaria","p":"P"},{"n":"Bridyit Perez","c":"Voluntaria","p":"P"},{"n":"Cynthia Paola Gayosso","c":"Voluntaria","p":"P"},{"n":"Elizabeth Lopez","c":"Voluntaria","p":"P"},{"n":"Elizabeth Snyder","c":"Voluntaria","p":"P"},{"n":"Elizabeth Torres","c":"Voluntaria","p":"P"},{"n":"Esther Morales","c":"Voluntaria","p":"P"},{"n":"Geraldine Alison Perez","c":"Voluntaria","p":"P"},{"n":"Gloria (Gigi) Mastropole","c":"Voluntaria","p":"P"},{"n":"Gloria Palmira Mastropole","c":"Voluntaria","p":"P"},{"n":"Irene Avila","c":"Voluntaria","p":"P"},{"n":"Jackelin Luna","c":"Voluntaria","p":"P"},{"n":"Jaqueline Echavarria","c":"Voluntaria","p":"P"},{"n":"Karla Garcia","c":"Voluntaria","p":"P"},{"n":"Laura Esmeralda Amador Saucedo","c":"Voluntaria","p":"P"},{"n":"Maria avila","c":"Voluntaria","p":"P"},{"n":"Maria Fernanda Obispo","c":"Voluntaria","p":"P"},{"n":"Maria Gayosso","c":"Voluntaria","p":"P"},{"n":"Maria Rosa Garcia Zapata","c":"Voluntaria","p":"P"},{"n":"María Rosario Vizcarra","c":"Voluntaria","p":"P"},{"n":"Mirsa Elizabeth Silva","c":"Voluntaria","p":"P"},{"n":"Nicasia Bravo De Gonzalez","c":"Voluntaria","p":"P"},{"n":"Reyna Jetcél Hernandez Madrid","c":"Voluntaria","p":"P"},{"n":"Sara del Carmen Gutierrez","c":"Voluntaria","p":"P"},{"n":"Sarah Martinez","c":"Voluntaria","p":"P"},{"n":"Sandra Vazquez","c":"Voluntaria","p":"P"},{"n":"Susana Zuñiga","c":"Voluntaria","p":"P"},{"n":"Leticia Fernández","c":"Voluntaria","p":"P"}],
+"roster":[{"n":"Alfonso Hernández","c":"Boca Chica","p":"A"},{"n":"Eliu de la Garza","c":"Boca Chica","p":"P"},{"n":"Isaias Martinez","c":"Boca Chica","p":"P"},{"n":"Juan F Garza","c":"Boca Chica","p":"P"},{"n":"Martin Davila","c":"Boca Chica","p":"P"},{"n":"Rey Castillo","c":"Boca Chica","p":"S"},{"n":"Roberto Quiroga","c":"Boca Chica","p":"S"},{"n":"Norberto Cardenas","c":"Central","p":"S"},{"n":"Felipe Ortiz","c":"El Jardin Heights","p":"P"},{"n":"Francisco Montoya","c":"El Jardin Heights","p":"P"},{"n":"Juan Salinas","c":"El Jardin Heights","p":"S"},{"n":"Reynaldo Perez","c":"El Jardin Heights","p":"A"},{"n":"Roberto Borjas","c":"El Jardin Heights","p":"A"},{"n":"Servando Sustaita","c":"El Jardin Heights","p":"P"},{"n":"Carlos Leonardo Salas Zuñiga","c":"Galaxia","p":"P"},{"n":"Celestino Chavez","c":"Galaxia","p":"S"},{"n":"Gustavo Saucedo","c":"Galaxia","p":"P"},{"n":"Jose Duran","c":"Galaxia","p":"P"},{"n":"Luis Duran","c":"Galaxia","p":"P"},{"n":"Otilio Ramirez","c":"Galaxia","p":"P"},{"n":"Orlando Benavidez","c":"Galaxia","p":"A"},{"n":"Adrián Mota Arcos","c":"Laguna Vista","p":"P"},{"n":"José A. González","c":"Laguna Vista","p":"S"},{"n":"Jose González Jr","c":"Laguna Vista","p":"S"},{"n":"Vianney Morales López","c":"Laguna Vista","p":"P"},{"n":"Valente Alejandro","c":"Laguna Vista","p":"P"},{"n":"Hugo Galvan","c":"Laguna Vista","p":"A"},{"n":"Luis Barberena","c":"Laguna Vista","p":"S"},{"n":"Alex Vazquez","c":"Los Cedros","p":"S"},{"n":"Eliud Luna","c":"Los Cedros","p":"S"},{"n":"Jimmy Vasquez","c":"Los Cedros","p":"A"},{"n":"Guadalupe De La Cruz","c":"Los Cedros","p":"S"},{"n":"Javier Borjas","c":"North","p":"A"},{"n":"Abisai Muniz","c":"North","p":"S"},{"n":"Carlos Martínez","c":"North","p":"S"},{"n":"Oziel Rodriguez","c":"North","p":"P"},{"n":"Josue Campos","c":"Paraiso","p":"S"},{"n":"Ricardo Altamirano","c":"Paraiso","p":"S"},{"n":"Eulogio Montelongo","c":"Paraiso","p":"S"},{"n":"Alfredo Garza","c":"Paraiso","p":"P"},{"n":"Jamin Muñiz","c":"Sunrise","p":"P"},{"n":"Raúl Quintero","c":"Sunrise","p":"S"},{"n":"Gonzalo Mejia Sr.","c":"Sunrise","p":"P"},{"n":"Macario Martinez","c":"Sunrise","p":"A"},{"n":"Alfredo Jiménez","c":"Central","p":"S"},{"n":"Jose Luis Camarillo Rangel","c":"Los Cedros","p":"S"},{"n":"Luis Rodolfo Lerma","c":"Los Cedros","p":"S"},{"n":"Osiel Agustin","c":"Laguna Vista","p":"P"},{"n":"Tony Duran","c":"Boca Chica","p":"P"},{"n":"Osiel Ramirez","c":"Galaxia","p":"P"},{"n":"Abdiel Juarez Jr.","c":"Sunrise","p":"S"},{"n":"Damian Fernandez","c":"Los Cedros","p":"P"},{"n":"Alexia Ramirez","c":"Voluntaria","p":"P"},{"n":"Alicia González","c":"Voluntaria","p":"P"},{"n":"Ana Sofia Bejerano","c":"Voluntaria","p":"P"},{"n":"Ariane Agustin","c":"Voluntaria","p":"P"},{"n":"Bridyit Perez","c":"Voluntaria","p":"P"},{"n":"Cynthia Paola Gayosso","c":"Voluntaria","p":"P"},{"n":"Elizabeth Lopez","c":"Voluntaria","p":"P"},{"n":"Elizabeth Snyder","c":"Voluntaria","p":"P"},{"n":"Elizabeth Torres","c":"Voluntaria","p":"P"},{"n":"Esther Morales","c":"Voluntaria","p":"P"},{"n":"Geraldine Alison Perez","c":"Voluntaria","p":"P"},{"n":"Gloria (Gigi) Mastropole","c":"Voluntaria","p":"P"},{"n":"Gloria Palmira Mastropole","c":"Voluntaria","p":"P"},{"n":"Irene Avila","c":"Voluntaria","p":"P"},{"n":"Jackelin Luna","c":"Voluntaria","p":"P"},{"n":"Jaqueline Echavarria","c":"Voluntaria","p":"P"},{"n":"Karla Garcia","c":"Voluntaria","p":"P"},{"n":"Laura Esmeralda Amador Saucedo","c":"Voluntaria","p":"P"},{"n":"Maria avila","c":"Voluntaria","p":"P"},{"n":"Maria Fernanda Obispo","c":"Voluntaria","p":"P"},{"n":"Maria Gayosso","c":"Voluntaria","p":"P"},{"n":"Maria Rosa Garcia Zapata","c":"Voluntaria","p":"P"},{"n":"María Rosario Vizcarra","c":"Voluntaria","p":"P"},{"n":"Mirsa Elizabeth Silva","c":"Voluntaria","p":"P"},{"n":"Nicasia Bravo De Gonzalez","c":"Voluntaria","p":"P"},{"n":"Reyna Jetcél Hernandez Madrid","c":"Voluntaria","p":"P"},{"n":"Sara del Carmen Gutierrez","c":"Voluntaria","p":"P"},{"n":"Sarah Martinez","c":"Voluntaria","p":"P"},{"n":"Sandra Vazquez","c":"Voluntaria","p":"P"},{"n":"Susana Zuñiga","c":"Voluntaria","p":"P"},{"n":"Leticia Fernández","c":"Voluntaria","p":"P"}],
 "pos":{"1":{"who":"Luis Barberena","t":"Alarma Multiusos","x":1172,"y":220,"l":1,"a":"alm"},"2":{"who":"Guadalupe De La Cruz","t":"Salida emergencia","x":1172,"y":404,"l":1,"a":"alm"},"3":{"who":"Macario Martinez","t":"Detras plataforma","x":1100,"y":432,"l":1,"a":"ctl"},"4":{"who":"Celestino Chavez","t":"Escaleras plat.","x":1172,"y":490,"l":1,"a":"ctl"},"5":{"who":"Valente Alejandro","t":"Entrada sur plataforma","x":1172,"y":660,"l":1,"a":"alm"},"6":{"who":"Norberto Cardenas","t":"Alarma Sur","x":1073,"y":775,"l":1,"a":"alm"},"7":{"who":"Alfonso Hernández","t":"Puerta Principal","x":1073,"y":657,"l":1,"a":"ent"},"8":{"who":"Osiel Agustin","t":"Alternando","x":1073,"y":553,"l":1,"a":"ctl"},"9":{"who":"Alfredo Jiménez","t":"Alternando","x":993,"y":527,"l":1,"a":"ctl"},"10":{"who":"Gustavo Saucedo","t":"Escenario","x":981,"y":438,"l":1,"a":"ctl"},"11":{"who":"Josue Campos","t":"Frente NE","x":994,"y":341,"l":1,"a":"ctl"},"12":{"who":"Rey Castillo","t":"Frente Norte","x":1073,"y":336,"l":1,"a":"ctl"},"13":{"who":"Jose González Jr","t":"Puerta Secundaria","x":1073,"y":238,"l":1,"a":"ent"},"14":{"who":"Carlos Leonardo Salas Zuñiga","t":"Alarma Norte","x":1073,"y":141,"l":1,"a":"alm"},"15":{"who":"Vianney Morales López","t":"Alarma Audio","x":693,"y":141,"l":1,"a":"alm"},"16":{"who":"Ricardo Altamirano","t":"Alarma","x":612,"y":347,"l":1,"a":"ent"},"17":{"who":"Luis Duran","t":"Alarma","x":612,"y":548,"l":1,"a":"ent"},"18":{"who":"Jamin Muñiz","t":"Alarma Sur","x":693,"y":775,"l":1,"a":"alm"},"19":{"who":"Adrián Mota Arcos","t":"Entrada Sur","x":551,"y":577,"l":1,"a":"ent"},"20":{"who":"Francisco Montoya","t":"Entrada Sur","x":463,"y":577,"l":1,"a":"ent"},"21":{"who":"Roberto Quiroga","t":"Portico","x":211,"y":473,"l":1,"a":"ent"},"22":{"who":"Eulogio Montelongo","t":"Portico/Alberca","x":428,"y":604,"l":1,"a":"ent"},"23":{"who":"Tony Duran","t":"Entrada Norte","x":463,"y":320,"l":1,"a":"ent"},"24":{"who":"Abisai Muniz","t":"Entrada Norte","x":551,"y":318,"l":1,"a":"ent"},"25":{"who":"Gonzalo Mejia Sr.","t":"Auditorio","x":818,"y":153,"l":0,"a":"aud"},"26":{"who":"Carlos Martínez","t":"Auditorio","x":697,"y":340,"l":0,"a":"aud"},"27":{"who":"Felipe Ortiz","t":"Auditorio","x":690,"y":548,"l":0,"a":"aud"},"28":{"who":"Juan Salinas","t":"Auditorio","x":833,"y":735,"l":0,"a":"aud"},"29":{"who":"Javier Borjas","t":"Auditorio","x":807,"y":544,"l":0,"a":"aud"},"30":{"who":"Martin Davila","t":"Auditorio","x":813,"y":342,"l":0,"a":"aud"},"31":{"who":"Juan F Garza","t":"Auditorio","x":902,"y":239,"l":0,"a":"aud"},"32":{"who":"Isaias Martinez","t":"Auditorio","x":947,"y":388,"l":0,"a":"aud"},"33":{"who":"Alex Vazquez","t":"Auditorio","x":941,"y":462,"l":0,"a":"aud"},"34":{"who":"Alfredo Garza","t":"Auditorio","x":936,"y":601,"l":0,"a":"aud"},"35":{"who":"","t":"Entrada vestíbulo","x":146,"y":456,"l":0,"a":"ent"}},
 "cap":{"A1":0,"A2":464,"A3":475,"A4":464,"A5":0,"B1":0,"B2":158,"B3":156,"B4":158,"B5":0},"expect":2474};
 for(const k in VOL_POS_COORDS){D.pos[k]={who:"",t:"Voluntaria "+k,x:VOL_POS_COORDS[k].x,y:VOL_POS_COORDS[k].y,l:0,a:"vol",v:1}}
@@ -552,9 +484,19 @@ const ADM=[
 ];
 
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const nrm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 const POS=Object.keys(D.pos).map(Number);
 const VOL_POS=[101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120];
 let spillMode=false, hl=null, selectedSpill=null, adminMoveMode=false, currentVolDrag=null;
+let lastSelectTurno='1';
+
+function shouldSkipRender(){
+  const ae=document.activeElement;
+  if(!ae) return false;
+  if(ae.tagName!=='INPUT' && ae.tagName!=='SELECT' && ae.tagName!=='TEXTAREA') return false;
+  if(ae.closest('#adminApp') || ae.closest('#acomApp') || ae.closest('#spillAdminApp')) return true;
+  return false;
+}
 
 const visible=n=>{
   if(!me) return false;
@@ -591,15 +533,13 @@ const coordsOf=(pos,turno)=>{
 const P=n=>{const d=D.pos[n];const base=Object.assign({},d,(S.pos||{})[n]);if(d.v===1){const who=(S.volTurnos&&S.volTurnos[currentTurnoGlobal]&&S.volTurnos[currentTurnoGlobal][n])||"";return Object.assign({},base,{who})}return base};
 const eff=n=>{const p=P(n);return p.sub||p.who||''};
 const isSpillOnly=()=>me&&me.spillOnly&&!me.all;
-const canCnt=()=>me&&(me.cnt||(S.cntOpen&&(D.caps.includes(me.n)||VOL_POS.some(n=>eff(n)===me.n))));
+
+// FIX: solo capitanes, admins con cnt/all, o cuando cntOpen está activo
+const canCnt=()=>me&&(me.cnt||me.all||D.caps.includes(me.n)||S.cntOpen);
 
 function sectionOfSpill(x,y){
   if(x>1050) return 'Plataforma';
-  if(x<500){
-    if(y<250) return 'Vestíbulo Norte';
-    if(y>500) return 'Vestíbulo Sur';
-    return 'Vestíbulo Pórtico';
-  }
+  if(x<500){if(y<250) return 'Vestíbulo Norte';if(y>500) return 'Vestíbulo Sur';return 'Vestíbulo Pórtico';}
   if(y<350) return 'Auditorio Norte';
   if(y>550) return 'Auditorio Sur';
   return 'Auditorio Contrapared';
@@ -607,12 +547,11 @@ function sectionOfSpill(x,y){
 
 function volHistory(name){
   const res=[],vt=S.volTurnos||{};
-  for(const t in vt)
-    for(const p in vt[t]){
-      const numP=+p;
-      if(!VOL_POS.includes(numP)) continue;
-      if(vt[t][p]===name) res.push({turno:+t,posicion:numP});
-    }
+  for(const t in vt)for(const p in vt[t]){
+    const numP=+p;
+    if(!VOL_POS.includes(numP)) continue;
+    if(vt[t][p]===name) res.push({turno:+t,posicion:numP});
+  }
   return res.sort((a,b)=>a.turno-b.turno);
 }
 function countAsignadas(t){
@@ -626,7 +565,8 @@ function maxTurnsFor(name){
   const signedUp=Object.keys(TURNOS).filter(k=>TURNOS[k].vol.includes(name)).map(Number);
   const hasT1=signedUp.includes(1);
   const hasT2=signedUp.includes(2);
-  return (hasT1?1:0)+(hasT2?1:0)+3;
+  const hasT8=signedUp.includes(8);
+  return (hasT1?1:0)+(hasT2?1:0)+(hasT8?1:0)+3;
 }
 function canAssign(turno,pos,name){
   const t=+turno,volList=TURNOS[t]?TURNOS[t].vol:[];
@@ -641,7 +581,6 @@ function canAssign(turno,pos,name){
   return{ok:true,msg:`OK (${hist.length+1}/${maxT})`};
 }
 
-// NAV
 function goMode(mode){
   hideAll();
   if(mode==='acom'){$('acomLoginScreen').hidden=false;setTimeout(()=>$('acomNameInput').focus(),100);}
@@ -653,8 +592,6 @@ function hideAll(){
   ['homeScreen','acomLoginScreen','acomApp','volLoginScreen','volView','adminLoginScreen','adminApp','spillAdminApp','walkersView'].forEach(id=>{if($(id))$(id).hidden=true});
 }
 
-// ACOMODADOR
-const nrm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 function acomSearch(q){
   const n=nrm(q.trim());
   if(n.length<2){$('acomResults').innerHTML='';return;}
@@ -668,11 +605,12 @@ function acomEnter(name){
   $('acomApp').hidden=false;
   $('usr').textContent=name;
   $('btnWalkers').hidden=!(u.all||u.walkers||u.adm);
+  const showCamera = CAMERA_ACCESS.some(n => nrm(n)===nrm(name));
+  $('floatCamera').hidden = !showCamera;
   start();
 }
-function acomLogout(){clearInterval(iv);me=null;S={};sel=null;hl=null;spillMode=false;goHome();}
+function acomLogout(){clearInterval(iv);me=null;S={};sel=null;hl=null;spillMode=false;$('floatCamera').hidden=true;goHome();}
 
-// VOLUNTARIA
 function volSearch(q){
   const n=nrm(q.trim());
   if(n.length<2){$('volResults').innerHTML='';return;}
@@ -687,7 +625,6 @@ function volEnter(name){
   renderVolInfo(name);
   start();
 }
-
 function renderVolInfo(name){
   if(!S.volTurnos){
     $('volInfoContent').innerHTML='<div class="vol-info-card"><p style="color:var(--muted)">Cargando tus turnos...</p></div>';
@@ -703,69 +640,50 @@ function renderVolInfo(name){
       const sec=sectionOf(h.posicion);
       html+=`<div class="turno-pill"><b>T${h.turno}</b> · ${esc(TURNOS[h.turno].name)}<span class="pos-num">${h.posicion}</span><span style="font-size:12px;color:var(--muted);font-weight:400">${esc(sec.label)}</span></div>`;
     });
-    html+=`<div style="background:var(--warn-bg);border:1px solid #e0c884;color:#8a5a00;padding:10px 12px;border-radius:6px;font-size:14px;margin:10px 0;line-height:1.6"><b>Reglas:</b> T1 y T2 prioritarios. 3 turnos adicionales. Sin consecutivos (T1+T2 ok). T5 y T6 excluyentes.</div>`;
+    html+=`<div style="background:var(--warn-bg);border:1px solid #e0c884;color:#8a5a00;padding:10px 12px;border-radius:6px;font-size:14px;margin:10px 0;line-height:1.6"><b>Reglas:</b> T1, T2 y T8 prioritarios. 3 turnos adicionales. Sin consecutivos (T1+T2 ok). T5 y T6 excluyentes.</div>`;
   }
   html+='</div>';
   $('volInfoContent').innerHTML=html;
   if(hist.length){$('volMapView').hidden=false;renderVolMap(hist);}
   else{$('volMapView').hidden=true;}
 }
-
 function renderVolMap(hist){
-  const markers=$('volMapMarkers');
-  const legend=$('volMapLegend');
-  markers.innerHTML='';
-  legend.innerHTML='';
-  const sorted=[...hist].sort((a,b)=>a.turno-b.turno);
-  sorted.forEach(h=>{
+  const markers=$('volMapMarkers'),legend=$('volMapLegend');
+  markers.innerHTML='';legend.innerHTML='';
+  [...hist].sort((a,b)=>a.turno-b.turno).forEach(h=>{
     const c=volCoord(h.posicion, h.turno);
     const sec=sectionOf(h.posicion);
     markers.innerHTML+=`<circle cx="${c.x}" cy="${c.y}" r="32" fill="${sec.color}" opacity=".15"/>`;
-    markers.innerHTML+=`<g class="vol-marker-pulse">
-      <circle cx="${c.x}" cy="${c.y}" r="30" fill="${sec.color}" stroke="#fff" stroke-width="4"/>
-      <text x="${c.x}" y="${c.y+8}" text-anchor="middle" font-size="22" font-weight="700" fill="#fff">${h.posicion}</text>
-    </g>`;
-    markers.innerHTML+=`<g>
-      <rect x="${c.x-28}" y="${c.y-62}" width="56" height="22" rx="11" fill="${sec.color}" stroke="#fff" stroke-width="2"/>
-      <text x="${c.x}" y="${c.y-47}" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">T${h.turno}</text>
-    </g>`;
+    markers.innerHTML+=`<g class="vol-marker-pulse"><circle cx="${c.x}" cy="${c.y}" r="30" fill="${sec.color}" stroke="#fff" stroke-width="4"/><text x="${c.x}" y="${c.y+8}" text-anchor="middle" font-size="22" font-weight="700" fill="#fff">${h.posicion}</text></g>`;
+    markers.innerHTML+=`<g><rect x="${c.x-28}" y="${c.y-62}" width="56" height="22" rx="11" fill="${sec.color}" stroke="#fff" stroke-width="2"/><text x="${c.x}" y="${c.y-47}" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">T${h.turno}</text></g>`;
     legend.innerHTML+=`<span><i style="background:${sec.color};display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:6px;vertical-align:-2px"></i><b>T${h.turno}</b> · Pos ${h.posicion} · ${esc(sec.label)}</span>`;
   });
 }
 
-// ADMIN
 function renderAdminLoginOptions(){
-  const sel=$('adminUserSel');
-  sel.innerHTML='<option value="">Seleccione su nombre</option>'+ADM.filter(a=>a.adm).map(a=>`<option>${esc(a.n)}</option>`).join('');
+  $('adminUserSel').innerHTML='<option value="">Seleccione su nombre</option>'+ADM.filter(a=>a.adm).map(a=>`<option>${esc(a.n)}</option>`).join('');
 }
 function adminLogin(){
-  const name=$('adminUserSel').value;
-  const pass=$('adminPassInput').value;
+  const name=$('adminUserSel').value, pass=$('adminPassInput').value;
   const u=ADM.find(x=>x.n===name);
   if(!u){$('adminLoginErr').textContent='Seleccione su nombre';return;}
-  const ok = u.pwd===pass || (u.pwd2 && u.pwd2===pass);
+  const ok=u.pwd===pass||(u.pwd2&&u.pwd2===pass);
   if(!ok){$('adminLoginErr').textContent='Contraseña incorrecta';return;}
-  adminMe=u;
-  me=u;
-  hideAll();
+  adminMe=u;me=u;hideAll();
   if(u.spillOnly){
     $('spillAdminApp').hidden=false;
     $('spillAdminWho').textContent=u.n;
-    start();
-    renderSpillAdmin();
+    start();renderSpillAdmin();
     return;
   }
-  if(u.walkers && !u.all && (!u.areas || u.areas.length===0) && !u.cnt){
-    walkerReturn='home';
-    $('walkersView').hidden=false;
-    loadWalkers();
-    start();
-    return;
+  if(u.walkers&&!u.all&&(!u.areas||u.areas.length===0)&&!u.cnt){
+    walkerReturn='home';$('walkersView').hidden=false;loadWalkers();start();return;
   }
   $('adminApp').hidden=false;
   $('adminWhoLabel').textContent=u.n;
-  start();
-  renderAdminView();
+  const showCam = CAMERA_ACCESS.some(n => nrm(n)===nrm(u.n));
+  $('btnCameraAdmin').hidden = !showCam;
+  start();renderAdminView();
 }
 function adminLogout(){clearInterval(iv);adminMe=null;me=null;S={};hl=null;selectedSpill=null;goHome();}
 function setAdminTab(t){
@@ -780,6 +698,7 @@ function setAdminTab(t){
   renderAdminView();
 }
 function renderAdminView(){
+  if(shouldSkipRender()) return;
   if(adminTab==='acom') renderAdminAcomAsignaciones();
   if(adminTab==='asignaciones'){renderAdminTurnoSelector();renderAdminAsignaciones();}
   if(adminTab==='aux') renderAuxLists();
@@ -788,77 +707,59 @@ function renderAdminView(){
   if(adminTab==='limpieza') renderSpillTab();
 }
 
-// HUÉRFANAS
 async function cleanOrphanVol(){
   const orphans=[];
-  for(const t in S.volTurnos || {}){
+  for(const t in S.volTurnos||{}){
     for(const p in S.volTurnos[t]){
-      const numP=+p;
-      const name=S.volTurnos[t][p];
-      const valid = !isNaN(numP) && VOL_POS.includes(numP) && typeof name==='string' && name.trim();
-      if(!valid) orphans.push({t, p, name});
+      const numP=+p,name=S.volTurnos[t][p];
+      const valid=!isNaN(numP)&&VOL_POS.includes(numP)&&typeof name==='string'&&name.trim();
+      if(!valid) orphans.push({t,p,name});
     }
   }
-  if(!orphans.length){ showToast('No hay asignaciones huérfanas'); return; }
-  const list = orphans.map(o=>`T${o.t} · Pos "${o.p}" → "${o.name}"`).join('\n');
+  if(!orphans.length){showToast('No hay huérfanas');return;}
+  const list=orphans.map(o=>`T${o.t} · Pos "${o.p}" → "${o.name}"`).join('\n');
   if(!confirm(`Se encontraron ${orphans.length} asignaciones huérfanas:\n\n${list}\n\n¿Limpiarlas?`)) return;
   for(const o of orphans){
-    await fetch(U(`volTurnos/${o.t}/${o.p}`), {method:'DELETE'});
+    await fetch(U(`volTurnos/${o.t}/${o.p}`),{method:'DELETE'});
     delete S.volTurnos[o.t][o.p];
   }
-  showToast(`${orphans.length} asignaciones limpiadas`);
+  showToast(`${orphans.length} limpiadas`);
   renderAdminView();
 }
-
-// LIMPIAR TURNO
 async function clearTurno(){
-  const t=adminCurrentTurno;
-  const count=countAsignadas(t);
-  if(count===0){showToast('El turno ya está vacío');return;}
-  if(!confirm(`¿Borrar TODAS las ${count} asignaciones del turno T${t}? Esta acción no se puede deshacer.`)) return;
+  const t=adminCurrentTurno, count=countAsignadas(t);
+  if(count===0){showToast('Turno vacío');return;}
+  if(!confirm(`¿Borrar TODAS las ${count} asignaciones del turno T${t}?`)) return;
   await fetch(U(`volTurnos/${t}`),{method:'DELETE'});
   if(S.volTurnos) delete S.volTurnos[t];
   await load();
-  showToast(`Turno T${t} limpiado (${count} eliminadas)`);
+  showToast(`T${t} limpiado (${count})`);
 }
 
-// AUX
-async function addAuxPerson(group, inputId){
-  const input=$(inputId);
-  const name=input.value.trim();
-  if(!name) return;
-  if(!S.auxGroups) S.auxGroups={};
-  if(!S.auxGroups[group]) S.auxGroups[group]=[];
-  if(S.auxGroups[group].includes(name)){ showToast('Ya está en la lista', true); return; }
-  S.auxGroups[group].push(name);
-  await fetch(U(`auxGroups/${group}`), {method:'PUT', body:JSON.stringify(S.auxGroups[group])});
-  input.value='';
-  renderAuxLists();
-  showToast(`${name} agregado`);
+function renderAuxLists(){
+  const renderList=(group,id,showTurns)=>{
+    const list=S.auxGroups?.[group]||[];
+    if(!list.length){$(id).innerHTML='<p style="color:var(--muted);font-style:italic;padding:8px 0">Sin asignaciones</p>';return;}
+    $(id).innerHTML=list.map(name=>{
+      let turnsHtml='';
+      if(showTurns){
+        const turnosAvail=Object.entries(TURNOS).filter(([t,tt])=>tt.vol.includes(name)).map(([t])=>t);
+        if(turnosAvail.length) turnsHtml=`<div class="turns">Disponible: T${turnosAvail.join(', T')}</div>`;
+      }
+      return `<div class="aux-item"><div class="name">${esc(name)}${turnsHtml}</div><button class="danger" onclick="removeAuxPerson('${group}', this.dataset.name)" data-name="${esc(name)}" style="padding:6px 12px;font-size:13px">Quitar</button></div>`;
+    }).join('');
+  };
+  renderList('corredores','corredoresList',false);
+  renderList('camaras','camarasList',true);
 }
-async function removeAuxPerson(group, name){
+async function removeAuxPerson(group,name){
   if(!S.auxGroups?.[group]) return;
-  S.auxGroups[group] = S.auxGroups[group].filter(n=>n!==name);
-  await fetch(U(`auxGroups/${group}`), {method:'PUT', body:JSON.stringify(S.auxGroups[group])});
+  S.auxGroups[group]=S.auxGroups[group].filter(n=>n!==name);
+  await fetch(U(`auxGroups/${group}`),{method:'PUT',body:JSON.stringify(S.auxGroups[group])});
   renderAuxLists();
   showToast(`${name} removido`);
 }
-function renderAuxLists(){
-  const renderList=(group, id)=>{
-    const list=S.auxGroups?.[group]||[];
-    if(!list.length){ $(id).innerHTML='<p style="color:var(--muted);font-style:italic;padding:8px 0">Sin asignaciones</p>'; return; }
-    $(id).innerHTML = list.map(name=>`
-      <div class="aux-item">
-        <span>${esc(name)}</span>
-        <button class="danger" onclick="removeAuxPerson('${group}', this.dataset.name)" data-name="${esc(name)}" style="padding:6px 12px;font-size:13px">Quitar</button>
-      </div>
-    `).join('');
-  };
-  renderList('corredores','corredoresList');
-  renderList('camaras','camarasList');
-}
 
-// ASIGNACIONES ACOMODADORES
 function renderAdminAcomAsignaciones(){
   const areas=[{id:'alm',name:'Alarmas de Incendios'},{id:'ctl',name:'Control y Plataforma'},{id:'ent',name:'Entradas y Salidas'},{id:'aud',name:'Auditorio'}];
   let html='';
@@ -873,7 +774,7 @@ function renderAdminAcomAsignaciones(){
       const available=D.roster.filter(r=>r.c!=='Voluntaria');
       const sorted=available.filter(r=>r.n===current).concat(available.filter(r=>r.n!==current).sort((a,b)=>a.n.localeCompare(b.n)));
       sorted.forEach(r=>{opts.push(`<option value="${esc(r.n)}" ${r.n===current?'selected':''}>${esc(r.n)}</option>`);});
-      html+=`<tr class="${current?'assigned':''}"><td class="pos-num">${n}</td><td class="pos-sec">${esc(D.pos[n].t)}</td><td><select onfocus="panelLocked=true" onblur="setTimeout(()=>panelLocked=false,200)" onchange="adminAssignAcom(${n},this.value)">${opts.join('')}</select></td></tr>`;
+      html+=`<tr class="${current?'assigned':''}"><td class="pos-num">${n}</td><td class="pos-sec">${esc(D.pos[n].t)}</td><td><select onchange="adminAssignAcom(${n},this.value)">${opts.join('')}</select></td></tr>`;
     });
     html+='</tbody></table></div>';
   }
@@ -882,21 +783,23 @@ function renderAdminAcomAsignaciones(){
 async function adminAssignAcom(pos,name){
   if(!S.pos)S.pos={};
   if(!S.pos[pos])S.pos[pos]={};
-  S.pos[pos].who=name;
-  S.pos[pos].sub=null;
-  S.pos[pos].st=name?'pend':null;
-  S.pos[pos].stAt=Date.now();
+  S.pos[pos].who=name;S.pos[pos].sub=null;S.pos[pos].st=name?'pend':null;S.pos[pos].stAt=Date.now();
   await fetch(U(`pos/${pos}`),{method:'PUT',body:JSON.stringify(S.pos[pos])});
-  showToast(name?`${name} → Posición ${pos}`:`Posición ${pos} desasignada`);
+  showToast(name?`${name} → ${pos}`:`Pos ${pos} libre`);
   await load();
 }
 
-// ASIGNACIONES VOLUNTARIAS
 function renderAdminTurnoSelector(){
-  const c=$('adminTurnoSelector');
-  c.innerHTML=Object.entries(TURNOS).map(([t])=>{
+  const t8signedUp = TURNOS[8].vol;
+  const t8assigned = (S.volTurnos && S.volTurnos[8]) || {};
+  const t8assignedNames = Object.values(t8assigned).filter(Boolean);
+  const t8missing = t8signedUp.filter(n => !t8assignedNames.includes(n)).length;
+  $('adminTurnoSelector').innerHTML=Object.entries(TURNOS).map(([t])=>{
     const asg=countAsignadas(t);
-    return `<button class="${adminCurrentTurno===t?'on':''}" onclick="setAdminTurno('${t}')">T${t}<small>${asg}/20</small></button>`;
+    const isT8=t==='8';
+    const warn=isT8&&t8missing>0;
+    const small=warn?`<small style="color:var(--err);font-weight:700">⚠ ${t8missing} faltan</small>`:`<small>${asg}/20</small>`;
+    return `<button class="${adminCurrentTurno===t?'on':''}" onclick="setAdminTurno('${t}')">T${t}${small}</button>`;
   }).join('');
   $('clearTurnoActual').textContent=`T${adminCurrentTurno}`;
 }
@@ -909,7 +812,7 @@ function renderAdminAsignaciones(){
     const sec=sectionOf(pos);
     const current=asg[pos]||'';
     const opts=['<option value="">— Sin asignar —</option>'];
-    const availableNames=[]; const blockedNames=[];
+    const availableNames=[],blockedNames=[];
     available.forEach(name=>{
       if(current===name) return;
       const chk=canAssign(t,pos,name);
@@ -923,22 +826,35 @@ function renderAdminAsignaciones(){
       blockedNames.forEach(b=>{opts.push(`<option value="${esc(b.name)}" disabled>${esc(b.name)} — ${b.msg}</option>`)});
       opts.push(`</optgroup>`);
     }
-    return `<tr class="${current?'assigned':''}"><td class="pos-num">${pos}</td><td class="pos-sec">${esc(sec.label)}</td><td><select onfocus="panelLocked=true" onblur="setTimeout(()=>panelLocked=false,200)" onchange="adminAssign(${pos},this.value)">${opts.join('')}</select></td></tr>`;
+    return `<tr class="${current?'assigned':''}"><td class="pos-num">${pos}</td><td class="pos-sec">${esc(sec.label)}</td><td><select onchange="adminAssign(${pos},this.value)">${opts.join('')}</select></td></tr>`;
   }).join('');
   $('adminPosTable').innerHTML=rows;
-
   const total=VOL_POS.length;
   const assigned=countAsignadas(t);
   const availNow=available.filter(name=>!Object.values(asg).includes(name));
   let sideHtml=`
-    <div class="stat-line"><span>Total posiciones</span><b>${total}</b></div>
+    <div class="stat-line"><span>Total</span><b>${total}</b></div>
     <div class="stat-line"><span>Asignadas</span><b>${assigned}</b></div>
     <div class="stat-line"><span>Sin asignar</span><b style="color:${total-assigned>0?'var(--err)':'var(--ok)'}">${total-assigned}</b></div>
     <div class="stat-line"><span>Voluntarias turno</span><b>${available.length}</b></div>
   `;
+  // T8 mandatorio warning
+  const t8signedUp = TURNOS[8].vol;
+  const t8assigned = (S.volTurnos && S.volTurnos[8]) || {};
+  const t8assignedNames = Object.values(t8assigned).filter(Boolean);
+  const t8missing = t8signedUp.filter(name => !t8assignedNames.includes(name));
+  if(t8missing.length > 0){
+    sideHtml = `<div class="rule-box" style="background:var(--err-bg);border-left:3px solid var(--err);color:var(--err);margin-bottom:10px">
+      <b>⚠ T8 mandatorio</b><br>
+      Faltan <b>${t8missing.length}</b> de ${t8signedUp.length} por asignar en el último turno (3:30 – 4:15 p.m.)
+      <details style="margin-top:6px"><summary style="cursor:pointer;font-size:11px;font-weight:700">Ver quiénes faltan</summary>
+      <ul style="margin:4px 0;padding-left:18px;font-size:11px">${t8missing.map(n=>`<li>${esc(n)}</li>`).join('')}</ul>
+      </details>
+    </div>` + sideHtml;
+  }
   if(availNow.length){
-    sideHtml+=`<div class="rule-box" style="margin-top:12px"><b>Reglas:</b><br>• T1 y T2 prioritarios si se apuntó<br>• 3 turnos adicionales<br>• No consecutivos (T1+T2 ok)<br>• T5 y T6 excluyentes</div>`;
-    sideHtml+=`<h3 style="margin-top:14px">Estado de voluntarias</h3><div class="avail-list">`;
+    sideHtml+=`<div class="rule-box" style="margin-top:12px"><b>Reglas:</b><br>• T1, T2 y T8 prioritarios<br>• 3 turnos adicionales<br>• No consecutivos (T1+T2 ok)<br>• T5 y T6 excluyentes</div>`;
+    sideHtml+=`<h3 style="margin-top:14px">Estado</h3><div class="avail-list">`;
     availNow.forEach(name=>{
       const chk=canAssign(t,1,name);
       const maxT=maxTurnsFor(name);
@@ -955,7 +871,7 @@ async function adminAssign(pos,name){
     if(S.volTurnos&&S.volTurnos[t]){
       delete S.volTurnos[t][pos];
       await fetch(U(`volTurnos/${t}/${pos}`),{method:'DELETE'});
-      showToast('Asignación eliminada');
+      showToast('Eliminada');
       await load();
     }
     return;
@@ -966,27 +882,23 @@ async function adminAssign(pos,name){
   if(!S.volTurnos[t])S.volTurnos[t]={};
   S.volTurnos[t][pos]=name;
   await fetch(U(`volTurnos/${t}/${pos}`),{method:'PUT',body:JSON.stringify(name)});
-  showToast(`${name} → T${t} · Pos ${pos}`);
+  showToast(`${name} → T${t} · ${pos}`);
   await load();
 }
 
-// CONTEO ADMIN
 function renderAdminConteo(){
   const cnt=S.cnt||{}, exp=S.expect||D.expect;
   const total=Object.values(cnt).reduce((a,b)=>a+(+b||0),0);
   const secs=['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5'];
-  let html=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-    <div>
-      <div style="margin-bottom:14px;font-size:16px"><b>Total:</b> ${total} / ${exp} (${Math.round(100*total/exp)}%)</div>
-      <div class="bar" style="margin-bottom:16px"><i style="width:${Math.min(100,100*total/exp)}%"></i></div>
-      <p style="font-size:13px;color:var(--muted);margin:0 0 10px">Toca una sección para resaltarla en el mapa</p>
-      <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr))">`;
+  let html=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px"><div>
+    <div style="margin-bottom:14px;font-size:16px"><b>Total:</b> ${total} / ${exp} (${Math.round(100*total/exp)}%)</div>
+    <div class="bar" style="margin-bottom:16px"><i style="width:${Math.min(100,100*total/exp)}%"></i></div>
+    <p style="font-size:13px;color:var(--muted);margin:0 0 10px">Toca una sección para resaltarla en el mapa</p>
+    <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr))">`;
   secs.forEach(sec=>{
     const v=cnt[sec]||0;
     const max=(S.cap&&S.cap[sec]!==undefined)?S.cap[sec]:(D.cap[sec]||0);
-    const over=max>0&&v>max;
-    const atMax=max>0&&v>=max;
-    const isHl=hl===sec;
+    const over=max>0&&v>max,atMax=max>0&&v>=max,isHl=hl===sec;
     html+=`<div class="cnt-sec${over?' over':atMax?' at-max':''}${isHl?' hl':''}" onclick="adminToggleHl('${sec}')" style="cursor:pointer">
       <div class="label">${sec}</div>
       <input type="number" min="0" ${max>0?`max="${max}"`:''} value="${v}" class="cnt-input${over?' over':''}" onchange="setCntValue('${sec}',this.value)" onclick="event.stopPropagation()">
@@ -994,47 +906,42 @@ function renderAdminConteo(){
       ${me.all?`<div class="edit-max" onclick="event.stopPropagation()"><span>máx:</span><input type="number" min="0" value="${max}" onchange="setCapMax('${sec}',this.value)"></div>`:''}
     </div>`;
   });
-  html+=`</div></div>
-    <div>
-      <h3 style="margin:0 0 8px;color:var(--brown);font-size:14px;text-transform:uppercase;letter-spacing:.5px">Vista de sección</h3>
-      <div id="adminCntMap" style="border:2px solid var(--brown);border-radius:8px;overflow:hidden;background:var(--card);position:sticky;top:80px">
-        <svg viewBox="0 0 1310 926" style="width:100%;height:auto;display:block">
-          <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
-          <g id="adminCntMapSec"></g>
-        </svg>
-      </div>
-      <p style="font-size:12px;color:var(--muted);margin-top:8px;text-align:center">${hl?`Resaltada: <b style="color:var(--red)">${hl}</b>`:'Ninguna sección resaltada'}</p>
+  html+=`</div></div><div>
+    <h3 style="margin:0 0 8px;color:var(--brown);font-size:14px;text-transform:uppercase;letter-spacing:.5px">Vista</h3>
+    <div style="border:2px solid var(--brown);border-radius:8px;overflow:hidden;background:var(--card);position:sticky;top:80px">
+      <svg viewBox="0 0 1310 926" style="width:100%;height:auto;display:block">
+        <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
+        <g id="adminCntMapSec"></g>
+      </svg>
     </div>
-  </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:8px;text-align:center">${hl?`Resaltada: <b style="color:var(--red)">${hl}</b>`:'Ninguna resaltada'}</p>
+  </div></div>
   <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
     <button onclick="put('cnt',null)" style="padding:12px">Reiniciar conteo</button>
     <button onclick="put('cntOpen',!S.cntOpen)" id="cntOpenBtn" style="padding:12px"></button>
   </div>`;
   $('adminCntCard').innerHTML=html;
   renderAdminCntMapHighlight();
-  $('cntOpenBtn').textContent=S.cntOpen?'Cerrar conteo a capitanes':'Abrir conteo a capitanes';
+  $('cntOpenBtn').textContent=S.cntOpen?'Cerrar conteo a no-capitanes':'Abrir conteo a no-capitanes';
   $('cntOpenBtn').style.background=S.cntOpen?'var(--err)':'var(--ok)';
   $('cntOpenBtn').style.color='#fff';
   $('cntOpenBtn').style.borderColor=S.cntOpen?'var(--err)':'var(--ok)';
 }
 function adminToggleHl(sec){hl=hl===sec?null:sec;renderAdminConteo();}
 function renderAdminCntMapHighlight(){
-  const g=$('adminCntMapSec'); if(!g) return;
+  const g=$('adminCntMapSec');if(!g)return;
   let h='';
-  for(const k in D.sec){
-    const cls=hl===k?'sec hl':'sec';
-    h+=`<polygon class="${cls}" points="${(S.sec&&S.sec[k])||D.sec[k]}"/>`;
-  }
+  for(const k in D.sec){h+=`<polygon class="${hl===k?'sec hl':'sec'}" points="${(S.sec&&S.sec[k])||D.sec[k]}"/>`;}
   g.innerHTML=h;
 }
-async function setCntValue(sec, value){
+async function setCntValue(sec,value){
   const n=parseInt(value)||0;
-  const max=(S.cap && S.cap[sec]!==undefined) ? S.cap[sec] : (D.cap[sec]||0);
-  if(n<0){ showToast('Debe ser mayor o igual a 0', true); renderAdminConteo(); return; }
-  if(max>0 && n>max){ showToast(`Máximo es ${max} para ${sec}`, true); renderAdminConteo(); return; }
-  if(!S.cnt) S.cnt = {};
-  S.cnt[sec] = n;
-  await fetch(U('cnt/'+sec), {method:'PUT', body:JSON.stringify(n)});
+  const max=(S.cap&&S.cap[sec]!==undefined)?S.cap[sec]:(D.cap[sec]||0);
+  if(n<0){showToast('>= 0',true);renderAdminConteo();return;}
+  if(max>0&&n>max){showToast(`Máx ${max}`,true);renderAdminConteo();return;}
+  if(!S.cnt)S.cnt={};
+  S.cnt[sec]=n;
+  await fetch(U('cnt/'+sec),{method:'PUT',body:JSON.stringify(n)});
   showToast(`${sec}: ${n}`);
   renderAdminConteo();
 }
@@ -1044,42 +951,39 @@ function setCapMax(sec,val){
   S.cap[sec]=n;
   put('cap/'+sec,n);
   renderAdminConteo();
-  showToast(`Máximo de ${sec} actualizado a ${n}`);
+  showToast(`Máx ${sec}: ${n}`);
 }
-
-// MAPA ADMIN
-let adminJustLoggedIn = false;
 
 function toggleAdminMove(){
-  adminMoveMode = !adminMoveMode;
+  adminMoveMode=!adminMoveMode;
   const btn=$('btnMoveVol');
-  btn.classList.toggle('on', adminMoveMode);
-  btn.textContent = adminMoveMode ? '✓ Listo' : 'Mover Posiciones';
-  const hint=$('adminMapHint');
-  if(hint) hint.textContent = adminMoveMode ? 'Arrastra cualquier círculo para moverlo. Se guarda automáticamente.' : '';
-  if(currentAdminMapType === 'vol') renderAdminMapVol($('adminMapTurno').value || adminCurrentTurno);
+  btn.classList.toggle('on',adminMoveMode);
+  btn.textContent=adminMoveMode?'✓ Listo':'Mover Posiciones';
+  $('adminMapHint').textContent=adminMoveMode?'Arrastra cualquier círculo. Se guarda automáticamente.':'';
+  if(currentAdminMapType==='vol') renderAdminMapVol($('adminMapTurno').value||adminCurrentTurno);
 }
-
 async function resetVolPositions(){
-  const t = $('adminMapTurno').value || adminCurrentTurno;
-  if(!confirm(`¿Restaurar posiciones originales del turno T${t}?`)) return;
-  await fetch(U(`volPos/${t}`), {method:'DELETE'});
+  const t=$('adminMapTurno').value||adminCurrentTurno;
+  if(!confirm(`¿Restaurar posiciones del turno T${t}?`)) return;
+  await fetch(U(`volPos/${t}`),{method:'DELETE'});
   if(S.volPos) delete S.volPos[t];
   renderAdminMapVol(t);
-  showToast(`Posiciones de T${t} restauradas`);
+  showToast(`T${t} restaurado`);
 }
-
 function showAdminMap(type){
   currentAdminMapType=type;
   $('btnMapVol').classList.toggle('on',type==='vol');
   $('btnMapAcom').classList.toggle('on',type==='acom');
-  $('btnMoveVol').style.display = type==='vol' ? 'inline-block' : 'none';
-  $('btnResetVolPos').style.display = type==='vol' ? 'inline-block' : 'none';
+  $('btnMoveVol').style.display=type==='vol'?'inline-block':'none';
+  $('btnResetVolPos').style.display=type==='vol'?'inline-block':'none';
   const tSel=$('adminMapTurno');
   if(type==='vol'){
     tSel.style.display='inline-block';
-    tSel.innerHTML=Object.entries(TURNOS).map(([t,tt])=>`<option value="${t}" ${t===adminCurrentTurno?'selected':''}>Turno T${t} · ${tt.name}</option>`).join('');
-    const t=tSel.value||adminCurrentTurno;
+    const prevVal=tSel.value||lastSelectTurno||adminCurrentTurno;
+    tSel.innerHTML=Object.entries(TURNOS).map(([t,tt])=>`<option value="${t}" ${t===prevVal?'selected':''}>Turno T${t} · ${tt.name}</option>`).join('');
+    tSel.onchange=()=>{lastSelectTurno=tSel.value;showAdminMap('vol');};
+    const t=tSel.value||prevVal;
+    lastSelectTurno=t;
     renderAdminMapVol(t);
   }else{
     tSel.style.display='none';
@@ -1091,7 +995,7 @@ function renderAdminMapVol(t){
   const asg=S.volTurnos&&S.volTurnos[t]||{};
   let markers='';
   VOL_POS.forEach(pos=>{
-    const c=volCoord(pos, t);
+    const c=volCoord(pos,t);
     const sec=sectionOf(pos);
     const who=asg[pos]||'';
     markers+=`<g class="vol-marker" data-pos="${pos}" transform="translate(${c.x} ${c.y})">
@@ -1108,45 +1012,40 @@ function renderAdminMapVol(t){
   </div>`;
   if(adminMoveMode) attachVolDrag(t);
 }
-
 function attachVolDrag(turno){
   const svg=$('adminVolSvg');
-  if(!svg || svg.dataset.dragBound) return;
+  if(!svg||svg.dataset.dragBound) return;
   svg.dataset.dragBound='1';
-  svg.addEventListener('pointerdown', e=>{
-    const g=e.target.closest('.vol-marker');
-    if(!g) return;
-    currentVolDrag={pos:+g.dataset.pos, el:g};
+  svg.addEventListener('pointerdown',e=>{
+    const g=e.target.closest('.vol-marker');if(!g) return;
+    currentVolDrag={pos:+g.dataset.pos,el:g};
     g.style.cursor='grabbing';
-    svg.setPointerCapture(e.pointerId);
+    try{svg.setPointerCapture(e.pointerId);}catch(_){}
     e.preventDefault();
   });
-  svg.addEventListener('pointermove', e=>{
+  svg.addEventListener('pointermove',e=>{
     if(!currentVolDrag) return;
-    const pt=svg.createSVGPoint();
-    pt.x=e.clientX; pt.y=e.clientY;
+    const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;
     const p=pt.matrixTransform(svg.getScreenCTM().inverse());
-    currentVolDrag.el.setAttribute('transform', `translate(${Math.round(p.x)} ${Math.round(p.y)})`);
+    currentVolDrag.el.setAttribute('transform',`translate(${Math.round(p.x)} ${Math.round(p.y)})`);
   });
-  svg.addEventListener('pointerup', async e=>{
+  svg.addEventListener('pointerup',async e=>{
     if(!currentVolDrag) return;
-    const {pos, el}=currentVolDrag;
-    currentVolDrag=null;
-    el.style.cursor='grab';
+    const {pos,el}=currentVolDrag;
+    currentVolDrag=null;el.style.cursor='grab';
     const trans=el.getAttribute('transform');
     const m=trans.match(/translate\((-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)\)/);
     if(m){
-      const x=Math.round(+m[1]);
-      const y=Math.round(+m[2]);
-      if(!S.volPos) S.volPos={};
-      if(!S.volPos[turno]) S.volPos[turno]={};
+      const x=Math.round(+m[1]),y=Math.round(+m[2]);
+      if(!S.volPos)S.volPos={};
+      if(!S.volPos[turno])S.volPos[turno]={};
       S.volPos[turno][pos]={x,y};
-      await fetch(U(`volPos/${turno}/${pos}`), {method:'PUT', body:JSON.stringify({x,y})});
-      showToast(`Pos ${pos} movida en T${turno}`);
+      const res=await fetch(U(`volPos/${turno}/${pos}`),{method:'PUT',body:JSON.stringify({x,y})});
+      if(res.ok) showToast(`Pos ${pos} movida en T${turno}`);
+      else showToast(`Error guardando`,true);
     }
   });
 }
-
 function renderAdminMapAcom(){
   let markers='';
   POS.filter(n=>D.pos[n].v!==1).forEach(n=>{
@@ -1155,232 +1054,166 @@ function renderAdminMapAcom(){
     const w=p.who||p.sub||'';
     const b=p.st==='ok'?['#4a6b3a','✓']:p.st==='abs'?['#a8251c','✕']:p.st==='sub'?['#777','S']:null;
     const fill=D.pos[n].l?'var(--blue-a)':'var(--org-a)';
-    markers+=`<circle cx="${c.x}" cy="${c.y}" r="19" fill="${fill}" stroke="#fff" stroke-width="2.5"/>
-    <text x="${c.x}" y="${c.y+6}" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">${n}</text>`;
-    if(b){
-      markers+=`<circle cx="${c.x+15}" cy="${c.y-15}" r="9" fill="${b[0]}" stroke="#fff" stroke-width="1.5"/>
-      <text x="${c.x+15}" y="${c.y-11}" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">${b[1]}</text>`;
-    }
-    if(w){
-      markers+=`<text x="${c.x}" y="${c.y+38}" text-anchor="middle" font-size="10" font-weight="600" fill="#333" style="paint-order:stroke;stroke:#fff;stroke-width:3">${esc(w.split(' ')[0])}</text>`;
-    }
+    markers+=`<circle cx="${c.x}" cy="${c.y}" r="19" fill="${fill}" stroke="#fff" stroke-width="2.5"/><text x="${c.x}" y="${c.y+6}" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">${n}</text>`;
+    if(b){markers+=`<circle cx="${c.x+15}" cy="${c.y-15}" r="9" fill="${b[0]}" stroke="#fff" stroke-width="1.5"/><text x="${c.x+15}" y="${c.y-11}" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">${b[1]}</text>`;}
+    if(w){markers+=`<text x="${c.x}" y="${c.y+38}" text-anchor="middle" font-size="10" font-weight="600" fill="#333" style="paint-order:stroke;stroke:#fff;stroke-width:3">${esc(w.split(' ')[0])}</text>`;}
   });
-  $('adminMapArea').innerHTML=`<div style="width:100%;border:2px solid var(--brown);border-radius:8px;overflow:hidden">
-    <svg viewBox="0 0 1310 926" style="width:100%;height:auto;display:block">
-      <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
-      <g>${markers}</g>
-    </svg>
-  </div>`;
+  $('adminMapArea').innerHTML=`<div style="width:100%;border:2px solid var(--brown);border-radius:8px;overflow:hidden"><svg viewBox="0 0 1310 926" style="width:100%;height:auto;display:block"><image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/><g>${markers}</g></svg></div>`;
 }
 
-// SPILL BUILDER
 function buildSpillContent(){
-  const active = Object.entries(S.spills||{}).filter(([,s])=>s.status!=='terminado').sort((a,b)=>b[1].ts-a[1].ts);
-  const done = Object.entries(S.spills||{}).filter(([,s])=>s.status==='terminado').sort((a,b)=>(b[1].tsDone||b[1].ts)-(a[1].tsDone||a[1].ts));
-  let activeHtml='';
-  if(!active.length){
-    activeHtml='<div style="text-align:center;padding:24px;color:var(--muted);font-style:italic">Sin derrames activos</div>';
-  } else {
-    activeHtml = active.map(([id,sp])=>{
-      const color=SPILL_COLORS[sp.tipo]||'#999';
-      const sec=sectionOfSpill(sp.x, sp.y);
-      const hora=new Date(sp.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
-      const isProc=sp.status==='proceso';
-      const isSelected=selectedSpill===id;
-      const colorClass=sp.tipo==='Comida'?'spill-color-comida':sp.tipo==='Bebida'?'spill-color-bebida':'spill-color-otro';
-      return `<div class="spill-card ${colorClass}${isSelected?' selected':''}">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
-          <div style="flex:1;min-width:180px">
-            <div style="font-weight:700;font-size:15px;color:${color}">${esc(SPILL_LABELS[sp.tipo]||sp.tipo)}</div>
-            <div style="font-size:13px;color:var(--muted);margin-top:2px">Ubicación: ${esc(sec)}</div>
-            <div style="font-size:13px;color:var(--muted);margin-top:1px">Reportó: ${esc(sp.quien||'?')} · ${hora}</div>
-            <div style="font-size:12px;margin-top:3px"><b style="color:${isProc?'var(--warn)':'var(--err)'}">${sp.status.toUpperCase()}</b>${sp.quienLimpia?` · Limpiando: ${esc(sp.quienLimpia)}`:''}</div>
-          </div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap">
-            <button onclick="selectSpill('${id}')" style="padding:6px 12px;font-size:13px">${isSelected?'Ocultar':'Ver'}</button>
-            ${!isProc?`<button class="warn" onclick="takeSpillAdmin('${id}')" style="padding:6px 12px;font-size:13px">Tomar</button>`:''}
-            ${isProc?`<button class="ok" onclick="doneSpillAdmin('${id}')" style="padding:6px 12px;font-size:13px">Terminado</button>`:''}
-          </div>
-        </div>
-      </div>`;
-    }).join('');
-  }
-  let doneHtml='';
-  if(!done.length){
-    doneHtml='<div style="text-align:center;padding:16px;color:var(--muted);font-style:italic">Sin derrames terminados</div>';
-  } else {
-    doneHtml=`<details><summary style="cursor:pointer;padding:8px;color:var(--muted);font-size:14px">${done.length} terminados hoy</summary>${done.map(([id,sp])=>{
+  const active=Object.entries(S.spills||{}).filter(([,s])=>s.status!=='terminado').sort((a,b)=>b[1].ts-a[1].ts);
+  const done=Object.entries(S.spills||{}).filter(([,s])=>s.status==='terminado').sort((a,b)=>(b[1].tsDone||b[1].ts)-(a[1].tsDone||a[1].ts));
+  let activeHtml=!active.length?'<div style="text-align:center;padding:24px;color:var(--muted);font-style:italic">Sin derrames activos</div>':active.map(([id,sp])=>{
+    const color=SPILL_COLORS[sp.tipo]||'#999';
+    const sec=sectionOfSpill(sp.x,sp.y);
+    const hora=new Date(sp.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+    const isProc=sp.status==='proceso';
+    const isSel=selectedSpill===id;
+    const colorClass=sp.tipo==='Comida'?'spill-color-comida':sp.tipo==='Bebida'?'spill-color-bebida':'spill-color-otro';
+    return `<div class="spill-card ${colorClass}${isSel?' selected':''}"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><div style="flex:1;min-width:180px">
+      <div style="font-weight:700;font-size:15px;color:${color}">${esc(SPILL_LABELS[sp.tipo]||sp.tipo)}</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:2px">${esc(sec)}</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:1px">${esc(sp.quien||'?')} · ${hora}</div>
+      <div style="font-size:12px;margin-top:3px"><b style="color:${isProc?'var(--warn)':'var(--err)'}">${sp.status.toUpperCase()}</b>${sp.quienLimpia?` · ${esc(sp.quienLimpia)}`:''}</div>
+    </div><div style="display:flex;gap:6px;flex-wrap:wrap">
+      <button onclick="selectSpill('${id}')" style="padding:6px 12px;font-size:13px">${isSel?'Ocultar':'Ver'}</button>
+      ${!isProc?`<button class="warn" onclick="takeSpillAdmin('${id}')" style="padding:6px 12px;font-size:13px">Tomar</button>`:''}
+      ${isProc?`<button class="ok" onclick="doneSpillAdmin('${id}')" style="padding:6px 12px;font-size:13px">Listo</button>`:''}
+    </div></div></div>`;
+  }).join('');
+  let doneHtml=!done.length?'<div style="text-align:center;padding:16px;color:var(--muted);font-style:italic">Sin terminados</div>':
+    `<details><summary style="cursor:pointer;padding:8px;color:var(--muted);font-size:14px">${done.length} terminados</summary>${done.map(([id,sp])=>{
       const hora=new Date(sp.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
       const color=SPILL_COLORS[sp.tipo]||'#999';
-      const sec=sectionOfSpill(sp.x, sp.y);
-      return `<div style="padding:8px 12px;background:var(--ok-bg);border-left:3px solid ${color};border-radius:4px;margin-top:6px;font-size:13px">
-        <b>${esc(SPILL_LABELS[sp.tipo]||sp.tipo)}</b> · ${esc(sec)} · ${esc(sp.quien||'?')} · ${hora}
-      </div>`;
+      const sec=sectionOfSpill(sp.x,sp.y);
+      return `<div style="padding:8px 12px;background:var(--ok-bg);border-left:3px solid ${color};border-radius:4px;margin-top:6px;font-size:13px"><b>${esc(SPILL_LABELS[sp.tipo]||sp.tipo)}</b> · ${esc(sec)} · ${esc(sp.quien||'?')} · ${hora}</div>`;
     }).join('')}</details>`;
-  }
   let pins='';
   active.forEach(([id,sp])=>{
     const color=SPILL_COLORS[sp.tipo]||'#999';
     const isSel=selectedSpill===id;
     const blink=isSel?'spill-pin-blink':'';
-    const ring=isSel?`<circle r="42" fill="none" stroke="${color}" stroke-width="3" opacity=".5">
-      <animate attributeName="r" values="32;52;32" dur="1s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values=".5;0;.5" dur="1s" repeatCount="indefinite"/>
-    </circle>`:'';
-    pins+=`<g class="${blink}" style="cursor:pointer" onclick="selectSpill('${id}')" transform="translate(${sp.x} ${sp.y})">
-      ${ring}
-      <circle r="28" fill="${color}" stroke="#fff" stroke-width="3" opacity=".95"/>
-      <text text-anchor="middle" y="8" font-size="20" fill="#fff" font-weight="700">!</text>
-    </g>`;
+    const ring=isSel?`<circle r="42" fill="none" stroke="${color}" stroke-width="3" opacity=".5"><animate attributeName="r" values="32;52;32" dur="1s" repeatCount="indefinite"/><animate attributeName="opacity" values=".5;0;.5" dur="1s" repeatCount="indefinite"/></circle>`:'';
+    pins+=`<g class="${blink}" style="cursor:pointer" onclick="selectSpill('${id}')" transform="translate(${sp.x} ${sp.y})">${ring}<circle r="28" fill="${color}" stroke="#fff" stroke-width="3" opacity=".95"/><text text-anchor="middle" y="8" font-size="20" fill="#fff" font-weight="700">!</text></g>`;
   });
-  return { activeHtml, doneHtml, pins, activeCount: active.length };
+  return {activeHtml,doneHtml,pins,activeCount:active.length};
 }
-
 function renderSpillAdmin(){
-  const { activeHtml, doneHtml, pins, activeCount } = buildSpillContent();
-  $('spillCountActive').textContent = `${activeCount} activos`;
-  $('spillListAdmin').innerHTML = activeHtml;
-  $('spillListDone').innerHTML = doneHtml;
-  $('spillMapPins').innerHTML = pins;
+  const {activeHtml,doneHtml,pins,activeCount}=buildSpillContent();
+  $('spillCountActive').textContent=`${activeCount} activos`;
+  $('spillListAdmin').innerHTML=activeHtml;
+  $('spillListDone').innerHTML=doneHtml;
+  $('spillMapPins').innerHTML=pins;
 }
 function renderSpillTab(){
-  const { activeHtml, doneHtml, pins, activeCount } = buildSpillContent();
-  $('adminSpillCount').textContent = `${activeCount} activos`;
-  $('adminSpillList').innerHTML = activeHtml;
-  $('adminSpillDone').innerHTML = doneHtml;
-  $('adminSpillMapPins').innerHTML = pins;
+  const {activeHtml,doneHtml,pins,activeCount}=buildSpillContent();
+  $('adminSpillCount').textContent=`${activeCount} activos`;
+  $('adminSpillList').innerHTML=activeHtml;
+  $('adminSpillDone').innerHTML=doneHtml;
+  $('adminSpillMapPins').innerHTML=pins;
 }
-function selectSpill(id){
-  selectedSpill = selectedSpill === id ? null : id;
-  if(adminTab==='limpieza') renderSpillTab();
-  else renderSpillAdmin();
-}
+function selectSpill(id){selectedSpill=selectedSpill===id?null:id;if(adminTab==='limpieza') renderSpillTab();else renderSpillAdmin();}
 async function takeSpillAdmin(id){
   await fetch(U(`spills/${id}/status`),{method:'PUT',body:JSON.stringify('proceso')});
   await fetch(U(`spills/${id}/quienLimpia`),{method:'PUT',body:JSON.stringify(adminMe.n)});
   await fetch(U(`spills/${id}/tsProc`),{method:'PUT',body:JSON.stringify(Date.now())});
-  showToast('Derrame tomado');
-  await load();
+  showToast('Tomado');await load();
 }
 async function doneSpillAdmin(id){
   await fetch(U(`spills/${id}/status`),{method:'PUT',body:JSON.stringify('terminado')});
   await fetch(U(`spills/${id}/tsDone`),{method:'PUT',body:JSON.stringify(Date.now())});
-  showToast('Derrame terminado');
-  await load();
+  showToast('Terminado');await load();
 }
 async function resetAllSpills(){
-  if(!confirm('¿Borrar TODOS los derrames (activos y terminados)? Esta acción no se puede deshacer.')) return;
-  await fetch(U('spills'), {method:'DELETE'});
+  if(!confirm('¿Borrar TODOS los derrames?')) return;
+  await fetch(U('spills'),{method:'DELETE'});
   if(S.spills) delete S.spills;
-  selectedSpill=null;
-  showToast('Derrames reiniciados');
-  await load();
+  selectedSpill=null;showToast('Derrames reiniciados');await load();
 }
 function openSpillFullMap(){
   const active=Object.entries(S.spills||{}).filter(([,s])=>s.status!=='terminado');
   let pins='';
   active.forEach(([id,sp])=>{
     const color=SPILL_COLORS[sp.tipo]||'#999';
-    pins+=`<g transform="translate(${sp.x} ${sp.y})">
-      <circle r="32" fill="${color}" stroke="#fff" stroke-width="4" opacity=".95"/>
-      <text text-anchor="middle" y="9" font-size="22" fill="#fff" font-weight="700">!</text>
-    </g>`;
+    pins+=`<g transform="translate(${sp.x} ${sp.y})"><circle r="32" fill="${color}" stroke="#fff" stroke-width="4" opacity=".95"/><text text-anchor="middle" y="9" font-size="22" fill="#fff" font-weight="700">!</text></g>`;
   });
   $('modalBox').classList.add('wide');
-  showModal('Mapa completo de derrames',
-    `<div style="border:2px solid var(--ok);border-radius:8px;overflow:hidden;background:var(--card)">
-      <svg viewBox="0 0 1310 926" style="width:100%;height:auto;display:block">
-        <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
-        ${pins}
-      </svg>
-    </div>`,
-    [{text:'Cerrar', action:()=>{$('modalBox').classList.remove('wide');}}]);
+  showModal('Mapa completo',`<div style="border:2px solid var(--ok);border-radius:8px;overflow:hidden;background:var(--card)"><svg viewBox="0 0 1310 926" style="width:100%;height:auto;display:block"><image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>${pins}</svg></div>`,[{text:'Cerrar',action:()=>{$('modalBox').classList.remove('wide');}}]);
 }
 
-// UTILS
 function showToast(m,err){const c=document.getElementById('toast-container'),t=document.createElement('div');t.className='toast'+(err?' err':'');t.textContent=m;c.appendChild(t);setTimeout(()=>t.classList.add('show'),10);setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},3500);}
 function net(v){const e=$('net');if(!e)return;e.textContent=v?'En línea':'Sin conexión';e.className='net '+(v?'on':'off');}
 const U=p=>CFG.DB.replace(/\/$/,'')+'/s'+(p?'/'+p:'')+'.json';
-function put(p,v){if(!S)S={};setPath(S,p,v);if(adminMe&&!$('adminApp').hidden)renderAdminView();fetch(U(p),{method:'PUT',body:JSON.stringify(v)}).then(r=>net(r.ok)).catch(()=>net(false));}
+function put(p,v){if(!S)S={};setPath(S,p,v);if(adminMe&&!$('adminApp').hidden&&!shouldSkipRender())renderAdminView();fetch(U(p),{method:'PUT',body:JSON.stringify(v)}).then(r=>net(r.ok)).catch(()=>net(false));}
 function setPath(o,p,v){const k=p.split('/');let c=o;k.slice(0,-1).forEach(x=>c=c[x]=c[x]||{});v===null?delete c[k.at(-1)]:c[k.at(-1)]=v;}
+
 async function load(){
   try{
     const r=await fetch(U('')+'?t='+Date.now());
-    S=(await r.json())||{};
+    const newS=(await r.json())||{};
+    if(!currentVolDrag) S=newS;
+    if(!S.auxInitialized){
+      if(!S.auxGroups) S.auxGroups={};
+      if(!S.auxGroups.corredores || !S.auxGroups.corredores.length) S.auxGroups.corredores=[...DEFAULT_AUX.corredores];
+      if(!S.auxGroups.camaras || !S.auxGroups.camaras.length) S.auxGroups.camaras=[...DEFAULT_AUX.camaras];
+      await fetch(U('auxGroups'),{method:'PUT',body:JSON.stringify(S.auxGroups)});
+      await fetch(U('auxInitialized'),{method:'PUT',body:JSON.stringify(true)});
+      S.auxInitialized=true;
+    }
+    if(!S.auxGroups) S.auxGroups={};
+    if(!S.auxGroups.corredores || !S.auxGroups.corredores.length) S.auxGroups.corredores=[...DEFAULT_AUX.corredores];
+    if(!S.auxGroups.camaras || !S.auxGroups.camaras.length) S.auxGroups.camaras=[...DEFAULT_AUX.camaras];
     net(true);
+    if(shouldSkipRender()) return;
     if(adminMe && adminMe.spillOnly && !$('spillAdminApp').hidden) renderSpillAdmin();
     else if(adminMe && !$('adminApp').hidden) renderAdminView();
     else if(me && !$('acomApp').hidden) draw();
     if(volCurrentName && !$('volView').hidden) renderVolInfo(volCurrentName);
     if(!$('walkersView').hidden) drawWalkers();
-    if(adminJustLoggedIn){
-      adminJustLoggedIn=false;
-      const orphans = countOrphans();
-      if(orphans>0) showToast(`${orphans} asignaciones huérfanas detectadas — usa "Limpiar huérfanas"`, true);
-    }
   }catch(e){net(false);}
-}
-function countOrphans(){
-  let count=0;
-  for(const t in S.volTurnos || {}){
-    for(const p in S.volTurnos[t]){
-      const numP=+p;
-      const name=S.volTurnos[t][p];
-      const valid = !isNaN(numP) && VOL_POS.includes(numP) && typeof name==='string' && name.trim();
-      if(!valid) count++;
-    }
-  }
-  return count;
 }
 function start(){net(false);load();clearInterval(iv);iv=setInterval(load,3000);}
 
-// ACOMODADOR APP
-function draw(){if(!me)return;drawMap();drawPanel();drawBar();drawMine();drawLegend();drawSpills();}
+function draw(){if(!me)return;if(shouldSkipRender()) return;drawMap();drawPanel();drawBar();drawMine();drawLegend();drawSpills();}
 function setSt(n,s){
   if(!S.pos) S.pos={};
   if(!S.pos[n]) S.pos[n]={};
-  S.pos[n].st=s;
-  S.pos[n].stAt=Date.now();
-  draw();
-  fetch(U(`pos/${n}`),{method:'PUT',body:JSON.stringify(S.pos[n])})
-    .then(r=>{if(!r.ok) net(false); else net(true);})
-    .catch(()=>net(false));
+  S.pos[n].st=s;S.pos[n].stAt=Date.now();
+  drawMine();
+  fetch(U(`pos/${n}`),{method:'PUT',body:JSON.stringify(S.pos[n])}).then(r=>net(r.ok)).catch(()=>net(false));
 }
-function here(n){
-  const p=P(n);
-  if(p.sub===me.n){ setSt(n,'sub'); showToast('✓ Registrado como sustituto'); return; }
-  if(p.who===me.n){ setSt(n,'ok'); showToast('✓ Registrado'); return; }
+function here(n){const p=P(n);if(p.sub===me.n){setSt(n,'sub');showToast('✓ Registrado');return;}if(p.who===me.n){setSt(n,'ok');showToast('✓ Registrado');return;}}
+async function hereCap(){
+  if(!S.pos) S.pos={};
+  const key='cap_'+me.n;
+  if(!S.pos[key]) S.pos[key]={};
+  S.pos[key].st='ok';S.pos[key].stAt=Date.now();
+  drawMine();
+  await fetch(U(`pos/${key}`),{method:'PUT',body:JSON.stringify(S.pos[key])});
+  showToast('✓ Registrado');
 }
 function zoomMain(d){mainZoom=Math.max(1,Math.min(3,mainZoom+d));$('svg').style.width=(mainZoom*100)+'%';}
 
 function drawMap(){
   let sectHtml='';
-  for(const k in D.sec){
-    const cls=hl===k?'sec hl':'sec';
-    sectHtml+=`<polygon class="${cls}" points="${(S.sec&&S.sec[k])||D.sec[k]}"/>`;
-  }
+  for(const k in D.sec){sectHtml+=`<polygon class="${hl===k?'sec hl':'sec'}" points="${(S.sec&&S.sec[k])||D.sec[k]}"/>`;}
   $('sl').innerHTML=sectHtml;
-
   let h='';
   for(const n of POS){
     if(!visible(n))continue;
-    const raw=D.pos[n];const isVol=raw.v===1;
+    const raw=D.pos[n],isVol=raw.v===1;
     const p=P(n);
-    const c=coordsOf(n, currentTurnoGlobal);
+    const c=coordsOf(n,currentTurnoGlobal);
     const b=p.st==='ok'?['#4a6b3a','✓']:p.st==='abs'?['#a8251c','✕']:p.st==='sub'?['#777','S']:null;
     const fill=isVol?sectionOf(n).color:(raw.l?'var(--blue-a)':'var(--org-a)');
-    h+=`<g class="pc" data-n="${n}" transform="translate(${c.x} ${c.y})">
-      <circle r="19" fill="${fill}" stroke="${sel===n?'#000':'#fff'}" stroke-width="${sel===n?4.5:2.5}"/>
-      <text text-anchor="middle" dy=".35em">${n}</text>
-      ${b?`<circle cx="15" cy="-15" r="9" fill="${b[0]}" stroke="#fff" stroke-width="1.5"/><text x="15" y="-15" dy=".35em" text-anchor="middle" style="font-size:11px;font-weight:700;fill:#fff">${b[1]}</text>`:''}
-    </g>`;
+    h+=`<g class="pc" data-n="${n}" transform="translate(${c.x} ${c.y})"><circle r="19" fill="${fill}" stroke="${sel===n?'#000':'#fff'}" stroke-width="${sel===n?4.5:2.5}"/><text text-anchor="middle" dy=".35em">${n}</text>${b?`<circle cx="15" cy="-15" r="9" fill="${b[0]}" stroke="#fff" stroke-width="1.5"/><text x="15" y="-15" dy=".35em" text-anchor="middle" style="font-size:11px;font-weight:700;fill:#fff">${b[1]}</text>`:''}</g>`;
   }
   $('pl').innerHTML=h;
   let sh='';
   if(S.spills){
     for(const id in S.spills){
-      const sp=S.spills[id];
-      if(sp.status==='terminado')continue;
+      const sp=S.spills[id];if(sp.status==='terminado')continue;
       const color=SPILL_COLORS[sp.tipo]||'#b8860b';
       sh+=`<g class="spill" data-spill="${id}" transform="translate(${sp.x} ${sp.y})"><polygon points="0,-26 24,20 -24,20" fill="${color}" stroke="#fff" stroke-width="2" opacity="0.95"/><text text-anchor="middle" y="6" font-size="20" fill="#fff" font-weight="700" pointer-events="none">!</text></g>`;
     }
@@ -1390,126 +1223,72 @@ function drawMap(){
   $('svg').querySelectorAll('.spill').forEach(el=>{el.onclick=()=>showSpillPanel(el.dataset.spill);});
   attachSpillHandler();
 }
-
 function attachSpillHandler(){
   const svgEl=$('svg');
-  if(!svgEl || svgEl.dataset.spillBound) return;
+  if(!svgEl||svgEl.dataset.spillBound) return;
   svgEl.dataset.spillBound='1';
-  svgEl.addEventListener('pointerdown', e => {
+  svgEl.addEventListener('pointerdown',e=>{
     if(!spillMode) return;
-    const pt=svgEl.createSVGPoint();
-    pt.x=e.clientX; pt.y=e.clientY;
+    const pt=svgEl.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;
     const svgP=pt.matrixTransform(svgEl.getScreenCTM().inverse());
-    e.preventDefault();
-    e.stopPropagation();
-    promptSpill(svgP.x, svgP.y);
-  }, true);
+    e.preventDefault();e.stopPropagation();
+    promptSpill(svgP.x,svgP.y);
+  },true);
 }
-
-function toggleSpillMode(){
-  spillMode=!spillMode;
-  drawBar();
-  if(spillMode) showToast('Acerca con + y − si hace falta, luego toca el mapa');
-}
-
+function toggleSpillMode(){spillMode=!spillMode;drawBar();if(spillMode)showToast('Toca el mapa');}
 function promptSpill(x,y){
   showModal('Reportar derrame',
-    `<p>¿Qué se derramó?</p>
-     <select id="spillType">
-       <option value="Comida">Comida</option>
-       <option value="Bebida">Bebida</option>
-       <option value="Otro">Otro (vómito)</option>
-     </select>
-     <p style="font-size:12px;color:var(--muted);margin-top:8px">Ubicación: ${sectionOfSpill(x,y)}</p>`,
-    [
-      {text:'Cancelar', action:()=>{spillMode=false;drawBar();}},
-      {text:'Reportar', class:'warn', action:()=>{
-        const tipo=$('spillType').value;
-        const id=Date.now();
-        put(`spills/${id}`,{x:Math.round(x),y:Math.round(y),tipo,status:'pendiente',quien:me.n,ts:id});
-        spillMode=false;
-        drawBar();
-        showToast(`Derrame reportado: ${tipo}`);
-      }}
-    ]);
+    `<p>¿Qué se derramó?</p><select id="spillType"><option value="Comida">Comida</option><option value="Bebida">Bebida</option><option value="Otro">Otro (vómito)</option></select><p style="font-size:12px;color:var(--muted);margin-top:8px">Ubicación: ${sectionOfSpill(x,y)}</p>`,
+    [{text:'Cancelar',action:()=>{spillMode=false;drawBar();}},{text:'Reportar',class:'warn',action:()=>{
+      const tipo=$('spillType').value;const id=Date.now();
+      put(`spills/${id}`,{x:Math.round(x),y:Math.round(y),tipo,status:'pendiente',quien:me.n,ts:id});
+      spillMode=false;drawBar();
+      showToast(`Derrame: ${tipo}`);
+    }}]);
 }
-
 function toggleCntPanel(){
-  const card=$('cntCard');
-  card.hidden=!card.hidden;
-  if(!card.hidden) drawCnt();
+  if(!canCnt()){showToast('Conteo no disponible. Pide al superintendente que active "todos contar".',true);return;}
+  const card=$('cntCard');card.hidden=!card.hidden;if(!card.hidden)drawCnt();
 }
-
 function drawCnt(){
-  const canEdit=canCnt();
-  const cnt=S.cnt||{};
+  if(!canCnt()){ $('cntCard').hidden=true; return; }
+  const ae=document.activeElement;
+  if(ae && ae.closest && ae.closest('#cntCard') && ae.tagName==='INPUT') return;
+  const canEdit=canCnt(),cnt=S.cnt||{};
   const secs=['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5'];
-  let html=`<p style="margin:0 0 10px;font-size:13px;color:var(--muted)">Toca una sección para resaltarla en el mapa</p><div class="grid">`;
+  let html=`<p style="margin:0 0 10px;font-size:13px;color:var(--muted)">Toca una sección para resaltarla</p><div class="grid">`;
   secs.forEach(sec=>{
     const v=cnt[sec]||0;
     const max=(S.cap&&S.cap[sec]!==undefined)?S.cap[sec]:(D.cap[sec]||0);
-    const over=max>0&&v>max;
-    const atMax=max>0&&v>=max;
-    const isHl=hl===sec;
+    const over=max>0&&v>max,atMax=max>0&&v>=max,isHl=hl===sec;
     html+=`<div class="cnt-sec${over?' over':atMax?' at-max':''}${isHl?' hl':''}" onclick="toggleHl('${sec}')" style="cursor:pointer">
       <div class="label">${sec}</div>
-      ${canEdit
-        ? `<input type="number" min="0" ${max>0?`max="${max}"`:''} value="${v}" class="cnt-input${over?' over':''}" onchange="setCntValueAcom('${sec}',this.value)" onclick="event.stopPropagation()">`
-        : `<div class="num">${v}</div>`
-      }
+      ${canEdit?`<input type="number" min="0" ${max>0?`max="${max}"`:''} value="${v}" class="cnt-input${over?' over':''}" onchange="setCntValueAcom('${sec}',this.value)" onclick="event.stopPropagation()">`:`<div class="num">${v}</div>`}
       <div class="max">${max>0?`máx ${max}`:'sin límite'}</div>
     </div>`;
   });
-  html+=`</div>`;
-  $('cnt').innerHTML=html;
+  html+=`</div>`;$('cnt').innerHTML=html;
 }
-
-async function setCntValueAcom(sec, value){
+async function setCntValueAcom(sec,value){
   const n=parseInt(value)||0;
-  const max=(S.cap && S.cap[sec]!==undefined) ? S.cap[sec] : (D.cap[sec]||0);
-  if(n<0){ showToast('Debe ser mayor o igual a 0', true); drawCnt(); return; }
-  if(max>0 && n>max){ showToast(`Máximo es ${max} para ${sec}`, true); drawCnt(); return; }
-  if(!S.cnt) S.cnt = {};
-  S.cnt[sec] = n;
-  await fetch(U('cnt/'+sec), {method:'PUT', body:JSON.stringify(n)});
+  const max=(S.cap&&S.cap[sec]!==undefined)?S.cap[sec]:(D.cap[sec]||0);
+  if(n<0){showToast('>= 0',true);drawCnt();return;}
+  if(max>0&&n>max){showToast(`Máx ${max}`,true);drawCnt();return;}
+  if(!S.cnt)S.cnt={};
+  S.cnt[sec]=n;
+  await fetch(U('cnt/'+sec),{method:'PUT',body:JSON.stringify(n)});
   showToast(`${sec}: ${n}`);
   drawCnt();
 }
-
-function toggleHl(sec){
-  hl=hl===sec?null:sec;
-  drawCnt();
-  drawMap();
-  if(hl){
-    const mapEl=$('mapw');
-    const poly=document.querySelector(`#sl polygon.hl`);
-    if(poly){
-      const svgEl=$('svg');
-      const bbox=poly.getBBox();
-      const scale=svgEl.getBoundingClientRect().width/1310;
-      const cx=(bbox.x+bbox.width/2)*scale;
-      const cy=(bbox.y+bbox.height/2)*scale;
-      mapEl.scrollTo({left:Math.max(0,cx-mapEl.clientWidth/2),top:Math.max(0,cy-mapEl.clientHeight/2),behavior:'smooth'});
-    }
-  }
-}
-
+function toggleHl(sec){hl=hl===sec?null:sec;drawCnt();drawMap();if(hl){const mapEl=$('mapw');const poly=document.querySelector('#sl polygon.hl');if(poly){const svgEl=$('svg');const bbox=poly.getBBox();const scale=svgEl.getBoundingClientRect().width/1310;const cx=(bbox.x+bbox.width/2)*scale;const cy=(bbox.y+bbox.height/2)*scale;mapEl.scrollTo({left:Math.max(0,cx-mapEl.clientWidth/2),top:Math.max(0,cy-mapEl.clientHeight/2),behavior:'smooth'});}}}
 function drawBar(){
-  const toolbar=$('mapToolbar');
-  const hint=$('mapHint');
-  if(spillMode){
-    toolbar.classList.add('spill-active');
-    hint.textContent='MODO DERRAME ACTIVO · Acerca con + y − · Toca el mapa';
-  } else {
-    toolbar.classList.remove('spill-active');
-    hint.textContent='Toca un número para ver detalles';
-  }
-  if(isSpillOnly()){
-    $('bar').innerHTML=`<button onclick="toggleSpillMode()" style="background:${spillMode?'var(--warn)':'var(--card)'};color:${spillMode?'#fff':'var(--warn)'};border-color:var(--warn);font-weight:700;padding:14px 22px">${spillMode?'Cancelar Derrame':'Reportar Derrame'}</button>`;
-    return;
-  }
-  const spillBtn=`<button onclick="toggleSpillMode()" style="background:${spillMode?'var(--warn)':'var(--card)'};color:${spillMode?'#fff':'var(--warn)'};border-color:var(--warn);font-weight:700">${spillMode?'Cancelar Derrame':'Reportar Derrame'}</button>`;
-  const cntBtn=`<button onclick="toggleCntPanel()" style="background:var(--gold);color:#fff;border-color:var(--gold);font-weight:700">Conteo</button>`;
+  const toolbar=$('mapToolbar'),hint=$('mapHint');
+  if(spillMode){toolbar.classList.add('spill-active');hint.textContent='MODO DERRAME ACTIVO · Acerca con + y −';}
+  else{toolbar.classList.remove('spill-active');hint.textContent='Toca un número para ver detalles';}
+  if(isSpillOnly()){$('bar').innerHTML=`<button onclick="toggleSpillMode()" style="background:${spillMode?'var(--warn)':'var(--card)'};color:${spillMode?'#fff':'var(--warn)'};border-color:var(--warn);font-weight:700;padding:14px 22px">${spillMode?'Cancelar':'Reportar Derrame'}</button>`;return;}
+  const spillBtn=`<button onclick="toggleSpillMode()" style="background:${spillMode?'var(--warn)':'var(--card)'};color:${spillMode?'#fff':'var(--warn)'};border-color:var(--warn);font-weight:700">${spillMode?'Cancelar':'Reportar Derrame'}</button>`;
+  const showCntBtn = canCnt();
+  const cntBtn = showCntBtn ? `<button onclick="toggleCntPanel()" style="background:var(--gold);color:#fff;border-color:var(--gold);font-weight:700">Conteo</button>` : '';
   $('bar').innerHTML=`${spillBtn}${cntBtn}`;
 }
 function drawMine(){
@@ -1519,28 +1298,12 @@ function drawMine(){
   e.hidden=me.adm||me.all;
   if(me.adm||me.all)return;
   if(n){
-    const st=P(n).st;
-    const isDone=st==='ok'||st==='sub';
-    e.innerHTML=`<h3>Tu posición: ${n}</h3><p>${esc(D.pos[n].t)}</p>`+
-      (isDone?'<b style="color:var(--ok);font-size:18px">✓ Registrado</b>':`<button class="ok" style="width:100%;padding:18px;font-size:20px" onclick="here(${n})">Aquí estoy</button>`);
-  } else if(D.caps.includes(me.n)){
-    const st=S.pos?.['cap_'+me.n]?.st;
-    const isDone=st==='ok';
-    e.innerHTML=`<h3>Capitán</h3><p style="color:var(--muted);font-size:14px">Registra tu llegada:</p>`+
-      (isDone?'<b style="color:var(--ok);font-size:18px">✓ Registrado</b>':`<button class="ok" style="width:100%;padding:18px;font-size:20px" onclick="hereCap()">Aquí estoy</button>`);
-  } else {
-    e.innerHTML='<h3>Corredor</h3><p style="color:var(--muted)">Abajo puedes ver todas las posiciones.</p>';
-  }
-}
-async function hereCap(){
-  if(!S.pos) S.pos={};
-  const key='cap_'+me.n;
-  if(!S.pos[key]) S.pos[key]={};
-  S.pos[key].st='ok';
-  S.pos[key].stAt=Date.now();
-  drawMine();
-  await fetch(U(`pos/${key}`),{method:'PUT',body:JSON.stringify(S.pos[key])});
-  showToast('✓ Registrado');
+    const isDone=['ok','sub'].includes(P(n).st);
+    e.innerHTML=`<h3>Tu posición: ${n}</h3><p>${esc(D.pos[n].t)}</p>`+(isDone?'<b style="color:var(--ok);font-size:18px">✓ Registrado</b>':`<button class="ok" style="width:100%;padding:18px;font-size:20px" onclick="here(${n})">Aquí estoy</button>`);
+  }else if(D.caps.includes(me.n)){
+    const isDone=S.pos?.['cap_'+me.n]?.st==='ok';
+    e.innerHTML=`<h3>Capitán</h3><p style="color:var(--muted);font-size:14px">Registra tu llegada:</p>`+(isDone?'<b style="color:var(--ok);font-size:18px">✓ Registrado</b>':`<button class="ok" style="width:100%;padding:18px;font-size:20px" onclick="hereCap()">Aquí estoy</button>`);
+  }else{e.innerHTML='<h3>Corredor</h3>';}
 }
 function drawPanel(){
   const e=$('panel');if(!e)return;
@@ -1574,7 +1337,6 @@ function showSpillPanel(id){
   showModal(`Derrame · ${sp.tipo}`,`<div class="who" style="border-left-color:${color}"><b>Reportado por:</b> ${esc(sp.quien)}<br><b>Estado:</b> ${sp.status.toUpperCase()}</div>`,[{text:'Cerrar'}]);
 }
 
-// WALKERS
 const LET="ABCDEFGHIJKLMNOPQRST".split("");
 const CQ_A=[190,90],CQ_C=[112,365],CQ_B=[190,640];
 function cqPt(t){const u=1-t;return[u*u*CQ_A[0]+2*u*t*CQ_C[0]+t*t*CQ_B[0],u*u*CQ_A[1]+2*u*t*CQ_C[1]+t*t*CQ_B[1]]}
@@ -1582,13 +1344,11 @@ function cqTan(t){return[2*(1-t)*(CQ_C[0]-CQ_A[0])+2*t*(CQ_B[0]-CQ_C[0]),2*(1-t)
 function cqGeo(slot){const ci=LET.indexOf(slot[0]),r=+slot[1],t=(ci+.5)/20,p=cqPt(t),T=cqTan(t),m=Math.hypot(T[0],T[1]),n=[T[1]/m,-T[0]/m],d=32+(r-1)*50;return{x:p[0]+n[0]*d,y:p[1]+n[1]*d,a:Math.atan2(T[1],T[0])*180/Math.PI-90}}
 function cqFirst(n){const p=String(n||'').trim().split(/\s+/)[0]||'';return p.length>7?p.slice(0,6)+'.':p}
 function walkerShort(full){const parts=full.trim().split(/\s+/);if(parts.length===1)return parts[0];return parts[0]+' '+(parts[1]||'')[0]+'.'}
-
 function openWalkers(from){
-  walkerReturn=from||'home';
-  hideAll();
+  walkerReturn=from||'home';hideAll();
   $('walkersView').hidden=false;
-  const canReset = me && (me.all || me.walkersReset);
-  $('btnResetWalkers').style.display = canReset ? 'inline-block' : 'none';
+  const canReset=me&&(me.all||me.walkersReset);
+  $('btnResetWalkers').style.display=canReset?'inline-block':'none';
   loadWalkers();
 }
 function closeWalkers(){
@@ -1600,12 +1360,10 @@ function closeWalkers(){
   else{adminMe=null;me=null;goHome();}
 }
 async function resetWalkersData(){
-  if(!confirm('¿Borrar TODOS los datos de walkers? Esta acción no se puede deshacer.')) return;
-  await fetch(`${CFG.DB}/walkersTest/w.json`, {method:'DELETE'});
-  await fetch(`${CFG.DB}/walkersTest/last.json`, {method:'DELETE'});
-  W_DATA={}; W_LAST={};
-  drawWalkers();
-  showToast('Walkers reiniciados');
+  if(!confirm('¿Borrar TODOS los datos de walkers?')) return;
+  await fetch(`${CFG.DB}/walkersTest/w.json`,{method:'DELETE'});
+  await fetch(`${CFG.DB}/walkersTest/last.json`,{method:'DELETE'});
+  W_DATA={};W_LAST={};drawWalkers();showToast('Walkers reiniciados');
 }
 async function loadWalkers(){
   try{
@@ -1613,21 +1371,20 @@ async function loadWalkers(){
       fetch(`${CFG.DB}/walkersTest/w.json?t=${Date.now()}`).then(r=>r.json()),
       fetch(`${CFG.DB}/walkersTest/last.json?t=${Date.now()}`).then(r=>r.json())
     ]);
-    W_DATA=rData||{}; W_LAST=lData||{};
+    W_DATA=rData||{};W_LAST=lData||{};
     drawWalkers();
   }catch(e){}
 }
 function drawWalkers(){drawCroquis();drawWalkGrid();}
 function drawCroquis(){
-  const wk=W_DATA||{};
-  const el=$('walkCroquis');if(!el)return;
+  const wk=W_DATA||{};const el=$('walkCroquis');if(!el)return;
   let h='';
   for(const o of [172,194,216,238]){h+=`<path d="M${CQ_A[0]+o} ${CQ_A[1]} Q${CQ_C[0]+o} ${CQ_C[1]} ${CQ_B[0]+o} ${CQ_B[1]}" fill="none" stroke="#d8c9a3" stroke-width="10" stroke-dasharray="7 4" opacity=".6"/>`}
   h+=`<text x="428" y="365" font-size="14" font-weight="700" fill="#a08a50" text-anchor="middle" transform="rotate(90 428 365)">AUDITORIO · ASIENTOS</text>`;
   h+=`<path d="M${CQ_A[0]} ${CQ_A[1]} Q${CQ_C[0]} ${CQ_C[1]} ${CQ_B[0]} ${CQ_B[1]}" fill="none" stroke="#555" stroke-width="9" stroke-linecap="round"/>`;
   h+=`<text x="130" y="365" font-size="12" font-weight="700" fill="#555" text-anchor="middle" transform="rotate(90 130 365)">CONTRAPARED</text>`;
-  const doors=[[180,235],[275,330],[370,425],[465,520]];
-  let y0=30;for(const [a,b] of doors){h+=`<line x1="64" y1="${y0}" x2="64" y2="${a}" stroke="#6e1414" stroke-width="7" stroke-linecap="round"/>`;y0=b}
+  const doors=[[180,235],[275,330],[370,425],[465,520]];let y0=30;
+  for(const [a,b] of doors){h+=`<line x1="64" y1="${y0}" x2="64" y2="${a}" stroke="#6e1414" stroke-width="7" stroke-linecap="round"/>`;y0=b}
   h+=`<line x1="64" y1="${y0}" x2="64" y2="680" stroke="#6e1414" stroke-width="7" stroke-linecap="round"/>`;
   for(const [a,b] of doors){const m=(a+b)/2;h+=`<path d="M64 ${a} Q86 ${a+6} 86 ${a+27}" fill="none" stroke="#6e1414" stroke-width="2" opacity=".6"/><path d="M64 ${b} Q86 ${b-6} 86 ${b-27}" fill="none" stroke="#6e1414" stroke-width="2" opacity=".6"/><path d="M14 ${m} H48 M40 ${m-7} L50 ${m} L40 ${m+7}" fill="none" stroke="#6e1414" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`}
   h+=`<text x="12" y="20" font-size="14" font-weight="700" fill="#6e1414">VESTÍBULO</text>`;
@@ -1635,98 +1392,56 @@ function drawCroquis(){
   for(const slot of WALKER_SLOTS){
     const g=cqGeo(slot),cur=wk[slot];
     if(cur&&(cur.ts||0)>=lts){lts=cur.ts||0;latest=slot}
-    h+=`<g class="cslot${cur?' occ':''}" data-slot="${slot}" transform="translate(${g.x.toFixed(1)} ${g.y.toFixed(1)}) rotate(${g.a.toFixed(1)})" onclick="walkerTap('${slot}')"><rect x="-22" y="-12" width="44" height="24" rx="4"/>`+
-      (cur?`<text text-anchor="middle" y="-2" font-size="8" opacity=".85" transform="rotate(${(-g.a).toFixed(1)})">${slot}</text><text text-anchor="middle" y="8" font-size="10" font-weight="700" transform="rotate(${(-g.a).toFixed(1)})">${esc(cqFirst(cur.name))}</text>`
-          :`<text text-anchor="middle" y="4" font-size="11" font-weight="700" transform="rotate(${(-g.a).toFixed(1)})">${slot}</text>`)+`</g>`;
+    h+=`<g class="cslot${cur?' occ':''}" data-slot="${slot}" transform="translate(${g.x.toFixed(1)} ${g.y.toFixed(1)}) rotate(${g.a.toFixed(1)})" onclick="walkerTap('${slot}')"><rect x="-22" y="-12" width="44" height="24" rx="4"/>`+(cur?`<text text-anchor="middle" y="-2" font-size="8" opacity=".85" transform="rotate(${(-g.a).toFixed(1)})">${slot}</text><text text-anchor="middle" y="8" font-size="10" font-weight="700" transform="rotate(${(-g.a).toFixed(1)})">${esc(cqFirst(cur.name))}</text>`:`<text text-anchor="middle" y="4" font-size="11" font-weight="700" transform="rotate(${(-g.a).toFixed(1)})">${slot}</text>`)+`</g>`;
   }
   if(latest&&Date.now()-lts<1800000){const g=cqGeo(latest);h+=`<circle class="cq-latest" cx="${g.x.toFixed(1)}" cy="${g.y.toFixed(1)}" r="28"/>`}
   el.innerHTML=h;
 }
 function drawWalkGrid(){
   const wk=W_DATA||{};let h='';
-  WALKER_SLOTS.forEach(slot=>{
-    const cur=wk[slot];
-    if(cur){h+=`<button class="wslot occ" data-slot="${slot}" onclick="walkerTap('${slot}')"><b>${slot}</b><small>${esc(walkerShort(cur.name))}</small></button>`}
-    else{h+=`<button class="wslot empty" data-slot="${slot}" onclick="walkerTap('${slot}')"><b>${slot}</b><small>Vacío</small></button>`}
-  });
+  WALKER_SLOTS.forEach(slot=>{const cur=wk[slot];if(cur){h+=`<button class="wslot occ" onclick="walkerTap('${slot}')"><b>${slot}</b><small>${esc(walkerShort(cur.name))}</small></button>`}else{h+=`<button class="wslot empty" onclick="walkerTap('${slot}')"><b>${slot}</b><small>Vacío</small></button>`}});
   $('walkGrid').innerHTML=h;
   $('walkCount').textContent=`${Object.keys(wk).length}/${WALKER_SLOTS.length} ocupados`;
 }
-
 function walkerTap(slot){
-  const cur=W_DATA&&W_DATA[slot];
-  const last=W_LAST&&W_LAST[slot];
+  const cur=W_DATA&&W_DATA[slot],last=W_LAST&&W_LAST[slot];
   if(cur){
     showModal(`Espacio ${slot}`,
-      `<div style="text-align:center;padding:16px 0">
-        <div style="font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Ocupado por</div>
-        <div style="font-weight:700;font-size:22px;color:var(--ok)">${esc(cur.name)}</div>
-        <div style="font-size:13px;color:var(--muted);margin-top:6px">Registrado ${cur.ts?new Date(cur.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}):''}</div>
-      </div>`,
-      [
-        {text:'Aceptar'},
-        {text:'Editar', class:'warn', keepOpen:true, action:()=>walkerEdit(slot,cur.name)},
-        {text:'Remover', class:'danger', keepOpen:true, action:()=>walkerRemove(slot,cur.name)}
-      ]);
-  } else {
-    const lastMsg = last ? `<div class="walker-info"><b>Último ocupante:</b> ${esc(last.name)}<br><span style="font-size:12px;color:var(--muted)">Salió ${last.ts?new Date(last.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}):''}</span></div>` : '';
-    showModal(`Espacio ${slot} libre`,
-      `${lastMsg}
-      <p style="margin:8px 0;font-size:14px">Ingresa el nombre del hermano/a:</p>
-      <input id="walkerNameInput" placeholder="Nombre completo" autocomplete="off">
-      ${last?`<div style="margin-top:8px"><button onclick="walkerReassign('${slot}','${esc(last.name).replace(/'/g,"\\'")}')" style="width:100%;padding:10px;background:var(--warn-bg);color:#8a5a00;border-color:#e0c884;font-size:14px;font-weight:700">Volver a asignar a ${esc(last.name)}</button></div>`:''}`,
-      [
-        {text:'Cancelar'},
-        {text:'Guardar', class:'ok', keepOpen:false, action:()=>{
-          const nm=$('walkerNameInput').value.trim();
-          if(nm) walkerAssign(slot,nm);
-        }}
-      ]);
+      `<div style="text-align:center;padding:16px 0"><div style="font-size:13px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">Ocupado por</div><div style="font-weight:700;font-size:22px;color:var(--ok)">${esc(cur.name)}</div><div style="font-size:13px;color:var(--muted);margin-top:6px">${cur.ts?new Date(cur.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}):''}</div></div>`,
+      [{text:'Aceptar'},{text:'Editar',class:'warn',keepOpen:true,action:()=>walkerEdit(slot,cur.name)},{text:'Remover',class:'danger',keepOpen:true,action:()=>walkerRemove(slot,cur.name)}]);
+  }else{
+    const lastMsg=last?`<div class="walker-info"><b>Último:</b> ${esc(last.name)}<br><span style="font-size:12px;color:var(--muted)">Salió ${last.ts?new Date(last.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}):''}</span></div>`:'';
+    showModal(`Espacio ${slot} libre`,`${lastMsg}<p style="margin:8px 0;font-size:14px">Nombre:</p><input id="walkerNameInput" placeholder="Nombre completo" autocomplete="off">${last?`<div style="margin-top:8px"><button onclick="walkerReassign('${slot}','${esc(last.name).replace(/'/g,"\\'")}')" style="width:100%;padding:10px;background:var(--warn-bg);color:#8a5a00;border-color:#e0c884;font-size:14px;font-weight:700">Reasignar a ${esc(last.name)}</button></div>`:''}`,
+      [{text:'Cancelar'},{text:'Guardar',class:'ok',action:()=>{const nm=$('walkerNameInput').value.trim();if(nm)walkerAssign(slot,nm);}}]);
     setTimeout(()=>{const inp=$('walkerNameInput');if(inp)inp.focus();},100);
   }
 }
-function walkerEdit(slot, oldName){
-  showModal(`Editar espacio ${slot}`,
-    `<p style="margin:0 0 8px;font-size:14px">Nombre actual: <b>${esc(oldName)}</b></p>
-     <input id="walkerEditInput" value="${esc(oldName)}" placeholder="Nuevo nombre" autocomplete="off">`,
-    [
-      {text:'Cancelar'},
-      {text:'Guardar', class:'ok', action:()=>{
-        const nm=$('walkerEditInput').value.trim();
-        if(nm && nm!==oldName) walkerAssign(slot,nm);
-      }}
-    ]);
+function walkerEdit(slot,oldName){
+  showModal(`Editar ${slot}`,`<p style="margin:0 0 8px;font-size:14px">Actual: <b>${esc(oldName)}</b></p><input id="walkerEditInput" value="${esc(oldName)}" autocomplete="off">`,
+    [{text:'Cancelar'},{text:'Guardar',class:'ok',action:()=>{const nm=$('walkerEditInput').value.trim();if(nm&&nm!==oldName)walkerAssign(slot,nm);}}]);
   setTimeout(()=>{const inp=$('walkerEditInput');if(inp){inp.focus();inp.select();}},100);
 }
-async function walkerAssign(slot, name){
-  await fetch(`${CFG.DB}/walkersTest/w/${slot}.json`,{method:'PUT',body:JSON.stringify({name, ts:Date.now()})});
-  await loadWalkers();
-  showToast(`${name} → Espacio ${slot}`);
+async function walkerAssign(slot,name){
+  await fetch(`${CFG.DB}/walkersTest/w/${slot}.json`,{method:'PUT',body:JSON.stringify({name,ts:Date.now()})});
+  await loadWalkers();showToast(`${name} → ${slot}`);
 }
-async function walkerReassign(slot, name){
-  await walkerAssign(slot, name);
-  $('modal').hidden=true;
-}
-async function walkerRemove(slot, name){
-  if(!confirm(`¿Remover a ${name} del espacio ${slot}?`)) return;
-  await fetch(`${CFG.DB}/walkersTest/last/${slot}.json`,{method:'PUT',body:JSON.stringify({name, ts:Date.now()})});
+async function walkerReassign(slot,name){await walkerAssign(slot,name);$('modal').hidden=true;}
+async function walkerRemove(slot,name){
+  if(!confirm(`¿Remover a ${name}?`)) return;
+  await fetch(`${CFG.DB}/walkersTest/last/${slot}.json`,{method:'PUT',body:JSON.stringify({name,ts:Date.now()})});
   await fetch(`${CFG.DB}/walkersTest/w/${slot}.json`,{method:'DELETE'});
-  await loadWalkers();
-  $('modal').hidden=true;
-  showToast(`${name} removido del espacio ${slot}`);
+  await loadWalkers();$('modal').hidden=true;
+  showToast(`${name} removido`);
 }
 function searchWalker(q){
   const norm=q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
   document.querySelectorAll('.wslot,.cslot').forEach(el=>{
     if(!q||q.length<2){el.classList.remove('found');return;}
-    const slot=el.dataset.slot,cur=W_DATA&&W_DATA[slot];
-    if(!cur){el.classList.remove('found');return;}
-    const n=cur.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-    el.classList.toggle('found', n.includes(norm));
+    const slot=el.dataset.slot,cur=W_DATA&&W_DATA[slot];if(!cur){el.classList.remove('found');return;}
+    el.classList.toggle('found',cur.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(norm));
   });
 }
 
-// MODAL
 function showModal(title,body,btns){
   $('modalBox').innerHTML=`<h2>${esc(title)}</h2><div>${body}</div><div class="modal-btns" id="mdlBtns"></div>`;
   btns.forEach(b=>{
