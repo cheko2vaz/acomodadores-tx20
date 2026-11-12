@@ -157,8 +157,6 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 .cslot.found text{fill:#333!important}
 .cslot text{pointer-events:none;font-family:'Noto Sans',sans-serif;fill:#666}
 .cslot.occ text{fill:#fff;font-weight:700}
-@keyframes cqp{50%{opacity:.15}}
-.cq-latest{fill:none;stroke:#d11;stroke-width:3;animation:cqp .9s infinite;pointer-events:none}
 .walker-info{background:var(--ok-bg);border-left:4px solid var(--ok);padding:10px 12px;border-radius:6px;margin-bottom:10px;font-size:14px}
 #spillAdminApp{min-height:100vh;background:var(--bg)}
 #spillAdminApp header{background:var(--ok)}
@@ -1490,11 +1488,9 @@ function drawCroquis(){
   for(const [a,b] of doors){const m=(a+b)/2;h+=`<path d="M64 ${a} Q86 ${a+6} 86 ${a+27}" fill="none" stroke="#6e1414" stroke-width="2" opacity=".6"/><path d="M64 ${b} Q86 ${b-6} 86 ${b-27}" fill="none" stroke="#6e1414" stroke-width="2" opacity=".6"/><path d="M14 ${m} H48 M40 ${m-7} L50 ${m} L40 ${m+7}" fill="none" stroke="#6e1414" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`}
   h+=`<text x="12" y="20" font-size="14" font-weight="700" fill="#6e1414">VESTÍBULO</text>`;
 
-  let latest=null,lts=0;
   const matchedCoords=[];
   for(const slot of WALKER_SLOTS){
     const g=cqGeo(slot),cur=wk[slot];
-    if(cur&&(cur.ts||0)>=lts){lts=cur.ts||0;latest=slot}
     const isMatch=isSearchActive && cur && cur.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(norm);
     let cls='cslot';
     if(cur) cls+=' occ';
@@ -1503,8 +1499,7 @@ function drawCroquis(){
     h+=`<g class="${cls}" data-slot="${slot}" transform="translate(${g.x.toFixed(1)} ${g.y.toFixed(1)}) rotate(${g.a.toFixed(1)})" onclick="walkerTap('${slot}')"${op}><rect x="-22" y="-12" width="44" height="24" rx="4"/>`+(cur?`<text text-anchor="middle" y="-2" font-size="8" opacity=".85" transform="rotate(${(-g.a).toFixed(1)})">${slot}</text><text text-anchor="middle" y="8" font-size="10" font-weight="700" transform="rotate(${(-g.a).toFixed(1)})">${esc(cqFirst(cur.name))}</text>`:`<text text-anchor="middle" y="4" font-size="11" font-weight="700" transform="rotate(${(-g.a).toFixed(1)})">${slot}</text>`)+`</g>`;
     if(isMatch) matchedCoords.push({x:g.x,y:g.y,slot});
   }
-  if(latest&&Date.now()-lts<1800000&&!isSearchActive){const g=cqGeo(latest);h+=`<circle class="cq-latest" cx="${g.x.toFixed(1)}" cy="${g.y.toFixed(1)}" r="28"/>`}
-  // Círculos rojos pulsantes sobre coincidencias
+  // Círculos rojos pulsantes SOLO durante búsqueda activa
   if(isSearchActive){
     for(const mc of matchedCoords){
       h+=`<circle cx="${mc.x.toFixed(1)}" cy="${mc.y.toFixed(1)}" r="30" fill="none" stroke="#d11" stroke-width="5" stroke-dasharray="8 4" opacity="0.9">
@@ -1529,7 +1524,6 @@ function drawWalkGrid(){
     if(cur) totalOcc++;
     const isMatch=isSearchActive && cur && cur.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(norm);
 
-    // Si búsqueda activa y este slot no matchea → ocultar
     if(isSearchActive && !isMatch) return;
     if(isMatch) matchCount++;
 
