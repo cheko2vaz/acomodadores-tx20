@@ -81,6 +81,13 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
 .sheet{position:sticky;bottom:8px;z-index:6;box-shadow:0 -6px 22px #0004;border:2px solid var(--red2)!important}
 .sheet h3{font-size:22px}.sheet .who{font-size:19px}
 @media(max-width:900px){#mapw svg{min-width:1000px}}
+.cq-lg{display:flex;gap:14px;justify-content:center;font-size:14px;flex-wrap:wrap;margin-bottom:4px}
+.cq-lg i{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:4px;vertical-align:-2px}
+.cslot{cursor:pointer}.cslot rect{fill:#e0e0e0;stroke:#9a9a9a;stroke-width:1}
+.cslot.occ rect{fill:#43a047;stroke:#1b5e20}.cslot.found rect{fill:#fdd835;stroke:#e65100;stroke-width:2.5}
+.cslot text{pointer-events:none;font-family:sans-serif;fill:#666}.cslot.occ text{fill:#fff}
+@keyframes cqp{50%{opacity:.15}}.cq-latest{fill:none;stroke:#d11;stroke-width:3;animation:cqp .9s infinite;pointer-events:none}
+@media(prefers-reduced-motion:reduce){.cq-latest{animation:none}}
 </style>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
@@ -135,17 +142,9 @@ details summary{cursor:pointer;color:var(--mut);font-size:14px;margin-top:10px}
   </div>
   <h2 style="margin:12px 0 4px;color:#5B3C88;font-size:22px">🦽 Estacionamiento Walkers/Sillas</h2>
   <p style="margin:0 0 12px;color:#666">Contra pared Auditorio · Sección 117-118</p>
-  <svg viewBox="550 380 450 180" style="width:100%;max-width:450px;display:block;margin:0 auto 16px;border:2px solid #5B3C88;border-radius:8px;background:#f0f0f0">
-    <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none" opacity="0.6"/>
-    <circle cx="730" cy="480" r="25" fill="#5B3C88" opacity="0.8"/>
-    <circle cx="830" cy="480" r="25" fill="#C0392B" opacity="0.8"/>
-    <text x="730" y="486" text-anchor="middle" font-size="16" font-weight="bold" fill="#fff" pointer-events="none">117</text>
-    <text x="830" y="486" text-anchor="middle" font-size="16" font-weight="bold" fill="#fff" pointer-events="none">118</text>
-    <line x1="550" y1="520" x2="1000" y2="520" stroke="#222" stroke-width="4"/>
-    <text x="775" y="545" text-anchor="middle" font-size="16" font-weight="bold" fill="#333" pointer-events="none">════ PARED ════</text>
-    <rect x="580" y="525" width="390" height="30" fill="#5B3C88" opacity="0.2" rx="4"/>
-    <text x="775" y="545" text-anchor="middle" font-size="14" fill="#5B3C88" font-weight="bold" pointer-events="none">Estacionamiento (60 espacios)</text>
-  </svg>
+  <svg id="walkCroquis" viewBox="0 0 440 700" style="width:100%;max-width:440px;display:block;margin:0 auto 6px;border:2px solid #5B3C88;border-radius:10px;background:#faf7f0"></svg>
+  <div class="cq-lg"><span><i style="background:#e0e0e0;border:1px solid #999"></i>Libre</span><span><i style="background:#43a047"></i>Con walker</span><span><i style="background:#fff;border:2px solid #d11"></i>Último en llegar</span></div>
+  <p style="margin:0 0 14px;text-align:center;color:#777;font-size:13px">Croquis aproximado, no está a escala. Toca un espacio para anotar o recoger.</p>
   <input type="text" id="walkerSearch" placeholder="🔍 Buscar por nombre..." oninput="searchWalker(this.value)" style="margin-bottom:12px;font-size:16px;padding:12px">
   <div id="walkGrid"></div>
 </div></div>
@@ -294,6 +293,43 @@ function renderVolList(){
 
 function openWalkers(from){walkerReturn=from||'app';$('app').hidden=true;$('volPanel').hidden=true;$('walkersView').hidden=false;drawWalkers()}
 function closeWalkers(){$('walkersView').hidden=true;if(walkerReturn==='vol'){$('volPanel').hidden=false;renderVolList()}else{$('app').hidden=false;draw()}}
+
+const CQ_A=[190,90],CQ_C=[112,365],CQ_B=[190,640];
+function cqPt(t){const u=1-t;return[u*u*CQ_A[0]+2*u*t*CQ_C[0]+t*t*CQ_B[0],u*u*CQ_A[1]+2*u*t*CQ_C[1]+t*t*CQ_B[1]]}
+function cqTan(t){return[2*(1-t)*(CQ_C[0]-CQ_A[0])+2*t*(CQ_B[0]-CQ_C[0]),2*(1-t)*(CQ_C[1]-CQ_A[1])+2*t*(CQ_B[1]-CQ_C[1])]}
+function cqGeo(slot){const ci=LETTERS.indexOf(slot[0]),r=+slot[1],t=(ci+.5)/20,p=cqPt(t),T=cqTan(t),m=Math.hypot(T[0],T[1]),n=[T[1]/m,-T[0]/m],d=32+(r-1)*50;return{x:p[0]+n[0]*d,y:p[1]+n[1]*d,a:Math.atan2(T[1],T[0])*180/Math.PI-90}}
+function cqFirst(n){const p=String(n||'').trim().split(/\s+/)[0]||'';return p.length>7?p.slice(0,6)+'.':p}
+function drawCroquis(wk){
+  const el=document.getElementById('walkCroquis');if(!el)return;
+  let h='';
+  // asientos del auditorio (sugerencia de filas)
+  for(const o of [172,194,216,238]){h+=`<path d="M${CQ_A[0]+o} ${CQ_A[1]} Q${CQ_C[0]+o} ${CQ_C[1]} ${CQ_B[0]+o} ${CQ_B[1]}" fill="none" stroke="#d8c9a3" stroke-width="10" stroke-dasharray="7 4" opacity=".8"/>`}
+  h+=`<text x="428" y="365" font-size="14" font-weight="700" fill="#a08a50" text-anchor="middle" transform="rotate(90 428 365)">AUDITORIO · ASIENTOS</text>`;
+  // contrapared curva
+  h+=`<path d="M${CQ_A[0]} ${CQ_A[1]} Q${CQ_C[0]} ${CQ_C[1]} ${CQ_B[0]} ${CQ_B[1]}" fill="none" stroke="#555" stroke-width="9" stroke-linecap="round"/>`;
+  h+=`<text x="130" y="365" font-size="12" font-weight="700" fill="#555" text-anchor="middle" transform="rotate(90 130 365)">CONTRAPARED</text>`;
+  // muro del vestibulo con puertas
+  const doors=[[180,235],[275,330],[370,425],[465,520]];
+  let y0=30;for(const [a,b] of doors){h+=`<line x1="64" y1="${y0}" x2="64" y2="${a}" stroke="#6e1414" stroke-width="7" stroke-linecap="round"/>`;y0=b}
+  h+=`<line x1="64" y1="${y0}" x2="64" y2="680" stroke="#6e1414" stroke-width="7" stroke-linecap="round"/>`;
+  for(const [a,b] of doors){const m=(a+b)/2;h+=`<path d="M64 ${a} Q86 ${a+6} 86 ${a+27}" fill="none" stroke="#6e1414" stroke-width="2" opacity=".6"/><path d="M64 ${b} Q86 ${b-6} 86 ${b-27}" fill="none" stroke="#6e1414" stroke-width="2" opacity=".6"/><path d="M14 ${m} H48 M40 ${m-7} L50 ${m} L40 ${m+7}" fill="none" stroke="#6e1414" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`}
+  h+=`<text x="12" y="20" font-size="14" font-weight="700" fill="#6e1414">VESTÍBULO</text>`;
+  h+=`<text x="12" y="694" font-size="11" fill="#6e1414">◀ puertas de entrada (aprox.)</text>`;
+  // pasos hacia los asientos (alrededor de los extremos de la curva)
+  h+=`<path d="M100 44 H330 M318 37 L330 44 L318 51" fill="none" stroke="#2c6cb0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 7"/><path d="M100 672 H330 M318 665 L330 672 L318 679" fill="none" stroke="#2c6cb0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 7"/>`;
+  h+=`<text x="215" y="36" font-size="11" fill="#2c6cb0" text-anchor="middle">a los asientos ▶</text><text x="215" y="692" font-size="11" fill="#2c6cb0" text-anchor="middle">a los asientos ▶</text>`;
+  // espacios
+  let latest=null,lts=0;
+  for(const slot of WALKER_SLOTS){
+    const g=cqGeo(slot),cur=wk[slot];
+    if(cur&&(cur.ts||0)>=lts){lts=cur.ts||0;latest=slot}
+    h+=`<g class="cslot${cur?' occ':''}" data-slot="${slot}" transform="translate(${g.x.toFixed(1)} ${g.y.toFixed(1)}) rotate(${g.a.toFixed(1)})" onclick="walkerTap('${slot}')"><rect x="-22" y="-12" width="44" height="24" rx="4"/>`+
+      (cur?`<text text-anchor="middle" y="-2" font-size="8" opacity=".85" transform="rotate(${(-g.a).toFixed(1)})">${slot}</text><text text-anchor="middle" y="8" font-size="10" font-weight="700" transform="rotate(${(-g.a).toFixed(1)})">${esc(cqFirst(cur.name))}</text>`
+          :`<text text-anchor="middle" y="4" font-size="11" font-weight="700" transform="rotate(${(-g.a).toFixed(1)})">${slot}</text>`)+`</g>`;
+  }
+  if(latest&&Date.now()-lts<1800000){const g=cqGeo(latest);h+=`<circle class="cq-latest" cx="${g.x.toFixed(1)}" cy="${g.y.toFixed(1)}" r="28"/>`}
+  el.innerHTML=h;
+}
 function walkerShort(full){const parts=full.trim().split(/\s+/);if(parts.length===1)return parts[0];return parts[0]+' '+(parts[1]||'')[0]+'.'}
 function drawWalkers(){
   const wk=S.walkers||{};const current=JSON.stringify(wk);if(current===lastWalkerData&&document.getElementById('walkGrid').innerHTML!=='')return;lastWalkerData=current;
@@ -304,10 +340,10 @@ function drawWalkers(){
     if(cur){h+=`<button class="wslot occ" data-slot="${slot}" title="${esc(cur.name)}" onclick="walkerTap('${slot}')"><b>${slot}</b><small>${esc(walkerShort(cur.name))}</small></button>`}
     else{h+=`<button class="wslot empty" data-slot="${slot}" onclick="walkerTap('${slot}')"><b>${slot}</b><small>Vacío</small></button>`}
   }
-  $('walkGrid').innerHTML=h;
+  $('walkGrid').innerHTML=h;drawCroquis(wk);
 }
 function walkerTap(slot){const cur=S.walkers&&S.walkers[slot];if(cur){if(confirm(`Retirar walker de "${cur.name}"?\n\nAceptar = retirado\nCancelar = mantener`)){fetch(U('walkers/'+slot),{method:'DELETE'}).then(()=>{load();drawWalkers()})}}else{const name=prompt(`Estacionamiento ${slot} - ¿Cómo se llama el hermano/a?`);if(!name||!name.trim())return;put(`walkers/${slot}`,{name:name.trim(),ts:Date.now()});showToast(`✓ ${slot} → ${name.trim()}`);setTimeout(drawWalkers,100)}}
-function searchWalker(q){const els=document.querySelectorAll('.wslot');if(!q||q.length<2){els.forEach(el=>el.classList.remove('found'));return}const norm=q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');els.forEach(el=>{const slot=el.dataset.slot,cur=S.walkers&&S.walkers[slot];if(!cur){el.classList.remove('found');return}const n=cur.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');if(n.includes(norm))el.classList.add('found');else el.classList.remove('found')})}
+function searchWalker(q){const els=document.querySelectorAll('.wslot,.cslot');if(!q||q.length<2){els.forEach(el=>el.classList.remove('found'));return}const norm=q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');els.forEach(el=>{const slot=el.dataset.slot,cur=S.walkers&&S.walkers[slot];if(!cur){el.classList.remove('found');return}const n=cur.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');if(n.includes(norm))el.classList.add('found');else el.classList.remove('found')})}
 
 const stamp=n=>put(`pos/${n}/ts`,Date.now());
 function cnt(id,d){hl=id;const v=Math.max(0,((S.cnt||{})[id]||0)+d);put('cnt/'+id,v)}
