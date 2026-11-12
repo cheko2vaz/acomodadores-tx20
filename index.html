@@ -8,15 +8,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --red:#5a1212;--red-dark:#3d0c0c;--red-bg:#fbeae9;
+  --red:#5a1212;--red-dark:#3d0c0c;
   --blue:#2c4a6b;--blue-dark:#1a2f47;--blue-bg:#e8f0f8;
   --brown:#7a5c2e;--brown-dark:#5a4420;--brown-bg:#f5ede0;
-  --gold:#b8860b;--gold-dark:#8a6508;
+  --gold:#b8860b;
   --bg:#f9f5e9;--card:#fff;--card-alt:#f0e8d4;
   --text:#1a1a1a;--muted:#6b5d4f;--border:#d4c9b0;
   --ok:#4a6b3a;--ok-bg:#edf4e8;--err:#a8251c;--err-bg:#fbeae9;
   --warn:#c28a1c;--warn-bg:#fdf8e8;
-  --blue-a:#3d5a80;--org-a:#c28a1c;--purple-a:#5a1212;--spill:#b8860b;
+  --blue-a:#3d5a80;--org-a:#c28a1c;--spill:#b8860b;
 }
 [hidden]{display:none!important}*{box-sizing:border-box}
 body{margin:0;font:16px/1.5 'Noto Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text)}
@@ -42,18 +42,18 @@ main{max-width:1100px;margin:auto;padding:12px;display:grid;gap:12px}
 #homeScreen{min-height:100vh;background:linear-gradient(160deg,var(--red) 0%,var(--red-dark) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;gap:32px}
 .home-header{text-align:center;color:#fff;max-width:600px}
 .home-header h1{margin:0 0 8px;font-size:32px;font-weight:700;letter-spacing:.5px}
-.home-header .sub{font-size:15px;opacity:.85;font-weight:400;letter-spacing:.5px}
+.home-header .sub{font-size:15px;opacity:.85;letter-spacing:.5px}
 .home-header .gold-line{width:80px;height:3px;background:var(--gold);margin:16px auto;border-radius:2px}
 .mode-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;max-width:920px;width:100%}
 .mode-card{border:none;border-radius:12px;padding:32px 20px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:12px;color:#fff;transition:all .2s;text-align:center;font-family:inherit;box-shadow:0 4px 20px rgba(0,0,0,.15);min-height:220px;justify-content:center}
 .mode-card:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,.25)}
 .mode-card .mode-icon{width:64px;height:64px;opacity:.95}
 .mode-card .mode-title{font-size:22px;font-weight:700;letter-spacing:.5px}
-.mode-card .mode-desc{font-size:14px;opacity:.85;font-weight:400;line-height:1.4;max-width:200px}
+.mode-card .mode-desc{font-size:14px;opacity:.85;line-height:1.4;max-width:200px}
 .mode-acom{background:linear-gradient(160deg,var(--red),var(--red-dark));border:2px solid rgba(255,255,255,.15)}
 .mode-vol{background:linear-gradient(160deg,var(--blue),var(--blue-dark));border:2px solid rgba(255,255,255,.15)}
 .mode-admin{background:linear-gradient(160deg,var(--brown),var(--brown-dark));border:2px solid rgba(255,255,255,.15)}
-.home-footer{color:#fff;opacity:.6;font-size:13px;text-align:center;margin-top:20px}
+.home-footer{color:#fff;opacity:.6;font-size:13px;margin-top:20px}
 
 /* LOGIN */
 #acomLoginScreen,#volLoginScreen,#adminLoginScreen{min-height:100vh;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px}
@@ -66,7 +66,7 @@ main{max-width:1100px;margin:auto;padding:12px;display:grid;gap:12px}
 .login-card .back-btn:hover{color:var(--red)}
 .res-item{width:100%;text-align:left;margin-top:6px;padding:14px;font-size:16px}
 
-/* VOLUNTARIA VIEW */
+/* VOLUNTARIA */
 .vol-info-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:12px}
 .vol-info-card h2{margin:0 0 4px;font-size:22px;color:var(--blue)}
 .vol-info-card .sub{font-size:14px;color:var(--muted);margin-bottom:16px}
@@ -75,7 +75,6 @@ main{max-width:1100px;margin:auto;padding:12px;display:grid;gap:12px}
 .turno-pill .pos-num{background:var(--blue);color:#fff;border-radius:4px;padding:2px 8px;font-size:13px;font-weight:700}
 #volMapView{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:12px}
 #volMapView h3{margin:0 0 12px;font-size:16px;color:var(--blue)}
-#volMapSvg{width:100%;height:auto;display:block;border-radius:8px;border:2px solid var(--blue)}
 @keyframes volBlink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.15)}}
 .vol-marker-pulse{animation:volBlink 1.2s ease-in-out infinite;transform-origin:center;transform-box:fill-box}
 
@@ -88,7 +87,7 @@ svg.map-svg{width:100%;height:auto;display:block;transition:width 0.2s}
 .toast.err{background:var(--err)}.toast.show{opacity:1;transform:translateY(0)}
 .pc{cursor:pointer}.pc text{font:700 15px 'Noto Sans',sans-serif;fill:#fff;pointer-events:none}
 @keyframes bl{50%{opacity:.15}}.pulse{fill:none;stroke:var(--err);stroke-width:8;animation:bl 1s infinite}
-.tag{font-size:13px;padding:3px 9px;border-radius:99px;color:#fff;font-weight:700}.tag.b{background:var(--blue-a)}.tag.o{background:var(--org-a)}.tag.p{background:var(--purple-a)}.tag.g{background:#999}
+.tag{font-size:13px;padding:3px 9px;border-radius:99px;color:#fff;font-weight:700}.tag.b{background:var(--blue-a)}.tag.o{background:var(--org-a)}
 .mut{color:var(--muted)}h3{margin:0 0 6px;font-size:18px;color:var(--red)}
 .who{background:var(--card-alt);border-left:4px solid var(--red);padding:10px 12px;margin:10px 0;border-radius:0 6px 6px 0}
 a{color:var(--red);font-weight:600}
@@ -99,29 +98,18 @@ a{color:var(--red);font-weight:600}
 select,input{font:inherit;padding:11px;border:1px solid var(--border);border-radius:6px;width:100%;background:#fff;color:var(--text);font-family:inherit}
 select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 .lg{display:flex;gap:14px;font-size:13px;flex-wrap:wrap}.lg i{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:4px;vertical-align:-2px}
-.sec{fill:transparent;cursor:pointer}.sec.hl{fill:rgba(90,18,18,.25);stroke:var(--err);stroke-width:3;stroke-dasharray:8 4}.sec.edit{stroke:var(--err);stroke-width:1.5;stroke-dasharray:5 3;fill:transparent}
-.vertex{cursor:grab}.vertex:hover{r:9;stroke-width:3}
-.vadd{cursor:pointer;opacity:.5}.vadd:hover{opacity:1}
-.vlabel{cursor:grab}
-.t.hl{border:2px solid var(--red);background:#faeaea}.dim{opacity:.4}
-.capin{width:70px;padding:6px;font-size:15px;text-align:center;border:1px solid var(--border);border-radius:4px}
-.histbox{background:var(--card-alt);border-left:4px solid var(--red);padding:10px 12px;margin:10px 0;font-size:14px;border-radius:0 6px 6px 0}
-.vbtn{display:inline-block;margin:4px;padding:10px 12px;border:1px solid var(--ok);background:var(--ok-bg);color:var(--ok);border-radius:6px;cursor:pointer;font-size:14px;text-align:left;font-weight:600}.vbtn:hover{background:var(--ok);color:#fff}
-.rules{background:var(--warn-bg);border:1px solid #f0d090;color:#8a5a00;padding:10px 12px;border-radius:6px;font-size:14px;margin:10px 0;line-height:1.6}
-details summary{cursor:pointer;color:var(--muted);font-size:14px;margin-top:10px}
+.dim{opacity:.4}
 .spill{cursor:pointer}
 .spill-panel{background:#fff;border:2px solid var(--gold);border-radius:8px;padding:14px;margin:8px 0}
-.spill-counter{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 8px;text-align:center}.spill-counter b{display:block;font-size:32px;line-height:1}.spill-counter small{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
 .spill-item{background:#fff;border:1px solid var(--border);border-left:4px solid var(--spill);border-radius:6px;padding:12px;margin:8px 0;font-size:14px}
 .spill-item.proc{border-left-color:var(--warn);background:var(--warn-bg)}
-.spill-item.done{border-left-color:var(--ok);background:var(--ok-bg);opacity:.75}
 
 /* ADMIN */
 #adminApp{min-height:100vh;background:var(--bg)}
 #adminApp header{background:var(--brown)}
 #adminApp main{max-width:1400px}
 .admin-tabs{display:flex;gap:6px;flex-wrap:wrap;background:#fff;border:1px solid var(--border);border-radius:8px;padding:6px}
-.admin-tabs button{flex:1;min-width:140px;padding:12px 16px;font-size:15px;border-radius:6px}
+.admin-tabs button{flex:1;min-width:130px;padding:12px 16px;font-size:15px;border-radius:6px}
 .admin-tabs button.on{background:var(--brown);color:#fff;border-color:var(--brown)}
 .admin-container{display:grid;grid-template-columns:1fr 320px;gap:14px;align-items:start}
 @media (max-width:900px){.admin-container{grid-template-columns:1fr}}
@@ -129,7 +117,6 @@ details summary{cursor:pointer;color:var(--muted);font-size:14px;margin-top:10px
 .turno-selector button{flex:1;min-width:90px;padding:10px 8px;font-size:13px;border-radius:6px;line-height:1.2}
 .turno-selector button.on{background:var(--brown);color:#fff;border-color:var(--brown)}
 .turno-selector button small{display:block;font-size:11px;opacity:.7;margin-top:2px;font-weight:400}
-.turno-selector button.on small{opacity:.85}
 .pos-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;font-size:14px}
 .pos-table th{background:var(--brown-bg);padding:10px 8px;text-align:left;font-size:11px;color:var(--brown-dark);text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--border);font-weight:700}
 .pos-table td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:middle}
@@ -149,7 +136,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:14px;margin-top:10px
 .side-panel .avail-list .conflict{color:var(--err);font-size:11px;margin-left:4px}
 .side-panel .avail-list .ok-mark{color:var(--ok);margin-right:4px}
 
-/* WALKERS — CSS completo restaurado */
+/* WALKERS */
 #walkersView{max-width:1100px;margin:12px auto;padding:12px}
 #walkGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px;margin-top:12px}
 .wslot{padding:12px 6px;border-radius:6px;background:#fff;border:2px solid var(--border);cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all .15s;min-width:0}
@@ -170,7 +157,6 @@ details summary{cursor:pointer;color:var(--muted);font-size:14px;margin-top:10px
 .cslot.occ text{fill:#fff;font-weight:700}
 @keyframes cqp{50%{opacity:.15}}
 .cq-latest{fill:none;stroke:#d11;stroke-width:3;animation:cqp .9s infinite;pointer-events:none}
-@media(prefers-reduced-motion:reduce){.cq-latest{animation:none}}
 
 /* MODAL */
 #modal{position:fixed;inset:0;background:rgba(26,15,10,.85);display:grid;place-items:center;padding:14px;z-index:9999}
@@ -204,7 +190,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:14px;margin-top:10px
     <button class="mode-card mode-admin" onclick="goMode('admin')">
       <svg class="mode-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
       <span class="mode-title">Administración</span>
-      <span class="mode-desc">Gestión de asignaciones y conteo</span>
+      <span class="mode-desc">Asignaciones, conteo y walkers</span>
     </button>
   </div>
   <div class="home-footer">Uso interno · Dept. de Acomodadores</div>
@@ -237,6 +223,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:14px;margin-top:10px
   <div class="row" style="margin-bottom:12px">
     <button onclick="goHome()" style="background:var(--blue);color:#fff;border-color:var(--blue);font-weight:700">← Volver</button>
     <span id="volViewName" style="font-weight:700;font-size:16px;color:var(--blue)"></span>
+    <button onclick="openWalkers('vol')" style="background:var(--blue);color:#fff;border-color:var(--blue);font-weight:700;margin-left:auto">Walkers</button>
   </div>
   <div id="volInfoContent"></div>
   <div id="volMapView" hidden>
@@ -277,8 +264,13 @@ details summary{cursor:pointer;color:var(--muted);font-size:14px;margin-top:10px
   </header>
   <main>
     <div class="admin-tabs">
-      <button data-admin-tab="asignaciones" onclick="setAdminTab('asignaciones')" class="on">Asignaciones</button>
+      <button data-admin-tab="acom" onclick="setAdminTab('acom')">Acomodadores</button>
+      <button data-admin-tab="asignaciones" onclick="setAdminTab('asignaciones')" class="on">Voluntarias</button>
       <button data-admin-tab="conteo" onclick="setAdminTab('conteo')">Conteo</button>
+    </div>
+
+    <div id="adminTabAcom" hidden>
+      <div id="adminAcomTable"></div>
     </div>
 
     <div id="adminTabAsignaciones">
@@ -389,10 +381,9 @@ const ADM=[
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const POS=Object.keys(D.pos).map(Number);
 const VOL_POS=[101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120];
-const PRIV={A:'Anciano',S:'Siervo Ministerial',P:'Publicador bautizado'};
 let moreOpen=false,centered=false;
 
-// FIX: logica de visibilidad por área
+// FIX Alex: visible() con lógica correcta
 const visible=n=>{
   if(!me) return false;
   if(me.all) return true;
@@ -400,12 +391,12 @@ const visible=n=>{
     if(D.pos[n].v===1) return me.areas.includes('vol');
     return me.areas.includes(D.pos[n].a);
   }
-  return true;
+  return D.pos[n].v !== 1;
 };
 
 let iv=null,me=null,sel=null,S={},adminMe=null,adminCurrentTurno='1',adminTab='asignaciones';
-let currentTurnoGlobal=1,currentTurno=1;
-let walkerReturn='acom',W_DATA={},W_HIST={};
+let currentTurnoGlobal=1;
+let walkerReturn='home',W_DATA={};
 let mainZoom=1,panelLocked=false;
 let volCurrentName=null;
 
@@ -413,9 +404,7 @@ const sectionOf=pos=>VOL_SECTIONS.find(s=>s.pos.includes(+pos))||{label:"Extra",
 const coordsOf=pos=>{const d=D.pos[pos];const s=(S.pos||{})[pos]||{};return{x:s.x!==undefined?s.x:d.x,y:s.y!==undefined?s.y:d.y}};
 const P=n=>{const d=D.pos[n];const base=Object.assign({},d,(S.pos||{})[n]);if(d.v===1){const who=(S.volTurnos&&S.volTurnos[currentTurnoGlobal]&&S.volTurnos[currentTurnoGlobal][n])||"";return Object.assign({},base,{who})}return base};
 const eff=n=>{const p=P(n);return p.sub||p.who||''};
-const isLimited=()=>me&&me.limited&&!me.all;
 const isSpillOnly=()=>me&&me.spillOnly&&!me.all;
-const canEd=n=>{if(!me||!me.adm)return false;if(me.all)return true;return(me.areas||[]).includes(D.pos[n].a)};
 const canCnt=()=>me&&(me.cnt||(S.cntOpen&&(D.caps.includes(me.n)||VOL_POS.some(n=>eff(n)===me.n))));
 
 function volHistory(name){const res=[],vt=S.volTurnos||{};for(const t in vt)for(const p in vt[t])if(vt[t][p]===name)res.push({turno:+t,posicion:+p});return res.sort((a,b)=>a.turno-b.turno)}
@@ -433,7 +422,7 @@ function canAssign(turno,pos,name){
   return{ok:true,msg:`OK (${hist.length+1}/${maxT})`};
 }
 
-// ============ NAVEGACIÓN ============
+// NAV
 function goMode(mode){
   hideAll();
   if(mode==='acom'){$('acomLoginScreen').hidden=false;setTimeout(()=>$('acomNameInput').focus(),100);}
@@ -445,7 +434,7 @@ function hideAll(){
   ['homeScreen','acomLoginScreen','acomApp','volLoginScreen','volView','adminLoginScreen','adminApp','walkersView'].forEach(id=>{if($(id))$(id).hidden=true});
 }
 
-// ============ ACOMODADOR ============
+// ACOMODADOR
 const nrm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 function acomSearch(q){
   const n=nrm(q.trim());
@@ -462,13 +451,9 @@ function acomEnter(name){
   $('btnWalkers').hidden=!(u.all||u.walkers||u.adm);
   start();
 }
-function acomLogout(){
-  clearInterval(iv);
-  me=null;S={};sel=null;
-  goHome();
-}
+function acomLogout(){clearInterval(iv);me=null;S={};sel=null;goHome();}
 
-// ============ VOLUNTARIA ============
+// VOLUNTARIA
 function volSearch(q){
   const n=nrm(q.trim());
   if(n.length<2){$('volResults').innerHTML='';return;}
@@ -497,23 +482,14 @@ function renderVolInfo(name){
     html+=`<h3 style="font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:0 0 8px">Turnos asignados</h3>`;
     hist.forEach(h=>{
       const sec=sectionOf(h.posicion);
-      html+=`<div class="turno-pill">
-        <b>T${h.turno}</b> · ${esc(TURNOS[h.turno].name)}
-        <span class="pos-num">${h.posicion}</span>
-        <span style="font-size:12px;color:var(--muted);font-weight:400">${esc(sec.label)}</span>
-      </div>`;
+      html+=`<div class="turno-pill"><b>T${h.turno}</b> · ${esc(TURNOS[h.turno].name)}<span class="pos-num">${h.posicion}</span><span style="font-size:12px;color:var(--muted);font-weight:400">${esc(sec.label)}</span></div>`;
     });
-    html+=`<div class="rules" style="margin-top:14px"><b>Reglas:</b> No consecutivos (excepto T1+T2). Máximo 4 turnos. T5 y T6 excluyentes.</div>`;
+    html+=`<div class="rules" style="background:var(--warn-bg);border:1px solid #f0d090;color:#8a5a00;padding:10px 12px;border-radius:6px;font-size:14px;margin:10px 0;line-height:1.6"><b>Reglas:</b> No consecutivos (excepto T1+T2). Máximo 4 turnos. T5 y T6 excluyentes.</div>`;
   }
   html+='</div>';
   $('volInfoContent').innerHTML=html;
-
-  if(hist.length){
-    $('volMapView').hidden=false;
-    renderVolMap(hist);
-  }else{
-    $('volMapView').hidden=true;
-  }
+  if(hist.length){$('volMapView').hidden=false;renderVolMap(hist);}
+  else{$('volMapView').hidden=true;}
 }
 
 function renderVolMap(hist){
@@ -522,17 +498,14 @@ function renderVolMap(hist){
   markers.innerHTML='';
   legend.innerHTML='';
   const sorted=[...hist].sort((a,b)=>a.turno-b.turno);
-  sorted.forEach((h,idx)=>{
+  sorted.forEach(h=>{
     const c=coordsOf(h.posicion);
     const sec=sectionOf(h.posicion);
-    // Círculo estático de fondo
     markers.innerHTML+=`<circle cx="${c.x}" cy="${c.y}" r="32" fill="${sec.color}" opacity=".15"/>`;
-    // Círculo que parpadea
     markers.innerHTML+=`<g class="vol-marker-pulse">
       <circle cx="${c.x}" cy="${c.y}" r="30" fill="${sec.color}" stroke="#fff" stroke-width="4"/>
       <text x="${c.x}" y="${c.y+8}" text-anchor="middle" font-size="22" font-weight="700" fill="#fff">${h.posicion}</text>
     </g>`;
-    // Etiqueta del turno arriba
     markers.innerHTML+=`<g>
       <rect x="${c.x-28}" y="${c.y-62}" width="56" height="22" rx="11" fill="${sec.color}" stroke="#fff" stroke-width="2"/>
       <text x="${c.x}" y="${c.y-47}" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">T${h.turno}</text>
@@ -541,10 +514,10 @@ function renderVolMap(hist){
   });
 }
 
-// ============ ADMIN ============
+// ADMIN
 function renderAdminLoginOptions(){
   const sel=$('adminUserSel');
-  sel.innerHTML='<option value="">Seleccione su nombre</option>'+ADM.filter(a=>a.adm&&!a.spillOnly&&!a.limited).map(a=>`<option>${esc(a.n)}</option>`).join('');
+  sel.innerHTML='<option value="">Seleccione su nombre</option>'+ADM.filter(a=>a.adm&&!a.spillOnly).map(a=>`<option>${esc(a.n)}</option>`).join('');
 }
 function adminLogin(){
   const name=$('adminUserSel').value;
@@ -555,20 +528,24 @@ function adminLogin(){
   adminMe=u;
   me=u;
   hideAll();
+  // Walkers-only (Damian): va directo a walkers
+  if(u.walkers && !u.all && (!u.areas || u.areas.length===0) && !u.cnt){
+    walkerReturn='home';
+    $('walkersView').hidden=false;
+    loadWalkers();
+    start();
+    return;
+  }
   $('adminApp').hidden=false;
   $('adminWhoLabel').textContent=u.n;
   start();
-  renderAdminTurnoSelector();
   renderAdminView();
 }
-function adminLogout(){
-  clearInterval(iv);
-  adminMe=null;me=null;S={};
-  goHome();
-}
+function adminLogout(){clearInterval(iv);adminMe=null;me=null;S={};goHome();}
 function setAdminTab(t){
   adminTab=t;
   document.querySelectorAll('.admin-tabs button').forEach(b=>b.classList.toggle('on',b.dataset.adminTab===t));
+  $('adminTabAcom').hidden=t!=='acom';
   $('adminTabAsignaciones').hidden=t!=='asignaciones';
   $('adminTabConteo').hidden=t!=='conteo';
   renderAdminView();
@@ -580,16 +557,53 @@ function renderAdminTurnoSelector(){
     return `<button class="${adminCurrentTurno===t?'on':''}" onclick="setAdminTurno('${t}')">T${t}<small>${asg}/20 asignadas</small></button>`;
   }).join('');
 }
-function setAdminTurno(t){
-  adminCurrentTurno=t;
-  currentTurnoGlobal=+t;
-  renderAdminView();
-}
+function setAdminTurno(t){adminCurrentTurno=t;currentTurnoGlobal=+t;renderAdminView();}
 function renderAdminView(){
-  renderAdminTurnoSelector();
-  if(adminTab==='asignaciones') renderAdminAsignaciones();
+  if(adminTab==='acom') renderAdminAcomAsignaciones();
+  if(adminTab==='asignaciones'){renderAdminTurnoSelector();renderAdminAsignaciones();}
   if(adminTab==='conteo') renderAdminConteo();
 }
+
+// NUEVA: portal asignaciones acomodadores
+function renderAdminAcomAsignaciones(){
+  const areas=[
+    {id:'alm',name:'Alarmas de Incendios'},
+    {id:'ctl',name:'Control y Plataforma'},
+    {id:'ent',name:'Entradas y Salidas'},
+    {id:'aud',name:'Auditorio'}
+  ];
+  let html='';
+  for(const area of areas){
+    const posInArea=POS.filter(n=>D.pos[n].a===area.id&&D.pos[n].v!==1);
+    if(!posInArea.length)continue;
+    html+=`<div class="card" style="margin-bottom:14px"><h3 style="margin:0 0 10px;color:var(--brown);font-size:15px;text-transform:uppercase;letter-spacing:.5px">${area.name}</h3>`;
+    html+=`<table class="pos-table"><thead><tr><th>Pos</th><th>Tarea</th><th>Asignado</th></tr></thead><tbody>`;
+    posInArea.forEach(n=>{
+      const current=(S.pos&&S.pos[n]&&S.pos[n].who)||D.pos[n].who||'';
+      const opts=['<option value="">— Sin asignar —</option>'];
+      const available=D.roster.filter(r=>r.c!=='Voluntaria');
+      const sorted=available.filter(r=>r.n===current).concat(available.filter(r=>r.n!==current).sort((a,b)=>a.n.localeCompare(b.n)));
+      sorted.forEach(r=>{
+        opts.push(`<option value="${esc(r.n)}" ${r.n===current?'selected':''}>${esc(r.n)}</option>`);
+      });
+      html+=`<tr class="${current?'assigned':''}"><td class="pos-num">${n}</td><td class="pos-sec">${esc(D.pos[n].t)}</td><td><select onfocus="panelLocked=true" onblur="setTimeout(()=>panelLocked=false,200)" onchange="adminAssignAcom(${n},this.value)">${opts.join('')}</select></td></tr>`;
+    });
+    html+='</tbody></table></div>';
+  }
+  $('adminAcomTable').innerHTML=html;
+}
+async function adminAssignAcom(pos,name){
+  if(!S.pos)S.pos={};
+  if(!S.pos[pos])S.pos[pos]={};
+  S.pos[pos].who=name;
+  S.pos[pos].sub=null;
+  S.pos[pos].st=name?'pend':null;
+  S.pos[pos].stAt=Date.now();
+  await fetch(U(`pos/${pos}`),{method:'PUT',body:JSON.stringify(S.pos[pos])});
+  showToast(name?`${name} → Posición ${pos}`:`Posición ${pos} desasignada`);
+  await load();
+}
+
 function renderAdminAsignaciones(){
   const t=adminCurrentTurno;
   const available=TURNOS[t].vol;
@@ -613,11 +627,7 @@ function renderAdminAsignaciones(){
       blockedNames.forEach(b=>{opts.push(`<option value="${esc(b.name)}" disabled>${esc(b.name)} — ${b.msg}</option>`)});
       opts.push(`</optgroup>`);
     }
-    return `<tr class="${current?'assigned':''}">
-      <td class="pos-num">${pos}</td>
-      <td class="pos-sec">${esc(sec.label)}</td>
-      <td><select onfocus="panelLocked=true" onblur="setTimeout(()=>panelLocked=false,200)" onchange="adminAssign(${pos},this.value)">${opts.join('')}</select></td>
-    </tr>`;
+    return `<tr class="${current?'assigned':''}"><td class="pos-num">${pos}</td><td class="pos-sec">${esc(sec.label)}</td><td><select onfocus="panelLocked=true" onblur="setTimeout(()=>panelLocked=false,200)" onchange="adminAssign(${pos},this.value)">${opts.join('')}</select></td></tr>`;
   }).join('');
   $('adminPosTable').innerHTML=rows;
 
@@ -642,7 +652,7 @@ function renderAdminAsignaciones(){
   }
   $('adminSidePanel').innerHTML=sideHtml;
 }
-async function adminAssign(pos, name){
+async function adminAssign(pos,name){
   const t=adminCurrentTurno;
   if(!name){
     if(S.volTurnos&&S.volTurnos[t]){
@@ -690,35 +700,27 @@ function adminCnt(sec,d){
   renderAdminConteo();
 }
 
-// ============ UTILS ============
+// UTILS
 function showToast(m,err){const c=document.getElementById('toast-container'),t=document.createElement('div');t.className='toast'+(err?' err':'');t.textContent=m;c.appendChild(t);setTimeout(()=>t.classList.add('show'),10);setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},3500);}
 function net(v){const e=$('net');if(!e)return;e.textContent=v?'En línea':'Sin conexión';e.className='net '+(v?'on':'off');}
 const U=p=>CFG.DB.replace(/\/$/,'')+'/s'+(p?'/'+p:'')+'.json';
-function put(p,v){if(!S) S={};setPath(S,p,v);if(adminMe)renderAdminView();fetch(U(p),{method:'PUT',body:JSON.stringify(v)}).then(r=>net(r.ok)).catch(()=>net(false));}
+function put(p,v){if(!S)S={};setPath(S,p,v);if(adminMe&&!$('adminApp').hidden)renderAdminView();fetch(U(p),{method:'PUT',body:JSON.stringify(v)}).then(r=>net(r.ok)).catch(()=>net(false));}
 function setPath(o,p,v){const k=p.split('/');let c=o;k.slice(0,-1).forEach(x=>c=c[x]=c[x]||{});v===null?delete c[k.at(-1)]:c[k.at(-1)]=v;}
 async function load(){
   try{
     const r=await fetch(U('')+'?t='+Date.now());
     S=(await r.json())||{};
     net(true);
-    if(adminMe){
-      renderAdminView();
-    }else if(me){
-      draw();
-    }
-    if(volCurrentName){
-      renderVolInfo(volCurrentName);
-    }
-    if(!$('walkersView').hidden)drawWalkers();
+    if(adminMe&&!$('adminApp').hidden) renderAdminView();
+    else if(me&&!$('acomApp').hidden) draw();
+    if(volCurrentName&&!$('volView').hidden) renderVolInfo(volCurrentName);
+    if(!$('walkersView').hidden) drawWalkers();
   }catch(e){net(false);}
 }
 function start(){net(false);load();clearInterval(iv);iv=setInterval(load,5000);}
 
-// ============ ACOMODADOR APP ============
-function draw(){
-  if(!me)return;
-  drawMap();drawPanel();drawBar();drawMine();drawLegend();drawSpills();
-}
+// ACOMODADOR APP
+function draw(){if(!me)return;drawMap();drawPanel();drawBar();drawMine();drawLegend();drawSpills();}
 function setSt(n,s){put(`pos/${n}/st`,s);put(`pos/${n}/stAt`,Date.now());}
 function here(n){if(P(n).sub===me.n||P(n).who===me.n)setSt(n,P(n).sub?'sub':'ok');}
 function zoomMain(d){mainZoom=Math.max(1,Math.min(3,mainZoom+d));$('svg').style.width=(mainZoom*100)+'%';}
@@ -748,12 +750,8 @@ function drawMap(){
     }
   }
   $('spl').innerHTML=sh;
-  $('svg').querySelectorAll('.pc').forEach(el=>{
-    el.onclick=()=>{sel=+el.dataset.n;draw();};
-  });
-  $('svg').querySelectorAll('.spill').forEach(el=>{
-    el.onclick=()=>showSpillPanel(el.dataset.spill);
-  });
+  $('svg').querySelectorAll('.pc').forEach(el=>{el.onclick=()=>{sel=+el.dataset.n;draw();};});
+  $('svg').querySelectorAll('.spill').forEach(el=>{el.onclick=()=>showSpillPanel(el.dataset.spill);});
 }
 function drawBar(){
   if(isSpillOnly()){
@@ -782,9 +780,7 @@ function drawPanel(){
   h+=w?`<div class="who"><b>${esc(w)}</b></div>`:'<p class="mut">Sin asignar</p>';
   e.innerHTML=h;
 }
-function drawLegend(){
-  $('legend').innerHTML=`<span><i style="background:var(--blue-a)"></i>Fija</span><span><i style="background:var(--org-a)"></i>Intermitente</span><span><i style="background:var(--ok)"></i>Presente</span><span><i style="background:var(--err)"></i>Ausente</span>`;
-}
+function drawLegend(){$('legend').innerHTML=`<span><i style="background:var(--blue-a)"></i>Fija</span><span><i style="background:var(--org-a)"></i>Intermitente</span><span><i style="background:var(--ok)"></i>Presente</span><span><i style="background:var(--err)"></i>Ausente</span>`;}
 function drawSpills(){
   const e=$('spillPanel');if(!e)return;
   const arr=Object.entries(S.spills||{}).filter(([,s])=>s.status!=='terminado').sort((a,b)=>b[1].ts-a[1].ts);
@@ -799,24 +795,20 @@ function drawSpills(){
 }
 function showSpillPanel(id){
   const sp=S.spills&&S.spills[id];if(!sp)return;
-  showModal(`Derrame · ${sp.tipo}`,
-    `<div class="who"><b>Reportado por:</b> ${esc(sp.quien)}<br><b>Estado:</b> ${sp.status.toUpperCase()}</div>`,
-    [{text:'Cerrar'}]);
+  showModal(`Derrame · ${sp.tipo}`,`<div class="who"><b>Reportado por:</b> ${esc(sp.quien)}<br><b>Estado:</b> ${sp.status.toUpperCase()}</div>`,[{text:'Cerrar'}]);
 }
 function drawCntPanel(){
   if(!canCnt())return;
   const cnt=S.cnt||{};
   let h=`<div class="card"><h3>Conteo por sección</h3><div class="grid">`;
   ['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5'].forEach(sec=>{
-    h+=`<div class="t"><small>${sec}</small><b>${cnt[sec]||0}</b>
-      <div class="row" style="justify-content:center;margin-top:4px"><button onclick="put('cnt/${sec}',Math.max(0,${cnt[sec]||0}-1));">−</button><button onclick="put('cnt/${sec}',${(cnt[sec]||0)+1})">+</button></div>
-    </div>`;
+    h+=`<div class="t"><small>${sec}</small><b>${cnt[sec]||0}</b><div class="row" style="justify-content:center;margin-top:4px"><button onclick="put('cnt/${sec}',Math.max(0,${cnt[sec]||0}-1));">−</button><button onclick="put('cnt/${sec}',${(cnt[sec]||0)+1})">+</button></div></div>`;
   });
   h+=`</div></div>`;
   showModal('Conteo',h,[{text:'Cerrar'}]);
 }
 
-// ============ WALKERS ============
+// WALKERS
 const LET="ABCDEFGHIJKLMNOPQRST".split("");
 const CQ_A=[190,90],CQ_C=[112,365],CQ_B=[190,640];
 function cqPt(t){const u=1-t;return[u*u*CQ_A[0]+2*u*t*CQ_C[0]+t*t*CQ_B[0],u*u*CQ_A[1]+2*u*t*CQ_C[1]+t*t*CQ_B[1]]}
@@ -825,12 +817,18 @@ function cqGeo(slot){const ci=LET.indexOf(slot[0]),r=+slot[1],t=(ci+.5)/20,p=cqP
 function cqFirst(n){const p=String(n||'').trim().split(/\s+/)[0]||'';return p.length>7?p.slice(0,6)+'.':p}
 function walkerShort(full){const parts=full.trim().split(/\s+/);if(parts.length===1)return parts[0];return parts[0]+' '+(parts[1]||'')[0]+'.'}
 
-function openWalkers(){hideAll();$('walkersView').hidden=false;loadWalkers();}
+function openWalkers(from){
+  walkerReturn=from||'home';
+  hideAll();
+  $('walkersView').hidden=false;
+  loadWalkers();
+}
 function closeWalkers(){
   $('walkersView').hidden=true;
-  if(adminMe){$('adminApp').hidden=false;}
-  else if(me){$('acomApp').hidden=false;draw();}
-  else{goHome();}
+  if(walkerReturn==='admin'&&adminMe){$('adminApp').hidden=false;renderAdminView();}
+  else if(walkerReturn==='acom'&&me){$('acomApp').hidden=false;draw();}
+  else if(walkerReturn==='vol'&&volCurrentName){$('volView').hidden=false;renderVolInfo(volCurrentName);}
+  else{adminMe=null;me=null;goHome();}
 }
 async function loadWalkers(){
   try{
@@ -844,19 +842,15 @@ function drawCroquis(){
   const wk=W_DATA||{};
   const el=$('walkCroquis');if(!el)return;
   let h='';
-  // Asientos
   for(const o of [172,194,216,238]){h+=`<path d="M${CQ_A[0]+o} ${CQ_A[1]} Q${CQ_C[0]+o} ${CQ_C[1]} ${CQ_B[0]+o} ${CQ_B[1]}" fill="none" stroke="#d8c9a3" stroke-width="10" stroke-dasharray="7 4" opacity=".6"/>`}
   h+=`<text x="428" y="365" font-size="14" font-weight="700" fill="#a08a50" text-anchor="middle" transform="rotate(90 428 365)">AUDITORIO · ASIENTOS</text>`;
-  // Contrapared
   h+=`<path d="M${CQ_A[0]} ${CQ_A[1]} Q${CQ_C[0]} ${CQ_C[1]} ${CQ_B[0]} ${CQ_B[1]}" fill="none" stroke="#555" stroke-width="9" stroke-linecap="round"/>`;
   h+=`<text x="130" y="365" font-size="12" font-weight="700" fill="#555" text-anchor="middle" transform="rotate(90 130 365)">CONTRAPARED</text>`;
-  // Puertas
   const doors=[[180,235],[275,330],[370,425],[465,520]];
   let y0=30;for(const [a,b] of doors){h+=`<line x1="64" y1="${y0}" x2="64" y2="${a}" stroke="#6e1414" stroke-width="7" stroke-linecap="round"/>`;y0=b}
   h+=`<line x1="64" y1="${y0}" x2="64" y2="680" stroke="#6e1414" stroke-width="7" stroke-linecap="round"/>`;
   for(const [a,b] of doors){const m=(a+b)/2;h+=`<path d="M64 ${a} Q86 ${a+6} 86 ${a+27}" fill="none" stroke="#6e1414" stroke-width="2" opacity=".6"/><path d="M64 ${b} Q86 ${b-6} 86 ${b-27}" fill="none" stroke="#6e1414" stroke-width="2" opacity=".6"/><path d="M14 ${m} H48 M40 ${m-7} L50 ${m} L40 ${m+7}" fill="none" stroke="#6e1414" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`}
   h+=`<text x="12" y="20" font-size="14" font-weight="700" fill="#6e1414">VESTÍBULO</text>`;
-  // Slots
   let latest=null,lts=0;
   for(const slot of WALKER_SLOTS){
     const g=cqGeo(slot),cur=wk[slot];
@@ -903,7 +897,7 @@ function searchWalker(q){
   });
 }
 
-// ============ MODAL ============
+// MODAL
 function showModal(title,body,btns){
   $('modalBox').innerHTML=`<h2>${esc(title)}</h2><div>${body}</div><div style="display:flex;gap:8px;margin-top:12px" id="mdlBtns"></div>`;
   btns.forEach(b=>{
