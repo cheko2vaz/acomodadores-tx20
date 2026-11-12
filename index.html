@@ -97,7 +97,7 @@ details summary{cursor:pointer;color:var(--text-muted);font-size:14px;margin-top
 #adminMenu button{text-align:left;justify-content:flex-start}
 #modal{position:fixed;inset:0;background:rgba(26,15,10,.85);display:grid;place-items:center;padding:14px;z-index:9999}
 #modal[hidden]{display:none}
-#modal .box{background:var(--bg);border-radius:10px;padding:22px;width:100%;max-width:420px;display:grid;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+#modal .box{background:var(--bg);border-radius:10px;padding:22px;width:100%;max-width:480px;display:grid;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.5);max-height:90vh;overflow-y:auto}
 #modal h2{margin:0;color:var(--primary);font-size:19px;font-weight:700}
 
 #floatScan{position:fixed;bottom:20px;right:20px;width:76px;height:76px;border-radius:50%;background:var(--primary);color:#fff;border:none;box-shadow:0 6px 24px rgba(90,18,18,.5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;z-index:95;cursor:pointer;padding:0;animation:floatPulse 2.5s ease-in-out infinite}
@@ -126,6 +126,10 @@ details summary{cursor:pointer;color:var(--text-muted);font-size:14px;margin-top
 .list-table .tarea{font-size:13px;color:var(--text-muted)}
 .list-table .estado{font-weight:600;font-size:13px;white-space:nowrap}
 #listContainer{max-height:520px;overflow-y:auto}
+.plan-row{display:flex;align-items:center;gap:8px;padding:10px;border:1px solid var(--border);border-radius:6px;margin-bottom:6px;background:#fff;flex-wrap:wrap}
+.plan-row .tname{flex:1;font-weight:600;font-size:14px;min-width:140px}
+.plan-row .asig{font-size:13px;color:var(--text-muted)}
+.plan-row.active{border-color:var(--ok);background:var(--ok-bg)}
 </style>
 </head>
 <body>
@@ -141,7 +145,7 @@ details summary{cursor:pointer;color:var(--text-muted);font-size:14px;margin-top
   <h1 id="appTitle">Acomodadores · La Feria, TX</h1>
   <span id="net" class="net"></span>
   <span id="usr"></span>
-  <button onclick="window.open('acceso.html','_blank')" title="Control de Acceso (Cámara)" style="padding:8px 10px">
+  <button onclick="window.open('acceso.html','_blank')" title="Control de Acceso" style="padding:8px 10px">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
   </button>
   <button id="btn-mode-toggle" onclick="toggleAppMode()" hidden>Vista Voluntaria</button>
@@ -288,7 +292,7 @@ details summary{cursor:pointer;color:var(--text-muted);font-size:14px;margin-top
 
 <script>
 const CFG={DB:"https://voluntariastx20-default-rtdb.firebaseio.com"};
-const TURNOS={"1":{name:"7:45 – 8:45 a.m.",vol:["Ana Sofia Bejerano","Ariane Agustin","Bridyit Perez","Cynthia Paola Gayosso","Elizabeth Snyder","Esther Morales","Geraldine Alison Perez","Jackelin Luna","Jaqueline Echavarria","Karla Garcia","Laura Esmeralda Amador Saucedo","Maria Rosa Garcia Zapata","Mirsa Elizabeth Silva","Nicasia Bravo De Gonzalez","Reyna Jetcél Hernandez Madrid","Sandra Vazquez","Sarah Martinez","Susana Zuñiga"]},"2":{name:"8:45 – 9:45 a.m.",vol:["Alicia González","Ana Sofia Bejerano","Bridyit Perez","Cynthia Paola Gayosso","Elizabeth Lopez","Elizabeth Snyder","Geraldine Alison Perez","Jackelin Luna","Jaqueline Echavarria","Karla Garcia","Laura Esmeralda Amador Saucedo","Leticia Fernández","Maria Fernanda Obispo","Maria Rosa Garcia Zapata","María Rosario Vizcarra","Mirsa Elizabeth Silva","Reyna Jetcél Hernandez Madrid","Sandra Vazquez","Sarah Martinez"]},"3":{name:"9:45 – 11:05 a.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Snyder","Geraldine Alison Perez","Irene Avila","Jaqueline Echavarria","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Sara del Carmen Gutierrez","Sarah Martinez"]},"4":{name:"11:05 a.m. – 12:05 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Snyder","Elizabeth Torres","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Mirsa Elizabeth Silva","Nicasia Bravo De Gonzalez"]},"5":{name:"12:05 – 12:40 p.m. (Int 1ra)",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Reyna Jetcél Hernandez Madrid"]},"6":{name:"12:40 – 1:20 p.m. (Int 2da)",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Mirsa Elizabeth Silva"]},"7":{name:"1:20 – 3:30 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Torres","Geraldine Alison Perez","Gloria (Gigi) Mastropole","Gloria Palmira Mastropole","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Nicasia Bravo De Gonzalez"]},"8":{name:"3:30 – 4:15 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Jaqueline Echavarria","Laura Esmeralda Amador Saucedo","Leticia Fernández","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Reyna Jetcél Hernandez Madrid","Sarah Martinez"]}};
+const TURNOS={"1":{name:"7:45 – 8:45 a.m.",vol:["Ana Sofia Bejerano","Ariane Agustin","Bridyit Perez","Cynthia Paola Gayosso","Elizabeth Snyder","Esther Morales","Geraldine Alison Perez","Jackelin Luna","Jaqueline Echavarria","Karla Garcia","Laura Esmeralda Amador Saucedo","Maria Rosa Garcia Zapata","Mirsa Elizabeth Silva","Nicasia Bravo De Gonzalez","Reyna Jetcél Hernandez Madrid","Sarah Martinez","Sandra Vazquez"]},"2":{name:"8:45 – 9:45 a.m.",vol:["Alicia González","Ana Sofia Bejerano","Bridyit Perez","Cynthia Paola Gayosso","Elizabeth Lopez","Elizabeth Snyder","Geraldine Alison Perez","Jackelin Luna","Jaqueline Echavarria","Karla Garcia","Laura Esmeralda Amador Saucedo","Leticia Fernández","Maria Fernanda Obispo","Maria Rosa Garcia Zapata","María Rosario Vizcarra","Mirsa Elizabeth Silva","Reyna Jetcél Hernandez Madrid","Sandra Vazquez","Sarah Martinez"]},"3":{name:"9:45 – 11:05 a.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Snyder","Geraldine Alison Perez","Irene Avila","Jaqueline Echavarria","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Sara del Carmen Gutierrez","Sarah Martinez"]},"4":{name:"11:05 a.m. – 12:05 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Snyder","Elizabeth Torres","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Mirsa Elizabeth Silva","Nicasia Bravo De Gonzalez"]},"5":{name:"12:05 – 12:40 p.m. (Int 1ra)",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Reyna Jetcél Hernandez Madrid"]},"6":{name:"12:40 – 1:20 p.m. (Int 2da)",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Mirsa Elizabeth Silva"]},"7":{name:"1:20 – 3:30 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Torres","Geraldine Alison Perez","Gloria (Gigi) Mastropole","Gloria Palmira Mastropole","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Nicasia Bravo De Gonzalez","Susana Zuñiga"]},"8":{name:"3:30 – 4:15 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Jaqueline Echavarria","Laura Esmeralda Amador Saucedo","Leticia Fernández","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Reyna Jetcél Hernandez Madrid","Sarah Martinez"]}};
 const VOL_SECTIONS=[{id:"vest-norte",label:"Vestíbulo Norte",pos:[101,102,103,104,105],color:"#5a1212",labelX:300,labelY:150},{id:"vest-portico",label:"Vestíbulo Pórtico",pos:[106,107,108,109],color:"#3d5a80",labelX:255,labelY:350},{id:"vest-sur",label:"Vestíbulo Sur",pos:[110,111,112,113,114],color:"#4a6b3a",labelX:300,labelY:550},{id:"aud-sur",label:"Auditorio Sur",pos:[115,116],color:"#c28a1c",labelX:780,labelY:680},{id:"aud-contra",label:"Auditorio Contrapared",pos:[117,118],color:"#a8251c",labelX:780,labelY:460},{id:"aud-norte",label:"Auditorio Norte",pos:[119,120],color:"#2c6e6e",labelX:780,labelY:260}];
 const VOL_POS_COORDS={101:{x:120,y:170},102:{x:210,y:170},103:{x:300,y:170},104:{x:390,y:170},105:{x:480,y:170},106:{x:120,y:370},107:{x:210,y:370},108:{x:300,y:370},109:{x:390,y:370},110:{x:120,y:570},111:{x:210,y:570},112:{x:300,y:570},113:{x:390,y:570},114:{x:480,y:570},115:{x:730,y:700},116:{x:830,y:700},117:{x:730,y:480},118:{x:830,y:480},119:{x:730,y:280},120:{x:830,y:280}};
 const WALKER_SLOTS=[];const LETTERS="ABCDEFGHIJKLMNOPQRST".split("");for(let row=1;row<=3;row++){for(const L of LETTERS){WALKER_SLOTS.push(L+row)}}
@@ -296,9 +300,14 @@ const D={"caps":["Eliud Luna","Hugo Galvan","Jimmy Vasquez","José A. González"
 "roster":[
 {"n":"Alfonso Hernández","c":"Boca Chica","p":"A"},{"n":"Eliu de la Garza","c":"Boca Chica","p":"P"},{"n":"Isaias Martinez","c":"Boca Chica","p":"P"},{"n":"Juan F Garza","c":"Boca Chica","p":"P"},{"n":"Martin Davila","c":"Boca Chica","p":"P"},{"n":"Rey Castillo","c":"Boca Chica","p":"S"},{"n":"Roberto Quiroga","c":"Boca Chica","p":"S"},{"n":"Norberto Cardenas","c":"Central","p":"S"},{"n":"Felipe Ortiz","c":"El Jardin Heights","p":"P"},{"n":"Francisco Montoya","c":"El Jardin Heights","p":"P"},{"n":"Juan Salinas","c":"El Jardin Heights","p":"S"},{"n":"Reynaldo Perez","c":"El Jardin Heights","p":"A"},{"n":"Roberto Borjas","c":"El Jardin Heights","p":"A"},{"n":"Servando Sustaita","c":"El Jardin Heights","p":"P"},{"n":"Carlos Leonardo Salas Zuñiga","c":"Galaxia","p":"P"},{"n":"Celestino Chavez","c":"Galaxia","p":"S"},{"n":"Gustavo Saucedo","c":"Galaxia","p":"P"},{"n":"Jose Duran","c":"Galaxia","p":"P"},{"n":"Luis Duran","c":"Galaxia","p":"P"},{"n":"Otilio Ramirez","c":"Galaxia","p":"P"},{"n":"Orlando Benavidez","c":"Galaxia","p":"A"},{"n":"Adrián Mota Arcos","c":"Laguna Vista","p":"P"},{"n":"José A. González","c":"Laguna Vista","p":"S"},{"n":"Jose González Jr","c":"Laguna Vista","p":"S"},{"n":"Vianney Morales López","c":"Laguna Vista","p":"P"},{"n":"Valente Alejandro","c":"Laguna Vista","p":"P"},{"n":"Hugo Galvan","c":"Laguna Vista","p":"A"},{"n":"Luis Barberena","c":"Laguna Vista","p":"S"},{"n":"Alex Vazquez","c":"Los Cedros","p":"S"},{"n":"Eliud Luna","c":"Los Cedros","p":"S"},{"n":"Jimmy Vasquez","c":"Los Cedros","p":"A"},{"n":"Guadalupe De La Cruz","c":"Los Cedros","p":"S"},{"n":"Javier Borjas","c":"North","p":"A"},{"n":"Abisai Muniz","c":"North","p":"S"},{"n":"Carlos Martínez","c":"North","p":"S"},{"n":"Oziel Rodriguez","c":"North","p":"P"},{"n":"Josue Campos","c":"Paraiso","p":"S"},{"n":"Ricardo Altamirano","c":"Paraiso","p":"S"},{"n":"Eulogio Montelongo","c":"Paraiso","p":"S"},{"n":"Alfredo Garza","c":"Paraiso","p":"P"},{"n":"Jamin Muñiz","c":"Sunrise","p":"P"},{"n":"Raúl Quintero","c":"Sunrise","p":"S"},{"n":"Gonzalo Mejia Sr.","c":"Sunrise","p":"P"},{"n":"Macario Martinez","c":"Sunrise","p":"A"},
 {"n":"Alfredo Jiménez","c":"Central","p":"S"},{"n":"Jose Luis Camarillo Rangel","c":"Los Cedros","p":"S"},{"n":"Luis Rodolfo Lerma","c":"Los Cedros","p":"S"},{"n":"Osiel Agustin","c":"Laguna Vista","p":"P"},
+{"n":"Tony Duran","c":"Boca Chica","p":"P"},
+{"n":"Osiel Ramirez","c":"Galaxia","p":"P"},
+{"n":"Jose Gonzalez Sr.","c":"Laguna Vista","p":"A"},
+{"n":"Abdiel Juarez Jr.","c":"Sunrise","p":"S"},
+{"n":"Damian Fernandez","c":"Los Cedros","p":"P"},
 {"n":"Alexia Ramirez","c":"Voluntaria","p":"P"},{"n":"Alicia González","c":"Voluntaria","p":"P"},{"n":"Ana Sofia Bejerano","c":"Voluntaria","p":"P"},{"n":"Ariane Agustin","c":"Voluntaria","p":"P"},{"n":"Bridyit Perez","c":"Voluntaria","p":"P"},{"n":"Cynthia Paola Gayosso","c":"Voluntaria","p":"P"},{"n":"Elizabeth Lopez","c":"Voluntaria","p":"P"},{"n":"Elizabeth Snyder","c":"Voluntaria","p":"P"},{"n":"Elizabeth Torres","c":"Voluntaria","p":"P"},{"n":"Esther Morales","c":"Voluntaria","p":"P"},{"n":"Geraldine Alison Perez","c":"Voluntaria","p":"P"},{"n":"Gloria (Gigi) Mastropole","c":"Voluntaria","p":"P"},{"n":"Gloria Palmira Mastropole","c":"Voluntaria","p":"P"},{"n":"Irene Avila","c":"Voluntaria","p":"P"},{"n":"Jackelin Luna","c":"Voluntaria","p":"P"},{"n":"Jaqueline Echavarria","c":"Voluntaria","p":"P"},{"n":"Karla Garcia","c":"Voluntaria","p":"P"},{"n":"Laura Esmeralda Amador Saucedo","c":"Voluntaria","p":"P"},{"n":"Maria avila","c":"Voluntaria","p":"P"},{"n":"Maria Fernanda Obispo","c":"Voluntaria","p":"P"},{"n":"Maria Gayosso","c":"Voluntaria","p":"P"},{"n":"Maria Rosa Garcia Zapata","c":"Voluntaria","p":"P"},{"n":"María Rosario Vizcarra","c":"Voluntaria","p":"P"},{"n":"Mirsa Elizabeth Silva","c":"Voluntaria","p":"P"},{"n":"Nicasia Bravo De Gonzalez","c":"Voluntaria","p":"P"},{"n":"Reyna Jetcél Hernandez Madrid","c":"Voluntaria","p":"P"},{"n":"Sara del Carmen Gutierrez","c":"Voluntaria","p":"P"},{"n":"Sarah Martinez","c":"Voluntaria","p":"P"},{"n":"Sandra Vazquez","c":"Voluntaria","p":"P"},{"n":"Susana Zuñiga","c":"Voluntaria","p":"P"},{"n":"Leticia Fernández","c":"Voluntaria","p":"P"}],
 "pos":{"1":{"who":"Luis Barberena","t":"Alarma Multiusos","x":1172,"y":220,"l":1,"a":"alm"},"2":{"who":"Guadalupe De La Cruz","t":"Salida emergencia","x":1172,"y":404,"l":1,"a":"alm"},"3":{"who":"Macario Martinez","t":"Detras plataforma","x":1100,"y":432,"l":1,"a":"ctl"},"4":{"who":"Celestino Chavez","t":"Escaleras plat.","x":1172,"y":490,"l":1,"a":"ctl"},"5":{"who":"Valente Alejandro","t":"Entrada sur plataforma","x":1172,"y":660,"l":1,"a":"alm"},"6":{"who":"Norberto Cardenas","t":"Alarma Sur","x":1073,"y":775,"l":1,"a":"alm"},"7":{"who":"Alfonso Hernández","t":"Puerta Principal","x":1073,"y":657,"l":1,"a":"ent"},"8":{"who":"Osiel Agustin","t":"Alternando","x":1073,"y":553,"l":1,"a":"ctl"},"9":{"who":"Alfredo Jiménez","t":"Alternando","x":993,"y":527,"l":1,"a":"ctl"},"10":{"who":"Gustavo Saucedo","t":"Escenario","x":981,"y":438,"l":1,"a":"ctl"},"11":{"who":"Josue Campos","t":"Frente NE","x":994,"y":341,"l":1,"a":"ctl"},"12":{"who":"Rey Castillo","t":"Frente Norte","x":1073,"y":336,"l":1,"a":"ctl"},"13":{"who":"Jose González Jr","t":"Puerta Secundaria","x":1073,"y":238,"l":1,"a":"ent"},"14":{"who":"Carlos Leonardo Salas Zuñiga","t":"Alarma Norte","x":1073,"y":141,"l":1,"a":"alm"},"15":{"who":"Vianney Morales López","t":"Alarma Audio","x":693,"y":141,"l":1,"a":"alm"},"16":{"who":"Ricardo Altamirano","t":"Alarma","x":612,"y":347,"l":1,"a":"ent"},"17":{"who":"Luis Duran","t":"Alarma","x":612,"y":548,"l":1,"a":"ent"},"18":{"who":"Jamin Muñiz","t":"Alarma Sur","x":693,"y":775,"l":1,"a":"alm"},"19":{"who":"Adrián Mota Arcos","t":"Entrada Sur","x":551,"y":577,"l":1,"a":"ent"},"20":{"who":"Francisco Montoya","t":"Entrada Sur","x":463,"y":577,"l":1,"a":"ent"},"21":{"who":"Roberto Quiroga","t":"Portico","x":211,"y":473,"l":1,"a":"ent"},"22":{"who":"Eulogio Montelongo","t":"Portico/Alberca","x":428,"y":604,"l":1,"a":"ent"},"23":{"who":"Tony Duran","t":"Entrada Norte","x":463,"y":320,"l":1,"a":"ent"},"24":{"who":"Abisai Muniz","t":"Entrada Norte","x":551,"y":318,"l":1,"a":"ent"},"25":{"who":"Gonzalo Mejia Sr.","t":"Auditorio","x":818,"y":153,"l":0,"a":"aud"},"26":{"who":"Carlos Martínez","t":"Auditorio","x":697,"y":340,"l":0,"a":"aud"},"27":{"who":"Felipe Ortiz","t":"Auditorio","x":690,"y":548,"l":0,"a":"aud"},"28":{"who":"Juan Salinas","t":"Auditorio","x":833,"y":735,"l":0,"a":"aud"},"29":{"who":"Javier Borjas","t":"Auditorio","x":807,"y":544,"l":0,"a":"aud"},"30":{"who":"Martin Davila","t":"Auditorio","x":813,"y":342,"l":0,"a":"aud"},"31":{"who":"Juan F Garza","t":"Auditorio","x":902,"y":239,"l":0,"a":"aud"},"32":{"who":"Isaias Martinez","t":"Auditorio","x":947,"y":388,"l":0,"a":"aud"},"33":{"who":"Alex Vazquez","t":"Auditorio","x":941,"y":462,"l":0,"a":"aud"},"34":{"who":"Alfredo Garza","t":"Auditorio","x":936,"y":601,"l":0,"a":"aud"},"35":{"who":"","t":"Entrada vestíbulo","x":146,"y":456,"l":0,"a":"ent"}},
-"runners":["Eliu de la Garza","Reynaldo Perez","Roberto Borjas","Servando Sustaita","Jose Duran","Otilio Ramirez","Orlando Benavidez","Oziel Rodriguez"],
+"runners":["Eliu de la Garza","Reynaldo Perez","Roberto Borjas","Servando Sustaita","Jose Duran","Otilio Ramirez","Orlando Benavidez","Oziel Rodriguez","Jose Luis Camarillo Rangel"],
 "cap":{"A1":0,"A2":464,"A3":475,"A4":464,"A5":0,"B1":0,"B2":158,"B3":156,"B4":158,"B5":0},"expect":2474};
 for(const k in VOL_POS_COORDS){D.pos[k]={who:"",t:"Voluntaria "+k,x:VOL_POS_COORDS[k].x,y:VOL_POS_COORDS[k].y,l:0,a:"vol",v:1}}
 const ADM=[
@@ -323,6 +332,7 @@ let cam = { x: 440, y: 250, w: 240, h: 330 };
 try { Object.assign(cam, JSON.parse(localStorage.wcam || '{}')); } catch(e) {}
 let touchState={mode:null,startDist:0,startScale:1,startX:0,startY:0,lastX:0,lastY:0,cx:0,cy:0};
 let mainZoom = 1;
+let panelLocked = false; // FIX: bloquea re-render del panel mientras hay un select activo
 
 const LET="ABCDEFGHIJKLMNOPQRST".split("");
 const W_P0=[580,304],W_PC=[556,423],W_P2=[581,542];
@@ -361,8 +371,24 @@ function showModal(title, bodyHtml, buttons) {
     btnContainer.appendChild(btn);
   });
   $('modal').hidden = false;
-  const inp = $('modalBox').querySelector('input');
-  if (inp) setTimeout(() => inp.focus(), 50);
+}
+
+// FIX: se llama al final de cada render de panel para bloquear updates
+// mientras el usuario tiene un select enfocado
+function attachPanelFocusLock(){
+  const panel = $('panel');
+  if(!panel) return;
+  panel.querySelectorAll('select, input').forEach(el => {
+    el.addEventListener('focus', () => { panelLocked = true; });
+    el.addEventListener('blur', () => {
+      setTimeout(() => {
+        const active = document.activeElement;
+        if(!panel.contains(active) || (active.tagName !== 'SELECT' && active.tagName !== 'INPUT')){
+          panelLocked = false;
+        }
+      }, 200);
+    });
+  });
 }
 
 function promptWalker(id, name) {
@@ -465,10 +491,49 @@ function renderList(){
 }
 
 function volHistory(name){const res=[],vt=S.volTurnos||{};for(const t in vt)for(const p in vt[t])if(vt[t][p]===name)res.push({turno:+t,posicion:+p});return res.sort((a,b)=>a.turno-b.turno)}
-function canAssign(turno,pos,name){const t=+turno,volList=TURNOS[t]?TURNOS[t].vol:[];if(!volList.includes(name))return{ok:false,msg:"No se apuntó a este turno"};const hist=volHistory(name);if(hist.find(h=>h.turno===t))return{ok:false,msg:"Ya está en este turno"};const sigCount=Object.values(TURNOS).filter(tt=>tt.vol.includes(name)).length;const maxT=Math.min(4,sigCount);if(hist.length>=maxT)return{ok:false,msg:`Máximo ${maxT} turnos`};const consec=hist.find(h=>Math.abs(h.turno-t)===1);if(consec){const ok12=(t===1&&consec.turno===2)||(t===2&&consec.turno===1);if(!ok12)return{ok:false,msg:`Consecutivo con T${consec.turno}`}}if((t===5&&hist.find(h=>h.turno===6))||(t===6&&hist.find(h=>h.turno===5)))return{ok:false,msg:"T5 y T6 excluyentes"};return{ok:true,msg:`OK (${hist.length+1}/${maxT})`}}
-function doAssign(turno,pos,name){const chk=canAssign(turno,pos,name);if(!chk.ok){showToast(`${esc(name)}: ${chk.msg}`,true);return}if(!S.volTurnos)S.volTurnos={};if(!S.volTurnos[turno])S.volTurnos[turno]={};S.volTurnos[turno][pos]=name;put(`volTurnos/${turno}/${pos}`,name);showToast(`${esc(name)} asignada`)}
-function unassignVol(turno,pos){if(!S.volTurnos||!S.volTurnos[turno])return;delete S.volTurnos[turno][pos];fetch(U(`volTurnos/${turno}/${pos}`),{method:'DELETE'}).then(()=>load());showToast("Asignación eliminada")}
+function volPosInTurno(name, t){const vt=S.volTurnos||{};return Object.entries(vt[t]||{}).find(([p,n])=>n===name)?.[0]}
+function canAssign(turno,pos,name){const t=+turno,volList=TURNOS[t]?TURNOS[t].vol:[];if(!volList.includes(name))return{ok:false,msg:"No disponible en este turno"};const hist=volHistory(name);if(hist.find(h=>h.turno===t))return{ok:false,msg:"Ya está en este turno"};const sigCount=Object.values(TURNOS).filter(tt=>tt.vol.includes(name)).length;const maxT=Math.min(4,sigCount);if(hist.length>=maxT)return{ok:false,msg:`Máximo ${maxT} turnos`};const consec=hist.find(h=>Math.abs(h.turno-t)===1);if(consec){const ok12=(t===1&&consec.turno===2)||(t===2&&consec.turno===1);if(!ok12)return{ok:false,msg:`Consecutivo con T${consec.turno}`}}if((t===5&&hist.find(h=>h.turno===6))||(t===6&&hist.find(h=>h.turno===5)))return{ok:false,msg:"T5 y T6 excluyentes"};return{ok:true,msg:`OK (${hist.length+1}/${maxT})`}}
+function doAssign(turno,pos,name){const chk=canAssign(turno,pos,name);if(!chk.ok){showToast(`${esc(name)}: ${chk.msg}`,true);return}if(!S.volTurnos)S.volTurnos={};if(!S.volTurnos[turno])S.volTurnos[turno]={};S.volTurnos[turno][pos]=name;put(`volTurnos/${turno}/${pos}`,name);showToast(`${esc(name)} asignada a T${turno}`)}
+function unassignVol(turno,pos){
+  if(!S.volTurnos||!S.volTurnos[turno])return;
+  const name = S.volTurnos[turno][pos];
+  delete S.volTurnos[turno][pos];
+  fetch(U(`volTurnos/${turno}/${pos}`),{method:'DELETE'}).then(()=>load());
+  showToast(`Quitada del T${turno}: ${name||'?'}`);
+  // Refrescar plan completo si está abierto
+  const body = $('modalBox');
+  if(body && body.querySelector('[data-plan-name]')) {
+    const name2 = body.querySelector('[data-plan-name]').dataset.planName;
+    if(name2) openFullPlan(name2);
+  }
+}
 function toggleSpillMode(){spillMode=!spillMode;if(spillMode){secEditMode=false;edit=false}draw()}
+
+// ============ VER PLAN COMPLETO DE UNA VOLUNTARIA ============
+function openFullPlan(name){
+  if(!name) return;
+  const hist = volHistory(name);
+  const disponibleEn = Object.entries(TURNOS).filter(([t,tt])=>tt.vol.includes(name)).map(([t])=>+t);
+  let rows = '';
+  for(let t=1;t<=8;t++){
+    const posAsignado = volPosInTurno(name, t);
+    const disponible = disponibleEn.includes(t);
+    const isActive = posAsignado !== undefined;
+    rows += `<div class="plan-row ${isActive?'active':''}">
+      <div class="tname">T${t} · ${TURNOS[t].name}</div>
+      <div class="asig">${isActive ? `Posición ${posAsignado}` : disponible ? 'Disponible' : 'No disponible'}</div>
+      <div class="row" style="margin-left:auto">
+        ${isActive ? `<button class="warn" style="padding:6px 10px;font-size:12px" onclick="unassignVol(${t},${posAsignado})">Quitar</button>` : ''}
+        ${!isActive && disponible ? `<select onchange="if(this.value)doAssign(${t},this.value,'${esc(name).replace(/'/g,"\\'")}');this.value=''" style="min-width:130px;font-size:13px;padding:6px"><option value="">Asignar a...</option>${[101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120].map(p=>`<option value="${p}">Pos ${p}</option>`).join('')}</select>` : ''}
+      </div>
+    </div>`;
+  }
+  const asistio = hist.length;
+  showModal(`Plan de ${name}`,
+    `<div data-plan-name="${esc(name)}" style="font-size:13px;color:var(--text-muted);margin-bottom:8px">Disponible en ${disponibleEn.length} turnos · Asignada en ${asistio} turnos</div>${rows}`,
+    [{text:'Cerrar'}]
+  );
+}
 
 function takeSpill(id){put(`spills/${id}/status`,'proceso');put(`spills/${id}/quienLimpia`,me.n);put(`spills/${id}/tsProc`,Date.now());showToast('Derrame tomado');draw()}
 function doneSpill(id){put(`spills/${id}/status`,'terminado');put(`spills/${id}/tsDone`,Date.now());showToast('Derrame limpiado');draw()}
@@ -878,7 +943,7 @@ function drawMap(){
   $('vl').innerHTML=vh;
 
   let h='';
-  if(!isLimited()){
+  if(!isLimited() && !isSpillOnly()){
     if(mapView==='vol'&&me&&me.adm){
       for(const sec of VOL_SECTIONS){
         const lp=labelPos(sec);
@@ -961,33 +1026,57 @@ function drawPanel(){
   if(isLimited()||isSpillOnly()) return;
   const e=$('panel');
   if(!sel){e.innerHTML='<span class="mut">Toca un número del mapa.</span>';return}
+  // FIX: no re-renderizar si el usuario tiene un select enfocado en el panel
+  if(panelLocked) return;
+
   const n=sel,p=P(n),d=D.pos[n],w=eff(n),r=ppl(w),ad=canEd(n),isVol=d.v===1,isAct=isPosActive(n);
   const sec=isVol?sectionOf(n):null;
   if(isVol){
     let h=`<h3 style="color:${sec.color}">Voluntaria ${n} · ${sec.label}</h3>`;
-    h += `<div style="margin-bottom:12px"><b>Selecciona el turno a editar:</b><div class="row" style="margin-top:6px">`;
+    h += `<div style="margin-bottom:12px"><b>Turno actual (para asignar):</b><div class="row" style="margin-top:6px">`;
     for(let t=1;t<=8;t++){
       h += `<button onclick="currentTurno=${t};draw()" style="padding:6px 12px;font-size:13px" class="${currentTurno===t?'on':''}">T${t}</button>`;
     }
     h += `</div></div>`;
     h+=`<p style="margin:6px 0;font-size:14px"><b>Turno ${currentTurno}: ${TURNOS[currentTurno].name}</b></p>`;
     h+=`<div class="rules"><b>Reglas:</b> No consecutivos (excepto T1+T2). Máximo 4 turnos. T5 y T6 excluyentes.</div>`;
+
+    // Botón "Ver plan completo" SIEMPRE disponible
+    if(w){
+      h+=`<button class="pri" onclick="openFullPlan('${esc(w).replace(/'/g,"\\'")}')" style="width:100%;padding:12px;margin:8px 0;font-weight:700">Ver plan completo de ${esc(w)}</button>`;
+    }
+
     if(w){
       const hist=volHistory(w).filter(x=>!(+x.turno===+currentTurno&&+x.posicion===+n));
       h+=`<div class="who" style="border-left-color:${sec.color}"><b>${esc(w)}</b></div>`;
-      if(hist.length){h+=`<div class="histbox"><b>También está en:</b><ul style="margin:6px 0;padding-left:18px">${hist.map(x=>`<li>T${x.turno} · ${sectionOf(x.posicion).label} (${x.posicion})</li>`).join('')}</ul></div>`}
+      if(hist.length){h+=`<div class="histbox"><b>También está en:</b><ul style="margin:6px 0;padding-left:18px">${hist.map(x=>`<li>T${x.turno} · ${sectionOf(x.posicion).label} (${x.posicion}) <button style="padding:2px 8px;font-size:11px;margin-left:6px" onclick="unassignVol(${x.turno},${x.posicion})" class="warn">Quitar</button></li>`).join('')}</ul></div>`}
       else h+='<p class="mut" style="font-size:14px">No está en otros turnos.</p>';
-      h+=`<button onclick="unassignVol(${currentTurno},${n})" style="margin-top:6px">Quitar asignación</button>`;
+      h+=`<button onclick="unassignVol(${currentTurno},${n})" class="warn" style="margin-top:6px;width:100%">Quitar del turno actual</button>`;
     }else{h+='<p class="mut">Sin asignar en este turno.</p>'}
+
     const vols=TURNOS[currentTurno].vol.map(name=>{const chk=canAssign(currentTurno,n,name);return{name,ok:chk.ok,msg:chk.msg}});
     const avail=vols.filter(v=>v.ok),blocked=vols.filter(v=>!v.ok);
-    h+=`<div class="sg"><b>Disponibles (${avail.length}):</b><div style="margin-top:6px">`;
+    h+=`<div class="sg"><b>Disponibles para T${currentTurno} (${avail.length}):</b><div style="margin-top:6px">`;
     if(avail.length===0)h+='<p class="mut" style="font-size:14px">Ninguna puede asignarse aquí.</p>';
     else h+=avail.map(v=>`<button class="vbtn" data-vname="${esc(v.name)}" onclick="doAssign(${currentTurno},${n},this.dataset.vname)">${esc(v.name)}</button>`).join('');
     h+='</div>';
-    if(blocked.length){h+=`<details style="margin-top:10px"><summary>${blocked.length} bloqueadas</summary><ul style="margin:6px 0;padding-left:18px;font-size:13px">${blocked.map(v=>`<li><b>${esc(v.name)}</b> — ${v.msg}</li>`).join('')}</ul></details>`}
-    h+='</div>';e.innerHTML=h;return;
+
+    // FIX: bloqueadas con opción de quitar donde sí están
+    if(blocked.length){
+      h+=`<details style="margin-top:10px"><summary>${blocked.length} bloqueadas (con opción de quitar)</summary><ul style="margin:6px 0;padding-left:0;font-size:13px;list-style:none">${blocked.map(v=>{
+        const histFull=volHistory(v.name);
+        const histOther=histFull.filter(x=>!(+x.turno===+currentTurno&&+x.posicion===+n));
+        const lugares=histOther.map(x=>`T${x.turno} · Pos ${x.posicion} <button class="warn" style="padding:2px 8px;font-size:11px;margin-left:4px" onclick="unassignVol(${x.turno},${x.posicion})">Quitar</button>`).join(' · ');
+        return `<li style="padding:8px;border-bottom:1px solid var(--border)"><b>${esc(v.name)}</b> — <span class="mut">${v.msg}</span><br><span style="font-size:12px">Está en: ${lugares || 'ningún otro turno'}</span></li>`;
+      }).join('')}</ul></details>`;
+    }
+    h+='</div>';
+    e.innerHTML=h;
+    attachPanelFocusLock();
+    return;
   }
+
+  // Panel de acomodador (no voluntaria)
   let h=`<h3>Posición ${n} <span class="tag ${d.l?'b':'o'}">${d.l?'Fija':'Intermitente'}</span> <span class="tag ${isAct?'g':'p'}">${isAct?'Activa':'Inactiva'}</span></h3><div>${esc(d.t)}</div>`;
   h+=w?`<div class="who"><b>${esc(w)}</b>${r?`<br>${PRIV[r.p]} · ${esc(r.c)}`:''}${p.sub?`<br><span class="mut">Sustituto de ${esc(p.who)}</span>`:''}</div>`:'<p class="mut">Sin asignar</p>';
   if(ad){
@@ -1001,6 +1090,7 @@ function drawPanel(){
     h+=`<div class="sg"><button class="${isAct?'warn':'ok'}" onclick="togglePosActive(${n})">${isAct?'Desactivar Posición':'Activar Posición'}</button></div>`;
   }
   e.innerHTML=h;
+  attachPanelFocusLock();
 }
 
 function drawCnt(){
