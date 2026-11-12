@@ -16,7 +16,7 @@
   --text:#1a1a1a;--muted:#6b5d4f;--border:#d4c9b0;
   --ok:#4a6b3a;--ok-bg:#edf4e8;--err:#a8251c;--err-bg:#fbeae9;
   --warn:#c28a1c;--warn-bg:#fdf8e8;
-  --blue-a:#3d5a80;--org-a:#c28a1c;--spill:#b8860b;
+  --blue-a:#3d5a80;--org-a:#c28a1c;
 }
 [hidden]{display:none!important}*{box-sizing:border-box}
 body{margin:0;font:16px/1.5 'Noto Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text)}
@@ -103,8 +103,7 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 .cnt-sec.hl{border:2px solid var(--red);background:#faeaea;box-shadow:0 0 0 3px rgba(168,37,28,.2)}
 .spill{cursor:pointer}
 .spill-panel{background:#fff;border:2px solid var(--gold);border-radius:8px;padding:14px;margin:8px 0}
-.spill-item{background:#fff;border:1px solid var(--border);border-left:4px solid var(--spill);border-radius:6px;padding:12px;margin:8px 0;font-size:14px}
-.spill-item.proc{border-left-color:var(--warn);background:var(--warn-bg)}
+.spill-item{background:#fff;border:1px solid var(--border);border-left:4px solid var(--spill-color,var(--warn));border-radius:6px;padding:12px;margin:8px 0;font-size:14px}
 
 /* ADMIN */
 #adminApp{min-height:100vh;background:var(--bg)}
@@ -149,10 +148,11 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 .cnt-sec.at-max{background:var(--warn-bg);border-color:#ffcc80}
 .cnt-sec.over{background:var(--err-bg);border-color:#ef9a9a}
 .cnt-sec.over .num{color:var(--err)}
-.cnt-sec .btns{display:flex;gap:4px;justify-content:center;margin-top:8px}
-.cnt-sec .btns button{padding:6px 14px;font-size:16px;font-weight:700}
 .cnt-sec .edit-max{margin-top:8px;display:flex;gap:4px;align-items:center;justify-content:center;font-size:12px;color:var(--muted)}
 .cnt-sec .edit-max input{width:70px;padding:4px 6px;font-size:12px;text-align:center}
+.cnt-input{width:70px;padding:6px;font-size:22px;text-align:center;font-weight:700;border:2px solid var(--border);border-radius:6px;color:var(--brown)}
+.cnt-input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,134,11,.2)}
+.cnt-input.over{border-color:var(--err);background:var(--err-bg);color:var(--err)}
 
 /* WALKERS */
 #walkersView{max-width:1100px;margin:12px auto;padding:12px}
@@ -177,10 +177,28 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 .cq-latest{fill:none;stroke:#d11;stroke-width:3;animation:cqp .9s infinite;pointer-events:none}
 .walker-info{background:var(--ok-bg);border-left:4px solid var(--ok);padding:10px 12px;border-radius:6px;margin-bottom:10px;font-size:14px}
 
+/* SPILL ADMIN (Carlos) */
+#spillAdminApp{min-height:100vh;background:var(--bg)}
+#spillAdminApp header{background:var(--ok)}
+#spillAdminApp main{max-width:1400px}
+.spill-admin-container{display:grid;grid-template-columns:1fr 400px;gap:14px;align-items:start}
+@media (max-width:900px){.spill-admin-container{grid-template-columns:1fr}}
+.spill-card{background:#fff;border:1px solid var(--border);border-left:4px solid var(--border);border-radius:6px;padding:12px;margin-bottom:8px;transition:all .15s}
+.spill-card.selected{box-shadow:0 0 0 3px rgba(74,107,58,.3);background:#f7faf5}
+.spill-color-otro{border-left-color:#4a6b3a!important;background:#f0f5ed}
+.spill-color-comida{border-left-color:#c28a1c!important;background:#fdf8e8}
+.spill-color-bebida{border-left-color:#a8251c!important;background:#fbeae9}
+.spill-color-otro.selected{background:#e8f2e4!important}
+.spill-color-comida.selected{background:#fdf2d3!important}
+.spill-color-bebida.selected{background:#f9dad7!important}
+@keyframes spillBlink{0%,100%{opacity:1}50%{opacity:.4}}
+.spill-pin-blink{animation:spillBlink 1s infinite;transform-origin:center;transform-box:fill-box}
+
 /* MODAL */
 #modal{position:fixed;inset:0;background:rgba(26,15,10,.85);display:grid;place-items:center;padding:14px;z-index:9999}
 #modal[hidden]{display:none}
 #modal .box{background:var(--bg);border-radius:10px;padding:22px;width:100%;max-width:480px;display:grid;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.5);max-height:90vh;overflow-y:auto}
+#modal .box.wide{max-width:900px}
 #modal h2{margin:0;color:var(--red);font-size:19px;font-weight:700}
 .modal-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
 .modal-btns button{flex:1;min-width:90px}
@@ -280,7 +298,7 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
   </div>
 </div>
 
-<!-- ADMIN APP -->
+<!-- ADMIN APP (Sergio, Alberto, Steven, etc.) -->
 <div id="adminApp" hidden>
   <header>
     <h1>Panel de Administración</h1>
@@ -336,6 +354,48 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
   </main>
 </div>
 
+<!-- SPILL ADMIN (Carlos) -->
+<div id="spillAdminApp" hidden>
+  <header>
+    <h1>Limpieza · Derrames</h1>
+    <span id="spillAdminWho" style="font-size:13px;opacity:.85"></span>
+    <button onclick="openWalkers('admin')">Walkers</button>
+    <button onclick="adminLogout()">Salir</button>
+  </header>
+  <main style="max-width:1400px;margin:auto;padding:12px">
+    <div class="spill-admin-container">
+      <div>
+        <div class="card">
+          <div class="row" style="justify-content:space-between;margin-bottom:12px">
+            <h2 style="margin:0;color:var(--ok);font-size:18px">Derrames activos</h2>
+            <span id="spillCountActive" style="font-size:13px;color:var(--muted)"></span>
+          </div>
+          <div id="spillListAdmin"></div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h2 style="margin:0 0 12px;color:var(--muted);font-size:16px">Terminados hoy</h2>
+          <div id="spillListDone"></div>
+        </div>
+      </div>
+      <div class="side-panel" style="position:sticky;top:80px;max-height:calc(100vh - 100px)">
+        <h3>Mapa de derrames</h3>
+        <div style="border:2px solid var(--ok);border-radius:8px;overflow:hidden;background:#fff">
+          <svg id="spillMapSvg" viewBox="0 0 1310 926" style="width:100%;height:auto;display:block">
+            <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
+            <g id="spillMapPins"></g>
+          </svg>
+        </div>
+        <div class="cq-lg" style="margin-top:10px">
+          <span><i style="background:#4a6b3a"></i>Otro</span>
+          <span><i style="background:#c28a1c"></i>Comida</span>
+          <span><i style="background:#a8251c"></i>Bebida</span>
+        </div>
+        <button onclick="openSpillFullMap()" style="width:100%;margin-top:10px;padding:12px">Ver mapa completo</button>
+      </div>
+    </div>
+  </main>
+</div>
+
 <!-- ACOMODADOR APP -->
 <div id="acomApp" hidden>
   <header>
@@ -379,6 +439,7 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
   <header style="background:var(--ok)">
     <h1>Walkers y Sillas</h1>
     <span id="walkCount" style="font-size:13px;background:rgba(255,255,255,.18);padding:4px 10px;border-radius:99px"></span>
+    <button id="btnResetWalkers" onclick="resetWalkersData()" style="background:rgba(168,37,28,.9);border-color:rgba(168,37,28,.9);display:none">Reiniciar Walkers</button>
     <button onclick="closeWalkers()">← Volver</button>
   </header>
   <div style="max-width:1100px;margin:12px auto;padding:12px">
@@ -399,6 +460,8 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 
 <script>
 const CFG={DB:"https://voluntariastx20-default-rtdb.firebaseio.com"};
+const SPILL_COLORS={'Otro':'#4a6b3a','Comida':'#c28a1c','Bebida':'#a8251c'};
+const SPILL_LABELS={'Otro':'Otro (vómito)','Comida':'Comida','Bebida':'Bebida'};
 const TURNOS={"1":{name:"7:45 – 8:45 a.m.",vol:["Ana Sofia Bejerano","Ariane Agustin","Bridyit Perez","Cynthia Paola Gayosso","Elizabeth Snyder","Esther Morales","Geraldine Alison Perez","Jackelin Luna","Jaqueline Echavarria","Karla Garcia","Laura Esmeralda Amador Saucedo","Maria Rosa Garcia Zapata","Mirsa Elizabeth Silva","Nicasia Bravo De Gonzalez","Reyna Jetcél Hernandez Madrid","Sandra Vazquez","Sarah Martinez","Susana Zuñiga"]},"2":{name:"8:45 – 9:45 a.m.",vol:["Alicia González","Ana Sofia Bejerano","Bridyit Perez","Cynthia Paola Gayosso","Elizabeth Lopez","Elizabeth Snyder","Geraldine Alison Perez","Jackelin Luna","Jaqueline Echavarria","Karla Garcia","Laura Esmeralda Amador Saucedo","Leticia Fernández","Maria Fernanda Obispo","Maria Rosa Garcia Zapata","María Rosario Vizcarra","Mirsa Elizabeth Silva","Reyna Jetcél Hernandez Madrid","Sandra Vazquez","Sarah Martinez"]},"3":{name:"9:45 – 11:05 a.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Snyder","Geraldine Alison Perez","Irene Avila","Jaqueline Echavarria","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Sara del Carmen Gutierrez","Sarah Martinez"]},"4":{name:"11:05 a.m. – 12:05 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Snyder","Elizabeth Torres","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Mirsa Elizabeth Silva","Nicasia Bravo De Gonzalez"]},"5":{name:"12:05 – 12:40 p.m. (Int 1ra)",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Reyna Jetcél Hernandez Madrid"]},"6":{name:"12:40 – 1:20 p.m. (Int 2da)",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Mirsa Elizabeth Silva"]},"7":{name:"1:20 – 3:30 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Torres","Geraldine Alison Perez","Gloria (Gigi) Mastropole","Gloria Palmira Mastropole","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Nicasia Bravo De Gonzalez","Susana Zuñiga"]},"8":{name:"3:30 – 4:15 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Jaqueline Echavarria","Laura Esmeralda Amador Saucedo","Leticia Fernández","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Reyna Jetcél Hernandez Madrid","Sarah Martinez"]}};
 const VOL_SECTIONS=[{id:"vest-norte",label:"Vestíbulo Norte",pos:[101,102,103,104,105],color:"#5a1212",labelX:300,labelY:150},{id:"vest-portico",label:"Vestíbulo Pórtico",pos:[106,107,108,109],color:"#3d5a80",labelX:255,labelY:350},{id:"vest-sur",label:"Vestíbulo Sur",pos:[110,111,112,113,114],color:"#4a6b3a",labelX:300,labelY:550},{id:"aud-sur",label:"Auditorio Sur",pos:[115,116],color:"#c28a1c",labelX:780,labelY:680},{id:"aud-contra",label:"Auditorio Contrapared",pos:[117,118],color:"#a8251c",labelX:780,labelY:460},{id:"aud-norte",label:"Auditorio Norte",pos:[119,120],color:"#2c6e6e",labelX:780,labelY:260}];
 const VOL_POS_COORDS={101:{x:120,y:170},102:{x:210,y:170},103:{x:300,y:170},104:{x:390,y:170},105:{x:480,y:170},106:{x:120,y:370},107:{x:210,y:370},108:{x:300,y:370},109:{x:390,y:370},110:{x:120,y:570},111:{x:210,y:570},112:{x:300,y:570},113:{x:390,y:570},114:{x:480,y:570},115:{x:730,y:700},116:{x:830,y:700},117:{x:730,y:480},118:{x:830,y:480},119:{x:730,y:280},120:{x:830,y:280}};
@@ -413,21 +476,21 @@ const D={"caps":["Eliud Luna","Hugo Galvan","Jimmy Vasquez","José A. González"
 "cap":{"A1":0,"A2":464,"A3":475,"A4":464,"A5":0,"B1":0,"B2":158,"B3":156,"B4":158,"B5":0},"expect":2474};
 for(const k in VOL_POS_COORDS){D.pos[k]={who:"",t:"Voluntaria "+k,x:VOL_POS_COORDS[k].x,y:VOL_POS_COORDS[k].y,l:0,a:"vol",v:1}}
 const ADM=[
-  {"n":"Sergio E. Vazquez Jr.","pwd":"acomodadores2026","all":1,"cnt":1,"adm":1,"areas":[]},
-  {"n":"Alberto Herrera","pwd":"seccion@","all":1,"cnt":1,"adm":1,"areas":[]},
+  {"n":"Sergio E. Vazquez Jr.","pwd":"acomodadores2026","all":1,"cnt":1,"adm":1,"areas":[],"walkersReset":1},
+  {"n":"Alberto Herrera","pwd":"seccion@","all":1,"cnt":1,"adm":1,"areas":[],"walkersReset":1},
   {"n":"Steven Snyder","pwd":"auxiliar2026","areas":["ctl","aud"],"adm":1,"cnt":1},
   {"n":"Jaime Palestina","pwd":"superaux2026","areas":["alm","ent"],"adm":1,"cnt":1},
   {"n":"Abdiel Juarez Jr.","pwd":"clave2026","areas":["aud"],"cnt":1,"adm":1},
-  {"n":"José A. González","pwd":"capitan2026","areas":["vol"],"adm":1},
-  {"n":"Carlos Vasquez","pwd":"limpieza2026","spillOnly":1,"spill":1,"areas":[]},
+  {"n":"José A. González","pwd":"capitan2026","areas":["vol"],"adm":1,"walkersReset":1},
+  {"n":"Jose Gonzalez Sr.","pwd":"jose2026","areas":["vol"],"adm":1,"walkersReset":1},
+  {"n":"Carlos Vasquez","pwd":"limpieza2026","adm":1,"spillOnly":1,"spill":1,"areas":[]},
   {"n":"Damian Fernandez","pwd":"damian2026","walkers":1,"spill":1,"limited":1,"adm":1,"areas":[]}
 ];
 
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const POS=Object.keys(D.pos).map(Number);
 const VOL_POS=[101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120];
-let moreOpen=false,centered=false;
-let spillMode=false, hl=null;
+let spillMode=false, hl=null, selectedSpill=null;
 
 const visible=n=>{
   if(!me) return false;
@@ -452,6 +515,18 @@ const P=n=>{const d=D.pos[n];const base=Object.assign({},d,(S.pos||{})[n]);if(d.
 const eff=n=>{const p=P(n);return p.sub||p.who||''};
 const isSpillOnly=()=>me&&me.spillOnly&&!me.all;
 const canCnt=()=>me&&(me.cnt||(S.cntOpen&&(D.caps.includes(me.n)||VOL_POS.some(n=>eff(n)===me.n))));
+
+function sectionOfSpill(x,y){
+  if(x>1050) return 'Plataforma';
+  if(x<500){
+    if(y<250) return 'Vestíbulo Norte';
+    if(y>500) return 'Vestíbulo Sur';
+    return 'Vestíbulo Pórtico';
+  }
+  if(y<350) return 'Auditorio Norte';
+  if(y>550) return 'Auditorio Sur';
+  return 'Auditorio Contrapared';
+}
 
 function volHistory(name){const res=[],vt=S.volTurnos||{};for(const t in vt)for(const p in vt[t])if(vt[t][p]===name)res.push({turno:+t,posicion:+p});return res.sort((a,b)=>a.turno-b.turno)}
 function countAsignadas(t){
@@ -484,7 +559,7 @@ function goMode(mode){
 }
 function goHome(){hideAll();$('homeScreen').hidden=false;}
 function hideAll(){
-  ['homeScreen','acomLoginScreen','acomApp','volLoginScreen','volView','adminLoginScreen','adminApp','walkersView'].forEach(id=>{if($(id))$(id).hidden=true});
+  ['homeScreen','acomLoginScreen','acomApp','volLoginScreen','volView','adminLoginScreen','adminApp','spillAdminApp','walkersView'].forEach(id=>{if($(id))$(id).hidden=true});
 }
 
 // ACOMODADOR
@@ -504,7 +579,7 @@ function acomEnter(name){
   $('btnWalkers').hidden=!(u.all||u.walkers||u.adm);
   start();
 }
-function acomLogout(){clearInterval(iv);me=null;S={};sel=null;hl=null;goHome();}
+function acomLogout(){clearInterval(iv);me=null;S={};sel=null;hl=null;spillMode=false;goHome();}
 
 // VOLUNTARIA
 function volSearch(q){
@@ -570,7 +645,7 @@ function renderVolMap(hist){
 // ADMIN
 function renderAdminLoginOptions(){
   const sel=$('adminUserSel');
-  sel.innerHTML='<option value="">Seleccione su nombre</option>'+ADM.filter(a=>a.adm&&!a.spillOnly).map(a=>`<option>${esc(a.n)}</option>`).join('');
+  sel.innerHTML='<option value="">Seleccione su nombre</option>'+ADM.filter(a=>a.adm).map(a=>`<option>${esc(a.n)}</option>`).join('');
 }
 function adminLogin(){
   const name=$('adminUserSel').value;
@@ -581,6 +656,13 @@ function adminLogin(){
   adminMe=u;
   me=u;
   hideAll();
+  if(u.spillOnly){
+    $('spillAdminApp').hidden=false;
+    $('spillAdminWho').textContent=u.n;
+    start();
+    renderSpillAdmin();
+    return;
+  }
   if(u.walkers && !u.all && (!u.areas || u.areas.length===0) && !u.cnt){
     walkerReturn='home';
     $('walkersView').hidden=false;
@@ -593,7 +675,7 @@ function adminLogin(){
   start();
   renderAdminView();
 }
-function adminLogout(){clearInterval(iv);adminMe=null;me=null;S={};hl=null;goHome();}
+function adminLogout(){clearInterval(iv);adminMe=null;me=null;S={};hl=null;selectedSpill=null;goHome();}
 function setAdminTab(t){
   adminTab=t;
   document.querySelectorAll('.admin-tabs button').forEach(b=>b.classList.toggle('on',b.dataset.adminTab===t));
@@ -739,7 +821,7 @@ async function adminAssign(pos,name){
   await load();
 }
 
-// CONTEO CON MÁXIMOS Y MAPA LATERAL
+// CONTEO ADMIN
 function renderAdminConteo(){
   const cnt=S.cnt||{}, exp=S.expect||D.expect;
   const total=Object.values(cnt).reduce((a,b)=>a+(+b||0),0);
@@ -755,16 +837,11 @@ function renderAdminConteo(){
     const max=(S.cap&&S.cap[sec]!==undefined)?S.cap[sec]:(D.cap[sec]||0);
     const atMax=max>0&&v>=max;
     const over=max>0&&v>max;
-    const canInc=!max||v<max;
     const isHl=hl===sec;
     html+=`<div class="cnt-sec${over?' over':atMax?' at-max':''}${isHl?' hl':''}" onclick="adminToggleHl('${sec}')" style="cursor:pointer">
       <div class="label">${sec}</div>
-      <div class="num">${v}</div>
+      <input type="number" min="0" ${max>0?`max="${max}"`:''} value="${v}" class="cnt-input${over?' over':''}" onchange="setCntValue('${sec}',this.value)" onclick="event.stopPropagation()">
       <div class="max">${max>0?`máx ${max}`:'sin límite'}</div>
-      <div class="btns">
-        <button onclick="event.stopPropagation();adminCnt('${sec}',-1)">−</button>
-        <button onclick="event.stopPropagation();adminCnt('${sec}',1)" ${canInc?'':'disabled'}>+</button>
-      </div>
       ${me.all?`<div class="edit-max" onclick="event.stopPropagation()"><span>máx:</span><input type="number" min="0" value="${max}" onchange="setCapMax('${sec}',this.value)"></div>`:''}
     </div>`;
   });
@@ -808,16 +885,18 @@ function renderAdminCntMapHighlight(){
   g.innerHTML=h;
 }
 
-function adminCnt(sec,d){
-  const max=(S.cap&&S.cap[sec]!==undefined)?S.cap[sec]:(D.cap[sec]||0);
-  let v=(S.cnt||{})[sec]||0;
-  if(d>0&&max>0&&v>=max){showToast(`Máximo alcanzado (${max}) para ${sec}`,true);return;}
-  v=Math.max(0,v+d);
-  if(!S.cnt)S.cnt={};
-  S.cnt[sec]=v;
-  put('cnt/'+sec,v);
+async function setCntValue(sec, value){
+  const n = parseInt(value) || 0;
+  const max = (S.cap && S.cap[sec]!==undefined) ? S.cap[sec] : (D.cap[sec]||0);
+  if(n < 0){ showToast('Debe ser mayor o igual a 0', true); renderAdminConteo(); return; }
+  if(max > 0 && n > max){ showToast(`Máximo es ${max} para ${sec}`, true); renderAdminConteo(); return; }
+  if(!S.cnt) S.cnt = {};
+  S.cnt[sec] = n;
+  await fetch(U('cnt/'+sec), {method:'PUT', body:JSON.stringify(n)});
+  showToast(`${sec}: ${n}`);
   renderAdminConteo();
 }
+
 function setCapMax(sec,val){
   const n=Math.max(0,parseInt(val)||0);
   if(!S.cap)S.cap={};
@@ -825,6 +904,127 @@ function setCapMax(sec,val){
   put('cap/'+sec,n);
   renderAdminConteo();
   showToast(`Máximo de ${sec} actualizado a ${n}`);
+}
+
+// SPILL ADMIN (Carlos)
+function renderSpillAdmin(){
+  const all = Object.entries(S.spills||{});
+  const active = all.filter(([,s])=>s.status!=='terminado').sort((a,b)=>b[1].ts-a[1].ts);
+  const done = all.filter(([,s])=>s.status==='terminado').sort((a,b)=>(b[1].tsDone||b[1].ts)-(a[1].tsDone||a[1].ts));
+
+  $('spillCountActive').textContent = `${active.length} activos`;
+
+  if(!active.length){
+    $('spillListAdmin').innerHTML='<div style="text-align:center;padding:24px;color:var(--muted);font-style:italic">Sin derrames activos</div>';
+  } else {
+    $('spillListAdmin').innerHTML = active.map(([id,sp])=>{
+      const color = SPILL_COLORS[sp.tipo] || '#999';
+      const sec = sectionOfSpill(sp.x, sp.y);
+      const hora = new Date(sp.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+      const isProc = sp.status==='proceso';
+      const isSelected = selectedSpill === id;
+      const colorClass = sp.tipo==='Comida'?'spill-color-comida':sp.tipo==='Bebida'?'spill-color-bebida':'spill-color-otro';
+      return `<div class="spill-card ${colorClass}${isSelected?' selected':''}">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+          <div style="flex:1;min-width:180px">
+            <div style="font-weight:700;font-size:15px;color:${color}">${esc(SPILL_LABELS[sp.tipo]||sp.tipo)}</div>
+            <div style="font-size:13px;color:var(--muted);margin-top:2px">Ubicación: ${esc(sec)}</div>
+            <div style="font-size:13px;color:var(--muted);margin-top:1px">Reportó: ${esc(sp.quien||'?')} · ${hora}</div>
+            <div style="font-size:12px;margin-top:3px"><b style="color:${isProc?'var(--warn)':'var(--err)'}">${sp.status.toUpperCase()}</b>${sp.quienLimpia?` · Limpiando: ${esc(sp.quienLimpia)}`:''}</div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button onclick="selectSpill('${id}')" style="padding:6px 12px;font-size:13px">${isSelected?'Ocultar':'Ver'}</button>
+            ${!isProc?`<button class="warn" onclick="takeSpillAdmin('${id}')" style="padding:6px 12px;font-size:13px">Tomar</button>`:''}
+            ${isProc?`<button class="ok" onclick="doneSpillAdmin('${id}')" style="padding:6px 12px;font-size:13px">Terminado</button>`:''}
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  if(!done.length){
+    $('spillListDone').innerHTML='<div style="text-align:center;padding:16px;color:var(--muted);font-style:italic">Sin derrames terminados</div>';
+  } else {
+    $('spillListDone').innerHTML = `<details><summary style="cursor:pointer;padding:8px;color:var(--muted);font-size:14px">${done.length} terminados hoy</summary>${done.map(([id,sp])=>{
+      const hora = new Date(sp.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+      const color = SPILL_COLORS[sp.tipo] || '#999';
+      const sec = sectionOfSpill(sp.x, sp.y);
+      return `<div style="padding:8px 12px;background:var(--ok-bg);border-left:3px solid ${color};border-radius:4px;margin-top:6px;font-size:13px">
+        <b>${esc(SPILL_LABELS[sp.tipo]||sp.tipo)}</b> · ${esc(sec)} · ${esc(sp.quien||'?')} · ${hora}
+      </div>`;
+    }).join('')}</details>`;
+  }
+
+  // Mini-map
+  let pins = '';
+  active.forEach(([id,sp])=>{
+    const color = SPILL_COLORS[sp.tipo] || '#999';
+    const isSel = selectedSpill === id;
+    const blink = isSel ? 'spill-pin-blink' : '';
+    const ring = isSel ? `<circle r="42" fill="none" stroke="${color}" stroke-width="3" opacity=".5">
+      <animate attributeName="r" values="32;52;32" dur="1s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values=".5;0;.5" dur="1s" repeatCount="indefinite"/>
+    </circle>` : '';
+    pins += `<g class="${blink}" style="cursor:pointer" onclick="selectSpill('${id}')" transform="translate(${sp.x} ${sp.y})">
+      ${ring}
+      <circle r="28" fill="${color}" stroke="#fff" stroke-width="3" opacity=".95"/>
+      <text text-anchor="middle" y="8" font-size="20" fill="#fff" font-weight="700">!</text>
+    </g>`;
+  });
+  $('spillMapPins').innerHTML = pins;
+}
+
+function selectSpill(id){
+  selectedSpill = selectedSpill === id ? null : id;
+  renderSpillAdmin();
+}
+
+async function takeSpillAdmin(id){
+  await fetch(U(`spills/${id}/status`),{method:'PUT',body:JSON.stringify('proceso')});
+  await fetch(U(`spills/${id}/quienLimpia`),{method:'PUT',body:JSON.stringify(adminMe.n)});
+  await fetch(U(`spills/${id}/tsProc`),{method:'PUT',body:JSON.stringify(Date.now())});
+  showToast('Derrame tomado');
+  await load();
+}
+
+async function doneSpillAdmin(id){
+  await fetch(U(`spills/${id}/status`),{method:'PUT',body:JSON.stringify('terminado')});
+  await fetch(U(`spills/${id}/tsDone`),{method:'PUT',body:JSON.stringify(Date.now())});
+  showToast('Derrame terminado');
+  await load();
+}
+
+function openSpillFullMap(){
+  const active = Object.entries(S.spills||{}).filter(([,s])=>s.status!=='terminado');
+  let pins = '';
+  active.forEach(([id,sp])=>{
+    const color = SPILL_COLORS[sp.tipo] || '#999';
+    const isSel = selectedSpill === id;
+    const blink = isSel ? 'spill-pin-blink' : '';
+    pins += `<g class="${blink}" style="cursor:pointer" onclick="selectSpill('${id}')" transform="translate(${sp.x} ${sp.y})">
+      ${isSel?`<circle r="45" fill="none" stroke="${color}" stroke-width="3" opacity=".6">
+        <animate attributeName="r" values="32;56;32" dur="1s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values=".6;0;.6" dur="1s" repeatCount="indefinite"/>
+      </circle>`:''}
+      <circle r="32" fill="${color}" stroke="#fff" stroke-width="4" opacity=".95"/>
+      <text text-anchor="middle" y="9" font-size="22" fill="#fff" font-weight="700">!</text>
+    </g>`;
+  });
+  $('modalBox').classList.add('wide');
+  showModal('Mapa completo de derrames',
+    `<div style="border:2px solid var(--ok);border-radius:8px;overflow:hidden;background:#fff">
+      <svg viewBox="0 0 1310 926" style="width:100%;height:auto;display:block">
+        <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
+        ${pins}
+      </svg>
+    </div>
+    <div class="cq-lg" style="margin-top:10px">
+      <span><i style="background:#4a6b3a"></i>Otro (vómito)</span>
+      <span><i style="background:#c28a1c"></i>Comida</span>
+      <span><i style="background:#a8251c"></i>Bebida</span>
+    </div>`,
+    [{text:'Cerrar', action:()=>{$('modalBox').classList.remove('wide');}}]);
+  $('modalBox').querySelector('.modal-btns button').addEventListener('click',()=>{$('modalBox').classList.remove('wide');});
 }
 
 // MAPA ADMIN
@@ -900,9 +1100,10 @@ async function load(){
     const r=await fetch(U('')+'?t='+Date.now());
     S=(await r.json())||{};
     net(true);
-    if(adminMe&&!$('adminApp').hidden) renderAdminView();
-    else if(me&&!$('acomApp').hidden) draw();
-    if(volCurrentName&&!$('volView').hidden) renderVolInfo(volCurrentName);
+    if(adminMe && adminMe.spillOnly && !$('spillAdminApp').hidden) renderSpillAdmin();
+    else if(adminMe && !$('adminApp').hidden) renderAdminView();
+    else if(me && !$('acomApp').hidden) draw();
+    if(volCurrentName && !$('volView').hidden) renderVolInfo(volCurrentName);
     if(!$('walkersView').hidden) drawWalkers();
   }catch(e){net(false);}
 }
@@ -941,7 +1142,7 @@ function drawMap(){
     for(const id in S.spills){
       const sp=S.spills[id];
       if(sp.status==='terminado')continue;
-      const color=sp.status==='proceso'?'#c28a1c':'#b8860b';
+      const color=SPILL_COLORS[sp.tipo]||'#b8860b';
       sh+=`<g class="spill" data-spill="${id}" transform="translate(${sp.x} ${sp.y})"><polygon points="0,-26 24,20 -24,20" fill="${color}" stroke="#fff" stroke-width="2" opacity="0.95"/><text text-anchor="middle" y="6" font-size="20" fill="#fff" font-weight="700" pointer-events="none">!</text></g>`;
     }
   }
@@ -1001,27 +1202,39 @@ function toggleCntPanel(){
 }
 
 function drawCnt(){
-  if(!canCnt()) return;
+  const canEdit=canCnt();
   const cnt=S.cnt||{};
   const secs=['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5'];
   let html=`<p style="margin:0 0 10px;font-size:13px;color:var(--muted)">Toca una sección para resaltarla en el mapa</p><div class="grid">`;
   secs.forEach(sec=>{
     const v=cnt[sec]||0;
     const max=(S.cap&&S.cap[sec]!==undefined)?S.cap[sec]:(D.cap[sec]||0);
-    const canInc=!max||v<max;
+    const over=max>0&&v>max;
+    const atMax=max>0&&v>=max;
     const isHl=hl===sec;
-    html+=`<div class="cnt-sec${max>0&&v>=max?' at-max':''}${isHl?' hl':''}" onclick="toggleHl('${sec}')" style="cursor:pointer">
+    html+=`<div class="cnt-sec${over?' over':atMax?' at-max':''}${isHl?' hl':''}" onclick="toggleHl('${sec}')" style="cursor:pointer">
       <div class="label">${sec}</div>
-      <div class="num">${v}</div>
+      ${canEdit
+        ? `<input type="number" min="0" ${max>0?`max="${max}"`:''} value="${v}" class="cnt-input${over?' over':''}" onchange="setCntValueAcom('${sec}',this.value)" onclick="event.stopPropagation()">`
+        : `<div class="num">${v}</div>`
+      }
       <div class="max">${max>0?`máx ${max}`:'sin límite'}</div>
-      <div class="btns">
-        <button onclick="event.stopPropagation();adminCnt('${sec}',-1)">−</button>
-        <button onclick="event.stopPropagation();adminCnt('${sec}',1)" ${canInc?'':'disabled'}>+</button>
-      </div>
     </div>`;
   });
   html+=`</div>`;
   $('cnt').innerHTML=html;
+}
+
+async function setCntValueAcom(sec, value){
+  const n = parseInt(value) || 0;
+  const max = (S.cap && S.cap[sec]!==undefined) ? S.cap[sec] : (D.cap[sec]||0);
+  if(n < 0){ showToast('Debe ser mayor o igual a 0', true); drawCnt(); return; }
+  if(max > 0 && n > max){ showToast(`Máximo es ${max} para ${sec}`, true); drawCnt(); return; }
+  if(!S.cnt) S.cnt = {};
+  S.cnt[sec] = n;
+  await fetch(U('cnt/'+sec), {method:'PUT', body:JSON.stringify(n)});
+  showToast(`${sec}: ${n}`);
+  drawCnt();
 }
 
 function toggleHl(sec){
@@ -1048,7 +1261,7 @@ function drawBar(){
     return;
   }
   const spillBtn=`<button onclick="toggleSpillMode()" style="background:${spillMode?'var(--warn)':'#fff'};color:${spillMode?'#fff':'var(--warn)'};border-color:var(--warn);font-weight:700">${spillMode?'Toca el mapa (ACTIVO)':'Reportar Derrame'}</button>`;
-  const cntBtn=canCnt()?`<button onclick="toggleCntPanel()" style="background:var(--gold);color:#fff;border-color:var(--gold);font-weight:700">Conteo</button>`:'';
+  const cntBtn=`<button onclick="toggleCntPanel()" style="background:var(--gold);color:#fff;border-color:var(--gold);font-weight:700">Conteo</button>`;
   $('bar').innerHTML=`${spillBtn}${cntBtn}`;
 }
 function drawMine(){
@@ -1080,13 +1293,15 @@ function drawSpills(){
   let h=`<div class="spill-panel"><h3>Derrames activos</h3>`;
   arr.forEach(([id,sp])=>{
     const hora=new Date(sp.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
-    h+=`<div class="spill-item${sp.status==='proceso'?' proc':''}"><b>${esc(sp.tipo)}</b> · ${sp.status.toUpperCase()}<div style="font-size:13px;color:var(--muted)">${esc(sp.quien)} · ${hora}</div></div>`;
+    const color=SPILL_COLORS[sp.tipo]||'#b8860b';
+    h+=`<div class="spill-item" style="border-left-color:${color}"><b style="color:${color}">${esc(SPILL_LABELS[sp.tipo]||sp.tipo)}</b> · ${sp.status.toUpperCase()}<div style="font-size:13px;color:var(--muted)">${esc(sp.quien)} · ${hora}</div></div>`;
   });
   h+='</div>';e.innerHTML=h;
 }
 function showSpillPanel(id){
   const sp=S.spills&&S.spills[id];if(!sp)return;
-  showModal(`Derrame · ${sp.tipo}`,`<div class="who"><b>Reportado por:</b> ${esc(sp.quien)}<br><b>Estado:</b> ${sp.status.toUpperCase()}</div>`,[{text:'Cerrar'}]);
+  const color=SPILL_COLORS[sp.tipo]||'#b8860b';
+  showModal(`Derrame · ${sp.tipo}`,`<div class="who" style="border-left-color:${color}"><b>Reportado por:</b> ${esc(sp.quien)}<br><b>Estado:</b> ${sp.status.toUpperCase()}</div>`,[{text:'Cerrar'}]);
 }
 
 // WALKERS
@@ -1102,15 +1317,28 @@ function openWalkers(from){
   walkerReturn=from||'home';
   hideAll();
   $('walkersView').hidden=false;
+  const canReset = me && (me.all || me.walkersReset);
+  $('btnResetWalkers').style.display = canReset ? 'inline-block' : 'none';
   loadWalkers();
 }
 function closeWalkers(){
   $('walkersView').hidden=true;
-  if(walkerReturn==='admin'&&adminMe){$('adminApp').hidden=false;renderAdminView();}
+  if(walkerReturn==='admin'&&adminMe&&adminMe.spillOnly){$('spillAdminApp').hidden=false;renderSpillAdmin();}
+  else if(walkerReturn==='admin'&&adminMe){$('adminApp').hidden=false;renderAdminView();}
   else if(walkerReturn==='acom'&&me){$('acomApp').hidden=false;draw();}
   else if(walkerReturn==='vol'&&volCurrentName){$('volView').hidden=false;renderVolInfo(volCurrentName);}
   else{adminMe=null;me=null;goHome();}
 }
+
+async function resetWalkersData(){
+  if(!confirm('¿Borrar TODOS los datos de walkers (asignaciones actuales y último ocupante)? Esta acción no se puede deshacer.')) return;
+  await fetch(`${CFG.DB}/walkersTest/w.json`, {method:'DELETE'});
+  await fetch(`${CFG.DB}/walkersTest/last.json`, {method:'DELETE'});
+  W_DATA={}; W_LAST={};
+  drawWalkers();
+  showToast('Walkers reiniciados');
+}
+
 async function loadWalkers(){
   try{
     const [rData,lData]=await Promise.all([
@@ -1158,7 +1386,6 @@ function drawWalkGrid(){
   $('walkCount').textContent=`${Object.keys(wk).length}/${WALKER_SLOTS.length} ocupados`;
 }
 
-// WALKER MODAL CON 3 OPCIONES
 function walkerTap(slot){
   const cur=W_DATA&&W_DATA[slot];
   const last=W_LAST&&W_LAST[slot];
