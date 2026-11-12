@@ -73,7 +73,6 @@ svg.map-svg{width:100%;height:auto;display:block;transition:width 0.2s}
 .mut{color:var(--muted)}h3{margin:0 0 6px;font-size:18px;color:var(--red)}
 .who{background:var(--card-alt);border-left:4px solid var(--red);padding:10px 12px;margin:10px 0;border-radius:0 6px 6px 0}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
-.t{border:1px solid var(--border);border-radius:6px;padding:10px;text-align:center;background:var(--card);cursor:pointer}.t b{font-size:26px;display:block;color:var(--red)}
 .bar{height:8px;background:#ddd0b0;border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--red);transition:width .3s}
 select,input{font:inherit;padding:11px;border:1px solid var(--border);border-radius:6px;width:100%;background:var(--card);color:var(--text);font-family:inherit}
 select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
@@ -109,7 +108,7 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 .pos-table tr:hover td{background:var(--card-alt)}
 .pos-table .pos-num{font-weight:700;color:var(--brown);width:44px;font-size:15px}
 .pos-table .pos-sec{font-size:12px;color:var(--muted)}
-.pos-table select{padding:6px 8px;font-size:13px;border-radius:4px}
+.pos-table select{padding:6px 8px;font-size:12px;border-radius:4px}
 .pos-table tr.assigned td{background:var(--ok-bg)}
 .side-panel{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto}
 .side-panel h3{margin:0 0 10px;font-size:14px;color:var(--brown);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
@@ -136,7 +135,7 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 .cnt-input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,134,11,.2)}
 .cnt-input.over{border-color:var(--err);background:var(--err-bg);color:var(--err)}
 .aux-item{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--card-alt);border-radius:6px;margin-bottom:6px;gap:8px}
-.aux-item .name{font-weight:600;flex:1}
+.aux-item .name{font-weight:600;flex:1;font-size:14px}
 .aux-item .turns{font-size:11px;color:var(--muted);margin-top:2px;font-weight:400}
 #walkersView{max-width:1100px;margin:12px auto;padding:12px}
 #walkGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px;margin-top:12px}
@@ -181,10 +180,14 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 .admin-map-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .admin-map-toolbar button{padding:12px 20px;font-size:14px}
 .admin-map-toolbar button.on{background:var(--brown);color:#fff;border-color:var(--brown)}
-.vol-marker{cursor:grab;transition:none}
+.vol-marker{cursor:grab;touch-action:none}
 .vol-marker:active{cursor:grabbing}
+#adminVolSvg{touch-action:none}
 #floatCamera{position:fixed;bottom:20px;right:20px;width:68px;height:68px;border-radius:50%;background:var(--gold);color:#fff;border:2px solid #fff;box-shadow:0 4px 16px rgba(184,134,11,.5);cursor:pointer;z-index:95;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:10px;font-weight:700;padding:4px;font-family:inherit}
 #floatCamera:hover{background:#8a6508;transform:scale(1.05)}
+.team-header{background:var(--brown-bg);padding:10px 14px;border-radius:6px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.team-header h3{margin:0;color:var(--brown-dark);font-size:14px;text-transform:uppercase;letter-spacing:.5px}
+.team-header small{font-size:12px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -275,18 +278,23 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
     <span id="adminWhoLabel" class="net"></span>
     <button onclick="openWalkers('admin')">Walkers</button>
     <button onclick="openCamera()" id="btnCameraAdmin" hidden style="background:var(--gold);border-color:var(--gold);color:#fff;font-weight:700">Escáner</button>
+    <button onclick="resetAllPresentes()" id="btnResetPresentes" hidden style="background:rgba(194,138,28,.9);border-color:rgba(194,138,28,.9);color:#fff;font-weight:700">Reiniciar Presentes</button>
     <button onclick="adminLogout()">Salir</button>
   </header>
   <main>
     <div class="admin-tabs">
-      <button data-admin-tab="acom" onclick="setAdminTab('acom')">Acomodadores</button>
+      <button data-admin-tab="equipo" onclick="setAdminTab('equipo')">Equipo</button>
       <button data-admin-tab="asignaciones" onclick="setAdminTab('asignaciones')" class="on">Voluntarias</button>
-      <button data-admin-tab="aux" onclick="setAdminTab('aux')">Auxiliares</button>
       <button data-admin-tab="conteo" onclick="setAdminTab('conteo')">Conteo</button>
       <button data-admin-tab="mapa" onclick="setAdminTab('mapa')">Mapa</button>
       <button data-admin-tab="limpieza" onclick="setAdminTab('limpieza')">Limpieza</button>
     </div>
-    <div id="adminTabAcom" hidden><div id="adminAcomTable"></div></div>
+    <div id="adminTabEquipo" hidden>
+      <div class="admin-container">
+        <div id="adminEquipoMain"></div>
+        <div class="side-panel" id="adminEquipoSide"></div>
+      </div>
+    </div>
     <div id="adminTabAsignaciones">
       <div class="clear-turno-bar">
         <span id="clearTurnoMsg">Turno actual: <b id="clearTurnoActual">T1</b></span>
@@ -299,16 +307,6 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
           <table class="pos-table"><thead><tr><th>Pos</th><th>Sección</th><th>Asignada</th></tr></thead><tbody id="adminPosTable"></tbody></table>
         </div>
         <div class="side-panel" id="adminSidePanel"></div>
-      </div>
-    </div>
-    <div id="adminTabAux" hidden>
-      <div class="card">
-        <h2 style="margin:0 0 12px;color:var(--brown);font-size:17px">Corredores</h2>
-        <div id="corredoresList"></div>
-      </div>
-      <div class="card" style="margin-top:14px">
-        <h2 style="margin:0 0 12px;color:var(--brown);font-size:17px">Cámaras</h2>
-        <div id="camarasList"></div>
       </div>
     </div>
     <div id="adminTabConteo" hidden><div class="card" id="adminCntCard"></div></div>
@@ -461,7 +459,6 @@ const SPILL_LABELS={'Otro':'Otro (vómito)','Comida':'Comida','Bebida':'Bebida'}
 const CAMERA_ACCESS=['Alfonso Hernández','Jimmy Vasquez','Steven Snyder'];
 const CAMERA_URL='https://abraham8a.github.io/LFAHAccess/Circuito/2026/11/14/';
 function openCamera(){window.open(CAMERA_URL,'_blank');}
-
 const TURNOS={"1":{name:"7:45 – 8:45 a.m.",vol:["Ana Sofia Bejerano","Ariane Agustin","Bridyit Perez","Cynthia Paola Gayosso","Elizabeth Snyder","Esther Morales","Geraldine Alison Perez","Jackelin Luna","Jaqueline Echavarria","Karla Garcia","Laura Esmeralda Amador Saucedo","Maria Rosa Garcia Zapata","Mirsa Elizabeth Silva","Nicasia Bravo De Gonzalez","Reyna Jetcél Hernandez Madrid","Sandra Vazquez","Sarah Martinez","Susana Zuñiga"]},"2":{name:"8:45 – 9:45 a.m.",vol:["Alicia González","Ana Sofia Bejerano","Bridyit Perez","Cynthia Paola Gayosso","Elizabeth Lopez","Elizabeth Snyder","Geraldine Alison Perez","Jackelin Luna","Jaqueline Echavarria","Karla Garcia","Laura Esmeralda Amador Saucedo","Leticia Fernández","Maria Fernanda Obispo","Maria Rosa Garcia Zapata","María Rosario Vizcarra","Mirsa Elizabeth Silva","Reyna Jetcél Hernandez Madrid","Sandra Vazquez","Sarah Martinez"]},"3":{name:"9:45 – 11:05 a.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Snyder","Geraldine Alison Perez","Irene Avila","Jaqueline Echavarria","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Sara del Carmen Gutierrez","Sarah Martinez"]},"4":{name:"11:05 a.m. – 12:05 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Snyder","Elizabeth Torres","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Mirsa Elizabeth Silva","Nicasia Bravo De Gonzalez"]},"5":{name:"12:05 – 12:40 p.m. (Int 1ra)",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Reyna Jetcél Hernandez Madrid"]},"6":{name:"12:40 – 1:20 p.m. (Int 2da)",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Mirsa Elizabeth Silva"]},"7":{name:"1:20 – 3:30 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Elizabeth Torres","Geraldine Alison Perez","Gloria (Gigi) Mastropole","Gloria Palmira Mastropole","Irene Avila","Laura Esmeralda Amador Saucedo","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Nicasia Bravo De Gonzalez","Susana Zuñiga"]},"8":{name:"3:30 – 4:15 p.m.",vol:["Alexia Ramirez","Ana Sofia Bejerano","Cynthia Paola Gayosso","Geraldine Alison Perez","Irene Avila","Jaqueline Echavarria","Laura Esmeralda Amador Saucedo","Leticia Fernández","Maria avila","Maria Fernanda Obispo","Maria Gayosso","Reyna Jetcél Hernandez Madrid","Sarah Martinez"]}};
 const VOL_SECTIONS=[{id:"vest-norte",label:"Vestíbulo Norte",pos:[101,102,103,104,105],color:"#5a1212"},{id:"vest-portico",label:"Vestíbulo Pórtico",pos:[106,107,108,109],color:"#3d5a80"},{id:"vest-sur",label:"Vestíbulo Sur",pos:[110,111,112,113,114],color:"#4a6b3a"},{id:"aud-sur",label:"Auditorio Sur",pos:[115,116],color:"#c28a1c"},{id:"aud-contra",label:"Auditorio Contrapared",pos:[117,118],color:"#a8251c"},{id:"aud-norte",label:"Auditorio Norte",pos:[119,120],color:"#2c6e6e"}];
 const VOL_POS_COORDS={101:{x:120,y:170},102:{x:210,y:170},103:{x:300,y:170},104:{x:390,y:170},105:{x:480,y:170},106:{x:120,y:370},107:{x:210,y:370},108:{x:300,y:370},109:{x:390,y:370},110:{x:120,y:570},111:{x:210,y:570},112:{x:300,y:570},113:{x:390,y:570},114:{x:480,y:570},115:{x:730,y:700},116:{x:830,y:700},117:{x:730,y:480},118:{x:830,y:480},119:{x:730,y:280},120:{x:830,y:280}};
@@ -473,10 +470,10 @@ const D={"caps":["Eliud Luna","Hugo Galvan","Jimmy Vasquez","José A. González"
 "cap":{"A1":0,"A2":464,"A3":475,"A4":464,"A5":0,"B1":0,"B2":158,"B3":156,"B4":158,"B5":0},"expect":2474};
 for(const k in VOL_POS_COORDS){D.pos[k]={who:"",t:"Voluntaria "+k,x:VOL_POS_COORDS[k].x,y:VOL_POS_COORDS[k].y,l:0,a:"vol",v:1}}
 const ADM=[
-  {"n":"Sergio E. Vazquez Jr.","pwd":"acomodadores2026","all":1,"cnt":1,"adm":1,"areas":[],"walkersReset":1},
-  {"n":"Alberto Herrera","pwd":"seccion@","all":1,"cnt":1,"adm":1,"areas":[],"walkersReset":1},
+  {"n":"Sergio E. Vazquez Jr.","pwd":"acomodadores2026","all":1,"cnt":1,"adm":1,"areas":[],"walkersReset":1,"resetPresentes":1},
+  {"n":"Alberto Herrera","pwd":"seccion@","all":1,"cnt":1,"adm":1,"areas":[],"walkersReset":1,"resetPresentes":1},
   {"n":"Steven Snyder","pwd":"auxiliar2026","areas":["ctl","aud"],"adm":1,"cnt":1},
-  {"n":"Jaime Palestina","pwd":"superaux2026","areas":["alm","ent"],"adm":1,"cnt":1},
+  {"n":"Jaime Palestina","pwd":"superaux2026","areas":["alm","ent"],"adm":1,"cnt":1,"resetPresentes":1},
   {"n":"Abdiel Juarez Jr.","pwd":"clave2026","areas":["aud"],"cnt":1,"adm":1},
   {"n":"José A. González","pwd":"capitan2026","pwd2":"jose2026","areas":["vol"],"adm":1,"walkersReset":1},
   {"n":"Carlos Vasquez","pwd":"limpieza2026","adm":1,"spillOnly":1,"spill":1,"areas":[]},
@@ -491,6 +488,7 @@ let spillMode=false, hl=null, selectedSpill=null, adminMoveMode=false, currentVo
 let lastSelectTurno='1';
 
 function shouldSkipRender(){
+  if(currentVolDrag) return true;
   const ae=document.activeElement;
   if(!ae) return false;
   if(ae.tagName!=='INPUT' && ae.tagName!=='SELECT' && ae.tagName!=='TEXTAREA') return false;
@@ -533,8 +531,6 @@ const coordsOf=(pos,turno)=>{
 const P=n=>{const d=D.pos[n];const base=Object.assign({},d,(S.pos||{})[n]);if(d.v===1){const who=(S.volTurnos&&S.volTurnos[currentTurnoGlobal]&&S.volTurnos[currentTurnoGlobal][n])||"";return Object.assign({},base,{who})}return base};
 const eff=n=>{const p=P(n);return p.sub||p.who||''};
 const isSpillOnly=()=>me&&me.spillOnly&&!me.all;
-
-// FIX: solo capitanes, admins con cnt/all, o cuando cntOpen está activo
 const canCnt=()=>me&&(me.cnt||me.all||D.caps.includes(me.n)||S.cntOpen);
 
 function sectionOfSpill(x,y){
@@ -544,7 +540,6 @@ function sectionOfSpill(x,y){
   if(y>550) return 'Auditorio Sur';
   return 'Auditorio Contrapared';
 }
-
 function volHistory(name){
   const res=[],vt=S.volTurnos||{};
   for(const t in vt)for(const p in vt[t]){
@@ -683,15 +678,15 @@ function adminLogin(){
   $('adminWhoLabel').textContent=u.n;
   const showCam = CAMERA_ACCESS.some(n => nrm(n)===nrm(u.n));
   $('btnCameraAdmin').hidden = !showCam;
+  $('btnResetPresentes').hidden = !u.resetPresentes;
   start();renderAdminView();
 }
 function adminLogout(){clearInterval(iv);adminMe=null;me=null;S={};hl=null;selectedSpill=null;goHome();}
 function setAdminTab(t){
   adminTab=t;
   document.querySelectorAll('.admin-tabs button').forEach(b=>b.classList.toggle('on',b.dataset.adminTab===t));
-  $('adminTabAcom').hidden=t!=='acom';
+  $('adminTabEquipo').hidden=t!=='equipo';
   $('adminTabAsignaciones').hidden=t!=='asignaciones';
-  $('adminTabAux').hidden=t!=='aux';
   $('adminTabConteo').hidden=t!=='conteo';
   $('adminTabMapa').hidden=t!=='mapa';
   $('adminTabLimpieza').hidden=t!=='limpieza';
@@ -699,96 +694,151 @@ function setAdminTab(t){
 }
 function renderAdminView(){
   if(shouldSkipRender()) return;
-  if(adminTab==='acom') renderAdminAcomAsignaciones();
+  if(adminTab==='equipo') renderAdminEquipo();
   if(adminTab==='asignaciones'){renderAdminTurnoSelector();renderAdminAsignaciones();}
-  if(adminTab==='aux') renderAuxLists();
   if(adminTab==='conteo') renderAdminConteo();
   if(adminTab==='mapa' && currentAdminMapType) showAdminMap(currentAdminMapType);
   if(adminTab==='limpieza') renderSpillTab();
 }
 
-async function cleanOrphanVol(){
-  const orphans=[];
-  for(const t in S.volTurnos||{}){
-    for(const p in S.volTurnos[t]){
-      const numP=+p,name=S.volTurnos[t][p];
-      const valid=!isNaN(numP)&&VOL_POS.includes(numP)&&typeof name==='string'&&name.trim();
-      if(!valid) orphans.push({t,p,name});
+// =========== NUEVO: REINICIAR PRESENTES ===========
+async function resetAllPresentes(){
+  if(!confirm('¿Borrar TODOS los estados de "Aquí estoy" (Presente/Sustituto/Ausente)? Los hermanos volverán a "pendiente".')) return;
+  const updates={};
+  for(const n in S.pos||{}){
+    const st=S.pos[n]?.st;
+    if(st==='ok'||st==='sub'||st==='abs'||st==='pend'){
+      updates[`pos/${n}/st`]='pend';
+      updates[`pos/${n}/stAt`]=null;
+      S.pos[n].st='pend';
+      delete S.pos[n].stAt;
     }
   }
-  if(!orphans.length){showToast('No hay huérfanas');return;}
-  const list=orphans.map(o=>`T${o.t} · Pos "${o.p}" → "${o.name}"`).join('\n');
-  if(!confirm(`Se encontraron ${orphans.length} asignaciones huérfanas:\n\n${list}\n\n¿Limpiarlas?`)) return;
-  for(const o of orphans){
-    await fetch(U(`volTurnos/${o.t}/${o.p}`),{method:'DELETE'});
-    delete S.volTurnos[o.t][o.p];
-  }
-  showToast(`${orphans.length} limpiadas`);
-  renderAdminView();
-}
-async function clearTurno(){
-  const t=adminCurrentTurno, count=countAsignadas(t);
-  if(count===0){showToast('Turno vacío');return;}
-  if(!confirm(`¿Borrar TODAS las ${count} asignaciones del turno T${t}?`)) return;
-  await fetch(U(`volTurnos/${t}`),{method:'DELETE'});
-  if(S.volTurnos) delete S.volTurnos[t];
-  await load();
-  showToast(`T${t} limpiado (${count})`);
+  if(!Object.keys(updates).length){showToast('Nada que reiniciar');return;}
+  const res=await fetch(`${CFG.DB}/s.json`,{method:'PATCH',body:JSON.stringify(updates)});
+  if(res.ok){showToast('Presentes reiniciados');await load();}
+  else showToast('Error al reiniciar',true);
 }
 
-function renderAuxLists(){
-  const renderList=(group,id,showTurns)=>{
-    const list=S.auxGroups?.[group]||[];
-    if(!list.length){$(id).innerHTML='<p style="color:var(--muted);font-style:italic;padding:8px 0">Sin asignaciones</p>';return;}
-    $(id).innerHTML=list.map(name=>{
-      let turnsHtml='';
-      if(showTurns){
-        const turnosAvail=Object.entries(TURNOS).filter(([t,tt])=>tt.vol.includes(name)).map(([t])=>t);
-        if(turnosAvail.length) turnsHtml=`<div class="turns">Disponible: T${turnosAvail.join(', T')}</div>`;
-      }
-      return `<div class="aux-item"><div class="name">${esc(name)}${turnsHtml}</div><button class="danger" onclick="removeAuxPerson('${group}', this.dataset.name)" data-name="${esc(name)}" style="padding:6px 12px;font-size:13px">Quitar</button></div>`;
-    }).join('');
-  };
-  renderList('corredores','corredoresList',false);
-  renderList('camaras','camarasList',true);
-}
-async function removeAuxPerson(group,name){
-  if(!S.auxGroups?.[group]) return;
-  S.auxGroups[group]=S.auxGroups[group].filter(n=>n!==name);
-  await fetch(U(`auxGroups/${group}`),{method:'PUT',body:JSON.stringify(S.auxGroups[group])});
-  renderAuxLists();
-  showToast(`${name} removido`);
-}
+// =========== EQUIPO UNIFICADO ===========
+function renderAdminEquipo(){
+  const areas=[
+    {id:'alm',name:'Alarmas de Incendios'},
+    {id:'ctl',name:'Control y Plataforma'},
+    {id:'ent',name:'Entradas y Salidas'},
+    {id:'aud',name:'Auditorio'}
+  ];
+  const corredores=S.auxGroups?.corredores||[];
+  const camaras=S.auxGroups?.camaras||[];
 
-function renderAdminAcomAsignaciones(){
-  const areas=[{id:'alm',name:'Alarmas de Incendios'},{id:'ctl',name:'Control y Plataforma'},{id:'ent',name:'Entradas y Salidas'},{id:'aud',name:'Auditorio'}];
-  let html='';
+  // Build the main area
+  let mainHtml='';
+  const allAuxOpts = [
+    {label:'Corredores', list:corredores},
+    {label:'Cámaras', list:camaras}
+  ];
+
   for(const area of areas){
     const posInArea=POS.filter(n=>D.pos[n].a===area.id&&D.pos[n].v!==1);
     if(!posInArea.length)continue;
-    html+=`<div class="card" style="margin-bottom:14px"><h3 style="margin:0 0 10px;color:var(--brown);font-size:15px;text-transform:uppercase;letter-spacing:.5px">${area.name}</h3>`;
-    html+=`<table class="pos-table"><thead><tr><th>Pos</th><th>Tarea</th><th>Asignado</th></tr></thead><tbody>`;
+    mainHtml+=`<div class="card" style="margin-bottom:14px">
+      <div class="team-header"><h3>${area.name}</h3><small>${posInArea.length} posiciones</small></div>
+      <table class="pos-table"><thead><tr><th>Pos</th><th>Tarea</th><th>Acomodador</th><th>Apoyo</th></tr></thead><tbody>`;
     posInArea.forEach(n=>{
-      const current=(S.pos&&S.pos[n]&&S.pos[n].who)||D.pos[n].who||'';
-      const opts=['<option value="">— Sin asignar —</option>'];
+      const currentWho=(S.pos&&S.pos[n]&&S.pos[n].who)||D.pos[n].who||'';
+      const currentAux=(S.pos&&S.pos[n]&&S.pos[n].aux)||'';
+      const whoOpts=['<option value="">— Sin asignar —</option>'];
       const available=D.roster.filter(r=>r.c!=='Voluntaria');
-      const sorted=available.filter(r=>r.n===current).concat(available.filter(r=>r.n!==current).sort((a,b)=>a.n.localeCompare(b.n)));
-      sorted.forEach(r=>{opts.push(`<option value="${esc(r.n)}" ${r.n===current?'selected':''}>${esc(r.n)}</option>`);});
-      html+=`<tr class="${current?'assigned':''}"><td class="pos-num">${n}</td><td class="pos-sec">${esc(D.pos[n].t)}</td><td><select onchange="adminAssignAcom(${n},this.value)">${opts.join('')}</select></td></tr>`;
+      const sortedWho=available.filter(r=>r.n===currentWho).concat(available.filter(r=>r.n!==currentWho).sort((a,b)=>a.n.localeCompare(b.n)));
+      sortedWho.forEach(r=>{whoOpts.push(`<option value="${esc(r.n)}" ${r.n===currentWho?'selected':''}>${esc(r.n)}</option>`);});
+
+      const auxOpts=['<option value="">— Sin apoyo —</option>'];
+      allAuxOpts.forEach(grp=>{
+        if(!grp.list.length) return;
+        auxOpts.push(`<optgroup label="${grp.label}">`);
+        grp.list.forEach(name=>{
+          auxOpts.push(`<option value="${esc(name)}" ${name===currentAux?'selected':''}>${esc(name)}</option>`);
+        });
+        auxOpts.push(`</optgroup>`);
+      });
+
+      mainHtml+=`<tr class="${currentWho?'assigned':''}">
+        <td class="pos-num">${n}</td>
+        <td class="pos-sec">${esc(D.pos[n].t)}</td>
+        <td><select onchange="adminAssignAcom(${n},this.value)">${whoOpts.join('')}</select></td>
+        <td><select onchange="assignAuxToPos(${n},this.value)" style="background:${currentAux?'#f8f1dc':'#fbf6e8'}">${auxOpts.join('')}</select></td>
+      </tr>`;
     });
-    html+='</tbody></table></div>';
+    mainHtml+='</tbody></table></div>';
   }
-  $('adminAcomTable').innerHTML=html;
+  $('adminEquipoMain').innerHTML=mainHtml;
+
+  // Side: corredores + camaras lists
+  const auxAssignedCounts={};
+  for(const n in S.pos||{}){
+    const a=S.pos[n]?.aux;
+    if(a) auxAssignedCounts[a]=(auxAssignedCounts[a]||0)+1;
+  }
+
+  const renderAuxGroup=(title,list,group)=>{
+    if(!list.length) return `<div style="color:var(--muted);font-style:italic;padding:8px 0">Sin asignaciones</div>`;
+    return list.map(name=>{
+      const count=auxAssignedCounts[name]||0;
+      return `<div class="aux-item">
+        <div class="name">${esc(name)}${count>0?` <span style="color:var(--gold);font-size:11px;font-weight:700">(${count} apoyo${count>1?'s':''})</span>`:''}</div>
+        <button class="danger" onclick="removeAuxPerson('${group}', this.dataset.name)" data-name="${esc(name)}" style="padding:6px 12px;font-size:12px">Quitar</button>
+      </div>`;
+    }).join('');
+  };
+
+  let sideHtml=`
+    <h3>Corredores (${corredores.length})</h3>
+    <div style="margin-bottom:14px">${renderAuxGroup('corredores',corredores,'corredores')}</div>
+    <h3 style="margin-top:16px">Cámaras (${camaras.length})</h3>
+    <div>${renderAuxGroup('camaras',camaras,'camaras')}</div>
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.5">
+      <b>Nota:</b> Asigna un corredor o cámara como "Apoyo" de una posición. En el mapa se verá como círculo dorado junto al asignado.
+    </div>`;
+  $('adminEquipoSide').innerHTML=sideHtml;
 }
+
+async function assignAuxToPos(pos, auxName){
+  if(!S.pos) S.pos={};
+  if(!S.pos[pos]) S.pos[pos]={};
+  S.pos[pos].aux=auxName||null;
+  await fetch(U(`pos/${pos}`),{method:'PUT',body:JSON.stringify(S.pos[pos])});
+  showToast(auxName?`${auxName} → apoyo en Pos ${pos}`:`Apoyo liberado en Pos ${pos}`);
+  await load();
+}
+
 async function adminAssignAcom(pos,name){
   if(!S.pos)S.pos={};
   if(!S.pos[pos])S.pos[pos]={};
-  S.pos[pos].who=name;S.pos[pos].sub=null;S.pos[pos].st=name?'pend':null;S.pos[pos].stAt=Date.now();
+  S.pos[pos].who=name;
+  S.pos[pos].sub=null;
+  S.pos[pos].st=name?'pend':null;
+  S.pos[pos].stAt=Date.now();
   await fetch(U(`pos/${pos}`),{method:'PUT',body:JSON.stringify(S.pos[pos])});
   showToast(name?`${name} → ${pos}`:`Pos ${pos} libre`);
   await load();
 }
 
+async function removeAuxPerson(group,name){
+  if(!S.auxGroups?.[group]) return;
+  // Also remove from any pos that has them as aux
+  for(const n in S.pos||{}){
+    if(S.pos[n]?.aux===name){
+      S.pos[n].aux=null;
+      await fetch(U(`pos/${n}`),{method:'PUT',body:JSON.stringify(S.pos[n])});
+    }
+  }
+  S.auxGroups[group]=S.auxGroups[group].filter(n=>n!==name);
+  await fetch(U(`auxGroups/${group}`),{method:'PUT',body:JSON.stringify(S.auxGroups[group])});
+  showToast(`${name} removido`);
+  await load();
+}
+
+// =========== ASIGNACIONES VOLUNTARIAS ===========
 function renderAdminTurnoSelector(){
   const t8signedUp = TURNOS[8].vol;
   const t8assigned = (S.volTurnos && S.volTurnos[8]) || {};
@@ -838,7 +888,6 @@ function renderAdminAsignaciones(){
     <div class="stat-line"><span>Sin asignar</span><b style="color:${total-assigned>0?'var(--err)':'var(--ok)'}">${total-assigned}</b></div>
     <div class="stat-line"><span>Voluntarias turno</span><b>${available.length}</b></div>
   `;
-  // T8 mandatorio warning
   const t8signedUp = TURNOS[8].vol;
   const t8assigned = (S.volTurnos && S.volTurnos[8]) || {};
   const t8assignedNames = Object.values(t8assigned).filter(Boolean);
@@ -884,6 +933,34 @@ async function adminAssign(pos,name){
   await fetch(U(`volTurnos/${t}/${pos}`),{method:'PUT',body:JSON.stringify(name)});
   showToast(`${name} → T${t} · ${pos}`);
   await load();
+}
+async function cleanOrphanVol(){
+  const orphans=[];
+  for(const t in S.volTurnos||{}){
+    for(const p in S.volTurnos[t]){
+      const numP=+p,name=S.volTurnos[t][p];
+      const valid=!isNaN(numP)&&VOL_POS.includes(numP)&&typeof name==='string'&&name.trim();
+      if(!valid) orphans.push({t,p,name});
+    }
+  }
+  if(!orphans.length){showToast('No hay huérfanas');return;}
+  const list=orphans.map(o=>`T${o.t} · Pos "${o.p}" → "${o.name}"`).join('\n');
+  if(!confirm(`Se encontraron ${orphans.length} asignaciones huérfanas:\n\n${list}\n\n¿Limpiarlas?`)) return;
+  for(const o of orphans){
+    await fetch(U(`volTurnos/${o.t}/${o.p}`),{method:'DELETE'});
+    delete S.volTurnos[o.t][o.p];
+  }
+  showToast(`${orphans.length} limpiadas`);
+  renderAdminView();
+}
+async function clearTurno(){
+  const t=adminCurrentTurno, count=countAsignadas(t);
+  if(count===0){showToast('Turno vacío');return;}
+  if(!confirm(`¿Borrar TODAS las ${count} asignaciones del turno T${t}?`)) return;
+  await fetch(U(`volTurnos/${t}`),{method:'DELETE'});
+  if(S.volTurnos) delete S.volTurnos[t];
+  await load();
+  showToast(`T${t} limpiado (${count})`);
 }
 
 function renderAdminConteo(){
@@ -954,6 +1031,7 @@ function setCapMax(sec,val){
   showToast(`Máx ${sec}: ${n}`);
 }
 
+// =========== MAPA ADMIN ===========
 function toggleAdminMove(){
   adminMoveMode=!adminMoveMode;
   const btn=$('btnMoveVol');
@@ -1005,7 +1083,7 @@ function renderAdminMapVol(t){
     </g>`;
   });
   $('adminMapArea').innerHTML=`<div style="width:100%;border:2px solid var(--brown);border-radius:8px;overflow:hidden;position:relative">
-    <svg id="adminVolSvg" viewBox="0 0 1310 926" style="width:100%;height:auto;display:block" data-turno="${t}">
+    <svg id="adminVolSvg" viewBox="0 0 1310 926" style="width:100%;height:auto;display:block;touch-action:none" data-turno="${t}">
       <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
       <g>${markers}</g>
     </svg>
@@ -1016,31 +1094,48 @@ function attachVolDrag(turno){
   const svg=$('adminVolSvg');
   if(!svg||svg.dataset.dragBound) return;
   svg.dataset.dragBound='1';
+  svg.style.touchAction='none';
+  let dragState=null, rafId=null, pendingPos=null, matrix=null;
+
   svg.addEventListener('pointerdown',e=>{
-    const g=e.target.closest('.vol-marker');if(!g) return;
-    currentVolDrag={pos:+g.dataset.pos,el:g};
+    const g=e.target.closest('.vol-marker');
+    if(!g) return;
+    matrix=svg.getScreenCTM().inverse();
+    dragState={pos:+g.dataset.pos,el:g};
     g.style.cursor='grabbing';
+    g.style.filter='drop-shadow(0 0 10px rgba(184,134,11,.9))';
     try{svg.setPointerCapture(e.pointerId);}catch(_){}
     e.preventDefault();
   });
   svg.addEventListener('pointermove',e=>{
-    if(!currentVolDrag) return;
+    if(!dragState) return;
     const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;
-    const p=pt.matrixTransform(svg.getScreenCTM().inverse());
-    currentVolDrag.el.setAttribute('transform',`translate(${Math.round(p.x)} ${Math.round(p.y)})`);
+    const p=pt.matrixTransform(matrix);
+    pendingPos={x:Math.round(p.x),y:Math.round(p.y)};
+    if(!rafId){
+      rafId=requestAnimationFrame(()=>{
+        if(dragState && pendingPos){
+          dragState.el.setAttribute('transform',`translate(${pendingPos.x} ${pendingPos.y})`);
+        }
+        rafId=null;
+      });
+    }
   });
   svg.addEventListener('pointerup',async e=>{
-    if(!currentVolDrag) return;
-    const {pos,el}=currentVolDrag;
-    currentVolDrag=null;el.style.cursor='grab';
-    const trans=el.getAttribute('transform');
-    const m=trans.match(/translate\((-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)\)/);
-    if(m){
-      const x=Math.round(+m[1]),y=Math.round(+m[2]);
+    if(!dragState) return;
+    if(rafId){cancelAnimationFrame(rafId);rafId=null;}
+    if(pendingPos){
+      dragState.el.setAttribute('transform',`translate(${pendingPos.x} ${pendingPos.y})`);
+    }
+    const {pos,el}=dragState;
+    const px=pendingPos?.x, py=pendingPos?.y;
+    dragState=null;pendingPos=null;matrix=null;
+    el.style.cursor='grab';el.style.filter='';
+    if(px!=null && py!=null){
       if(!S.volPos)S.volPos={};
       if(!S.volPos[turno])S.volPos[turno]={};
-      S.volPos[turno][pos]={x,y};
-      const res=await fetch(U(`volPos/${turno}/${pos}`),{method:'PUT',body:JSON.stringify({x,y})});
+      S.volPos[turno][pos]={x:px,y:py};
+      const res=await fetch(U(`volPos/${turno}/${pos}`),{method:'PUT',body:JSON.stringify({x:px,y:py})});
       if(res.ok) showToast(`Pos ${pos} movida en T${turno}`);
       else showToast(`Error guardando`,true);
     }
@@ -1052,15 +1147,23 @@ function renderAdminMapAcom(){
     const c=coordsOf(n);
     const p=P(n);
     const w=p.who||p.sub||'';
+    const aux=S.pos?.[n]?.aux;
     const b=p.st==='ok'?['#4a6b3a','✓']:p.st==='abs'?['#a8251c','✕']:p.st==='sub'?['#777','S']:null;
     const fill=D.pos[n].l?'var(--blue-a)':'var(--org-a)';
     markers+=`<circle cx="${c.x}" cy="${c.y}" r="19" fill="${fill}" stroke="#fff" stroke-width="2.5"/><text x="${c.x}" y="${c.y+6}" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">${n}</text>`;
     if(b){markers+=`<circle cx="${c.x+15}" cy="${c.y-15}" r="9" fill="${b[0]}" stroke="#fff" stroke-width="1.5"/><text x="${c.x+15}" y="${c.y-11}" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">${b[1]}</text>`;}
-    if(w){markers+=`<text x="${c.x}" y="${c.y+38}" text-anchor="middle" font-size="10" font-weight="600" fill="#333" style="paint-order:stroke;stroke:#fff;stroke-width:3">${esc(w.split(' ')[0])}</text>`;}
+    if(aux){
+      markers+=`<circle cx="${c.x+28}" cy="${c.y}" r="11" fill="var(--gold)" stroke="#fff" stroke-width="2"/>
+      <text x="${c.x+28}" y="${c.y+4}" text-anchor="middle" font-size="10" font-weight="700" fill="#fff" pointer-events="none">A</text>`;
+    }
+    if(w){
+      markers+=`<text x="${c.x}" y="${c.y+38}" text-anchor="middle" font-size="10" font-weight="600" fill="#333" style="paint-order:stroke;stroke:#fff;stroke-width:3">${esc(w.split(' ')[0])}</text>`;
+    }
   });
   $('adminMapArea').innerHTML=`<div style="width:100%;border:2px solid var(--brown);border-radius:8px;overflow:hidden"><svg viewBox="0 0 1310 926" style="width:100%;height:auto;display:block"><image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/><g>${markers}</g></svg></div>`;
 }
 
+// =========== SPILLS ===========
 function buildSpillContent(){
   const active=Object.entries(S.spills||{}).filter(([,s])=>s.status!=='terminado').sort((a,b)=>b[1].ts-a[1].ts);
   const done=Object.entries(S.spills||{}).filter(([,s])=>s.status==='terminado').sort((a,b)=>(b[1].tsDone||b[1].ts)-(a[1].tsDone||a[1].ts));
@@ -1142,6 +1245,7 @@ function openSpillFullMap(){
   showModal('Mapa completo',`<div style="border:2px solid var(--ok);border-radius:8px;overflow:hidden;background:var(--card)"><svg viewBox="0 0 1310 926" style="width:100%;height:auto;display:block"><image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>${pins}</svg></div>`,[{text:'Cerrar',action:()=>{$('modalBox').classList.remove('wide');}}]);
 }
 
+// =========== UTILS ===========
 function showToast(m,err){const c=document.getElementById('toast-container'),t=document.createElement('div');t.className='toast'+(err?' err':'');t.textContent=m;c.appendChild(t);setTimeout(()=>t.classList.add('show'),10);setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},3500);}
 function net(v){const e=$('net');if(!e)return;e.textContent=v?'En línea':'Sin conexión';e.className='net '+(v?'on':'off');}
 const U=p=>CFG.DB.replace(/\/$/,'')+'/s'+(p?'/'+p:'')+'.json';
@@ -1247,7 +1351,7 @@ function promptSpill(x,y){
     }}]);
 }
 function toggleCntPanel(){
-  if(!canCnt()){showToast('Conteo no disponible. Pide al superintendente que active "todos contar".',true);return;}
+  if(!canCnt()){showToast('Conteo no disponible',true);return;}
   const card=$('cntCard');card.hidden=!card.hidden;if(!card.hidden)drawCnt();
 }
 function drawCnt(){
@@ -1287,8 +1391,7 @@ function drawBar(){
   else{toolbar.classList.remove('spill-active');hint.textContent='Toca un número para ver detalles';}
   if(isSpillOnly()){$('bar').innerHTML=`<button onclick="toggleSpillMode()" style="background:${spillMode?'var(--warn)':'var(--card)'};color:${spillMode?'#fff':'var(--warn)'};border-color:var(--warn);font-weight:700;padding:14px 22px">${spillMode?'Cancelar':'Reportar Derrame'}</button>`;return;}
   const spillBtn=`<button onclick="toggleSpillMode()" style="background:${spillMode?'var(--warn)':'var(--card)'};color:${spillMode?'#fff':'var(--warn)'};border-color:var(--warn);font-weight:700">${spillMode?'Cancelar':'Reportar Derrame'}</button>`;
-  const showCntBtn = canCnt();
-  const cntBtn = showCntBtn ? `<button onclick="toggleCntPanel()" style="background:var(--gold);color:#fff;border-color:var(--gold);font-weight:700">Conteo</button>` : '';
+  const cntBtn=canCnt()?`<button onclick="toggleCntPanel()" style="background:var(--gold);color:#fff;border-color:var(--gold);font-weight:700">Conteo</button>`:'';
   $('bar').innerHTML=`${spillBtn}${cntBtn}`;
 }
 function drawMine(){
