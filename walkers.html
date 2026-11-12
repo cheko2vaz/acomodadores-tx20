@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Hermanas Voluntarias · Walkers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#4a6b3a;--primary-dark:#2e4a24;--accent:#b8860b;
+  --bg:#f4f9f1;--card:#fff;--card-alt:#e8f0e4;
+  --text:#1a1a1a;--muted:#5a6b4f;--border:#c0d4b0;
+  --ok:#2e7d32;--ok-bg:#e8f5e9;--err:#c62828;--err-bg:#fbeaea;
+  --warn:#e68a00;--warn-bg:#fff8e1;
+  --walker:#4a6b3a;--free:#9e9e9e;
+}
+[hidden]{display:none!important}*{box-sizing:border-box}
+body{margin:0;font:16px/1.5 'Noto Sans',system-ui,sans-serif;background:var(--bg);color:var(--text)}
+header{background:var(--primary);color:#fff;padding:12px 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+header h1{font-size:17px;margin:0;flex:1;min-width:160px;font-weight:700}
+.net{font-size:12px;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.18)}
+.net.on::before{content:"● ";color:#9fd49f}.net.off{background:#fff;color:var(--err);font-weight:700}
+.hbtn{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.3);padding:8px 14px;border-radius:6px;font:inherit;font-weight:600;cursor:pointer;font-size:14px}
+.hbtn:hover{background:rgba(255,255,255,.28)}
+main{max-width:1000px;margin:auto;padding:12px;display:grid;gap:12px}
+.card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px}
+.card h2{margin:0 0 12px;font-size:16px;color:var(--primary);font-weight:700}
+button{font:inherit;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:6px;padding:9px 14px;cursor:pointer;font-weight:600;transition:background .15s}
+button:hover{background:var(--card-alt)}
+button.pri{background:var(--primary);color:#fff;border-color:var(--primary)}button.pri:hover{background:var(--primary-dark)}
+button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
+button.danger{background:var(--err);color:#fff;border-color:var(--err)}
+input,select{font:inherit;padding:10px;border:1px solid var(--border);border-radius:6px;width:100%;background:#fff;color:var(--text)}
+input:focus,select:focus{outline:2px solid var(--accent);border-color:var(--accent)}
+/* Login */
+#loginScreen{position:fixed;inset:0;background:rgba(46,74,36,.97);display:grid;place-items:center;z-index:100;padding:12px}
+#loginBox{background:var(--bg);border-radius:10px;padding:24px;width:100%;max-width:400px;display:grid;gap:12px}
+#loginBox h2{margin:0;color:var(--primary);font-size:20px;text-align:center}
+/* Tabs */
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{flex:1;min-width:110px;padding:12px 8px;font-size:14px}
+.tabs button.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+/* Turnos */
+.turno-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px}
+.turno-header{background:var(--primary);color:#fff;padding:10px 14px;font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.turno-header .tc{font-size:12px;opacity:.85;font-weight:400}
+.turno-body{padding:12px 14px}
+.vol-chip{display:inline-flex;align-items:center;gap:6px;background:var(--card-alt);border:1px solid var(--border);border-radius:6px;padding:6px 10px;margin:3px;font-size:13px;font-weight:600}
+.vol-chip.present{background:var(--ok-bg);border-color:#a5d6a7;color:var(--ok)}
+.vol-chip.absent{background:var(--err-bg);border-color:#ef9a9a;color:var(--err)}
+.vol-chip button{background:none;border:none;padding:0;margin:0;cursor:pointer;font-size:14px;line-height:1}
+/* Walker slots */
+.slot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.slot{border:2px solid var(--border);border-radius:8px;padding:12px;text-align:center;cursor:pointer;transition:all .15s;background:#fff}
+.slot:hover{border-color:var(--accent)}
+.slot.occupied{background:var(--ok-bg);border-color:var(--ok)}
+.slot.occupied .slot-num{color:var(--ok)}
+.slot-num{font-size:22px;font-weight:700;color:var(--muted);display:block;line-height:1}
+.slot-owner{font-size:12px;font-weight:700;color:var(--text);margin-top:4px;word-break:break-word}
+.slot-time{font-size:11px;color:var(--muted);margin-top:2px}
+.slot.occupied .slot-num{color:var(--ok)}
+/* Stats */
+.stats-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.stat-box{flex:1;min-width:100px;background:var(--card-alt);border-radius:8px;padding:12px;text-align:center}
+.stat-box b{display:block;font-size:28px;font-weight:700;color:var(--primary);line-height:1}
+.stat-box small{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+/* Volunteer search (self-service) */
+.vol-result{border:2px solid var(--ok);border-radius:8px;padding:16px;background:var(--ok-bg);margin-top:10px}
+.vol-result h3{margin:0 0 8px;color:var(--ok)}
+.turno-line{padding:8px 10px;background:#fff;border-radius:6px;border:1px solid var(--border);margin-bottom:6px;font-size:14px}
+/* Modal */
+#modal{position:fixed;inset:0;background:rgba(26,15,10,.85);display:grid;place-items:center;padding:14px;z-index:9999}
+#modal[hidden]{display:none}
+#modal .box{background:var(--bg);border-radius:10px;padding:22px;width:100%;max-width:460px;display:grid;gap:12px;box-shadow:0 20px 50px rgba(0,0,0,.5);max-height:90vh;overflow-y:auto}
+#modal h2{margin:0;color:var(--primary);font-size:18px;font-weight:700}
+.modal-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.modal-btns button{flex:1}
+/* Toast */
+.toast-wrap{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:var(--ok);color:#fff;padding:13px 20px;border-radius:6px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;font-size:14px;max-width:340px;text-align:center}
+.toast.err{background:var(--err)}.toast.show{opacity:1}
+/* Walker log */
+.wlog-item{border:1px solid var(--border);border-left:4px solid var(--ok);border-radius:6px;padding:10px 12px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;background:#fff}
+.wlog-item.out{border-left-color:var(--muted);opacity:.7}
+</style>
+</head>
+<body>
+<div class="toast-wrap" id="toastWrap"></div>
+<div id="modal" hidden><div class="box" id="modalBox"></div></div>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div id="loginBox">
+    <h2>Hermanas Voluntarias</h2>
+    <p style="margin:0;color:var(--muted);font-size:13px;text-align:center">Walkers · Mayores y Discapacitados · La Feria TX</p>
+    <select id="loginType">
+      <option value="">¿Cómo deseas entrar?</option>
+      <option value="vol">Soy Voluntaria — Ver mi horario</option>
+      <option value="damian">Damián Fernández — Control Walkers</option>
+      <option value="jose">José González Sr. — Capitán 3</option>
+      <option value="sergio">Sergio E. Vazquez Jr. — Superintendente</option>
+      <option value="jaime">Jaime Palestina — Aux. Entradas</option>
+      <option value="steven">Steven Snyder — Aux. Asientos</option>
+    </select>
+    <div id="passSection" hidden>
+      <input type="password" id="loginPass" placeholder="Contraseña" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div id="volSection" hidden>
+      <input id="volName" placeholder="Escribe tu nombre para buscarlo..." oninput="searchVol(this.value)" autocomplete="off">
+      <div id="volNameResults"></div>
+    </div>
+    <button class="pri" onclick="doLogin()">Entrar</button>
+    <div id="loginErr" style="color:var(--err);font-weight:600;font-size:14px;min-height:18px;text-align:center"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" hidden>
+  <header>
+    <h1 id="appTitle">Voluntarias · Walkers</h1>
+    <span id="net" class="net"></span>
+    <span id="whoLabel" style="font-size:13px;background:rgba(255,255,255,.18);padding:4px 10px;border-radius:99px"></span>
+    <button class="hbtn" onclick="location.href='index.html'">← Volver</button>
+    <button class="hbtn" onclick="doLogout()">Salir</button>
+  </header>
+
+  <main>
+    <!-- Volunteer self-view -->
+    <div id="volView" hidden>
+      <div class="card">
+        <h2 id="volViewName"></h2>
+        <div id="volViewContent"></div>
+      </div>
+    </div>
+
+    <!-- Admin view tabs -->
+    <div id="adminView" hidden>
+      <div class="card" style="padding:10px">
+        <div class="tabs">
+          <button data-tab="turnos" onclick="setTab('turnos')" class="on">📋 Turnos</button>
+          <button data-tab="walkers" onclick="setTab('walkers')">♿ Walkers</button>
+          <button data-tab="lista" onclick="setTab('lista')">👥 Lista</button>
+        </div>
+      </div>
+
+      <!-- TURNOS -->
+      <div id="tabTurnos">
+        <div class="card">
+          <div class="stats-row" id="turnoStats"></div>
+        </div>
+        <div id="turnosList"></div>
+      </div>
+
+      <!-- WALKERS -->
+      <div id="tabWalkers" hidden>
+        <div class="card">
+          <h2>Control de Walkers / Carritos</h2>
+          <div class="stats-row" id="walkerStats"></div>
+        </div>
+        <div class="card">
+          <h2>Registrar Walker</h2>
+          <div style="display:grid;gap:10px">
+            <select id="walkerSlot">
+              <option value="">Espacio #...</option>
+            </select>
+            <input id="walkerOwner" placeholder="Nombre del dueño">
+            <select id="walkerType">
+              <option value="walker">Walker</option>
+              <option value="carrito">Carrito (silla de ruedas)</option>
+              <option value="baston">Bastón / Andadera</option>
+            </select>
+            <button class="ok" onclick="registerWalker()">Registrar</button>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Espacios</h2>
+          <div class="slot-grid" id="slotGrid"></div>
+        </div>
+        <div class="card">
+          <h2>Registro del Día</h2>
+          <div id="walkerLog"></div>
+        </div>
+      </div>
+
+      <!-- LISTA -->
+      <div id="tabLista" hidden>
+        <div class="card">
+          <h2>Todas las Hermanas Voluntarias</h2>
+          <input id="listaSearch" placeholder="Buscar nombre..." oninput="renderLista(this.value)" style="margin-bottom:10px">
+          <div id="listaContent"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const DB = "https://voluntariastx20-default-rtdb.firebaseio.com";
+
+const ADMIN_USERS = {
+  damian: { name:"Damián Fernández",    pass:"damian2026",        role:"walkers" },
+  jose:   { name:"José González Sr.",   pass:"capitan3-2026",     role:"admin" },
+  sergio: { name:"Sergio E. Vazquez Jr.", pass:"acomodadores2026", role:"admin" },
+  jaime:  { name:"Jaime Palestina",     pass:"superauxiliar2026", role:"admin" },
+  steven: { name:"Steven Snyder",       pass:"auxiliar2026",      role:"admin" },
+};
+
+// TURNO DEFINITIONS
+const TURNOS = [
+  { id:"T1", label:"7:45 – 8:45 a.m.", desc:"Recibir hermanos mayores de edad" },
+  { id:"T2", label:"8:45 – 9:45 a.m.", desc:"Continuar recibiendo y ayudar a sus asientos" },
+  { id:"T3", label:"9:45 – 11:05 a.m.", desc:"Estar pendientes de hermanos de edad" },
+  { id:"T4", label:"11:05 a.m. – 12:05 p.m.", desc:"Estar pendientes de hermanos de edad" },
+  { id:"T5", label:"12:05 – 12:40 p.m.", desc:"Primera mitad del intermedio" },
+  { id:"T6", label:"12:40 – 1:20 p.m.", desc:"Segunda mitad del intermedio" },
+  { id:"T7", label:"1:20 – 3:30 p.m.", desc:"Estar pendientes de hermanos de edad" },
+  { id:"T8", label:"3:30 – 4:15 p.m.", desc:"Despedir a hermanos de edad al vestíbulo" },
+];
+
+// VOLUNTEERS with their schedules (from CSV)
+const VOLUNTEERS = [
+  { name:"Alexia Ramirez",         cong:"Central",        phone:"(956) 801-4119", turnos:["T3","T4","T5","T6","T7","T8"] },
+  { name:"Alicia González",        cong:"Laguna Vista",   phone:"(956) 543-6316", turnos:["T2"] },
+  { name:"Ana Sofia Bejerano",     cong:"Laguna Vista",   phone:"(210) 803-3152", turnos:["T1","T2","T3","T4","T5","T6","T7","T8"] },
+  { name:"Ariane Agustin",         cong:"Laguna Vista",   phone:"(956) 543-6211", turnos:["T1"] },
+  { name:"Bridyit Perez",          cong:"El Jardin Heights", phone:"(956) 293-1628", turnos:["T1","T2"] },
+  { name:"Cynthia Paola Gayosso",  cong:"El Jardin Heights", phone:"(956) 407-3215", turnos:["T1","T2","T3","T4","T5","T6","T7","T8"] },
+  { name:"Elizabeth Lopez",        cong:"Galaxia",        phone:"(956) 909-1721", turnos:["T2"] },
+  { name:"Elizabeth Snyder",       cong:"Galaxia",        phone:"(956) 667-2410", turnos:["T1","T2","T3","T4"] },
+  { name:"Elizabeth Torres",       cong:"Sunrise",        phone:"(956) 620-8798", turnos:["T4","T7"] },
+  { name:"Esther Morales",         cong:"Laguna Vista",   phone:"(956) 579-8096", turnos:["T1"] },
+  { name:"Geraldine Alison Perez", cong:"El Jardin Heights", phone:"(956) 293-2978", turnos:["T1","T2","T3","T4","T5","T6","T7","T8"] },
+  { name:"Gloria (Gigi) Mastropole", cong:"Sunrise",      phone:"(956) 590-7261", turnos:["T7"] },
+  { name:"Gloria Palmira Mastropole", cong:"Sunrise",     phone:"(956) 442-3871", turnos:["T7"] },
+  { name:"Irene Avila",            cong:"Sunrise",        phone:"(956) 559-7683", turnos:["T3","T4","T5","T6","T7","T8"] },
+  { name:"Jackelin Luna",          cong:"Sunrise",        phone:"(956) 254-3488", turnos:["T1","T2"] },
+  { name:"Jaqueline Echavarria",   cong:"Laguna Vista",   phone:"(956) 442-5482", turnos:["T1","T2","T3","T8"], note:"Posiblemente Cámaras" },
+  { name:"Karla Garcia",           cong:"Los Cedros",     phone:"(956) 440-5788", turnos:["T1","T2"] },
+  { name:"Laura Esmeralda Amador Saucedo", cong:"Galaxia", phone:"(956) 536-5009", turnos:["T1","T2","T3","T4","T5","T6","T7","T8"] },
+  { name:"Maria Avila",            cong:"Sunrise",        phone:"(956) 517-6111", turnos:["T3","T4","T5","T6","T7","T8"] },
+  { name:"Maria Fernanda Obispo",  cong:"Laguna Vista",   phone:"(956) 442-4884", turnos:["T2","T3","T4","T5","T6","T7","T8"] },
+  { name:"Maria Gayosso",          cong:"El Jardin Heights", phone:"(956) 617-6683", turnos:["T3","T4","T5","T6","T7","T8"] },
+  { name:"Maria Rosa Garcia Zapata", cong:"Los Cedros",   phone:"(956) 674-1515", turnos:["T1","T2"] },
+  { name:"María Rosario Vizcarra", cong:"Sunrise",        phone:"(956) 310-8794", turnos:["T2"] },
+  { name:"Mirsa Elizabeth Silva",  cong:"Central",        phone:"(956) 280-4922", turnos:["T1","T2","T4","T6"] },
+  { name:"Nicasia Bravo De Gonzalez", cong:"Sunrise",     phone:"(956) 755-9754", turnos:["T1","T4","T7"] },
+  { name:"Reyna Jetcél Hernandez Madrid", cong:"Laguna Vista", phone:"(956) 484-2460", turnos:["T1","T2","T5","T8"] },
+  { name:"Sara del Carmen Gutierrez", cong:"Los Cedros",  phone:"(956) 543-8188", turnos:["T3"] },
+  { name:"Sarah Martinez",         cong:"Galaxia",        phone:"(956) 241-7667", turnos:["T1","T2","T3","T8"], note:"Posiblemente Cámaras" },
+  { name:"Sandra Vazquez",         cong:"Los Cedros",     phone:"(956) 521-5970", turnos:["T1","T2"] },
+  { name:"Susana Zuñiga",          cong:"Laguna Vista",   phone:"(956) 832-7284", turnos:["T7"] },
+  { name:"Leticia Fernández",      cong:"Los Cedros",     phone:"(956) 266-8609", turnos:["T2","T8"] },
+];
+
+// Walker slots: 20 spaces
+const WALKER_SLOTS = Array.from({length:20},(_,i)=>i+1);
+
+const $ = id => document.getElementById(id);
+let ME = null, WData = {}, pollIv = null;
+let loginMode = '';
+
+function esc(s){ return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+// LOGIN TYPE CHANGE
+$('loginType').addEventListener('change', function() {
+  loginMode = this.value;
+  $('passSection').hidden = loginMode === 'vol' || loginMode === '';
+  $('volSection').hidden = loginMode !== 'vol';
+  $('loginErr').textContent = '';
+});
+
+function searchVol(q) {
+  if (!q.trim()) { $('volNameResults').innerHTML=''; return; }
+  const ql = q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const matches = VOLUNTEERS.filter(v => v.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(ql));
+  $('volNameResults').innerHTML = matches.slice(0,5).map(v =>
+    `<div onclick="selectVol('${esc(v.name)}')" style="padding:10px;border:1px solid var(--border);border-radius:6px;cursor:pointer;margin-top:4px;background:#fff">
+      <b>${esc(v.name)}</b> <span style="font-size:12px;color:var(--muted)">${esc(v.cong)}</span>
+    </div>`
+  ).join('');
+}
+
+function selectVol(name) {
+  $('volName').value = name;
+  $('volNameResults').innerHTML = '';
+}
+
+function doLogin() {
+  loginMode = $('loginType').value;
+  if (!loginMode) { $('loginErr').textContent = 'Selecciona una opción'; return; }
+  if (loginMode === 'vol') {
+    const name = $('volName').value.trim();
+    const v = VOLUNTEERS.find(x => x.name.toLowerCase() === name.toLowerCase());
+    if (!v) { $('loginErr').textContent = 'Nombre no encontrado en la lista'; return; }
+    ME = { name:v.name, role:'vol', vol:v };
+    enterApp();
+    return;
+  }
+  const u = ADMIN_USERS[loginMode];
+  if (!u) return;
+  if ($('loginPass').value !== u.pass) { $('loginErr').textContent = 'Contraseña incorrecta'; return; }
+  ME = { name:u.name, role:u.role };
+  enterApp();
+}
+
+function enterApp() {
+  $('loginScreen').hidden = true;
+  $('app').hidden = false;
+  $('whoLabel').textContent = ME.name;
+  if (ME.role === 'vol') {
+    $('appTitle').textContent = 'Mis Turnos · Voluntarias';
+    $('volView').hidden = false;
+    renderVolView();
+  } else {
+    $('adminView').hidden = false;
+    loadAll();
+    pollIv = setInterval(loadAll, 8000);
+    if (ME.role === 'walkers') {
+      // Damian only sees walkers tab
+      setTab('walkers');
+    }
+  }
+}
+
+function doLogout() {
+  clearInterval(pollIv);
+  location.reload();
+}
+
+function net(on) {
+  const e = $('net');
+  e.textContent = on ? 'En línea' : 'Sin conexión';
+  e.className = 'net ' + (on ? 'on' : 'off');
+}
+
+async function fb(path) {
+  const r = await fetch(`${DB}/${path}.json?t=${Date.now()}`);
+  return r.json();
+}
+async function put(path, val) {
+  await fetch(`${DB}/${path}.json`, { method:'PUT', body:JSON.stringify(val) });
+}
+async function del(path) {
+  await fetch(`${DB}/${path}.json`, { method:'DELETE' });
+}
+
+async function loadAll() {
+  try {
+    const data = await fb('walkers');
+    WData = data || {};
+    net(true);
+    renderAll();
+  } catch(e) { net(false); }
+}
+
+function renderAll() {
+  const tab = document.querySelector('#adminView .tabs button.on')?.dataset.tab;
+  if (tab === 'turnos') renderTurnos();
+  if (tab === 'walkers') renderWalkers();
+  if (tab === 'lista') renderLista('');
+}
+
+function setTab(t) {
+  document.querySelectorAll('#adminView .tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+  $('tabTurnos').hidden = t !== 'turnos';
+  $('tabWalkers').hidden = t !== 'walkers';
+  $('tabLista').hidden = t !== 'lista';
+  if (t === 'turnos') renderTurnos();
+  if (t === 'walkers') renderWalkers();
+  if (t === 'lista') renderLista('');
+}
+
+// ---- VOLUNTEER SELF VIEW ----
+function renderVolView() {
+  const v = ME.vol;
+  $('volViewName').textContent = `Hola, ${v.name}`;
+  const myTurnos = TURNOS.filter(t => v.turnos.includes(t.id));
+  let html = `<p style="color:var(--muted);font-size:14px;margin:0 0 12px">Congregación: <b>${v.cong}</b> · Tel: ${v.phone}</p>`;
+  if (v.note) html += `<div style="background:var(--warn-bg);border-left:4px solid var(--warn);padding:10px 12px;border-radius:6px;font-size:13px;margin-bottom:12px"><b>Nota:</b> ${v.note}</div>`;
+  html += `<h3 style="margin:0 0 8px;font-size:15px;color:var(--primary)">Tus turnos asignados:</h3>`;
+  if (!myTurnos.length) {
+    html += `<p style="color:var(--muted)">No hay turnos registrados.</p>`;
+  } else {
+    myTurnos.forEach(t => {
+      html += `<div class="turno-line"><b>${t.label}</b><div style="font-size:12px;color:var(--muted)">${t.desc}</div></div>`;
+    });
+  }
+  html += `<div style="margin-top:16px;padding:12px;background:var(--card-alt);border-radius:8px;font-size:13px;color:var(--muted)">
+    <b style="color:var(--primary)">Área de trabajo:</b> Auditorio · Mayores de Edad y Hermanos Discapacitados<br>
+    <b style="color:var(--primary)">Capitán:</b> José González Sr.<br>
+    <b style="color:var(--primary)">Contacto en caso de duda:</b> Sergio E. Vazquez Jr.
+  </div>`;
+  $('volViewContent').innerHTML = html;
+}
+
+// ---- TURNOS ----
+function renderTurnos() {
+  const attendance = WData.attendance || {};
+  let totalVols = VOLUNTEERS.length;
+  let presentCount = Object.keys(attendance).filter(k => attendance[k]?.present).length;
+  $('turnoStats').innerHTML = `
+    <div class="stat-box"><b>${totalVols}</b><small>Total Voluntarias</small></div>
+    <div class="stat-box" style="border:2px solid ${presentCount>0?'#a5d6a7':'var(--border)'}"><b style="color:var(--ok)">${presentCount}</b><small>Confirmadas Hoy</small></div>
+    <div class="stat-box"><b style="color:var(--warn)">${totalVols - presentCount}</b><small>Sin confirmar</small></div>
+  `;
+  let html = '';
+  TURNOS.forEach(t => {
+    const inTurno = VOLUNTEERS.filter(v => v.turnos.includes(t.id));
+    const presentInTurno = inTurno.filter(v => attendance[volKey(v.name)]?.present).length;
+    html += `<div class="turno-card">
+      <div class="turno-header" onclick="toggleTurno('turnoBody_${t.id}')">
+        <span>⏱ ${t.label}</span>
+        <span class="tc">${t.desc} · ${presentInTurno}/${inTurno.length} confirmadas</span>
+      </div>
+      <div class="turno-body" id="turnoBody_${t.id}">`;
+    if (!inTurno.length) {
+      html += '<p style="color:var(--muted);font-size:13px">Sin voluntarias asignadas en este turno.</p>';
+    } else {
+      inTurno.forEach(v => {
+        const att = attendance[volKey(v.name)] || {};
+        const isPresent = !!att.present;
+        html += `<span class="vol-chip ${isPresent?'present':''}">
+          ${esc(v.name)}
+          ${isPresent
+            ? `<button title="Desmarcar" onclick="markVolAttendance('${volKey(v.name)}',false)">✓</button>`
+            : `<button title="Marcar presente" onclick="markVolAttendance('${volKey(v.name)}',true)" style="color:var(--ok)">+</button>`
+          }
+        </span>`;
+      });
+    }
+    html += `</div></div>`;
+  });
+  $('turnosList').innerHTML = html;
+}
+
+function toggleTurno(id) {
+  const el = $(id);
+  if (el) el.style.display = el.style.display === 'none' ? '' : 'none';
+}
+
+function volKey(name) {
+  return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'_').replace(/[^a-z_]/g,'');
+}
+
+async function markVolAttendance(key, present) {
+  await put(`walkers/attendance/${key}`, { present, updatedAt:Date.now(), updatedBy:ME.name });
+  toast(present ? 'Voluntaria marcada presente' : 'Marcada como no confirmada');
+  await loadAll();
+}
+
+// ---- WALKERS ----
+function renderWalkers() {
+  const slots = WData.slots || {};
+  const occupied = Object.values(slots).filter(s => s && s.owner).length;
+  const total = WALKER_SLOTS.length;
+  $('walkerStats').innerHTML = `
+    <div class="stat-box"><b style="color:var(--ok)">${occupied}</b><small>Ocupados</small></div>
+    <div class="stat-box"><b>${total - occupied}</b><small>Libres</small></div>
+    <div class="stat-box"><b>${total}</b><small>Total espacios</small></div>
+  `;
+  // Populate slot select
+  const sel = $('walkerSlot');
+  sel.innerHTML = '<option value="">Espacio #...</option>';
+  WALKER_SLOTS.forEach(n => {
+    const taken = slots[n] && slots[n].owner;
+    if (!taken) sel.innerHTML += `<option value="${n}">#${n}</option>`;
+  });
+  // Render grid
+  $('slotGrid').innerHTML = WALKER_SLOTS.map(n => {
+    const s = slots[n] || {};
+    const occ = !!s.owner;
+    const t = s.entryTime ? new Date(s.entryTime).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}) : '';
+    return `<div class="slot ${occ?'occupied':''}" onclick="${occ ? `freeSlot(${n})` : `selectSlot(${n})`}">
+      <span class="slot-num">${n}</span>
+      ${occ ? `<div class="slot-owner">${esc(s.owner)}</div><div class="slot-time">${esc(s.type||'')} · ${t}</div>` : `<div style="font-size:11px;color:var(--muted);margin-top:4px">Libre</div>`}
+    </div>`;
+  }).join('');
+  // Log
+  const log = WData.walkerLog || {};
+  const entries = Object.entries(log).sort((a,b) => b[1].ts - a[1].ts).slice(0,20);
+  if (!entries.length) {
+    $('walkerLog').innerHTML = '<p style="color:var(--muted);text-align:center;padding:16px">Sin registros aún.</p>';
+  } else {
+    $('walkerLog').innerHTML = entries.map(([id,e]) => {
+      const t = new Date(e.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+      const isOut = !!e.exitTs;
+      return `<div class="wlog-item ${isOut?'out':''}">
+        <div>
+          <b>Esp. #${e.slot}</b> · ${esc(e.owner)}
+          <div style="font-size:12px;color:var(--muted)">${esc(e.type||'')} · Entrada: ${t}${isOut?' · Salida: '+new Date(e.exitTs).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}):''}</div>
+        </div>
+        <span style="font-size:12px;font-weight:700;color:${isOut?'var(--muted)':'var(--ok)'}">${isOut?'Salió':'Dentro'}</span>
+      </div>`;
+    }).join('');
+  }
+}
+
+function selectSlot(n) {
+  $('walkerSlot').value = n;
+  $('walkerOwner').focus();
+}
+
+async function registerWalker() {
+  const slot = +$('walkerSlot').value;
+  const owner = $('walkerOwner').value.trim();
+  const type = $('walkerType').value;
+  if (!slot) { toast('Selecciona un espacio', true); return; }
+  if (!owner) { toast('Escribe el nombre del dueño', true); return; }
+  const entryTime = Date.now();
+  await put(`walkers/slots/${slot}`, { owner, type, entryTime });
+  const logId = entryTime + '_' + Math.random().toString(36).slice(2,5);
+  await put(`walkers/walkerLog/${logId}`, { slot, owner, type, ts:entryTime, registeredBy:ME.name });
+  $('walkerOwner').value = '';
+  toast(`Espacio #${slot} registrado para ${owner}`);
+  await loadAll();
+}
+
+async function freeSlot(n) {
+  const s = (WData.slots || {})[n];
+  if (!s || !s.owner) return;
+  showModal(`Liberar Espacio #${n}`,
+    `<p><b>${esc(s.owner)}</b> está en este espacio.<br>¿El hermano/a ya se fue?</p>`,
+    [{ text:'Sí, ya salió', cls:'ok', action: async () => {
+      // Mark log entry as exited
+      const log = WData.walkerLog || {};
+      const logEntry = Object.entries(log).find(([,e]) => e.slot === n && !e.exitTs);
+      if (logEntry) await put(`walkers/walkerLog/${logEntry[0]}/exitTs`, Date.now());
+      await del(`walkers/slots/${n}`);
+      toast(`Espacio #${n} liberado`);
+      await loadAll();
+    }},{ text:'Cancelar' }]
+  );
+}
+
+// ---- LISTA ----
+function renderLista(filter) {
+  const q = (filter||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const list = VOLUNTEERS.filter(v => !q || v.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q) || v.cong.toLowerCase().includes(q));
+  if (!list.length) { $('listaContent').innerHTML='<p style="color:var(--muted)">Sin resultados</p>'; return; }
+  $('listaContent').innerHTML = list.map(v => {
+    const myTurnoLabels = TURNOS.filter(t => v.turnos.includes(t.id)).map(t => t.label);
+    return `<div style="border:1px solid var(--border);border-radius:6px;padding:12px;margin-bottom:8px;background:#fff">
+      <div style="font-weight:700;font-size:15px">${esc(v.name)}</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">${esc(v.cong)} · ${esc(v.phone)}${v.note?` · <i>${esc(v.note)}</i>`:''}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px">${myTurnoLabels.map(l=>`<span style="font-size:12px;background:var(--ok-bg);color:var(--ok);border:1px solid #a5d6a7;border-radius:99px;padding:3px 9px;font-weight:600">${esc(l)}</span>`).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+// ---- MODAL / TOAST ----
+function showModal(title, bodyHtml, buttons) {
+  $('modalBox').innerHTML = `<h2>${esc(title)}</h2><div>${bodyHtml}</div><div class="modal-btns" id="mdlBtns"></div>`;
+  buttons.forEach(b => {
+    const btn = document.createElement('button');
+    btn.textContent = b.text; btn.className = b.cls||'';
+    btn.onclick = () => { if(b.action) b.action(); if(!b.keepOpen) $('modal').hidden=true; };
+    $('mdlBtns').appendChild(btn);
+  });
+  $('modal').hidden = false;
+}
+
+function toast(msg, err) {
+  const t = document.createElement('div');
+  t.className = 'toast'+(err?' err':''); t.textContent = msg;
+  $('toastWrap').appendChild(t);
+  setTimeout(()=>t.classList.add('show'),10);
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},3200);
+}
+</script>
+</body>
+</html>
