@@ -30,8 +30,10 @@ button:hover{background:var(--card-alt)}
 button.pri{background:var(--red);color:#fff;border-color:var(--red)}
 button.pri:hover{background:var(--red-dark)}
 button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
-button.warn{background:var(--err);color:#fff;border-color:var(--err)}
+button.warn{background:var(--warn);color:#fff;border-color:var(--warn)}
+button.danger{background:var(--err);color:#fff;border-color:var(--err)}
 button.on{background:var(--text);color:#fff;border-color:var(--text)}
+button:disabled{opacity:.4;cursor:not-allowed}
 header button{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.3)}
 header button:hover{background:rgba(255,255,255,.25)}
 main{max-width:1100px;margin:auto;padding:12px;display:grid;gap:12px}
@@ -87,17 +89,15 @@ svg.map-svg{width:100%;height:auto;display:block;transition:width 0.2s}
 .toast.err{background:var(--err)}.toast.show{opacity:1;transform:translateY(0)}
 .pc{cursor:pointer}.pc text{font:700 15px 'Noto Sans',sans-serif;fill:#fff;pointer-events:none}
 @keyframes bl{50%{opacity:.15}}.pulse{fill:none;stroke:var(--err);stroke-width:8;animation:bl 1s infinite}
-.tag{font-size:13px;padding:3px 9px;border-radius:99px;color:#fff;font-weight:700}.tag.b{background:var(--blue-a)}.tag.o{background:var(--org-a)}
 .mut{color:var(--muted)}h3{margin:0 0 6px;font-size:18px;color:var(--red)}
 .who{background:var(--card-alt);border-left:4px solid var(--red);padding:10px 12px;margin:10px 0;border-radius:0 6px 6px 0}
-a{color:var(--red);font-weight:600}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
 .t{border:1px solid var(--border);border-radius:6px;padding:10px;text-align:center;background:#fff;cursor:pointer}.t b{font-size:26px;display:block;color:var(--red)}
+.t.at-max{border-color:#ffcc80;background:var(--warn-bg)}
+.t.over{background:var(--err-bg);border-color:#ef9a9a}
 .bar{height:8px;background:#e0d8c4;border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--red);transition:width .3s}
-.sg{padding:10px 0;border-top:1px solid var(--border)}
 select,input{font:inherit;padding:11px;border:1px solid var(--border);border-radius:6px;width:100%;background:#fff;color:var(--text);font-family:inherit}
 select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
-.lg{display:flex;gap:14px;font-size:13px;flex-wrap:wrap}.lg i{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:4px;vertical-align:-2px}
 .dim{opacity:.4}
 .spill{cursor:pointer}
 .spill-panel{background:#fff;border:2px solid var(--gold);border-radius:8px;padding:14px;margin:8px 0}
@@ -109,12 +109,12 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 #adminApp header{background:var(--brown)}
 #adminApp main{max-width:1400px}
 .admin-tabs{display:flex;gap:6px;flex-wrap:wrap;background:#fff;border:1px solid var(--border);border-radius:8px;padding:6px}
-.admin-tabs button{flex:1;min-width:130px;padding:12px 16px;font-size:15px;border-radius:6px}
+.admin-tabs button{flex:1;min-width:110px;padding:12px 16px;font-size:14px;border-radius:6px}
 .admin-tabs button.on{background:var(--brown);color:#fff;border-color:var(--brown)}
 .admin-container{display:grid;grid-template-columns:1fr 320px;gap:14px;align-items:start}
 @media (max-width:900px){.admin-container{grid-template-columns:1fr}}
 .turno-selector{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.turno-selector button{flex:1;min-width:90px;padding:10px 8px;font-size:13px;border-radius:6px;line-height:1.2}
+.turno-selector button{flex:1;min-width:85px;padding:10px 8px;font-size:13px;border-radius:6px;line-height:1.2}
 .turno-selector button.on{background:var(--brown);color:#fff;border-color:var(--brown)}
 .turno-selector button small{display:block;font-size:11px;opacity:.7;margin-top:2px;font-weight:400}
 .pos-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;font-size:14px}
@@ -135,6 +135,21 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 .side-panel .avail-list{font-size:13px;line-height:1.8}
 .side-panel .avail-list .conflict{color:var(--err);font-size:11px;margin-left:4px}
 .side-panel .avail-list .ok-mark{color:var(--ok);margin-right:4px}
+.clear-turno-bar{background:var(--warn-bg);border:1px solid #f0d090;padding:10px 12px;border-radius:6px;margin-bottom:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.clear-turno-bar span{font-size:13px;color:#8a5a00;flex:1}
+
+/* CONTEO */
+.cnt-sec{border:1px solid var(--border);border-radius:8px;padding:12px;background:#fff;text-align:center;position:relative}
+.cnt-sec .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.cnt-sec .num{font-size:28px;font-weight:700;color:var(--brown);margin:4px 0}
+.cnt-sec .max{font-size:12px;color:var(--muted)}
+.cnt-sec.at-max{background:var(--warn-bg);border-color:#ffcc80}
+.cnt-sec.over{background:var(--err-bg);border-color:#ef9a9a}
+.cnt-sec.over .num{color:var(--err)}
+.cnt-sec .btns{display:flex;gap:4px;justify-content:center;margin-top:8px}
+.cnt-sec .btns button{padding:6px 14px;font-size:16px;font-weight:700}
+.cnt-sec .edit-max{margin-top:8px;display:flex;gap:4px;align-items:center;justify-content:center;font-size:12px;color:var(--muted)}
+.cnt-sec .edit-max input{width:70px;padding:4px 6px;font-size:12px;text-align:center}
 
 /* WALKERS */
 #walkersView{max-width:1100px;margin:12px auto;padding:12px}
@@ -157,12 +172,20 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 .cslot.occ text{fill:#fff;font-weight:700}
 @keyframes cqp{50%{opacity:.15}}
 .cq-latest{fill:none;stroke:#d11;stroke-width:3;animation:cqp .9s infinite;pointer-events:none}
+.walker-info{background:var(--ok-bg);border-left:4px solid var(--ok);padding:10px 12px;border-radius:6px;margin-bottom:10px;font-size:14px}
 
 /* MODAL */
 #modal{position:fixed;inset:0;background:rgba(26,15,10,.85);display:grid;place-items:center;padding:14px;z-index:9999}
 #modal[hidden]{display:none}
 #modal .box{background:var(--bg);border-radius:10px;padding:22px;width:100%;max-width:480px;display:grid;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.5);max-height:90vh;overflow-y:auto}
 #modal h2{margin:0;color:var(--red);font-size:19px;font-weight:700}
+.modal-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.modal-btns button{flex:1;min-width:90px}
+
+/* MAPA ADMIN */
+.admin-map-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.admin-map-toolbar button{padding:12px 20px;font-size:14px}
+.admin-map-toolbar button.on{background:var(--brown);color:#fff;border-color:var(--brown)}
 </style>
 </head>
 <body>
@@ -190,7 +213,7 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
     <button class="mode-card mode-admin" onclick="goMode('admin')">
       <svg class="mode-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
       <span class="mode-title">Administración</span>
-      <span class="mode-desc">Asignaciones, conteo y walkers</span>
+      <span class="mode-desc">Asignaciones, conteo, mapas y walkers</span>
     </button>
   </div>
   <div class="home-footer">Uso interno · Dept. de Acomodadores</div>
@@ -267,6 +290,7 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
       <button data-admin-tab="acom" onclick="setAdminTab('acom')">Acomodadores</button>
       <button data-admin-tab="asignaciones" onclick="setAdminTab('asignaciones')" class="on">Voluntarias</button>
       <button data-admin-tab="conteo" onclick="setAdminTab('conteo')">Conteo</button>
+      <button data-admin-tab="mapa" onclick="setAdminTab('mapa')">Mapa</button>
     </div>
 
     <div id="adminTabAcom" hidden>
@@ -274,6 +298,10 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
     </div>
 
     <div id="adminTabAsignaciones">
+      <div class="clear-turno-bar">
+        <span id="clearTurnoMsg">Turno actual: <b id="clearTurnoActual">T1</b></span>
+        <button class="warn" onclick="clearTurno()" style="padding:8px 14px;font-size:13px">Limpiar turno completo</button>
+      </div>
       <div class="turno-selector" id="adminTurnoSelector"></div>
       <div class="admin-container">
         <div>
@@ -287,7 +315,29 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
     </div>
 
     <div id="adminTabConteo" hidden>
-      <div class="card" id="adminCntCard"></div>
+      <div class="card">
+        <div class="row" style="justify-content:space-between;margin-bottom:14px">
+          <h2 style="margin:0;color:var(--brown);font-size:18px">Conteo por sección</h2>
+          <button onclick="put('cnt',null)" style="padding:8px 14px;font-size:13px">Reiniciar conteo</button>
+        </div>
+        <div id="adminCntGrid" class="grid"></div>
+        <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+          <button onclick="put('cntOpen',!S.cntOpen)" id="cntOpenBtn" style="padding:12px"></button>
+        </div>
+      </div>
+    </div>
+
+    <div id="adminTabMapa" hidden>
+      <div class="card">
+        <div class="admin-map-toolbar">
+          <button onclick="showAdminMap('vol')" id="btnMapVol">Ver Mapa Voluntarias</button>
+          <button onclick="showAdminMap('acom')" id="btnMapAcom">Ver Mapa Acomodadores</button>
+          <select id="adminMapTurno" onchange="if(currentAdminMapType) showAdminMap(currentAdminMapType)" style="width:auto;display:none"></select>
+        </div>
+        <div id="adminMapArea" style="min-height:200px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px;padding:40px">
+          Selecciona un mapa arriba para ver las posiciones.
+        </div>
+      </div>
     </div>
   </main>
 </div>
@@ -321,7 +371,7 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
       </svg>
     </div>
 
-    <div class="lg card" id="legend"></div>
+    <div class="lg card" id="legend" style="display:flex;gap:14px;font-size:13px;flex-wrap:wrap"></div>
     <div class="card" id="panel"></div>
     <div class="card" id="cntCard" hidden>
       <h3>Conteo por sección</h3>
@@ -340,11 +390,12 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
   <div style="max-width:1100px;margin:12px auto;padding:12px">
     <div class="card">
       <h2 style="margin:0 0 4px;font-size:18px;color:var(--ok)">Estacionamiento · Contra pared Auditorio</h2>
-      <p style="margin:0 0 12px;color:var(--muted);font-size:13px">Sección 117-118 · Toca un espacio para anotar o retirar</p>
+      <p style="margin:0 0 12px;color:var(--muted);font-size:13px">Sección 117-118 · Toca un espacio para ver, editar o remover</p>
       <svg id="walkCroquis" viewBox="0 0 440 700" style="width:100%;max-width:440px;display:block;margin:0 auto 6px;border:2px solid var(--ok);border-radius:10px;background:#faf7f0"></svg>
       <div class="cq-lg">
         <span><i style="background:#e0e0e0;border:1px solid #999"></i>Libre</span>
         <span><i style="background:#43a047"></i>Con walker</span>
+        <span style="color:var(--muted);font-size:12px">Toca un slot para gestionar</span>
       </div>
       <input type="text" id="walkerSearch" placeholder="Buscar por nombre..." oninput="searchWalker(this.value)" style="margin-top:10px;font-size:15px;padding:10px">
       <div id="walkGrid"></div>
@@ -383,7 +434,6 @@ const POS=Object.keys(D.pos).map(Number);
 const VOL_POS=[101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120];
 let moreOpen=false,centered=false;
 
-// FIX Alex: visible() con lógica correcta
 const visible=n=>{
   if(!me) return false;
   if(me.all) return true;
@@ -396,9 +446,10 @@ const visible=n=>{
 
 let iv=null,me=null,sel=null,S={},adminMe=null,adminCurrentTurno='1',adminTab='asignaciones';
 let currentTurnoGlobal=1;
-let walkerReturn='home',W_DATA={};
+let walkerReturn='home',W_DATA={},W_LAST={};
 let mainZoom=1,panelLocked=false;
 let volCurrentName=null;
+let currentAdminMapType=null;
 
 const sectionOf=pos=>VOL_SECTIONS.find(s=>s.pos.includes(+pos))||{label:"Extra",color:"#888"};
 const coordsOf=pos=>{const d=D.pos[pos];const s=(S.pos||{})[pos]||{};return{x:s.x!==undefined?s.x:d.x,y:s.y!==undefined?s.y:d.y}};
@@ -408,6 +459,13 @@ const isSpillOnly=()=>me&&me.spillOnly&&!me.all;
 const canCnt=()=>me&&(me.cnt||(S.cntOpen&&(D.caps.includes(me.n)||VOL_POS.some(n=>eff(n)===me.n))));
 
 function volHistory(name){const res=[],vt=S.volTurnos||{};for(const t in vt)for(const p in vt[t])if(vt[t][p]===name)res.push({turno:+t,posicion:+p});return res.sort((a,b)=>a.turno-b.turno)}
+function countAsignadas(t){
+  if(!S.volTurnos||!S.volTurnos[t]) return 0;
+  return VOL_POS.reduce((acc,pos)=>{
+    const name=S.volTurnos[t][pos];
+    return (name && typeof name==='string' && name.trim()) ? acc+1 : acc;
+  },0);
+}
 function canAssign(turno,pos,name){
   const t=+turno,volList=TURNOS[t]?TURNOS[t].vol:[];
   if(!volList.includes(name))return{ok:false,msg:"No se apuntó a este turno"};
@@ -484,7 +542,7 @@ function renderVolInfo(name){
       const sec=sectionOf(h.posicion);
       html+=`<div class="turno-pill"><b>T${h.turno}</b> · ${esc(TURNOS[h.turno].name)}<span class="pos-num">${h.posicion}</span><span style="font-size:12px;color:var(--muted);font-weight:400">${esc(sec.label)}</span></div>`;
     });
-    html+=`<div class="rules" style="background:var(--warn-bg);border:1px solid #f0d090;color:#8a5a00;padding:10px 12px;border-radius:6px;font-size:14px;margin:10px 0;line-height:1.6"><b>Reglas:</b> No consecutivos (excepto T1+T2). Máximo 4 turnos. T5 y T6 excluyentes.</div>`;
+    html+=`<div style="background:var(--warn-bg);border:1px solid #f0d090;color:#8a5a00;padding:10px 12px;border-radius:6px;font-size:14px;margin:10px 0;line-height:1.6"><b>Reglas:</b> No consecutivos (excepto T1+T2). Máximo 4 turnos. T5 y T6 excluyentes.</div>`;
   }
   html+='</div>';
   $('volInfoContent').innerHTML=html;
@@ -528,7 +586,6 @@ function adminLogin(){
   adminMe=u;
   me=u;
   hideAll();
-  // Walkers-only (Damian): va directo a walkers
   if(u.walkers && !u.all && (!u.areas || u.areas.length===0) && !u.cnt){
     walkerReturn='home';
     $('walkersView').hidden=false;
@@ -548,23 +605,32 @@ function setAdminTab(t){
   $('adminTabAcom').hidden=t!=='acom';
   $('adminTabAsignaciones').hidden=t!=='asignaciones';
   $('adminTabConteo').hidden=t!=='conteo';
+  $('adminTabMapa').hidden=t!=='mapa';
   renderAdminView();
 }
-function renderAdminTurnoSelector(){
-  const c=$('adminTurnoSelector');
-  c.innerHTML=Object.entries(TURNOS).map(([t,tt])=>{
-    const asg=S.volTurnos&&S.volTurnos[t]?Object.values(S.volTurnos[t]).filter(Boolean).length:0;
-    return `<button class="${adminCurrentTurno===t?'on':''}" onclick="setAdminTurno('${t}')">T${t}<small>${asg}/20 asignadas</small></button>`;
-  }).join('');
-}
-function setAdminTurno(t){adminCurrentTurno=t;currentTurnoGlobal=+t;renderAdminView();}
 function renderAdminView(){
   if(adminTab==='acom') renderAdminAcomAsignaciones();
   if(adminTab==='asignaciones'){renderAdminTurnoSelector();renderAdminAsignaciones();}
   if(adminTab==='conteo') renderAdminConteo();
+  if(adminTab==='mapa' && currentAdminMapType) showAdminMap(currentAdminMapType);
 }
 
-// NUEVA: portal asignaciones acomodadores
+// LIMPIAR TURNO
+async function clearTurno(){
+  const t=adminCurrentTurno;
+  const count=countAsignadas(t);
+  if(count===0){
+    showToast('El turno ya está vacío');
+    return;
+  }
+  if(!confirm(`¿Borrar TODAS las ${count} asignaciones del turno T${t}? Esta acción no se puede deshacer.`)) return;
+  await fetch(U(`volTurnos/${t}`),{method:'DELETE'});
+  if(S.volTurnos) delete S.volTurnos[t];
+  await load();
+  showToast(`Turno T${t} limpiado (${count} eliminadas)`);
+}
+
+// ASIGNACIONES ACOMODADORES
 function renderAdminAcomAsignaciones(){
   const areas=[
     {id:'alm',name:'Alarmas de Incendios'},
@@ -604,6 +670,16 @@ async function adminAssignAcom(pos,name){
   await load();
 }
 
+// ASIGNACIONES VOLUNTARIAS
+function renderAdminTurnoSelector(){
+  const c=$('adminTurnoSelector');
+  c.innerHTML=Object.entries(TURNOS).map(([t])=>{
+    const asg=countAsignadas(t);
+    return `<button class="${adminCurrentTurno===t?'on':''}" onclick="setAdminTurno('${t}')">T${t}<small>${asg}/20</small></button>`;
+  }).join('');
+  $('clearTurnoActual').textContent=`T${adminCurrentTurno}`;
+}
+function setAdminTurno(t){adminCurrentTurno=t;currentTurnoGlobal=+t;renderAdminView();}
 function renderAdminAsignaciones(){
   const t=adminCurrentTurno;
   const available=TURNOS[t].vol;
@@ -632,7 +708,7 @@ function renderAdminAsignaciones(){
   $('adminPosTable').innerHTML=rows;
 
   const total=VOL_POS.length;
-  const assigned=Object.values(asg).filter(Boolean).length;
+  const assigned=countAsignadas(t);
   const availNow=available.filter(name=>!Object.values(asg).includes(name));
   let sideHtml=`
     <div class="stat-line"><span>Total posiciones</span><b>${total}</b></div>
@@ -672,32 +748,117 @@ async function adminAssign(pos,name){
   showToast(`${name} → T${t} · Pos ${pos}`);
   await load();
 }
+
+// CONTEO CON MÁXIMOS
 function renderAdminConteo(){
   const cnt=S.cnt||{}, exp=S.expect||D.expect;
   const total=Object.values(cnt).reduce((a,b)=>a+(+b||0),0);
-  let html=`<h2 style="margin:0 0 12px;color:var(--brown)">Conteo por sección</h2>`;
-  html+=`<p style="font-size:20px;margin:0 0 12px"><b>${total}</b> / <b>${exp}</b> (${Math.round(100*total/exp)}%)</p>`;
+  const secs=['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5'];
+  let html='';
+  html+=`<div style="margin-bottom:14px;font-size:16px"><b>Total:</b> ${total} / ${exp} (${Math.round(100*total/exp)}%)</div>`;
   html+=`<div class="bar" style="margin-bottom:16px"><i style="width:${Math.min(100,100*total/exp)}%"></i></div>`;
-  html+=`<div class="grid">`;
-  ['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5'].forEach(sec=>{
+  secs.forEach(sec=>{
     const v=cnt[sec]||0;
-    html+=`<div class="t"><small style="font-size:12px;color:var(--muted)">${sec}</small><b>${v}</b>
-      <div class="row" style="justify-content:center;margin-top:6px"><button onclick="adminCnt('${sec}',-1)">−</button><button onclick="adminCnt('${sec}',1)">+</button></div>
+    const max=(S.cap&&S.cap[sec]!==undefined)?S.cap[sec]:(D.cap[sec]||0);
+    const atMax=max>0&&v>=max;
+    const over=max>0&&v>max;
+    const canInc=!max||v<max;
+    html+=`<div class="cnt-sec${over?' over':atMax?' at-max':''}">
+      <div class="label">${sec}</div>
+      <div class="num">${v}</div>
+      <div class="max">${max>0?`máx ${max}`:'sin límite'}</div>
+      <div class="btns">
+        <button onclick="adminCnt('${sec}',-1)">−</button>
+        <button onclick="adminCnt('${sec}',1)" ${canInc?'':'disabled'}>+</button>
+      </div>
+      ${me.all?`<div class="edit-max"><span>máx:</span><input type="number" min="0" value="${max}" onchange="setCapMax('${sec}',this.value)"></div>`:''}
     </div>`;
   });
-  html+=`</div>`;
-  html+=`<div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
-    <button onclick="put('cnt',null)" style="padding:12px">Reiniciar conteo</button>
-    <button onclick="put('cntOpen',${!S.cntOpen})" style="padding:12px;background:${S.cntOpen?'var(--err)':'var(--ok)'};color:#fff;border-color:${S.cntOpen?'var(--err)':'var(--ok)'}">${S.cntOpen?'Cerrar conteo a capitanes':'Abrir conteo a capitanes'}</button>
-  </div>`;
-  $('adminCntCard').innerHTML=html;
+  $('adminCntGrid').innerHTML=html;
+  $('cntOpenBtn').textContent=S.cntOpen?'Cerrar conteo a capitanes':'Abrir conteo a capitanes';
+  $('cntOpenBtn').style.background=S.cntOpen?'var(--err)':'var(--ok)';
+  $('cntOpenBtn').style.color='#fff';
+  $('cntOpenBtn').style.borderColor=S.cntOpen?'var(--err)':'var(--ok)';
 }
 function adminCnt(sec,d){
-  const v=Math.max(0,((S.cnt||{})[sec]||0)+d);
+  const max=(S.cap&&S.cap[sec]!==undefined)?S.cap[sec]:(D.cap[sec]||0);
+  let v=(S.cnt||{})[sec]||0;
+  if(d>0&&max>0&&v>=max){showToast(`Máximo alcanzado (${max}) para ${sec}`,true);return;}
+  v=Math.max(0,v+d);
   if(!S.cnt)S.cnt={};
   S.cnt[sec]=v;
   put('cnt/'+sec,v);
   renderAdminConteo();
+}
+function setCapMax(sec,val){
+  const n=Math.max(0,parseInt(val)||0);
+  if(!S.cap)S.cap={};
+  S.cap[sec]=n;
+  put('cap/'+sec,n);
+  renderAdminConteo();
+  showToast(`Máximo de ${sec} actualizado a ${n}`);
+}
+
+// MAPA ADMIN
+function showAdminMap(type){
+  currentAdminMapType=type;
+  $('btnMapVol').classList.toggle('on',type==='vol');
+  $('btnMapAcom').classList.toggle('on',type==='acom');
+  const tSel=$('adminMapTurno');
+  if(type==='vol'){
+    tSel.style.display='inline-block';
+    tSel.innerHTML=Object.entries(TURNOS).map(([t,tt])=>`<option value="${t}" ${t===adminCurrentTurno?'selected':''}>Turno T${t} · ${tt.name}</option>`).join('');
+    const t=tSel.value||adminCurrentTurno;
+    renderAdminMapVol(t);
+  }else{
+    tSel.style.display='none';
+    renderAdminMapAcom();
+  }
+}
+function renderAdminMapVol(t){
+  const asg=S.volTurnos&&S.volTurnos[t]||{};
+  let markers='';
+  VOL_POS.forEach(pos=>{
+    const c=coordsOf(pos);
+    const sec=sectionOf(pos);
+    const who=asg[pos]||'';
+    markers+=`<circle cx="${c.x}" cy="${c.y}" r="22" fill="${sec.color}" stroke="#fff" stroke-width="3"/>
+    <text x="${c.x}" y="${c.y+6}" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">${pos}</text>`;
+    if(who){
+      markers+=`<text x="${c.x}" y="${c.y+40}" text-anchor="middle" font-size="11" font-weight="600" fill="${sec.color}" style="paint-order:stroke;stroke:#fff;stroke-width:3">${esc(who.split(' ')[0])}</text>`;
+    }
+  });
+  $('adminMapArea').innerHTML=`<div style="width:100%;border:2px solid var(--brown);border-radius:8px;overflow:hidden">
+    <svg viewBox="0 0 1310 926" style="width:100%;height:auto;display:block">
+      <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
+      <g>${markers}</g>
+    </svg>
+  </div>`;
+}
+function renderAdminMapAcom(){
+  let markers='';
+  POS.filter(n=>D.pos[n].v!==1).forEach(n=>{
+    const c=coordsOf(n);
+    const p=P(n);
+    const w=p.who||p.sub||'';
+    const b=p.st==='ok'?['#4a6b3a','✓']:p.st==='abs'?['#a8251c','✕']:p.st==='sub'?['#777','S']:null;
+    const fill=D.pos[n].l?'var(--blue-a)':'var(--org-a)';
+    markers+=`<circle cx="${c.x}" cy="${c.y}" r="19" fill="${fill}" stroke="#fff" stroke-width="2.5"/>
+    <text x="${c.x}" y="${c.y+6}" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">${n}</text>`;
+    if(b){
+      markers+=`<circle cx="${c.x+15}" cy="${c.y-15}" r="9" fill="${b[0]}" stroke="#fff" stroke-width="1.5"/>
+      <text x="${c.x+15}" y="${c.y-11}" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">${b[1]}</text>`;
+    }
+    if(w){
+      markers+=`<text x="${c.x}" y="${c.y+38}" text-anchor="middle" font-size="10" font-weight="600" fill="#333" style="paint-order:stroke;stroke:#fff;stroke-width:3">${esc(w.split(' ')[0])}</text>`;
+    }
+  });
+  $('adminMapArea').innerHTML=`<div style="width:100%;border:2px solid var(--brown);border-radius:8px;overflow:hidden">
+    <svg viewBox="0 0 1310 926" style="width:100%;height:auto;display:block">
+      <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
+      <g>${markers}</g>
+    </svg>
+  </div>`;
 }
 
 // UTILS
@@ -780,7 +941,10 @@ function drawPanel(){
   h+=w?`<div class="who"><b>${esc(w)}</b></div>`:'<p class="mut">Sin asignar</p>';
   e.innerHTML=h;
 }
-function drawLegend(){$('legend').innerHTML=`<span><i style="background:var(--blue-a)"></i>Fija</span><span><i style="background:var(--org-a)"></i>Intermitente</span><span><i style="background:var(--ok)"></i>Presente</span><span><i style="background:var(--err)"></i>Ausente</span>`;}
+function drawLegend(){
+  const lg=$('legend');
+  if(lg) lg.innerHTML=`<span><i style="background:var(--blue-a);display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:4px;vertical-align:-2px"></i>Fija</span><span><i style="background:var(--org-a);display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:4px;vertical-align:-2px"></i>Intermitente</span><span><i style="background:var(--ok);display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:4px;vertical-align:-2px"></i>Presente</span><span><i style="background:var(--err);display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:4px;vertical-align:-2px"></i>Ausente</span>`;
+}
 function drawSpills(){
   const e=$('spillPanel');if(!e)return;
   const arr=Object.entries(S.spills||{}).filter(([,s])=>s.status!=='terminado').sort((a,b)=>b[1].ts-a[1].ts);
@@ -800,12 +964,16 @@ function showSpillPanel(id){
 function drawCntPanel(){
   if(!canCnt())return;
   const cnt=S.cnt||{};
-  let h=`<div class="card"><h3>Conteo por sección</h3><div class="grid">`;
-  ['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5'].forEach(sec=>{
-    h+=`<div class="t"><small>${sec}</small><b>${cnt[sec]||0}</b><div class="row" style="justify-content:center;margin-top:4px"><button onclick="put('cnt/${sec}',Math.max(0,${cnt[sec]||0}-1));">−</button><button onclick="put('cnt/${sec}',${(cnt[sec]||0)+1})">+</button></div></div>`;
+  const secs=['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5'];
+  let h=`<div class="grid">`;
+  secs.forEach(sec=>{
+    const v=cnt[sec]||0;
+    const max=(S.cap&&S.cap[sec]!==undefined)?S.cap[sec]:(D.cap[sec]||0);
+    const canInc=!max||v<max;
+    h+=`<div class="cnt-sec${max>0&&v>=max?' at-max':''}"><div class="label">${sec}</div><div class="num">${v}</div><div class="max">${max>0?`máx ${max}`:''}</div><div class="btns"><button onclick="adminCnt('${sec}',-1)">−</button><button onclick="adminCnt('${sec}',1)" ${canInc?'':'disabled'}>+</button></div></div>`;
   });
-  h+=`</div></div>`;
-  showModal('Conteo',h,[{text:'Cerrar'}]);
+  h+=`</div>`;
+  showModal('Conteo por sección',h,[{text:'Cerrar'}]);
 }
 
 // WALKERS
@@ -832,8 +1000,12 @@ function closeWalkers(){
 }
 async function loadWalkers(){
   try{
-    const r=await fetch(`${CFG.DB}/walkersTest/w.json?t=${Date.now()}`);
-    W_DATA=await r.json()||{};
+    const [rData,lData]=await Promise.all([
+      fetch(`${CFG.DB}/walkersTest/w.json?t=${Date.now()}`).then(r=>r.json()),
+      fetch(`${CFG.DB}/walkersTest/last.json?t=${Date.now()}`).then(r=>r.json())
+    ]);
+    W_DATA=rData||{};
+    W_LAST=lData||{};
     drawWalkers();
   }catch(e){}
 }
@@ -872,19 +1044,69 @@ function drawWalkGrid(){
   $('walkGrid').innerHTML=h;
   $('walkCount').textContent=`${Object.keys(wk).length}/${WALKER_SLOTS.length} ocupados`;
 }
-async function walkerTap(slot){
+
+// WALKER MODAL CON 3 OPCIONES
+function walkerTap(slot){
   const cur=W_DATA&&W_DATA[slot];
+  const last=W_LAST&&W_LAST[slot];
   if(cur){
-    if(confirm(`Retirar walker de "${cur.name}"?`)){
-      await fetch(`${CFG.DB}/walkersTest/w/${slot}.json`,{method:'DELETE'});
-      await loadWalkers();
-    }
-  }else{
-    const name=prompt(`Estacionamiento ${slot} - ¿Nombre del hermano/a?`);
-    if(!name||!name.trim())return;
-    await fetch(`${CFG.DB}/walkersTest/w/${slot}.json`,{method:'PUT',body:JSON.stringify({name:name.trim(),ts:Date.now()})});
-    await loadWalkers();
+    showModal(`Espacio ${slot}`,
+      `<div style="text-align:center;padding:16px 0">
+        <div style="font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Ocupado por</div>
+        <div style="font-weight:700;font-size:22px;color:var(--ok)">${esc(cur.name)}</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:6px">Registrado ${cur.ts?new Date(cur.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}):''}</div>
+      </div>`,
+      [
+        {text:'Aceptar'},
+        {text:'Editar', class:'warn', action:()=>walkerEdit(slot,cur.name)},
+        {text:'Remover', class:'danger', action:()=>walkerRemove(slot,cur.name)}
+      ]);
+  } else {
+    const lastMsg = last ? `<div class="walker-info"><b>Último ocupante:</b> ${esc(last.name)}<br><span style="font-size:12px;color:var(--muted)">Salió ${last.ts?new Date(last.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}):''}</span></div>` : '';
+    showModal(`Espacio ${slot} libre`,
+      `${lastMsg}
+      <p style="margin:8px 0;font-size:14px">Ingresa el nombre del hermano/a:</p>
+      <input id="walkerNameInput" placeholder="Nombre completo" autocomplete="off">
+      ${last?`<div style="margin-top:8px"><button onclick="walkerReassign('${slot}','${esc(last.name).replace(/'/g,"\\'")}')" style="width:100%;padding:10px;background:var(--warn-bg);color:#8a5a00;border-color:#f0d090;font-size:14px;font-weight:700">Volver a asignar a ${esc(last.name)}</button></div>`:''}`,
+      [
+        {text:'Cancelar'},
+        {text:'Guardar', class:'ok', keepOpen:false, action:()=>{
+          const nm=$('walkerNameInput').value.trim();
+          if(nm) walkerAssign(slot,nm);
+        }}
+      ]);
+    setTimeout(()=>{const inp=$('walkerNameInput');if(inp)inp.focus();},100);
   }
+}
+function walkerEdit(slot, oldName){
+  showModal(`Editar espacio ${slot}`,
+    `<p style="margin:0 0 8px;font-size:14px">Nombre actual: <b>${esc(oldName)}</b></p>
+     <input id="walkerEditInput" value="${esc(oldName)}" placeholder="Nuevo nombre" autocomplete="off">`,
+    [
+      {text:'Cancelar'},
+      {text:'Guardar', class:'ok', action:()=>{
+        const nm=$('walkerEditInput').value.trim();
+        if(nm && nm!==oldName) walkerAssign(slot,nm);
+      }}
+    ]);
+  setTimeout(()=>{const inp=$('walkerEditInput');if(inp){inp.focus();inp.select();}},100);
+}
+async function walkerAssign(slot, name){
+  await fetch(`${CFG.DB}/walkersTest/w/${slot}.json`,{method:'PUT',body:JSON.stringify({name, ts:Date.now()})});
+  await loadWalkers();
+  showToast(`${name} → Espacio ${slot}`);
+}
+async function walkerReassign(slot, name){
+  await walkerAssign(slot, name);
+  $('modal').hidden=true;
+}
+async function walkerRemove(slot, name){
+  if(!confirm(`¿Remover a ${name} del espacio ${slot}?`)) return;
+  // Guardar como último ocupante
+  await fetch(`${CFG.DB}/walkersTest/last/${slot}.json`,{method:'PUT',body:JSON.stringify({name, ts:Date.now()})});
+  await fetch(`${CFG.DB}/walkersTest/w/${slot}.json`,{method:'DELETE'});
+  await loadWalkers();
+  showToast(`${name} removido del espacio ${slot}`);
 }
 function searchWalker(q){
   const norm=q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
@@ -899,10 +1121,10 @@ function searchWalker(q){
 
 // MODAL
 function showModal(title,body,btns){
-  $('modalBox').innerHTML=`<h2>${esc(title)}</h2><div>${body}</div><div style="display:flex;gap:8px;margin-top:12px" id="mdlBtns"></div>`;
+  $('modalBox').innerHTML=`<h2>${esc(title)}</h2><div>${body}</div><div class="modal-btns" id="mdlBtns"></div>`;
   btns.forEach(b=>{
     const btn=document.createElement('button');
-    btn.textContent=b.text;btn.className=b.class||'';btn.style.flex='1';
+    btn.textContent=b.text;btn.className=b.class||'';
     btn.onclick=()=>{if(b.action)b.action();if(!b.keepOpen)$('modal').hidden=true;};
     $('mdlBtns').appendChild(btn);
   });
