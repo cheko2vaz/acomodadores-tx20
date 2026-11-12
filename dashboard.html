@@ -3,503 +3,619 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Panel del Comité · La Feria, TX</title>
+<title>Panel del Superintendente · La Feria TX</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 :root{
   --primary:#1a2332;--primary-dark:#0d1726;--accent:#4a90e2;
-  --bg:#eef1f4;--card:#fff;--card-alt:#e8edf2;
-  --text:#1a1a1a;--text-muted:#5a6b7c;--border:#cfd8e0;
-  --ok:#2e7d32;--warn:#e68a00;--err:#c62828;
+  --bg:#eef1f4;--card:#fff;--card-alt:#e4e9ef;
+  --text:#1a1a1a;--muted:#5a6b7c;--border:#cfd8e0;
+  --ok:#2e7d32;--ok-bg:#e8f5e9;--err:#c62828;--err-bg:#fbeaea;
+  --warn:#e68a00;--warn-bg:#fff8e1;
 }
 [hidden]{display:none!important}*{box-sizing:border-box}
-body{margin:0;font:16px/1.5 'Noto Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text)}
-header{background:var(--primary);color:#fff;padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:5;box-shadow:0 2px 10px rgba(0,0,0,.2)}
-header h1{font-size:19px;margin:0;flex:1;min-width:200px;font-weight:600;letter-spacing:.3px}
-header .sub{font-size:13px;opacity:.75;font-weight:400;margin-left:8px}
-header .clock,header .who{background:rgba(255,255,255,.1);padding:5px 12px;border-radius:99px;font-size:13px;font-variant-numeric:tabular-nums}
-header button{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);padding:8px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-family:inherit;font-size:14px}
-header button:hover{background:rgba(255,255,255,.25)}
-.net{font-size:12px;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.12)}
-.net.on::before{content:"● ";color:#7fe08a}.net.off{background:#fff;color:var(--err);font-weight:700}
-button{font:inherit;font-family:inherit;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:6px;padding:10px 14px;cursor:pointer;font-weight:600;transition:background .15s}
+body{margin:0;font:16px/1.5 'Noto Sans',system-ui,sans-serif;background:var(--bg);color:var(--text)}
+header{background:var(--primary);color:#fff;padding:12px 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:10;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+header h1{font-size:17px;margin:0;flex:1;min-width:160px;font-weight:700}
+.clock{background:rgba(255,255,255,.12);padding:4px 12px;border-radius:99px;font-size:13px;font-variant-numeric:tabular-nums;font-weight:600}
+.net{font-size:12px;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.18)}
+.net.on::before{content:"● ";color:#9fd49f}.net.off{background:#fff;color:var(--err);font-weight:700}
+.hbtn{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.3);padding:8px 14px;border-radius:6px;font:inherit;font-weight:600;cursor:pointer;font-size:14px}
+.hbtn:hover{background:rgba(255,255,255,.28)}
+/* Login */
+#loginScreen{position:fixed;inset:0;background:linear-gradient(135deg,var(--primary),var(--primary-dark));display:grid;place-items:center;z-index:100;padding:12px}
+#loginBox{background:var(--bg);border-radius:12px;padding:28px;width:100%;max-width:400px;display:grid;gap:14px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+#loginBox h1{margin:0;color:var(--primary);font-size:21px;font-weight:700;text-align:center}
+#loginBox p{margin:0;color:var(--muted);font-size:13px;text-align:center}
+main{max-width:1100px;margin:auto;padding:14px;display:grid;gap:14px}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px;box-shadow:0 1px 3px rgba(26,35,50,.05)}
+.card h2{margin:0 0 12px;font-size:16px;color:var(--primary);font-weight:700}
+button{font:inherit;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:6px;padding:10px 14px;cursor:pointer;font-weight:600;transition:background .15s}
 button:hover{background:var(--card-alt)}
-button.pri{background:var(--primary);color:#fff;border-color:var(--primary)}button.pri:hover{background:var(--primary-dark)}
+button.pri{background:var(--primary);color:#fff;border-color:var(--primary)}
 button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
 button.warn{background:var(--warn);color:#fff;border-color:var(--warn)}
 button.danger{background:var(--err);color:#fff;border-color:var(--err)}
-main{max-width:1100px;margin:auto;padding:14px;display:grid;gap:14px}
-.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px;box-shadow:0 1px 3px rgba(26,35,50,.05)}
-.card h2{margin:0 0 12px;font-size:17px;color:var(--primary);font-weight:700}
-.alert-bar{border-radius:10px;padding:14px 18px;font-weight:600;font-size:14px;line-height:1.7}
-.alert-bar.critical{background:#fbeaea;border:2px solid var(--err);color:#7a1c1c}
-.alert-bar.warning{background:#fef5e6;border:2px solid var(--warn);color:#8a5200}
-.alert-bar.empty{background:#eaf4ea;border:2px solid var(--ok);color:#1e4d22}
-.tabs{display:flex;gap:8px;flex-wrap:wrap}
-.tabs button{flex:1;min-width:140px;padding:14px 12px;font-size:15px}
-.tabs button.on{background:var(--primary);color:#fff;border-color:var(--primary)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
-.stat{background:var(--card-alt);border-radius:10px;padding:16px;text-align:center;border:2px solid transparent}
-.stat b{display:block;font-size:32px;line-height:1;margin-bottom:6px}
-.stat small{font-size:12px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.8px}
-.stat.ok{border-color:#a5d6a7;background:#eaf4ea}.stat.ok b{color:var(--ok)}
-.stat.warn{border-color:#ffcc80;background:#fef5e6}.stat.warn b{color:#8a5200}
-.stat.err{border-color:#ef9a9a;background:#fbeaea}.stat.err b{color:var(--err)}
-.stat.neutral{border-color:var(--border);background:var(--card-alt)}.stat.neutral b{color:var(--primary)}
-.stat.zone{border-color:#90b8e0;background:#e8f0fa}.stat.zone b{color:var(--accent)}
-.pos-chip{display:inline-block;background:#fbeaea;border:1px solid #ef9a9a;color:#7a1c1c;padding:6px 12px;border-radius:6px;margin:4px 4px 0 0;font-weight:700;font-size:14px;cursor:pointer}
-.pos-chip:hover{background:var(--err);color:#fff}
-.pos-list{max-height:300px;overflow-y:auto;padding:4px}
-.inside-item{background:#fff;border:1px solid var(--border);border-left:4px solid var(--ok);border-radius:8px;padding:14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.inside-item.long{border-left-color:var(--warn);background:#fef5e6}
-.inside-item .info{flex:1;min-width:180px}
-.inside-item .name{font-weight:700;font-size:16px}
-.inside-item .meta{font-size:13px;color:var(--text-muted);margin-top:2px}
-.inside-item .time{font-size:13px;color:var(--accent);font-weight:600;margin-top:4px}
-.spill-item{background:#fef5e6;border:1px solid #ffd699;border-left:4px solid var(--warn);border-radius:6px;padding:12px;margin-bottom:8px;font-size:14px}
-.spill-item.proc{border-left-color:#fbc02d;background:#fffde7}
-.empty{text-align:center;padding:28px;color:var(--text-muted);font-style:italic}
-input,select{font:inherit;font-family:inherit;padding:11px;border:1px solid var(--border);border-radius:6px;width:100%;background:#fff;color:var(--text)}
+input,select{font:inherit;padding:10px;border:1px solid var(--border);border-radius:6px;width:100%;background:#fff;color:var(--text)}
 input:focus,select:focus{outline:2px solid var(--accent);border-color:var(--accent)}
-.form-row{display:grid;gap:10px;margin-bottom:10px}
-.link-btn{display:inline-block;margin-top:12px;color:var(--primary);font-weight:600;text-decoration:none;font-size:14px;padding:10px 16px;background:var(--card-alt);border-radius:8px}
-.link-btn:hover{background:var(--primary);color:#fff}
-#modal{position:fixed;inset:0;background:rgba(13,23,38,.85);display:grid;place-items:center;padding:14px;z-index:9999}
-#modal[hidden]{display:none}
-#modal .box{background:var(--bg);border-radius:10px;padding:22px;width:100%;max-width:440px;display:grid;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
-#modal h2{margin:0;color:var(--primary);font-size:19px;font-weight:700}
+/* Alert bar */
+.alert-bar{border-radius:10px;padding:14px 18px;font-weight:600;font-size:14px;line-height:1.8}
+.alert-bar.all-ok{background:var(--ok-bg);border:2px solid #a5d6a7;color:#1a4d22}
+.alert-bar.warning{background:var(--warn-bg);border:2px solid #ffcc80;color:#8a5200}
+.alert-bar.critical{background:var(--err-bg);border:2px solid #ef9a9a;color:#7a1c1c}
+/* Tabs */
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{flex:1;min-width:120px;padding:12px 8px;font-size:14px}
+.tabs button.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+/* Stats grid */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.stat{background:var(--card-alt);border-radius:10px;padding:14px;text-align:center;border:2px solid transparent}
+.stat b{display:block;font-size:30px;line-height:1;margin-bottom:5px}
+.stat small{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.stat.ok{border-color:#a5d6a7;background:var(--ok-bg)}.stat.ok b{color:var(--ok)}
+.stat.warn{border-color:#ffcc80;background:var(--warn-bg)}.stat.warn b{color:var(--warn)}
+.stat.err{border-color:#ef9a9a;background:var(--err-bg)}.stat.err b{color:var(--err)}
+.stat.info{border-color:#90caf9;background:#e3f2fd}.stat.info b{color:#1565c0}
+/* Position chips */
+.chip{display:inline-block;padding:5px 11px;border-radius:6px;margin:3px;font-size:13px;font-weight:700;cursor:pointer}
+.chip.ok{background:var(--ok-bg);border:1px solid #a5d6a7;color:var(--ok)}
+.chip.pending{background:var(--card-alt);border:1px solid var(--border);color:var(--muted)}
+.chip.absent{background:var(--err-bg);border:1px solid #ef9a9a;color:var(--err)}
+.chip.sub{background:var(--warn-bg);border:1px solid #ffcc80;color:var(--warn)}
+/* Inside items */
+.inside-item{background:#fff;border:1px solid var(--border);border-left:4px solid var(--ok);border-radius:8px;padding:12px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.inside-item.long{border-left-color:var(--warn);background:var(--warn-bg)}
+/* Spill items */
+.spill-item{border:1px solid var(--border);border-left:4px solid var(--warn);border-radius:6px;padding:12px;margin-bottom:7px;background:var(--warn-bg)}
+.spill-item.done{border-left-color:var(--ok);background:var(--ok-bg);opacity:.8}
+/* Count input */
+.count-input{width:80px;text-align:center;font-size:20px;font-weight:700;padding:8px}
+/* Attendance row */
+.att-row{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border:1px solid var(--border);border-radius:6px;margin-bottom:6px;background:#fff;gap:8px;flex-wrap:wrap}
+.att-row .ar-name{font-weight:700;font-size:14px;flex:1}
+.att-row .ar-status{font-size:12px;font-weight:700}
+/* Toast */
 .toast-wrap{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-.toast{background:var(--ok);color:#fff;padding:14px 22px;border-radius:6px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;font-size:15px;max-width:340px;text-align:center}
+.toast{background:var(--ok);color:#fff;padding:13px 20px;border-radius:6px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;font-size:14px;max-width:340px;text-align:center}
 .toast.err{background:var(--err)}.toast.show{opacity:1}
-.legend{display:flex;gap:16px;font-size:13px;flex-wrap:wrap;margin-top:10px}
-.legend i{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:6px;vertical-align:-2px}
-#loginScreen{position:fixed;inset:0;background:linear-gradient(135deg,var(--primary),var(--primary-dark));display:grid;place-items:center;padding:14px;z-index:10000}
-#loginScreen .box{background:var(--bg);border-radius:12px;padding:28px;width:100%;max-width:400px;display:grid;gap:16px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-#loginScreen h1{margin:0;color:var(--primary);font-size:22px;font-weight:700;text-align:center}
-#loginScreen p{margin:0;color:var(--text-muted);font-size:14px;text-align:center}
-#loginScreen button{background:var(--primary);color:#fff;border-color:var(--primary);padding:14px;font-weight:700;font-size:15px}
-#loginScreen .err{color:var(--err);font-weight:600;font-size:14px;text-align:center;min-height:20px}
+/* Modal */
+#modal{position:fixed;inset:0;background:rgba(13,23,38,.88);display:grid;place-items:center;padding:14px;z-index:9999}
+#modal[hidden]{display:none}
+#modal .box{background:var(--bg);border-radius:10px;padding:22px;width:100%;max-width:460px;display:grid;gap:12px;box-shadow:0 20px 50px rgba(0,0,0,.5);max-height:90vh;overflow-y:auto}
+#modal h2{margin:0;color:var(--primary);font-size:18px;font-weight:700}
+.modal-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.modal-btns button{flex:1}
 </style>
 </head>
 <body>
-
-<div id="loginScreen">
-  <div class="box">
-    <h1>Panel del Comité</h1>
-    <p>Asamblea Regional · La Feria, TX</p>
-    <select id="loginUser">
-      <option value="">Seleccione su nombre</option>
-      <option>Sergio E. Vazquez Jr.</option>
-      <option>Alberto Herrera</option>
-    </select>
-    <input type="password" id="loginPass" placeholder="Contraseña" onkeydown="if(event.key==='Enter')doLogin()">
-    <button onclick="doLogin()">Entrar al Panel</button>
-    <div class="err" id="loginErr"></div>
-  </div>
-</div>
-
-<div id="mainApp" hidden>
 <div class="toast-wrap" id="toastWrap"></div>
 <div id="modal" hidden><div class="box" id="modalBox"></div></div>
 
-<header>
-  <h1>Panel del Comité <span class="sub">La Feria, TX</span></h1>
-  <span class="who" id="whoLabel">—</span>
-  <span class="clock" id="clock">--:--:--</span>
-  <span class="net" id="net"></span>
-  <button onclick="window.open('index.html','_blank')">Acomodadores</button>
-  <button onclick="window.open('acceso.html','_blank')">Escáner</button>
-  <button onclick="logout()">Salir</button>
-</header>
-
-<main>
-  <div id="alertBar" class="alert-bar empty">Todo en orden</div>
-
-  <div class="tabs">
-    <button data-tab="acom" onclick="setTab('acom')" class="on">Acomodadores</button>
-    <button data-tab="acceso" onclick="setTab('acceso')">Acceso</button>
-    <button data-tab="derrames" onclick="setTab('derrames')">Derrames</button>
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div id="loginBox">
+    <h1>Panel del Superintendente</h1>
+    <p>Asamblea de Circuito · La Feria, TX</p>
+    <select id="loginUser">
+      <option value="">Selecciona tu nombre</option>
+      <option value="alberto">Alberto Herrera — Sup. de Asamblea</option>
+      <option value="sergio">Sergio E. Vazquez Jr. — Sup. Acomodadores</option>
+    </select>
+    <input type="password" id="loginPass" placeholder="Contraseña" onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()" style="background:var(--primary);color:#fff;border-color:var(--primary);padding:14px;font-weight:700">Entrar al Panel</button>
+    <div id="loginErr" style="color:var(--err);font-weight:600;font-size:14px;min-height:18px;text-align:center"></div>
   </div>
+</div>
 
-  <div id="tabAcom">
-    <div class="card">
-      <h2>Estado de Acomodadores</h2>
-      <div class="grid" id="acomStats"></div>
-    </div>
-    <div class="card">
-      <h2>Posiciones sin cubrir</h2>
-      <div id="acomSinCubrir" class="pos-list"></div>
-      <a class="link-btn" href="index.html" target="_blank">Abrir aplicación de Acomodadores</a>
-    </div>
-  </div>
+<!-- APP -->
+<div id="mainApp" hidden>
+  <header>
+    <h1>Panel del Superintendente <span style="font-size:12px;opacity:.75;font-weight:400">· La Feria TX</span></h1>
+    <span class="clock" id="clock">--:--</span>
+    <span id="net" class="net"></span>
+    <span id="whoLabel" style="font-size:12px;background:rgba(255,255,255,.18);padding:3px 10px;border-radius:99px"></span>
+    <button class="hbtn" onclick="window.open('index.html','_blank')">Acomodadores</button>
+    <button class="hbtn" onclick="window.open('acceso.html','_blank')">Acceso QR</button>
+    <button class="hbtn" onclick="window.open('walkers.html','_blank')">Walkers</button>
+    <button class="hbtn" onclick="doLogout()">Salir</button>
+  </header>
 
-  <div id="tabAcceso" hidden>
-    <div class="card">
-      <h2>Estado de Acceso en Vivo</h2>
-      <div class="grid" id="accZoneCounters"></div>
-    </div>
-    <div class="card">
-      <h2>Dentro Ahora (<span id="accInsideCount">0</span>)</h2>
-      <div id="accInsideList"></div>
-    </div>
-    <div class="card">
-      <h2>Generar QR Temporal</h2>
-      <p style="color:var(--text-muted);font-size:13px;margin:0 0 10px">Para hermanos que olvidaron su pase.</p>
-      <div class="form-row">
-        <input id="tempName" placeholder="Nombre del hermano">
-        <select id="tempZone"></select>
-        <select id="tempHours">
-          <option value="1">Válido 1 hora</option>
-          <option value="2" selected>Válido 2 horas</option>
-          <option value="4">Válido 4 horas</option>
-          <option value="8">Todo el día</option>
-        </select>
-        <button class="pri" onclick="genTempQR()">Generar QR Temporal</button>
-      </div>
-      <div id="tempQRDisplay" hidden></div>
-    </div>
-    <div class="card">
-      <h2>Registro del Día</h2>
-      <div id="accLog"></div>
-    </div>
-  </div>
+  <main>
+    <div id="alertBar" class="alert-bar all-ok">✓ Todo en orden — sin alertas activas</div>
 
-  <div id="tabDerrames" hidden>
-    <div class="card">
-      <h2>Mapa de Derrames</h2>
-      <div style="border:2px solid var(--primary);border-radius:10px;overflow:hidden;background:#f0f0f0">
-        <svg viewBox="0 0 1310 926" style="width:100%;height:auto;display:block;max-height:520px">
-          <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
-          <g id="spillPins"></g>
-        </svg>
-      </div>
-      <div class="legend">
-        <span><i style="background:#b8860b"></i>Pendiente</span>
-        <span><i style="background:#c28a1c"></i>En proceso</span>
-        <span style="color:var(--text-muted);font-size:12px">Toque un pin para ver detalles</span>
+    <div class="card" style="padding:10px">
+      <div class="tabs" id="mainTabs">
+        <!-- Tabs rendered dynamically based on role -->
       </div>
     </div>
-    <div class="card">
-      <h2>Derrames Activos</h2>
-      <div id="spillList"></div>
+
+    <!-- Tab: Overview (all roles) -->
+    <div id="tabOverview">
+      <div class="card"><div class="stats-grid" id="overviewStats"></div></div>
+      <div class="card">
+        <h2>Estado de Posiciones</h2>
+        <div id="posChips"></div>
+      </div>
+      <div class="card">
+        <h2>Derrames Activos</h2>
+        <div id="spillsPreview"></div>
+      </div>
     </div>
-    <div class="card">
-      <h2>Historial de Hoy</h2>
-      <div id="spillHistory"></div>
+
+    <!-- Tab: Acomodadores (admin/sergio) -->
+    <div id="tabAcom" hidden>
+      <div class="card">
+        <h2>Posiciones sin cubrir</h2>
+        <div id="acomUncovered"></div>
+      </div>
+      <div class="card">
+        <h2>Lista Completa de Acomodadores</h2>
+        <div id="acomFull"></div>
+      </div>
     </div>
-  </div>
-</main>
+
+    <!-- Tab: Acceso (admin/jimmy) -->
+    <div id="tabAcceso" hidden>
+      <div class="card"><div class="stats-grid" id="accesoStats"></div></div>
+      <div class="card">
+        <h2>Dentro Ahora (<span id="insideCount">0</span>)</h2>
+        <div id="insideList"></div>
+      </div>
+      <div class="card">
+        <h2>Registro de Hoy (últimos 20)</h2>
+        <div id="accesoLog"></div>
+      </div>
+    </div>
+
+    <!-- Tab: Conteo de Asistentes (eliud/jimmy) -->
+    <div id="tabConteo" hidden>
+      <div class="card">
+        <h2>Conteo de Asistentes</h2>
+        <p style="color:var(--muted);font-size:13px;margin:0 0 14px">Registra el conteo de tu área. Se actualiza en tiempo real para el Superintendente.</p>
+        <div id="conteoForm"></div>
+      </div>
+      <div class="card">
+        <h2>Historial de Conteos</h2>
+        <div id="conteoHistory"></div>
+      </div>
+    </div>
+
+    <!-- Tab: Derrames (all) -->
+    <div id="tabDerrames" hidden>
+      <div class="card">
+        <h2>Derrames Activos</h2>
+        <div id="derramesActivos"></div>
+      </div>
+      <div class="card">
+        <h2>Historial de Hoy</h2>
+        <div id="derramesHistorial"></div>
+      </div>
+    </div>
+
+    <!-- Tab: Voluntarias (admin) -->
+    <div id="tabVol" hidden>
+      <div class="card"><div class="stats-grid" id="volStats"></div></div>
+      <div class="card">
+        <h2>Asistencia por Turno</h2>
+        <div id="volTurnos"></div>
+      </div>
+    </div>
+  </main>
 </div>
 
 <script>
-const CFG = { DB: "https://voluntariastx20-default-rtdb.firebaseio.com" };
-const APP_SECRET = "asam-laf-2026-secret-v1";
-const VOL_POS = [101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120];
+const DB = "https://voluntariastx20-default-rtdb.firebaseio.com";
 
-const DASH_USERS = [
-  { n: "Sergio E. Vazquez Jr.", pwd: "acomodadores2026" },
-  { n: "Alberto Herrera", pwd: "seccion@" }
-];
-
-const ZONES = {
-  plataforma:  { name: "Plataforma" },
-  detras:      { name: "Detrás de Plataforma" },
-  cabina:      { name: "Cabina A/V" },
-  bautisterio: { name: "Bautisterio" },
-  primeros:    { name: "Primeros Auxilios" },
-  comunes:     { name: "Zonas Comunes" }
+const DASH_USERS = {
+  alberto: { name:"Alberto Herrera",       pass:"seccion@",         role:"super" },
+  sergio:  { name:"Sergio E. Vazquez Jr.", pass:"acomodadores2026", role:"admin" },
 };
 
+// Role → tabs visible
+// super = Alberto: full visibility of everything
+// admin = Sergio: full dept. acomodadores functions
+const ROLE_TABS = {
+  super: ['overview','acom','acceso','derrames','vol'],
+  admin: ['overview','acom','acceso','derrames'],
+};
+
+const TAB_LABELS = {
+  overview: '📊 Resumen',
+  acom:     '👷 Acomodadores',
+  acceso:   '🔒 Acceso',
+  derrames: '🧹 Derrames',
+  vol:      '♀ Voluntarias',
+};
+
+// Positions data (mirror of index.html)
+const POSITIONS = [
+  {id:1,name:"Luis Barberena",cap:"cap1"},{id:2,name:"Guadalupe De La Cruz",cap:"cap1"},
+  {id:5,name:"Valente Alejandro",cap:"cap1"},{id:6,name:"Norberto Cardenas",cap:"cap1"},
+  {id:14,name:"Carlos Salas",cap:"cap1"},{id:15,name:"Vianney Morales",cap:"cap1"},{id:18,name:"Jamin Muñiz",cap:"cap1"},
+  {id:7,name:"Alfonso Hernandez",cap:"cap2"},{id:13,name:"Jose Gonzalez Jr",cap:"cap2"},
+  {id:16,name:"Ricardo Altamirano",cap:"cap2"},{id:17,name:"Luis Duran",cap:"cap2"},
+  {id:19,name:"Adrian Mota",cap:"cap2"},{id:20,name:"Francisco Montoya",cap:"cap2"},
+  {id:21,name:"Roberto Quiroga",cap:"cap2"},{id:22,name:"Eulogio Montelongo",cap:"cap2"},
+  {id:23,name:"Tony Duran",cap:"cap2"},{id:24,name:"Abisai Muñiz",cap:"cap2"},
+  {id:3,name:"Macario Martinez",cap:"cap4"},{id:4,name:"Celestino Chavez",cap:"cap4"},
+  {id:8,name:"Osiel Ramirez",cap:"cap4"},{id:9,name:"Otilio Ramirez",cap:"cap4"},
+  {id:10,name:"Gustavo Saucedo",cap:"cap4"},{id:11,name:"Josue Campos",cap:"cap4"},{id:12,name:"Rey Castillo",cap:"cap4"},
+  {id:25,name:"Gonzalo Mejia Sr",cap:"cap6"},{id:26,name:"Carlos Martinez",cap:"cap6"},
+  {id:27,name:"Felipe Ortiz",cap:"cap6"},{id:28,name:"Juan Salinas",cap:"cap6"},
+  {id:29,name:"Javier Borjas",cap:"cap5"},{id:30,name:"Martin Davila",cap:"cap6"},
+  {id:31,name:"Juan F Garza",cap:"cap6"},{id:32,name:"Isaias Martinez",cap:"cap6"},
+  {id:33,name:"Alex Vazquez",cap:"cap5"},{id:34,name:"Alfredo Garza",cap:"cap6"},
+];
+
+const TURNOS = [
+  {id:"T1",label:"7:45 – 8:45 a.m."},{id:"T2",label:"8:45 – 9:45 a.m."},
+  {id:"T3",label:"9:45 – 11:05 a.m."},{id:"T4",label:"11:05 a.m. – 12:05 p.m."},
+  {id:"T5",label:"12:05 – 12:40 p.m."},{id:"T6",label:"12:40 – 1:20 p.m."},
+  {id:"T7",label:"1:20 – 3:30 p.m."},{id:"T8",label:"3:30 – 4:15 p.m."},
+];
+
+const VOL_COUNT_BY_TURNO = {T1:12,T2:14,T3:13,T4:11,T5:9,T6:9,T7:10,T8:9};
+
 const $ = id => document.getElementById(id);
-const esc = s => String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let ME = null, S = {}, ACC = {}, WData = {}, Counts = {}, pollIv = null, currentTab = '';
 
-let S = {}, ACC = {}, currentTab = 'acom', pollIv = null, ME = null;
+function esc(s){ return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
-function doLogin(){
-  const name = $('loginUser').value;
+function doLogin() {
+  const key = $('loginUser').value;
   const pass = $('loginPass').value;
-  const u = DASH_USERS.find(x => x.n === name && x.pwd === pass);
-  if(!u){
-    $('loginErr').textContent = 'Credenciales incorrectas.';
-    return;
-  }
-  ME = u;
+  const u = DASH_USERS[key];
+  if (!u) { $('loginErr').textContent='Selecciona tu nombre'; return; }
+  if (u.pass !== pass) { $('loginErr').textContent='Contraseña incorrecta'; return; }
+  ME = { key, ...u };
   $('loginScreen').hidden = true;
   $('mainApp').hidden = false;
-  $('whoLabel').textContent = u.n;
+  $('whoLabel').textContent = u.name;
+  buildTabs();
   loadAll();
-  tickClock();
-  setInterval(tickClock, 1000);
-  pollIv = setInterval(loadAll, 5000);
+  setInterval(tickClock, 1000); tickClock();
+  pollIv = setInterval(loadAll, 6000);
 }
 
-function logout(){
+function doLogout() {
   clearInterval(pollIv);
   location.reload();
 }
 
-function toast(msg, err) {
-  const t = document.createElement('div');
-  t.className = 'toast' + (err ? ' err' : '');
-  t.textContent = msg;
-  $('toastWrap').appendChild(t);
-  setTimeout(() => t.classList.add('show'), 10);
-  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 3000);
-}
-
-function showModal(title, bodyHtml, buttons) {
-  $('modalBox').innerHTML = `<h2>${esc(title)}</h2><div>${bodyHtml}</div><div style="display:flex;gap:8px;margin-top:12px" id="mdlBtns"></div>`;
-  buttons.forEach(b => {
-    const btn = document.createElement('button');
-    btn.textContent = b.text;
-    btn.className = b.class || '';
-    btn.style.flex = '1';
-    btn.onclick = () => { if(b.action) b.action(); if(!b.keepOpen) $('modal').hidden = true; };
-    $('mdlBtns').appendChild(btn);
-  });
-  $('modal').hidden = false;
-}
-
-function net(on) { const e = $('net'); e.textContent = on ? 'En línea' : 'Sin conexión'; e.className = 'net ' + (on ? 'on' : 'off'); }
-function FB_get(path) { return fetch(`${CFG.DB}/${path}.json?t=${Date.now()}`).then(r => r.json()); }
-function FB_put(path, v) { return fetch(`${CFG.DB}/${path}.json`, { method: 'PUT', body: JSON.stringify(v) }).then(r => r.json()); }
-
-async function loadAll() {
-  try {
-    const [sData, accData] = await Promise.all([FB_get('s'), FB_get('access')]);
-    S = sData || {};
-    ACC = accData || {};
-    net(true);
-    renderAll();
-  } catch(e) { net(false); }
-}
-
-function renderAll() {
-  renderAlertBar();
-  if (currentTab === 'acom') renderAcom();
-  if (currentTab === 'acceso') renderAcceso();
-  if (currentTab === 'derrames') renderDerrames();
+function buildTabs() {
+  const tabs = ROLE_TABS[ME.role] || ['overview'];
+  $('mainTabs').innerHTML = tabs.map(t =>
+    `<button data-tab="${t}" onclick="setTab('${t}')">${TAB_LABELS[t]}</button>`
+  ).join('');
+  setTab(tabs[0]);
 }
 
 function setTab(t) {
   currentTab = t;
-  document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
-  $('tabAcom').hidden = t !== 'acom';
-  $('tabAcceso').hidden = t !== 'acceso';
-  $('tabDerrames').hidden = t !== 'derrames';
-  renderAll();
+  document.querySelectorAll('#mainTabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+  ['overview','acom','acceso','derrames','vol'].forEach(id => {
+    const el = $('tab' + id.charAt(0).toUpperCase() + id.slice(1));
+    if (el) el.hidden = id !== t;
+  });
+  renderTab(t);
+}
+
+function net(on) {
+  const e = $('net');
+  e.textContent = on ? 'En línea' : 'Sin conexión';
+  e.className = 'net ' + (on ? 'on' : 'off');
+}
+
+async function fb(path) {
+  const r = await fetch(`${DB}/${path}.json?t=${Date.now()}`);
+  return r.json();
+}
+async function put(path, val) {
+  await fetch(`${DB}/${path}.json`, { method:'PUT', body:JSON.stringify(val) });
+}
+
+async function loadAll() {
+  try {
+    const [sData, accData, wData, cData] = await Promise.all([
+      fb('s'), fb('access'), fb('walkers'), fb('counts')
+    ]);
+    S = sData || {};
+    ACC = accData || {};
+    WData = wData || {};
+    Counts = cData || {};
+    net(true);
+    renderAlertBar();
+    renderTab(currentTab);
+  } catch(e) { net(false); }
+}
+
+function renderTab(t) {
+  if (t === 'overview') renderOverview();
+  else if (t === 'acom') renderAcom();
+  else if (t === 'acceso') renderAcceso();
+  else if (t === 'derrames') renderDerrames();
+  else if (t === 'vol') renderVol();
 }
 
 function renderAlertBar() {
   const alerts = [];
-  const aStat = computeAcomStats();
-  if (aStat.sinCheckIn > 0) alerts.push(`${aStat.sinCheckIn} acomodador(es) sin check-in`);
-  if (aStat.sinAsignar > 0) alerts.push(`${aStat.sinAsignar} posición(es) sin asignar`);
+  const pos = S.pos || {};
+  const uncovered = POSITIONS.filter(p => { const st = pos[String(p.id)]||{}; return !st.status || st.status === 'pending'; });
+  const absent = POSITIONS.filter(p => (pos[String(p.id)]||{}).status === 'absent');
+  if (uncovered.length > 0) alerts.push(`${uncovered.length} posición(es) sin confirmar`);
+  if (absent.length > 0) alerts.push(`${absent.length} acomodador(es) marcado(s) ausente(s)`);
   const entries = ACC.entries || {};
-  const inside = Object.values(entries).filter(e => !e.exitTime);
-  const longInside = inside.filter(e => (Date.now() - e.entryTime) > 60 * 60 * 1000);
-  if (longInside.length > 0) alerts.push(`${longInside.length} persona(s) llevan más de 1 hora en plataforma`);
-  const spills = S.spills || {};
-  const pendSpills = Object.values(spills).filter(s => s.status === 'pendiente');
-  if (pendSpills.length > 0) alerts.push(`${pendSpills.length} derrame(s) pendiente(s)`);
+  const longInside = Object.values(entries).filter(e => !e.exitTime && (Date.now()-e.entryTime) > 3600000);
+  if (longInside.length) alerts.push(`${longInside.length} persona(s) llevan +1 hora en plataforma`);
+  const spills = Object.values(S.spills||{}).filter(s => s.status !== 'done');
+  if (spills.length) alerts.push(`${spills.length} derrame(s) pendiente(s)`);
 
   const e = $('alertBar');
   if (!alerts.length) {
-    e.className = 'alert-bar empty';
-    e.innerHTML = 'Todo en orden — sin alertas activas';
+    e.className='alert-bar all-ok';
+    e.innerHTML='✓ Todo en orden — sin alertas activas';
     return;
   }
-  const hasCrit = pendSpills.length > 0 || longInside.length > 0;
-  e.className = 'alert-bar ' + (hasCrit ? 'critical' : 'warning');
-  e.innerHTML = (hasCrit ? 'ALERTAS:<br>' : 'Avisos:<br>') + alerts.map(a => '· ' + esc(a)).join('<br>');
+  const hasCrit = absent.length > 0 || spills.some(s=>s.status==='pending');
+  e.className='alert-bar '+(hasCrit?'critical':'warning');
+  e.innerHTML=(hasCrit?'🚨 ALERTAS:':'⚠️ Avisos:')+'<br>'+alerts.map(a=>'· '+esc(a)).join('<br>');
 }
 
-function computeAcomStats() {
+function renderOverview() {
   const pos = S.pos || {};
-  let total = 0, cubiertas = 0, sinAsignar = 0, sinCheckIn = 0;
-  const detalle = [];
-  for (const n in pos) {
-    const num = +n;
-    if (VOL_POS.includes(num)) continue;
-    if (pos[n].active === false) continue;
-    total++;
-    const p = pos[n];
-    const asignado = p.who || p.sub;
-    const checkedIn = p.st === 'ok' || p.st === 'sub';
-    if (checkedIn) cubiertas++;
-    else if (!asignado) { sinAsignar++; detalle.push({ n:num, reason:'sin asignar', quien:'' }); }
-    else { sinCheckIn++; detalle.push({ n:num, reason:'sin check-in', quien: p.sub || p.who }); }
+  let present=0, absent=0, sub=0, pending=0;
+  POSITIONS.forEach(p => {
+    const st = (pos[String(p.id)]||{}).status;
+    if (st==='present') present++;
+    else if (st==='absent') absent++;
+    else if (st==='sub') sub++;
+    else pending++;
+  });
+  const inside = Object.values(ACC.entries||{}).filter(e=>!e.exitTime).length;
+  const activeSpills = Object.values(S.spills||{}).filter(s=>s.status!=='done').length;
+  const walkerOcc = Object.values(WData.slots||{}).filter(s=>s&&s.owner).length;
+  const auditorioCount = (Counts.auditorio||{}).count || '—';
+  const plataformaCount = (Counts.plataforma||{}).count || '—';
+
+  $('overviewStats').innerHTML = `
+    <div class="stat ok"><b>${present}</b><small>Acomodadores Presentes</small></div>
+    <div class="stat ${pending+absent>0?'warn':'ok'}"><b>${pending+absent}</b><small>Sin confirmar/Ausentes</small></div>
+    <div class="stat ${sub>0?'warn':''}"><b>${sub}</b><small>Con Sustituto</small></div>
+    <div class="stat info"><b>${inside}</b><small>Detrás de Plataforma</small></div>
+    <div class="stat ${activeSpills>0?'err':'ok'}"><b>${activeSpills}</b><small>Derrames Activos</small></div>
+    <div class="stat"><b>${walkerOcc}</b><small>Walkers Registrados</small></div>
+    <div class="stat info"><b>${auditorioCount}</b><small>Conteo Auditorio</small></div>
+    <div class="stat info"><b>${plataformaCount}</b><small>Conteo Plataforma</small></div>
+  `;
+  // Position chips
+  $('posChips').innerHTML = POSITIONS.map(p => {
+    const st = (pos[String(p.id)]||{}).status || 'pending';
+    const cls = st==='present'?'ok':st==='absent'?'absent':st==='sub'?'sub':'pending';
+    return `<span class="chip ${cls}" title="${esc(p.name)}">#${typeof p.id==='number'?p.id:'—'} ${esc(p.name.split(' ')[0])}</span>`;
+  }).join('');
+  // Spills preview
+  const spills = Object.entries(S.spills||{}).filter(([,s])=>s.status!=='done');
+  if (!spills.length) {
+    $('spillsPreview').innerHTML='<p style="color:var(--muted)">Sin derrames activos.</p>';
+  } else {
+    $('spillsPreview').innerHTML = spills.map(([id,s]) => {
+      const t = new Date(s.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+      return `<div class="spill-item">
+        <b>${esc(s.type)}</b> · <span style="color:${s.status==='inprogress'?'var(--warn)':'var(--err)'}">
+        ${s.status==='inprogress'?'En proceso':'Pendiente'}</span>
+        <div style="font-size:13px;color:var(--muted);margin-top:4px">📍 ${esc(s.location)} · ${t}${s.takenBy?' · 🧹 '+esc(s.takenBy):''}</div>
+      </div>`;
+    }).join('');
   }
-  return { total, cubiertas, sinAsignar, sinCheckIn, detalle };
 }
 
 function renderAcom() {
-  const st = computeAcomStats();
-  const pct = st.total > 0 ? Math.round(100 * st.cubiertas / st.total) : 0;
-  $('acomStats').innerHTML = `
-    <div class="stat neutral"><b>${st.total}</b><small>Posiciones activas</small></div>
-    <div class="stat ok"><b>${st.cubiertas}</b><small>Cubiertas (${pct}%)</small></div>
-    <div class="stat warn"><b>${st.sinCheckIn}</b><small>Sin check-in</small></div>
-    <div class="stat err"><b>${st.sinAsignar}</b><small>Sin asignar</small></div>
-  `;
-  const dc = $('acomSinCubrir');
-  if (!st.detalle.length) { dc.innerHTML = '<div class="empty">Todas las posiciones cubiertas</div>'; return; }
-  dc.innerHTML = st.detalle.map(d =>
-    `<span class="pos-chip" title="${esc(d.reason)}${d.quien?' · '+esc(d.quien):''}">#${d.n}${d.quien?' · '+esc(d.quien.split(' ')[0]):''}</span>`
-  ).join('');
+  const pos = S.pos || {};
+  const uncovered = POSITIONS.filter(p => { const st = (pos[String(p.id)]||{}).status; return !st||st==='pending'||st==='absent'; });
+  if (!uncovered.length) {
+    $('acomUncovered').innerHTML='<p style="color:var(--ok);font-weight:700">✓ Todas las posiciones confirmadas</p>';
+  } else {
+    $('acomUncovered').innerHTML = uncovered.map(p => {
+      const st = (pos[String(p.id)]||{}).status||'pending';
+      return `<span class="chip ${st==='absent'?'absent':'pending'}">#${typeof p.id==='number'?p.id:'—'} ${esc(p.name)}</span>`;
+    }).join('');
+  }
+  $('acomFull').innerHTML = POSITIONS.map(p => {
+    const st = pos[String(p.id)]||{};
+    const status = st.status||'pending';
+    const statusLabel = status==='present'?'✓ Presente':status==='absent'?'✗ Ausente':status==='sub'?'↔ '+esc(st.subName||''):'— Pendiente';
+    const color = status==='present'?'var(--ok)':status==='absent'?'var(--err)':status==='sub'?'var(--warn)':'var(--muted)';
+    return `<div class="att-row">
+      <span class="ar-name">#${typeof p.id==='number'?p.id:'—'} ${esc(p.name)}</span>
+      <span class="ar-status" style="color:${color}">${statusLabel}</span>
+    </div>`;
+  }).join('');
 }
 
 function renderAcceso() {
   const entries = ACC.entries || {};
-  const zonesHtml = Object.entries(ZONES).map(([id, z]) => {
-    const count = Object.values(entries).filter(e => e.zone === id && !e.exitTime).length;
-    return `<div class="stat zone"><b>${count}</b><small>${esc(z.name)}</small></div>`;
-  }).join('');
-  $('accZoneCounters').innerHTML = zonesHtml;
-
-  const inside = Object.entries(entries).filter(([id, e]) => !e.exitTime).sort((a, b) => b[1].entryTime - a[1].entryTime);
-  $('accInsideCount').textContent = inside.length;
+  const inside = Object.entries(entries).filter(([,e])=>!e.exitTime).sort((a,b)=>b[1].entryTime-a[1].entryTime);
+  const total = Object.keys(entries).length;
+  $('accesoStats').innerHTML = `
+    <div class="stat info"><b>${inside.length}</b><small>Dentro Ahora</small></div>
+    <div class="stat"><b>${total}</b><small>Entradas Hoy</small></div>
+    <div class="stat"><b>${Object.keys(ACC.users||{}).length}</b><small>Hermanos Autorizados</small></div>
+    <div class="stat ${Object.keys(ACC.tempQr||{}).filter(k=>(ACC.tempQr[k]?.expiresAt||0)>Date.now()).length>0?'warn':''}"><b>${Object.keys(ACC.tempQr||{}).filter(k=>(ACC.tempQr[k]?.expiresAt||0)>Date.now()).length}</b><small>QRs Temporales Activos</small></div>
+  `;
+  $('insideCount').textContent = inside.length;
   if (!inside.length) {
-    $('accInsideList').innerHTML = '<div class="empty">No hay nadie dentro ahora.</div>';
+    $('insideList').innerHTML='<p style="color:var(--muted);text-align:center;padding:16px">Nadie dentro en este momento.</p>';
   } else {
     const now = Date.now();
-    $('accInsideList').innerHTML = inside.map(([id, e]) => {
-      const mins = Math.floor((now - e.entryTime) / 60000);
+    $('insideList').innerHTML = inside.map(([id,e]) => {
+      const mins = Math.floor((now - e.entryTime)/60000);
       const long = mins >= 60;
-      const time = new Date(e.entryTime).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
-      const zoneName = ZONES[e.zone]?.name || e.zone;
-      return `<div class="inside-item${long?' long':''}"><div class="info"><div class="name">${esc(e.name)}</div><div class="meta">${esc(zoneName)}${e.isTemp?' · QR Temporal':''}</div><div class="time">Entró ${time} · ${mins} min</div></div><button class="ok" onclick="markExit('${id}')">Salió</button></div>`;
+      const t = new Date(e.entryTime).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+      return `<div class="inside-item${long?' long':''}">
+        <div>
+          <b>${esc(e.name)}</b>
+          <div style="font-size:12px;color:var(--muted)">${e.isTemp?'QR Temporal':'QR Permanente'} · Entró ${t} · ${mins} min</div>
+        </div>
+        ${long?`<span style="font-size:12px;font-weight:700;color:var(--warn)">⚠ +1 hora</span>`:''}
+        <button class="ok" onclick="markExit('${id}')" style="padding:7px 12px;font-size:13px">Salió</button>
+      </div>`;
     }).join('');
   }
-
-  const all = Object.entries(entries).sort((a, b) => b[1].entryTime - a[1].entryTime).slice(0, 20);
+  // Log
+  const all = Object.entries(entries).sort((a,b)=>b[1].entryTime-a[1].entryTime).slice(0,20);
   if (!all.length) {
-    $('accLog').innerHTML = '<div class="empty">Aún no hay registros.</div>';
+    $('accesoLog').innerHTML='<p style="color:var(--muted)">Sin registros aún.</p>';
   } else {
-    $('accLog').innerHTML = all.map(([id, e]) => {
-      const t = new Date(e.entryTime).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
-      const ex = e.exitTime ? new Date(e.exitTime).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' }) : '—';
-      const zoneName = ZONES[e.zone]?.name || e.zone;
-      return `<div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--card-alt);border-radius:6px;margin-bottom:4px;font-size:14px;flex-wrap:wrap;gap:6px"><span><b>${esc(e.name)}</b></span><span style="color:var(--text-muted)">${esc(zoneName)} · ${t} → ${ex}</span></div>`;
+    $('accesoLog').innerHTML = all.map(([,e]) => {
+      const t = new Date(e.entryTime).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+      const ex = e.exitTime ? new Date(e.exitTime).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}) : '—';
+      return `<div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--card-alt);border-radius:6px;margin-bottom:4px;font-size:13px;flex-wrap:wrap;gap:4px">
+        <b>${esc(e.name)}</b><span style="color:var(--muted)">${t} → ${ex}</span>
+      </div>`;
     }).join('');
   }
+}
 
-  if (!$('tempZone').options.length) {
-    $('tempZone').innerHTML = Object.entries(ZONES).map(([id, z]) => `<option value="${id}">${esc(z.name)}</option>`).join('');
+async function markExit(id) {
+  await put(`access/entries/${id}/exitTime`, Date.now());
+  toast('Salida registrada');
+  await loadAll();
+}
+
+function renderConteo() {
+  const areaId = ME.role === 'capitan6' ? 'auditorio' : ME.role === 'capitan4' ? 'plataforma' : 'general';
+  const areaLabel = ME.role === 'capitan6' ? 'Auditorio (Capitán 6)' : ME.role === 'capitan4' ? 'Plataforma (Capitán 4)' : 'General';
+  const current = (Counts[areaId] || {}).count || 0;
+  $('conteoForm').innerHTML = `
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="font-size:14px;color:var(--muted);margin-bottom:8px">Área: <b>${areaLabel}</b></div>
+      <div style="font-size:48px;font-weight:700;color:var(--primary);line-height:1">${current}</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:4px">personas contadas</div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap">
+      <input type="number" id="newCount" placeholder="Nuevo conteo" class="count-input" value="${current}" style="width:120px;text-align:center;font-size:20px;font-weight:700">
+      <button class="pri" onclick="saveCount('${areaId}')">Guardar Conteo</button>
+    </div>
+  `;
+  // History
+  const history = Object.entries(Counts[areaId]?.history||{}).sort((a,b)=>b[1].ts-a[1].ts).slice(0,10);
+  if (!history.length) {
+    $('conteoHistory').innerHTML='<p style="color:var(--muted)">Sin historial.</p>';
+  } else {
+    $('conteoHistory').innerHTML = history.map(([,h]) => {
+      const t = new Date(h.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+      return `<div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--card-alt);border-radius:6px;margin-bottom:4px;font-size:14px">
+        <b>${h.count} personas</b><span style="color:var(--muted)">${t} · ${esc(h.by||'')}</span>
+      </div>`;
+    }).join('');
   }
 }
 
-async function markExit(entryId) {
-  await FB_put(`access/entries/${entryId}/exitTime`, Date.now());
-  toast('Salida registrada');
-  loadAll();
-}
-
-async function sign(msg) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('').slice(0,16);
-}
-
-async function genTempQR() {
-  const name = $('tempName').value.trim();
-  const zone = $('tempZone').value;
-  const hours = +$('tempHours').value;
-  if (!name) { toast('Escriba el nombre del hermano', true); return; }
-  const tempId = Math.random().toString(36).slice(2, 10);
-  const expiresAt = Date.now() + hours * 60 * 60 * 1000;
-  const temp = { zone, expiresAt, name, createdAt: Date.now(), createdBy: ME.n, uses: 0 };
-  await FB_put(`access/tempQr/${tempId}`, temp);
-  const sig = await sign(`${tempId}|${zone}|${expiresAt}|${APP_SECRET}`);
-  const content = `TMP|${tempId}|${zone}|${expiresAt}|${sig}`;
-  const display = $('tempQRDisplay');
-  display.hidden = false;
-  display.innerHTML = `
-    <div style="text-align:center;padding:16px;background:#fff;border-radius:8px;margin-top:12px;border:1px solid var(--border)">
-      <div style="font-weight:700;font-size:15px;color:var(--warn);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">QR Temporal</div>
-      <div id="tempQRHolder"></div>
-      <div style="font-weight:700;font-size:17px;margin-top:10px">${esc(name)}</div>
-      <div style="font-size:13px;color:var(--text-muted);margin-top:4px">${esc(ZONES[zone].name)}</div>
-      <div style="font-size:12px;color:var(--text-muted);margin-top:8px">Expira ${new Date(expiresAt).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})}</div>
-      <button onclick="document.getElementById('tempQRDisplay').hidden=true;$('tempName').value=''" style="margin-top:12px;padding:8px 16px">Cerrar</button>
-    </div>`;
-  setTimeout(() => {
-    const holder = $('tempQRHolder');
-    if (holder) {
-      holder.innerHTML = '';
-      new QRCode(holder, { text: content, width: 200, height: 200, correctLevel: QRCode.CorrectLevel.M });
-    }
-  }, 50);
-  $('tempName').value = '';
-  toast(`QR temporal generado para ${name}`);
+async function saveCount(areaId) {
+  const count = +$('newCount').value;
+  if (isNaN(count) || count < 0) { toast('Número inválido', true); return; }
+  const ts = Date.now();
+  const histId = ts + '_' + Math.random().toString(36).slice(2,5);
+  await put(`counts/${areaId}/count`, count);
+  await put(`counts/${areaId}/updatedAt`, ts);
+  await put(`counts/${areaId}/updatedBy`, ME.name);
+  await put(`counts/${areaId}/history/${histId}`, { count, ts, by:ME.name });
+  toast(`Conteo guardado: ${count} personas`);
+  await loadAll();
 }
 
 function renderDerrames() {
-  const spills = S.spills || {};
-  const active = Object.entries(spills).filter(([id, s]) => s.status !== 'terminado').sort((a, b) => b[1].ts - a[1].ts);
-  const done = Object.entries(spills).filter(([id, s]) => s.status === 'terminado').sort((a, b) => (b[1].tsDone || b[1].ts) - (a[1].tsDone || a[1].ts));
-
-  const pins = active.map(([id, sp]) => {
-    const isProc = sp.status === 'proceso';
-    const color = isProc ? '#c28a1c' : '#b8860b';
-    return `<g style="cursor:pointer" onclick="showSpillDetails('${id}')" transform="translate(${sp.x} ${sp.y})"><polygon points="0,-26 24,20 -24,20" fill="${color}" stroke="#fff" stroke-width="2" opacity="0.95"><animate attributeName="opacity" values="0.95;0.6;0.95" dur="1.5s" repeatCount="indefinite"/></polygon><text text-anchor="middle" y="6" font-size="20" fill="#fff" font-weight="700" pointer-events="none">!</text></g>`;
-  }).join('');
-  $('spillPins').innerHTML = pins;
-
+  const spills = Object.entries(S.spills||{}).sort((a,b)=>b[1].ts-a[1].ts);
+  const active = spills.filter(([,s])=>s.status!=='done');
+  const done = spills.filter(([,s])=>s.status==='done');
   if (!active.length) {
-    $('spillList').innerHTML = '<div class="empty">Sin derrames activos</div>';
+    $('derramesActivos').innerHTML='<p style="color:var(--ok);font-weight:600">✓ Sin derrames activos.</p>';
   } else {
-    $('spillList').innerHTML = active.map(([id, sp]) => {
-      const hora = new Date(sp.ts).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
-      const isProc = sp.status === 'proceso';
-      return `<div class="spill-item${isProc?' proc':''}"><b>${esc(sp.tipo)}</b> · <span style="color:${isProc?'var(--warn)':'var(--err)'};font-weight:700">${sp.status.toUpperCase()}</span><div style="font-size:13px;color:var(--text-muted);margin-top:4px">Reportado por ${esc(sp.quien||'?')} · ${hora}${sp.quienLimpia?' · Limpiando: '+esc(sp.quienLimpia):''}</div><div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><button onclick="showSpillDetails('${id}')" style="padding:8px 12px;font-size:13px">Ver</button>${!isProc?`<button class="warn" onclick="takeSpill('${id}')" style="padding:8px 12px;font-size:13px">Tomar</button>`:''}${isProc?`<button class="ok" onclick="doneSpill('${id}')" style="padding:8px 12px;font-size:13px">Terminado</button>`:''}</div></div>`;
+    $('derramesActivos').innerHTML = active.map(([id,s]) => {
+      const t = new Date(s.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+      const isProc = s.status==='inprogress';
+      return `<div class="spill-item">
+        <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:6px">
+          <span style="font-weight:700">${esc(s.type)}</span>
+          <span style="font-size:12px;font-weight:700;color:${isProc?'var(--warn)':'var(--err)'}">${isProc?'En proceso':'Pendiente'}</span>
+        </div>
+        <div style="font-size:13px;color:var(--muted);margin-top:4px">📍 ${esc(s.location)} · Por: ${esc(s.reportedBy)} · ${t}</div>
+        ${s.takenBy?`<div style="font-size:13px;color:var(--warn);font-weight:600;margin-top:4px">🧹 Limpiando: ${esc(s.takenBy)}</div>`:''}
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+          ${!isProc?`<button class="warn" onclick="takeSpill('${id}')" style="padding:7px 12px;font-size:13px">Tomar</button>`:''}
+          ${isProc?`<button class="ok" onclick="doneSpill('${id}')" style="padding:7px 12px;font-size:13px">✓ Terminado</button>`:''}
+        </div>
+      </div>`;
     }).join('');
   }
-
   if (!done.length) {
-    $('spillHistory').innerHTML = '<div class="empty">Aún no hay derrames terminados.</div>';
+    $('derramesHistorial').innerHTML='<p style="color:var(--muted)">Sin derrames resueltos hoy.</p>';
   } else {
-    $('spillHistory').innerHTML = done.map(([id, sp]) => {
-      const t = new Date(sp.ts).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
-      const tDone = sp.tsDone ? new Date(sp.tsDone).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' }) : '—';
-      return `<div style="display:flex;justify-content:space-between;padding:8px 12px;background:#eaf4ea;border-left:3px solid var(--ok);border-radius:6px;margin-bottom:4px;font-size:14px;flex-wrap:wrap;gap:6px"><span><b>${esc(sp.tipo)}</b> · ${esc(sp.quien||'?')}</span><span style="color:var(--text-muted)">${t} → ${tDone}</span></div>`;
+    $('derramesHistorial').innerHTML = done.slice(0,10).map(([,s]) => {
+      const t = new Date(s.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+      const td = s.doneAt ? new Date(s.doneAt).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}) : '—';
+      return `<div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--ok-bg);border-left:3px solid var(--ok);border-radius:6px;margin-bottom:4px;font-size:13px;flex-wrap:wrap;gap:4px">
+        <span><b>${esc(s.type)}</b> · ${esc(s.location)}</span>
+        <span style="color:var(--muted)">${t} → ${td}</span>
+      </div>`;
     }).join('');
   }
 }
 
 async function takeSpill(id) {
-  await FB_put(`s/spills/${id}/status`, 'proceso');
-  await FB_put(`s/spills/${id}/quienLimpia`, ME.n);
-  await FB_put(`s/spills/${id}/tsProc`, Date.now());
-  toast('Derrame tomado');
-  loadAll();
+  await put(`s/spills/${id}/status`, 'inprogress');
+  await put(`s/spills/${id}/takenBy`, ME.name);
+  await put(`s/spills/${id}/takenAt`, Date.now());
+  toast('Tomaste el derrame');
+  await loadAll();
 }
 async function doneSpill(id) {
-  await FB_put(`s/spills/${id}/status`, 'terminado');
-  await FB_put(`s/spills/${id}/tsDone`, Date.now());
-  toast('Derrame limpiado');
-  loadAll();
+  await put(`s/spills/${id}/status`, 'done');
+  await put(`s/spills/${id}/doneAt`, Date.now());
+  toast('Derrame resuelto ✓');
+  await loadAll();
 }
 
-function showSpillDetails(id) {
-  const sp = S.spills[id];
-  if (!sp) return;
-  const hora = new Date(sp.ts).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
-  const isProc = sp.status === 'proceso';
-  const isDone = sp.status === 'terminado';
-  showModal(`Derrame · ${sp.tipo}`,
-    `<div style="background:#fef5e6;border-left:4px solid var(--warn);padding:12px;border-radius:6px"><b>Reportado por:</b> ${esc(sp.quien||'?')}<br><b>Hora:</b> ${hora}<br><b>Estado:</b> <span style="color:${isDone?'var(--ok)':isProc?'var(--warn)':'var(--err)'};font-weight:700">${sp.status.toUpperCase()}</span>${sp.quienLimpia?'<br><b>Limpiando:</b> '+esc(sp.quienLimpia):''}</div>`,
-    [
-      { text: 'Cerrar' },
-      ...(sp.status === 'pendiente' ? [{ text: 'Tomar', class: 'warn', action: () => takeSpill(id) }] : []),
-      ...(isProc ? [{ text: 'Terminado', class: 'ok', action: () => doneSpill(id) }] : [])
-    ]);
+function renderVol() {
+  const att = WData.attendance || {};
+  const totalVols = 31;
+  const present = Object.values(att).filter(a=>a?.present).length;
+  $('volStats').innerHTML = `
+    <div class="stat ok"><b>${present}</b><small>Confirmadas</small></div>
+    <div class="stat ${totalVols-present>0?'warn':'ok'}"><b>${totalVols-present}</b><small>Sin confirmar</small></div>
+    <div class="stat"><b>${totalVols}</b><small>Total Voluntarias</small></div>
+  `;
+  $('volTurnos').innerHTML = TURNOS.map(t => {
+    const count = VOL_COUNT_BY_TURNO[t.id]||0;
+    return `<div style="padding:10px 14px;border:1px solid var(--border);border-radius:6px;margin-bottom:6px;background:#fff;display:flex;justify-content:space-between;align-items:center">
+      <b>${t.label}</b><span style="font-size:13px;color:var(--muted)">${count} voluntarias asignadas</span>
+    </div>`;
+  }).join('');
+}
+
+// MODAL / TOAST
+function showModal(title, bodyHtml, buttons) {
+  $('modalBox').innerHTML=`<h2>${esc(title)}</h2><div>${bodyHtml}</div><div class="modal-btns" id="mdlBtns"></div>`;
+  buttons.forEach(b=>{
+    const btn=document.createElement('button');
+    btn.textContent=b.text; btn.className=b.cls||'';
+    btn.onclick=()=>{if(b.action)b.action();if(!b.keepOpen)$('modal').hidden=true;};
+    $('mdlBtns').appendChild(btn);
+  });
+  $('modal').hidden=false;
+}
+
+function toast(msg, err) {
+  const t=document.createElement('div');
+  t.className='toast'+(err?' err':''); t.textContent=msg;
+  $('toastWrap').appendChild(t);
+  setTimeout(()=>t.classList.add('show'),10);
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},3200);
 }
 
 function tickClock() {
-  $('clock').textContent = new Date().toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+  $('clock').textContent = new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
 }
 </script>
 </body>
