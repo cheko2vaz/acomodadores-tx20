@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Control de Acceso · Detrás de Plataforma</title>
+<title>Acomodadores · La Feria TX</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 :root{
   --primary:#5a1212;--primary-dark:#3d0c0c;--accent:#b8860b;
   --bg:#f9f5e9;--card:#fff;--card-alt:#f0e8d4;
   --text:#1a1a1a;--muted:#6b5d4f;--border:#d4c9b0;
-  --ok:#2e7d32;--ok-bg:#e8f5e9;--err:#c62828;--err-bg:#fbeae9;
+  --ok:#2e7d32;--ok-bg:#e8f5e9;--err:#c62828;--err-bg:#fbeaea;
   --warn:#e68a00;--warn-bg:#fff8e1;
 }
 [hidden]{display:none!important}*{box-sizing:border-box}
@@ -24,51 +24,76 @@ header h1{font-size:17px;margin:0;flex:1;min-width:160px;font-weight:700}
 .net.on::before{content:"● ";color:#9fd49f}.net.off{background:#fff;color:var(--err);font-weight:700}
 .hbtn{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.3);padding:8px 14px;border-radius:6px;font:inherit;font-weight:600;cursor:pointer;font-size:14px}
 .hbtn:hover{background:rgba(255,255,255,.28)}
-main{max-width:860px;margin:auto;padding:12px;display:grid;gap:12px}
+main{max-width:1100px;margin:auto;padding:12px;display:grid;gap:12px}
 .card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px}
 .card h2{margin:0 0 12px;font-size:16px;color:var(--primary);font-weight:700}
-button{font:inherit;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:6px;padding:10px 16px;cursor:pointer;font-weight:600;transition:background .15s}
+button{font:inherit;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:6px;padding:9px 14px;cursor:pointer;font-weight:600;transition:background .15s}
 button:hover{background:var(--card-alt)}
-button.pri{background:var(--primary);color:#fff;border-color:var(--primary)}button.pri:hover{background:var(--primary-dark)}
+button.pri{background:var(--primary);color:#fff;border-color:var(--primary)}
 button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
-button.danger{background:var(--err);color:#fff;border-color:var(--err)}
+button.warn{background:var(--err);color:#fff;border-color:var(--err)}
+button.sub{background:var(--warn);color:#fff;border-color:var(--warn)}
 input,select{font:inherit;padding:10px;border:1px solid var(--border);border-radius:6px;width:100%;background:#fff;color:var(--text)}
 input:focus,select:focus{outline:2px solid var(--accent);border-color:var(--accent)}
+/* Login */
+#loginScreen{position:fixed;inset:0;background:rgba(90,18,18,.97);display:grid;place-items:center;z-index:100;padding:12px;overflow-y:auto}
+#loginBox{background:var(--bg);border-radius:10px;padding:24px;width:100%;max-width:420px;display:grid;gap:12px}
+#loginBox h2{margin:0;color:var(--primary);font-size:20px;text-align:center;font-weight:700}
+#loginBox p{margin:0;color:var(--muted);font-size:13px;text-align:center}
+.login-section{border-top:1px solid var(--border);padding-top:12px;margin-top:4px}
+.login-section b{font-size:12px;color:var(--muted);display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
 /* Tabs */
 .tabs{display:flex;gap:6px;flex-wrap:wrap}
-.tabs button{flex:1;min-width:100px;padding:12px 8px;font-size:14px}
+.tabs button{flex:1;min-width:90px;padding:11px 8px;font-size:14px}
 .tabs button.on{background:var(--primary);color:#fff;border-color:var(--primary)}
-/* Result */
-.result{border-radius:8px;padding:24px;text-align:center;margin:10px 0;border:3px solid}
+/* Stats */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.stat-box{background:var(--card-alt);border-radius:8px;padding:14px;text-align:center;border:2px solid transparent}
+.stat-box b{display:block;font-size:28px;line-height:1;margin-bottom:4px;font-weight:700}
+.stat-box small{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.stat-box.ok{border-color:#a5d6a7}.stat-box.ok b{color:var(--ok)}
+.stat-box.warn b{color:var(--warn)}.stat-box.err b{color:var(--err)}
+/* Cap sections */
+.cap-section{margin-bottom:16px}
+.cap-header{color:#fff;padding:10px 14px;border-radius:6px 6px 0 0;font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px}
+.cap-header span{font-size:12px;opacity:.85;font-weight:400}
+.pos-row{background:#fff;border:1px solid var(--border);border-top:none;padding:12px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pos-row:last-child{border-radius:0 0 6px 6px}
+.pos-row.my-pos{background:#fffde7;border-left:4px solid var(--accent)}
+.pos-num{width:34px;height:34px;border-radius:50%;background:var(--primary);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pos-num.orange{background:var(--warn)}
+.pos-info{flex:1;min-width:140px}
+.pos-name{font-weight:700;font-size:15px}
+.pos-desc{font-size:12px;color:var(--muted);margin-top:2px}
+.badge{font-size:12px;padding:4px 10px;border-radius:99px;font-weight:700}
+.badge.present{background:var(--ok-bg);color:var(--ok);border:1px solid #a5d6a7}
+.badge.absent{background:var(--err-bg);color:var(--err);border:1px solid #ef9a9a}
+.badge.sub{background:var(--warn-bg);color:var(--warn);border:1px solid #ffcc80}
+.badge.pending{background:var(--card-alt);color:var(--muted);border:1px solid var(--border)}
+.pos-row .actions{display:flex;gap:6px;flex-wrap:wrap}
+.pos-row .actions button{padding:7px 12px;font-size:13px}
+/* QR Camera */
+#reader{width:100%;max-width:480px;margin:auto;border-radius:10px;overflow:hidden;background:#000}
+.result{border-radius:8px;padding:22px;text-align:center;margin:10px 0;border:3px solid}
 .result.green{background:var(--ok-bg);border-color:var(--ok)}
 .result.red{background:var(--err-bg);border-color:var(--err)}
-.result h2{margin:0 0 8px;font-size:20px;font-weight:700;text-transform:uppercase}
+.result h2{margin:0 0 8px;font-size:19px;font-weight:700;text-transform:uppercase}
 .result.green h2{color:var(--ok)}.result.red h2{color:var(--err)}
-.result .rname{font-size:24px;font-weight:700;margin:12px 0 4px}
+.result .rname{font-size:22px;font-weight:700;margin:10px 0 4px}
 .result .rrole{font-size:14px;color:var(--muted)}
 .result .rreason{font-size:15px;color:var(--err);font-weight:600;margin-top:8px}
 .result .rhint{font-size:13px;color:var(--muted);font-style:italic;margin-top:10px}
-/* Inside list */
-.inside-item{background:#fff;border:1px solid var(--border);border-left:4px solid var(--ok);border-radius:6px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.inside-item.long{border-left-color:var(--warn);background:var(--warn-bg)}
-.inside-item .ii-name{font-weight:700;font-size:15px}
-.inside-item .ii-meta{font-size:12px;color:var(--muted);margin-top:2px}
-.inside-item .ii-time{font-size:12px;color:var(--primary);font-weight:600;margin-top:4px}
-/* Counter */
-.counter{background:var(--card-alt);border-radius:8px;padding:16px;text-align:center;margin-bottom:12px}
-.counter b{display:block;font-size:40px;color:var(--primary);line-height:1;font-weight:700}
-.counter small{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-top:4px;display:block}
-/* User cards */
-.user-card{background:var(--card-alt);border:1px solid var(--border);border-radius:6px;padding:12px;margin-bottom:8px}
-.user-card.revoked{opacity:.6;background:var(--err-bg);border-color:#e6c2be}
-.user-card .uc-name{font-weight:700;font-size:15px;margin-bottom:3px}
-.user-card .uc-meta{font-size:12px;color:var(--muted);margin-bottom:8px}
-.user-card .uc-actions{display:flex;gap:6px;flex-wrap:wrap}
-.user-card .uc-actions button{padding:7px 12px;font-size:13px}
-/* QR display */
-.qr-wrap{display:flex;flex-direction:column;align-items:center;padding:16px;background:#fff;border-radius:8px;border:1px solid var(--border);margin:10px 0}
-.qr-wrap .qn{font-weight:700;font-size:16px;margin-top:10px;text-align:center}
-.qr-wrap .qm{font-size:12px;color:var(--muted);margin-top:3px}
+/* Conteo */
+.count-area{background:var(--card-alt);border-radius:8px;padding:16px;text-align:center;margin-bottom:12px}
+.count-area .cnum{font-size:52px;font-weight:700;color:var(--primary);line-height:1;display:block}
+.count-area small{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px}
+/* Spill */
+.spill-row{border:1px solid var(--border);border-left:4px solid var(--err);border-radius:6px;padding:12px;margin-bottom:7px;background:#fff}
+.spill-row.inprogress{border-left-color:var(--warn);background:var(--warn-bg)}
+.spill-row.done{border-left-color:var(--ok);background:var(--ok-bg);opacity:.85}
+/* Rep search */
+.rep-item{padding:10px 12px;border:1px solid var(--border);border-radius:6px;cursor:pointer;margin-bottom:5px;display:flex;justify-content:space-between;align-items:center}
+.rep-item:hover{background:var(--card-alt)}
 /* Modal */
 #modal{position:fixed;inset:0;background:rgba(26,15,10,.85);display:grid;place-items:center;padding:14px;z-index:9999}
 #modal[hidden]{display:none}
@@ -81,590 +106,864 @@ input:focus,select:focus{outline:2px solid var(--accent);border-color:var(--acce
 .toast{background:var(--ok);color:#fff;padding:13px 20px;border-radius:6px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;font-size:14px;max-width:340px;text-align:center}
 .toast.err{background:var(--err)}.toast.show{opacity:1}
 /* Notice */
-.notice{background:var(--warn-bg);border-left:4px solid var(--warn);padding:12px 14px;border-radius:6px;font-size:13px;line-height:1.6;margin-bottom:12px}
-.notice b{color:var(--warn)}
-/* Admin login */
-#adminLoginCard{padding:20px}
-/* Search */
-#reader{width:100%;max-width:480px;margin:auto;border-radius:10px;overflow:hidden;background:#000}
+.notice{background:var(--warn-bg);border-left:4px solid var(--warn);padding:10px 14px;border-radius:6px;font-size:13px;line-height:1.6;margin-bottom:10px}
+/* Inside list */
+.inside-row{border:1px solid var(--border);border-left:4px solid var(--ok);border-radius:6px;padding:10px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;background:#fff}
+.inside-row.long{border-left-color:var(--warn);background:var(--warn-bg)}
 </style>
 </head>
 <body>
 <div class="toast-wrap" id="toastWrap"></div>
 <div id="modal" hidden><div class="box" id="modalBox"></div></div>
 
-<header>
-  <h1>Control de Acceso <span style="font-size:13px;opacity:.8;font-weight:400">· Detrás de Plataforma</span></h1>
-  <span id="net" class="net"></span>
-  <button class="hbtn" onclick="location.href='index.html'">← Volver</button>
-</header>
+<!-- ===== LOGIN ===== -->
+<div id="loginScreen">
+  <div id="loginBox">
+    <h2>Dept. de Acomodadores</h2>
+    <p>Asamblea de Circuito · La Feria, TX</p>
 
-<main>
-  <div class="card" style="padding:10px">
-    <div class="tabs">
-      <button data-tab="scan" onclick="setTab('scan')" class="on">📷 Escanear</button>
-      <button data-tab="inside" onclick="setTab('inside')">👥 Dentro</button>
-      <button data-tab="admin" onclick="setTab('admin')">🔐 Admin</button>
-    </div>
-  </div>
-
-  <!-- SCAN TAB -->
-  <div id="tabScan">
-    <div class="card">
-      <h2>Cámara de Escaneo</h2>
-      <div id="reader"></div>
-      <div id="result"></div>
-      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-        <button class="pri" onclick="startCamera()">▶ Iniciar cámara</button>
-        <button onclick="stopCamera()">⏹ Detener</button>
-        <button onclick="manualSearch()">🔍 Buscar por nombre</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- INSIDE TAB -->
-  <div id="tabInside" hidden>
-    <div class="card">
-      <div class="counter"><b id="insideCount">0</b><small>Personas dentro ahora</small></div>
-      <div id="insideList"></div>
-    </div>
-  </div>
-
-  <!-- ADMIN TAB -->
-  <div id="tabAdmin" hidden>
-    <!-- Admin login -->
-    <div class="card" id="adminLoginCard">
-      <h2>Acceso Administrativo</h2>
-      <p style="color:var(--muted);font-size:14px;margin:0 0 12px">Ingresa tu contraseña para administrar los hermanos autorizados.</p>
-      <select id="adminUserSel" style="margin-bottom:10px">
-        <option value="">Selecciona tu nombre</option>
-        <option value="sergio">Sergio E. Vazquez Jr.</option>
-        <option value="jaime">Jaime Palestina</option>
-        <option value="steven">Steven Snyder</option>
-        <option value="abdiel">Abdiel Juarez Jr.</option>
-        <option value="jimmy">Jimmy Vasquez (Capitán)</option>
+    <!-- Staff login -->
+    <div class="login-section">
+      <b>Personal del Departamento</b>
+      <select id="staffSel" style="margin-bottom:8px" onchange="onStaffChange()">
+        <option value="">Selecciona tu nombre...</option>
+        <optgroup label="Superintendencia">
+          <option value="sergio">Sergio E. Vazquez Jr. — Superintendente</option>
+        </optgroup>
+        <optgroup label="Auxiliares">
+          <option value="jaime">Jaime Palestina — Aux. Entradas</option>
+          <option value="steven">Steven Snyder — Aux. Asientos</option>
+          <option value="abdiel">Abdiel Juarez Jr. — Hombre Clave</option>
+        </optgroup>
+        <optgroup label="Otros">
+          <option value="carlos_v">Carlos Vasquez — Limpieza</option>
+        </optgroup>
       </select>
-      <input type="password" id="adminPassInput" placeholder="Contraseña" style="margin-bottom:12px" onkeydown="if(event.key==='Enter')loginAdmin()">
-      <button class="pri" style="width:100%" onclick="loginAdmin()">Entrar</button>
-      <div id="adminErr" style="color:var(--err);font-weight:600;font-size:14px;margin-top:8px;min-height:18px;text-align:center"></div>
+      <input type="password" id="staffPass" placeholder="Contraseña" style="margin-bottom:8px" onkeydown="if(event.key==='Enter')loginStaff()">
+      <button class="pri" style="width:100%" onclick="loginStaff()">Entrar</button>
     </div>
 
-    <!-- Admin panel (hidden until login) -->
-    <div id="adminPanel" hidden>
-      <div class="card">
-        <h2>Agregar Hermano Autorizado</h2>
-        <div style="display:grid;gap:10px">
-          <input id="newAuthName" placeholder="Nombre completo">
-          <select id="newAuthRole">
-            <option value="">Selecciona rol...</option>
-            <option>Discursante</option>
-            <option>Presidente</option>
-            <option>Comité</option>
-            <option>Audio y Video</option>
-            <option>Técnico</option>
-            <option>Instalación</option>
-            <option>Bautismo</option>
-            <option>Primeros Auxilios</option>
-            <option>Acomodador (Capitán)</option>
-            <option>Superintendente</option>
-          </select>
-          <button class="ok" onclick="addAuthorized()">Agregar</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <h2>Generar QR Temporal</h2>
-        <div class="notice"><b>Uso:</b> Para hermanos que olvidaron su QR. Válido por tiempo limitado.</div>
-        <div style="display:grid;gap:10px">
-          <input id="tempName" placeholder="Nombre del hermano">
-          <select id="tempHours">
-            <option value="1">Válido 1 hora</option>
-            <option value="2" selected>Válido 2 horas</option>
-            <option value="4">Válido 4 horas</option>
-            <option value="8">Todo el día (8 horas)</option>
-          </select>
-          <button class="pri" onclick="genTempQR()">Generar QR Temporal</button>
-        </div>
-        <div id="tempQRDisplay" hidden></div>
-      </div>
-
-      <div class="card">
-        <h2>QRs Temporales Activos (<span id="tempCount">0</span>)</h2>
-        <div id="tempList"></div>
-      </div>
-
-      <div class="card">
-        <h2>Hermanos Autorizados</h2>
-        <button onclick="printAllQRs()" style="width:100%;margin-bottom:10px;background:var(--ok);color:#fff;border-color:var(--ok)">🖨 Imprimir todos los QR</button>
-        <input id="searchAuth" placeholder="Buscar hermano..." oninput="renderAuthList(this.value)" style="margin-bottom:10px">
-        <div id="authList"></div>
-      </div>
+    <!-- Regular acomodador search -->
+    <div class="login-section">
+      <b>Acomodadores — busca tu nombre</b>
+      <input id="brotherSearch" placeholder="Escribe tu nombre..." oninput="searchBrother(this.value)" autocomplete="off" style="margin-bottom:6px">
+      <div id="brotherResults"></div>
     </div>
+
+    <div id="loginErr" style="color:var(--err);font-weight:600;font-size:14px;min-height:16px;text-align:center"></div>
   </div>
-</main>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app" hidden>
+  <header>
+    <h1>Acomodadores · La Feria TX</h1>
+    <span id="net" class="net"></span>
+    <span id="whoLabel" style="font-size:12px;background:rgba(255,255,255,.18);padding:3px 10px;border-radius:99px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+    <button class="hbtn" id="btnWalkers" hidden onclick="window.open('walkers.html','_blank')">♿ Walkers</button>
+    <button class="hbtn" id="btnDash" hidden onclick="window.open('dashboard.html','_blank')">📊 Panel</button>
+    <button class="hbtn" onclick="doLogout()">Salir</button>
+  </header>
+
+  <main>
+    <div class="card" id="statsCard" hidden><div class="stats-grid" id="statsGrid"></div></div>
+
+    <div class="card" style="padding:10px"><div class="tabs" id="mainTabs"></div></div>
+
+    <!-- Tab: Posiciones completas (sergio only) -->
+    <div id="tabPositions" hidden>
+      <div class="card" style="padding:10px 16px">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <span style="font-size:14px;color:var(--muted);font-weight:600">Ver:</span>
+          <button onclick="filterPos('all')" id="fAll" class="on" style="padding:6px 12px;font-size:13px">Todos</button>
+          <button onclick="filterPos('absent')" id="fAbsent" style="padding:6px 12px;font-size:13px;color:var(--err);border-color:var(--err)">Sin confirmar</button>
+          <button onclick="filterPos('present')" id="fPresent" style="padding:6px 12px;font-size:13px;color:var(--ok);border-color:var(--ok)">Presentes</button>
+        </div>
+      </div>
+      <div id="positionsList"></div>
+    </div>
+
+    <!-- Tab: Mis Capitanes (jaime / steven / abdiel) -->
+    <div id="tabMisCaps" hidden>
+      <div class="card" style="padding:10px 16px">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <span style="font-size:14px;color:var(--muted);font-weight:600">Ver:</span>
+          <button onclick="filterPos('all')" id="fAll2" class="on" style="padding:6px 12px;font-size:13px">Todos</button>
+          <button onclick="filterPos('absent')" id="fAbsent2" style="padding:6px 12px;font-size:13px;color:var(--err);border-color:var(--err)">Sin confirmar</button>
+          <button onclick="filterPos('present')" id="fPresent2" style="padding:6px 12px;font-size:13px;color:var(--ok);border-color:var(--ok)">Presentes</button>
+        </div>
+      </div>
+      <div id="misCapsPositions"></div>
+    </div>
+
+    <!-- Tab: Mi Posición (acomodador regular) -->
+    <div id="tabMiPos" hidden>
+      <div id="myPositionCard"></div>
+    </div>
+
+    <!-- Tab: Conteo (eliud / jimmy / abdiel) -->
+    <div id="tabConteo" hidden>
+      <div class="card">
+        <h2>Conteo de Asistentes — <span id="conteoAreaLabel"></span></h2>
+        <div class="count-area">
+          <span class="cnum" id="countDisplay">0</span>
+          <small>personas contadas ahora</small>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin-bottom:16px">
+          <input type="number" id="newCountInput" placeholder="Nuevo número" style="width:120px;text-align:center;font-size:20px;font-weight:700;padding:10px">
+          <button class="pri" onclick="saveCount()">Guardar Conteo</button>
+        </div>
+        <h2 style="margin-top:0">Historial</h2>
+        <div id="conteoHistory"></div>
+      </div>
+    </div>
+
+    <!-- Tab: Cámara QR -->
+    <div id="tabQR" hidden>
+      <div class="card">
+        <h2>Escáner QR · Detrás de Plataforma</h2>
+        <div id="reader"></div>
+        <div id="qrResult"></div>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="pri" onclick="startCamera()">▶ Iniciar cámara</button>
+          <button onclick="stopCamera()">⏹ Detener</button>
+          <button onclick="manualQRSearch()">🔍 Buscar nombre</button>
+        </div>
+        <div style="margin-top:14px">
+          <h2>Dentro ahora</h2>
+          <div id="insideListQR"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Derrames -->
+    <div id="tabDerrames" hidden>
+      <div class="card" id="spillReportCard">
+        <h2>Reportar Derrame</h2>
+        <div style="display:grid;gap:10px">
+          <select id="spillType">
+            <option value="">Tipo de derrame...</option>
+            <option>Agua</option><option>Refresco</option><option>Café</option>
+            <option>Otro líquido</option><option>Basura</option>
+          </select>
+          <input id="spillLocation" placeholder="Ubicación (ej: Pasillo norte, sección 3)">
+          <button class="pri" onclick="reportSpill()">📢 Reportar</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Derrames Activos</h2>
+        <div id="spillsList"></div>
+      </div>
+      <div class="card" id="spillHistCard" hidden>
+        <h2>Historial de Hoy</h2>
+        <div id="spillsHistList"></div>
+      </div>
+    </div>
+
+    <!-- Tab: Buscar -->
+    <div id="tabSearch" hidden>
+      <div class="card">
+        <h2>Buscar Hermano / Posición</h2>
+        <input id="searchInput" placeholder="Nombre, posición o número..." oninput="doSearch(this.value)" style="margin-bottom:12px">
+        <div id="searchResults"></div>
+      </div>
+    </div>
+  </main>
+</div>
 
 <script>
 const DB = "https://voluntariastx20-default-rtdb.firebaseio.com";
 const APP_SECRET = "asam-laf-2026-secret-v1";
 const ZONE = "detras";
 
-const ADMIN_USERS = {
-  sergio: { name:"Sergio E. Vazquez Jr.", pass:"acomodadores2026" },
-  jaime:  { name:"Jaime Palestina",       pass:"superauxiliar2026" },
-  steven: { name:"Steven Snyder",         pass:"auxiliar2026" },
-  abdiel: { name:"Abdiel Juarez Jr.",     pass:"clave2026" },
-  jimmy:  { name:"Jimmy Vasquez",         pass:"capitan2026" }
+// ── STAFF USERS ───────────────────────────────────────────────
+// role definitions:
+//   super   = Sergio: everything
+//   jaime   = Aux. Entradas: cap1 + cap2 positions + derrames + QR
+//   steven  = Aux. Asientos: cap5 + cap6 positions + derrames + QR
+//   abdiel  = Hombre Clave: cap6 positions + conteo auditorio + derrames + QR
+//   eliud   = Cap. 6: conteo auditorio only
+//   jimmy   = Cap. 4: conteo plataforma only + QR
+//   limpieza = Carlos Vasquez: derrames only (read + manage)
+const STAFF = {
+  sergio:   { name:"Sergio E. Vazquez Jr.", pass:"acomodadores2026", role:"super"    },
+  jaime:    { name:"Jaime Palestina",       pass:"superauxiliar2026",role:"jaime"    },
+  steven:   { name:"Steven Snyder",         pass:"auxiliar2026",     role:"steven"   },
+  abdiel:   { name:"Abdiel Juarez Jr.",     pass:"clave2026",        role:"abdiel"   },
+  carlos_v: { name:"Carlos Vasquez",        pass:"limpieza2026",     role:"limpieza" },
 };
 
-// Pre-authorized brothers from list provided
-const PREAUTH = [
-  { name:"Emmanuel Delgado",        role:"Comité" },
-  { name:"Alberto Herrera",         role:"Comité" },
-  { name:"Alfredo Guerrero",        role:"Técnico" },
-  { name:"Christian Serna",         role:"Técnico" },
-  { name:"Daniel De la Cruz",       role:"Instalación" },
-  { name:"Daniel Gallardo",         role:"Instalación" },
-  { name:"Eduardo Rocha",           role:"Técnico" },
-  { name:"Levi Perez",              role:"Audio y Video" },
-  { name:"David Castillo",          role:"Audio y Video" },
-  { name:"Juan Antonio Juarez",     role:"Comité" },
-  { name:"Manuel Ibarra",           role:"Técnico" },
-  { name:"Sergio Vazquez Jr.",      role:"Superintendente" },
-  { name:"Edelmiro Alaniz",         role:"Comité" },
-  { name:"Hector Chavira",          role:"Comité" },
-  { name:"Eduardo Compian",         role:"Audio y Video" },
-  { name:"Jesus Ulises Palomo",     role:"Discursante" },
-  { name:"Steven Snyder",           role:"Acomodador (Capitán)" },
-  { name:"Jaime Palestina",         role:"Acomodador (Capitán)" },
-  { name:"Abdiel Juarez",           role:"Acomodador (Capitán)" },
-  { name:"Carlos Vasquez",          role:"Técnico" },
-  { name:"Angel Bejerano",          role:"Instalación" },
-  { name:"Jose Lozoya",             role:"Instalación" },
-  { name:"Gabriel Vanegas",         role:"Técnico" },
-  { name:"Samuel Dana",             role:"Comité" },
-  { name:"Jose Misael Cantu",       role:"Discursante" },
-  { name:"Gonzalo Mejia",           role:"Acomodador (Capitán)" },
-  { name:"Mario Flores",            role:"Técnico" },
-  { name:"Sergio Efren Vazquez Sr.", role:"Comité" },
-  { name:"David Velez",             role:"Comité" },
-  { name:"Benjamin Quintero",       role:"Comité" },
-  { name:"Jimmy Vasquez",           role:"Acomodador (Capitán)" },
+// Role → tabs
+const ROLE_TABS = {
+  super:    ['positions','search','derrames','qr'],
+  jaime:    ['miscaps','derrames','qr'],
+  steven:   ['miscaps','derrames','qr'],
+  abdiel:   ['miscaps','conteo','derrames','qr'],
+  eliud:    ['conteo'],
+  jimmy:    ['conteo','qr'],
+  limpieza: ['derrames'],
+  acom:     ['mipos','derrames','qr'],
+  count:    ['mipos','conteo'],
+};
+
+const TAB_META = {
+  positions: { label:'📋 Todas las Posiciones', el:'tabPositions' },
+  miscaps:   { label:'📋 Mis Capitanes',         el:'tabMisCaps'  },
+  mipos:     { label:'📍 Mi Posición',           el:'tabMiPos'    },
+  conteo:    { label:'🔢 Conteo',                el:'tabConteo'   },
+  derrames:  { label:'🧹 Derrames',              el:'tabDerrames' },
+  qr:        { label:'📷 Cámara QR',             el:'tabQR'       },
+  search:    { label:'🔍 Buscar',                el:'tabSearch'   },
+};
+
+// ── CAPTAINS ──────────────────────────────────────────────────
+const CAPITANES = [
+  { id:"cap1", name:"Hugo Galvan",        label:"Capitán 1 — Alarmas / Detrás de Plataforma",           color:"#5a1212" },
+  { id:"cap2", name:"Raul Quintero",      label:"Capitán 2 — Entradas / Salidas / Vestíbulo",            color:"#7a1a1a" },
+  { id:"cap3", name:"Jose Gonzalez Sr.",  label:"Capitán 3 — Mayores y Discapacitados",                  color:"#4a6b3a" },
+  { id:"cap4", name:"Jimmy Vasquez",      label:"Capitán 4 — Control de Acceso a la Plataforma",         color:"#3d5a80" },
+  { id:"cap5", name:"Javier Borjas",      label:"Capitán 5 — Área Reservada / Bautismo",                 color:"#8a4000" },
+  { id:"cap6", name:"Eliud Luna",         label:"Capitán 6 — Auditorio (H.Clave: Abdiel Juarez Jr.)",    color:"#1a4a1a" },
 ];
 
+// Role → which caps they manage
+const ROLE_CAPS = {
+  super:  ["cap1","cap2","cap3","cap4","cap5","cap6"],
+  jaime:  ["cap1","cap2"],
+  steven: ["cap5","cap6"],
+  abdiel: ["cap6"],
+};
+
+// ── POSITIONS ─────────────────────────────────────────────────
+const POSITIONS = [
+  // Cap 1 — Hugo Galvan — bajo Jaime Palestina
+  { id:1,  cap:"cap1", name:"Luis Barberena",      desc:"Alarma Incendios · Cuarto Multiusos",                     type:"always" },
+  { id:2,  cap:"cap1", name:"Guadalupe De La Cruz",desc:"Salida emergencia plataforma",                            type:"always" },
+  { id:5,  cap:"cap1", name:"Valente Alejandro",   desc:"Entrada principal lado sur plataforma",                   type:"always" },
+  { id:6,  cap:"cap1", name:"Norberto Cardenas",   desc:"Alarma incendios lado sur plataforma · Evac. secc.6",     type:"always" },
+  { id:14, cap:"cap1", name:"Carlos Salas",         desc:"Alarma incendios lado norte plataforma · Evac. secc.1",  type:"always" },
+  { id:15, cap:"cap1", name:"Vianney Morales",      desc:"Alarma incendios lado norte Audio · Evac. secc.2",       type:"always" },
+  { id:18, cap:"cap1", name:"Jamin Muñiz",          desc:"Alarma incendios lado sur Instalación · Evac. secc.5",   type:"always" },
+  // Cap 2 — Raul Quintero — bajo Jaime Palestina
+  { id:7,  cap:"cap2", name:"Alfonso Hernandez",   desc:"Puerta Acceso Principal Plataforma",                     type:"always" },
+  { id:13, cap:"cap2", name:"Jose Gonzalez Jr",    desc:"Puerta Acceso Secundaria Plataforma",                    type:"always" },
+  { id:16, cap:"cap2", name:"Ricardo Altamirano",  desc:"Alarma de Incendios",                                    type:"always" },
+  { id:17, cap:"cap2", name:"Luis Duran",           desc:"Alarma de Incendios",                                    type:"always" },
+  { id:19, cap:"cap2", name:"Adrian Mota",          desc:"Entrada Lado Sur",                                       type:"always" },
+  { id:20, cap:"cap2", name:"Francisco Montoya",    desc:"Entrada Lado Sur",                                       type:"always" },
+  { id:21, cap:"cap2", name:"Roberto Quiroga",      desc:"Pórtico",                                                type:"always" },
+  { id:22, cap:"cap2", name:"Eulogio Montelongo",   desc:"Pórtico / Alberca",                                      type:"always" },
+  { id:23, cap:"cap2", name:"Tony Duran",            desc:"Entrada Lado Norte · Evac. secc.3",                     type:"always" },
+  { id:24, cap:"cap2", name:"Abisai Muñiz",          desc:"Entrada Lado Norte",                                    type:"always" },
+  { id:"corredor1", cap:"cap2", name:"Orlando Benavidez",   desc:"Corredor — Alterna posiciones · Rep. a Aux. Entradas", type:"special" },
+  { id:"corredor2", cap:"cap2", name:"Jose Luis Camarillo", desc:"Corredor — Alterna posiciones · Rep. a Aux. Entradas", type:"special" },
+  { id:"camaras",   cap:"cap2", name:"Osiel Agustin",        desc:"Cámaras — Alterna posiciones",                           type:"special" },
+  // Cap 4 — Jimmy Vasquez — bajo Sergio (acceso plataforma)
+  { id:3,  cap:"cap4", name:"Macario Martinez",    desc:"Detrás de plataforma",                                   type:"always" },
+  { id:4,  cap:"cap4", name:"Celestino Chavez",    desc:"Detrás de plataforma / Escaleras plataforma",            type:"always" },
+  { id:8,  cap:"cap4", name:"Osiel Ramirez",       desc:"Auditorio · Frente Lado Sur · Alterna c/pos.10 · Evac. Admin",    type:"session" },
+  { id:9,  cap:"cap4", name:"Otilio Ramirez",      desc:"Auditorio · Frente Lado SE · Alterna c/pos.10 · Evac. secc.5,6", type:"session" },
+  { id:10, cap:"cap4", name:"Gustavo Saucedo",     desc:"Frente al Escenario · Alterna c/8-12 · Evac. secc.3,4",          type:"session" },
+  { id:11, cap:"cap4", name:"Josue Campos",        desc:"Auditorio · Frente Lado NE · Alterna c/pos.10 · Evac. secc.1,2", type:"session" },
+  { id:12, cap:"cap4", name:"Rey Castillo",        desc:"Auditorio · Frente Lado Norte · Alterna c/pos.10 · Evac. Multiusos", type:"session" },
+  // Cap 5 — Javier Borjas — bajo Steven Snyder
+  { id:29, cap:"cap5", name:"Javier Borjas",       desc:"Auditorio Asientos · Capitán ruta Bautismo",             type:"session" },
+  { id:33, cap:"cap5", name:"Alex Vazquez",        desc:"Auditorio Asientos · Auxiliar ruta Bautismo",            type:"session" },
+  // Cap 6 — Eliud Luna — bajo Steven Snyder / Abdiel Juarez
+  { id:25, cap:"cap6", name:"Gonzalo Mejia Sr",    desc:"Auditorio — Asientos",                                   type:"session" },
+  { id:26, cap:"cap6", name:"Carlos Martinez",     desc:"Auditorio — Asientos",                                   type:"session" },
+  { id:27, cap:"cap6", name:"Felipe Ortiz",        desc:"Auditorio — Asientos",                                   type:"session" },
+  { id:28, cap:"cap6", name:"Juan Salinas",        desc:"Auditorio — Asientos",                                   type:"session" },
+  { id:30, cap:"cap6", name:"Martin Davila",       desc:"Auditorio — Asientos",                                   type:"session" },
+  { id:31, cap:"cap6", name:"Juan F Garza",        desc:"Auditorio — Asientos",                                   type:"session" },
+  { id:32, cap:"cap6", name:"Isaias Martinez",     desc:"Auditorio — Asientos",                                   type:"session" },
+  { id:34, cap:"cap6", name:"Alfredo Garza",       desc:"Auditorio — Asientos",                                   type:"session" },
+  { id:"alt1", cap:"cap6", name:"Roberto Borjas",   desc:"Alterna posiciones en Auditorio",                       type:"special" },
+  { id:"alt2", cap:"cap6", name:"Reynaldo Perez",   desc:"Alterna posiciones en Auditorio",                       type:"special" },
+  { id:"alt3", cap:"cap6", name:"Eliu De La Garza", desc:"Alterna posiciones en Auditorio",                       type:"special" },
+];
+
+const ALL_BROTHERS = [
+  "Alfonso Hernández","Eliu de la Garza","Isaias Martinez","Juan F Garza","Martin Davila","Rey Castillo",
+  "Roberto Quiroga","Norberto Cardenas","Felipe Ortiz","Francisco Montoya","Juan Salinas","Reynaldo Perez",
+  "Roberto Borjas","Servando Sustaita","Carlos Leonardo Salas Zuñiga","Celestino Chavez","Gustavo Saucedo",
+  "Jose Duran","Luis Duran","Otilio Ramirez","Orlando Benavidez","Adrian Mota","José A. González",
+  "Jose González Jr","Vianney Morales","Valente Alejandro","Hugo Galvan","Luis Barberena",
+  "Alex Vazquez","Eliud Luna","Jimmy Vasquez","Guadalupe De La Cruz","Javier Borjas","Abisai Muniz",
+  "Carlos Martinez","Oziel Rodriguez","Josue Campos","Ricardo Altamirano","Eulogio Montelongo",
+  "Alfredo Garza","Jamin Muñiz","Raúl Quintero","Gonzalo Mejia Sr.","Macario Martinez",
+  "Tony Duran","Osiel Agustin","Osiel Ramirez","Jose Luis Camarillo","Carlos Salas",
+  "Abdiel Juarez Jr.","Jaime Palestina","Steven Snyder","Sergio E. Vazquez Jr."
+];
+
+// Captains that only get conteo when they search their name (no password needed)
+const COUNT_CAPTAINS = {
+  "Eliud Luna":    "eliud",
+  "Jimmy Vasquez": "jimmy",
+};
+
+const COUNT_AREAS = {
+  eliud:  { id:"auditorio",  label:"Auditorio (Capitán 6)" },
+  jimmy:  { id:"plataforma", label:"Plataforma (Capitán 4)" },
+  abdiel: { id:"auditorio",  label:"Auditorio (Hombre Clave)" },
+};
+
+// ── STATE ─────────────────────────────────────────────────────
 const $ = id => document.getElementById(id);
-let USERS = {}, ENTRIES = {}, TEMP = {};
+let ME = null, S = {}, ACC = {}, Counts = {}, pollIv = null, posFilter = 'all';
 let scanMode = false, scanner = null, lastScan = "", lastScanTs = 0;
-let adminLogged = false, adminMe = null, pollIv = null;
+let currentTab = '';
 
-async function fb(path) {
-  const r = await fetch(`${DB}/${path}.json?t=${Date.now()}`);
-  return r.json();
-}
-async function put(path, val) {
-  await fetch(`${DB}/${path}.json`, { method:'PUT', body:JSON.stringify(val) });
-}
-async function del(path) {
-  await fetch(`${DB}/${path}.json`, { method:'DELETE' });
-}
+function esc(s){ return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function net(on){ const e=$('net'); e.textContent=on?'En línea':'Sin conexión'; e.className='net '+(on?'on':'off'); }
+async function fb(path){ const r=await fetch(`${DB}/${path}.json?t=${Date.now()}`); return r.json(); }
+async function put(path,val){ await fetch(`${DB}/${path}.json`,{method:'PUT',body:JSON.stringify(val)}); }
+async function del(path){ await fetch(`${DB}/${path}.json`,{method:'DELETE'}); }
 
-function net(on) {
-  const e = $('net');
-  e.textContent = on ? 'En línea' : 'Sin conexión';
-  e.className = 'net ' + (on ? 'on' : 'off');
+// ── LOGIN ─────────────────────────────────────────────────────
+function onStaffChange() {
+  $('loginErr').textContent = '';
+  $('staffPass').value = '';
 }
 
-async function loadAll() {
-  try {
-    const data = await fb('access');
-    const d = data || {};
-    USERS = d.users || {};
-    ENTRIES = d.entries || {};
-    TEMP = d.tempQr || {};
-    // Seed pre-authorized if first time
-    if (!Object.keys(USERS).length) await seedPreauth();
-    net(true);
-    renderAll();
-  } catch(e) { net(false); }
+function searchBrother(q) {
+  if (!q.trim()) { $('brotherResults').innerHTML=''; return; }
+  const ql = q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const matches = ALL_BROTHERS.filter(n =>
+    n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(ql)
+  );
+  $('brotherResults').innerHTML = matches.slice(0,6).map(name => {
+    const isCountCap = name in COUNT_CAPTAINS;
+    const badge = isCountCap
+      ? `<span style="font-size:12px;background:var(--ok-bg);color:var(--ok);border:1px solid #a5d6a7;border-radius:99px;padding:2px 8px;font-weight:700">🔢 Conteo</span>`
+      : `<span style="font-size:12px;color:var(--muted)">📍 Mi Posición</span>`;
+    return `<div onclick="loginAsBrother('${esc(name)}')" style="padding:10px 12px;border:1px solid var(--border);border-radius:6px;cursor:pointer;margin-bottom:4px;background:#fff;display:flex;justify-content:space-between;align-items:center;gap:8px">
+      <span style="font-weight:600">${esc(name)}</span>
+      ${badge}
+    </div>`;
+  }).join('') + (matches.length===0?'<p style="color:var(--muted);font-size:13px;padding:6px 0">No encontrado</p>':'');
 }
 
-async function seedPreauth() {
-  for (const p of PREAUTH) {
-    const uid = 'pre_' + p.name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z_]/g,'');
-    const user = { name: p.name, role: p.role, active: true, createdAt: Date.now() };
-    await put(`access/users/${uid}`, user);
-    USERS[uid] = user;
+function loginAsBrother(name) {
+  const isCountCap = name in COUNT_CAPTAINS;
+  const role = isCountCap ? COUNT_CAPTAINS[name] : 'acom';
+  ME = { name, role };
+  enterApp();
+}
+
+function loginStaff() {
+  const key = $('staffSel').value;
+  const pass = $('staffPass').value;
+  if (!key) { $('loginErr').textContent='Selecciona tu nombre'; return; }
+  const u = STAFF[key];
+  if (!u || u.pass !== pass) { $('loginErr').textContent='Contraseña incorrecta'; return; }
+  ME = { key, name:u.name, role:u.role };
+  enterApp();
+}
+
+function enterApp() {
+  $('loginScreen').hidden = true;
+  $('app').hidden = false;
+  $('whoLabel').textContent = ME.name;
+
+  // Show walkers button for roles that need it
+  if (['super','jaime','steven'].includes(ME.role)) $('btnWalkers').hidden = false;
+  // Show dashboard button only for Sergio
+  if (ME.role === 'super') $('btnDash').hidden = false;
+  // Show stats for admin-level roles
+  if (['super','jaime','steven','abdiel'].includes(ME.role)) $('statsCard').hidden = false;
+  // Limpieza sees full history on derrames
+  if (ME.role === 'limpieza') {
+    $('spillReportCard').hidden = true;
+    $('spillHistCard').hidden = false;
   }
+
+  buildTabs();
+  loadAll();
+  pollIv = setInterval(loadAll, 6000);
 }
 
-function renderAll() {
-  renderInsideList();
-  if (adminLogged) { renderAuthList($('searchAuth').value); renderTempList(); }
+function doLogout() {
+  clearInterval(pollIv);
+  stopCamera();
+  location.reload();
+}
+
+// ── TABS ──────────────────────────────────────────────────────
+function buildTabs() {
+  const tabs = ROLE_TABS[ME.role] || ROLE_TABS.acom;
+  $('mainTabs').innerHTML = tabs.map(t =>
+    `<button data-tab="${t}" onclick="setTab('${t}')">${TAB_META[t].label}</button>`
+  ).join('');
+  setTab(tabs[0]);
 }
 
 function setTab(t) {
-  document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
-  $('tabScan').hidden = t !== 'scan';
-  $('tabInside').hidden = t !== 'inside';
-  $('tabAdmin').hidden = t !== 'admin';
-  if (t === 'inside') renderInsideList();
-  if (t === 'admin' && adminLogged) renderAuthList('');
+  currentTab = t;
+  document.querySelectorAll('#mainTabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+  Object.values(TAB_META).forEach(m => { const el=$(m.el); if(el) el.hidden=true; });
+  const el = $(TAB_META[t]?.el);
+  if (el) el.hidden = false;
+  renderTab(t);
 }
 
-// ---- CRYPTO / QR ----
-async function sign(msg) {
-  if (!crypto.subtle) throw new Error("Requiere HTTPS para funcionar (GitHub Pages o similar).");
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('').slice(0,16);
-}
-function todayStr() { return new Date().toISOString().slice(0,10); }
-
-async function buildQR(uid) {
-  const d = todayStr();
-  const sig = await sign(`${uid}|${d}|${APP_SECRET}`);
-  return `ASM|${uid}|${d}|${sig}`;
+function renderTab(t) {
+  if (t==='positions') renderPositions(ROLE_CAPS.super);
+  else if (t==='miscaps') renderPositions(ROLE_CAPS[ME.role] || []);
+  else if (t==='mipos') renderMyPosition();
+  else if (t==='conteo') renderConteo();
+  else if (t==='derrames') renderSpills();
+  else if (t==='qr') renderInsideList();
 }
 
-async function validateQR(content) {
-  const parts = content.split('|');
-  if (parts[0] === 'TMP') {
-    if (parts.length !== 5) return { valid:false, reason:"Formato QR temporal inválido" };
-    const [,tempId,zone,expiresAt,sig] = parts;
-    let expected;
-    try { expected = await sign(`${tempId}|${zone}|${expiresAt}|${APP_SECRET}`); } catch(e) { return { valid:false, reason:e.message }; }
-    if (sig !== expected) return { valid:false, reason:"Firma inválida" };
-    if (Date.now() > +expiresAt) return { valid:false, reason:`QR temporal expirado. Solicite uno nuevo.` };
-    const t = TEMP[tempId];
-    if (!t) return { valid:false, reason:"QR temporal no encontrado" };
-    if (zone !== ZONE) return { valid:false, reason:"QR temporal es para otra zona" };
-    return { valid:true, tempId, temp:true, name:t.name, role:'QR Temporal' };
-  }
-  if (parts[0] === 'ASM') {
-    if (parts.length !== 4) return { valid:false, reason:"Formato QR inválido" };
-    const [,uid,dateStr,sig] = parts;
-    if (dateStr !== todayStr()) return { valid:false, reason:"Código de otro día" };
-    let expected;
-    try { expected = await sign(`${uid}|${dateStr}|${APP_SECRET}`); } catch(e) { return { valid:false, reason:e.message }; }
-    if (sig !== expected) return { valid:false, reason:"Firma inválida" };
-    const u = USERS[uid];
-    if (!u) return { valid:false, reason:"Hermano no registrado en el sistema" };
-    if (u.active === false) return { valid:false, reason:"Acceso revocado por el comité" };
-    return { valid:true, uid, user:u };
-  }
-  return { valid:false, reason:"Formato desconocido" };
-}
-
-// ---- CAMERA ----
-async function startCamera() {
-  if (scanMode) return;
+// ── LOAD ──────────────────────────────────────────────────────
+async function loadAll() {
   try {
-    scanner = new Html5Qrcode("reader");
-    scanMode = true;
-    await scanner.start({ facingMode:"environment" }, { fps:10, qrbox:{ width:250, height:250 } }, onScanSuccess, ()=>{});
-  } catch(e) { toast("No se pudo iniciar la cámara", true); scanMode = false; }
-}
-async function stopCamera() {
-  if (scanner && scanMode) { try { await scanner.stop(); scanner.clear(); } catch(e){} }
-  scanMode = false;
-}
-
-async function onScanSuccess(text) {
-  if (text === lastScan && Date.now() - lastScanTs < 3000) return;
-  lastScan = text; lastScanTs = Date.now();
-  // Refresh temp QR if needed
-  const parts = text.split('|');
-  if (parts[0] === 'TMP' && parts[1]) {
-    try { const fresh = await fb(`access/tempQr/${parts[1]}`); if (fresh) TEMP[parts[1]] = fresh; } catch(e){}
-  }
-  const res = await validateQR(text);
-  if (!res.valid) { showResultRed(res.reason); return; }
-  const name = res.temp ? res.name : res.user.name;
-  const role = res.temp ? 'QR Temporal' : res.user.role;
-  const uid = res.temp ? `temp:${res.tempId}` : res.uid;
-  await logEntry(uid, name, !!res.temp);
-  if (res.temp) await put(`access/tempQr/${res.tempId}/uses`, (TEMP[res.tempId]?.uses || 0) + 1);
-  showResultGreen(name, role);
-  toast(`Entrada: ${name}`);
+    const [sData, accData, cData] = await Promise.all([fb('s'), fb('access'), fb('counts')]);
+    S = sData || {};
+    ACC = accData || {};
+    Counts = cData || {};
+    net(true);
+    if (!$('statsCard').hidden) renderStats();
+    renderTab(currentTab);
+  } catch(e) { net(false); }
 }
 
-async function logEntry(uid, name, isTemp) {
-  const id = Date.now() + '_' + Math.random().toString(36).slice(2,6);
-  await put(`access/entries/${id}`, { uid, zone:ZONE, name, entryTime:Date.now(), exitTime:null, isTemp:!!isTemp });
+// ── STATS ─────────────────────────────────────────────────────
+function renderStats() {
+  const capFilter = ROLE_CAPS[ME.role] || ROLE_CAPS.super;
+  const myPos = POSITIONS.filter(p => capFilter.includes(p.cap) && p.type !== 'special');
+  const pos = S.pos || {};
+  let present=0, absent=0, sub=0, pending=0;
+  myPos.forEach(p => {
+    const st = (pos[String(p.id)]||{}).status;
+    if (st==='present') present++;
+    else if (st==='absent') absent++;
+    else if (st==='sub') sub++;
+    else pending++;
+  });
+  const spills = Object.values(S.spills||{}).filter(s=>s.status!=='done').length;
+  $('statsGrid').innerHTML = `
+    <div class="stat-box ok"><b>${present}</b><small>Presentes</small></div>
+    <div class="stat-box ${pending+absent>0?'warn':'ok'}"><b>${pending+absent}</b><small>Sin confirmar</small></div>
+    <div class="stat-box ${sub>0?'warn':''}"><b>${sub}</b><small>Con sustituto</small></div>
+    <div class="stat-box ${spills>0?'err':'ok'}"><b>${spills}</b><small>Derrames activos</small></div>
+  `;
+}
+
+// ── POSITIONS ─────────────────────────────────────────────────
+function filterPos(f) {
+  posFilter = f;
+  ['fAll','fAbsent','fPresent','fAll2','fAbsent2','fPresent2'].forEach(id => $(id)?.classList.remove('on'));
+  const map = {all:'fAll',absent:'fAbsent',present:'fPresent'};
+  $(map[f])?.classList.add('on');
+  $('fAll2') && ($(map[f].replace('f','f')+'2') || $((map[f])+'2'))?.classList.add('on');
+  // simpler: just re-render
+  if (currentTab==='positions') renderPositions(ROLE_CAPS.super);
+  else if (currentTab==='miscaps') renderPositions(ROLE_CAPS[ME.role]||[]);
+}
+
+function renderPositions(capFilter) {
+  const pos = S.pos || {};
+  const targetEl = currentTab==='positions' ? $('positionsList') : $('misCapsPositions');
+  let html = '';
+
+  CAPITANES.forEach(cap => {
+    if (!capFilter.includes(cap.id)) return;
+    const capPos = POSITIONS.filter(p => p.cap === cap.id);
+    if (!capPos.length) return;
+    const visible = capPos.filter(p => {
+      const st = (pos[String(p.id)]||{}).status;
+      if (posFilter==='absent') return !st||st==='absent'||st==='pending';
+      if (posFilter==='present') return st==='present'||st==='sub';
+      return true;
+    });
+    if (!visible.length) return;
+
+    html += `<div class="cap-section">
+      <div class="cap-header" style="background:${cap.color}">${cap.label}<span>Cap: ${cap.name}</span></div>`;
+    visible.forEach(p => {
+      const st = pos[String(p.id)] || {};
+      const status = st.status || 'pending';
+      html += `<div class="pos-row">
+        <div class="pos-num ${p.type==='session'?'orange':''}">${typeof p.id==='number'?p.id:'—'}</div>
+        <div class="pos-info">
+          <div class="pos-name">${esc(p.name)}</div>
+          <div class="pos-desc">${esc(p.desc)}</div>
+          ${st.subName?`<div style="font-size:12px;color:var(--warn);font-weight:600;margin-top:2px">↔ Sustituto: ${esc(st.subName)}</div>`:''}
+          ${st.updatedBy?`<div style="font-size:11px;color:var(--muted);margin-top:1px">Por: ${esc(st.updatedBy)}</div>`:''}
+        </div>
+        <span class="badge ${status==='present'?'present':status==='sub'?'sub':status==='absent'?'absent':'pending'}">
+          ${status==='present'?'✓ Presente':status==='sub'?'↔ Sustituto':status==='absent'?'✗ Ausente':'— Pendiente'}
+        </span>
+        <div class="actions">
+          <button class="ok" onclick="markStatus('${p.id}','present','${esc(p.name)}')">✓</button>
+          <button class="warn" onclick="markStatus('${p.id}','absent','${esc(p.name)}')">✗</button>
+          <button onclick="openReplace('${p.id}','${esc(p.name)}')">↔ Reemplazo</button>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  });
+
+  if (!html) html = '<div class="card" style="text-align:center;color:var(--muted);padding:30px">No hay posiciones que mostrar con este filtro.</div>';
+  targetEl.innerHTML = html;
+}
+
+async function markStatus(posId, status, name) {
+  await put(`s/pos/${posId}`,{ status, name, updatedAt:Date.now(), updatedBy:ME.name });
+  toast(status==='present'?`✓ ${name} confirmado`:`✗ ${name} marcado ausente`);
   await loadAll();
 }
 
-function showResultGreen(name, role) {
-  const now = new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
-  $('result').innerHTML = `<div class="result green"><h2>✓ Acceso Permitido</h2><div class="rname">${esc(name)}</div><div class="rrole">${esc(role)}</div><div style="font-size:13px;color:var(--muted);margin-top:8px">Entrada: ${now}</div></div>`;
-}
-function showResultRed(reason) {
-  $('result').innerHTML = `<div class="result red"><h2>✗ Acceso Denegado</h2><div class="rreason">${esc(reason)}</div><div class="rhint">Diríjase al Superintendente de Acomodadores</div></div>`;
-}
-
-// ---- MANUAL SEARCH ----
-function manualSearch() {
-  const listHtml = `<input id="manualQ" placeholder="Buscar nombre..." oninput="filterManualSearch(this.value)" style="margin-bottom:10px">
-    <div id="manualResults" style="max-height:320px;overflow-y:auto">${Object.entries(USERS).map(([uid,u]) =>
-      `<div onclick="manualGrant('${uid}')" style="padding:10px 12px;border:1px solid var(--border);border-radius:6px;cursor:pointer;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center" class="mitem" data-name="${esc(u.name)}">
-        <div><b>${esc(u.name)}</b><div style="font-size:12px;color:var(--muted)">${esc(u.role||'')}</div></div>
-        <span style="font-size:12px;font-weight:700;color:${u.active===false?'var(--err)':'var(--ok)'}">${u.active===false?'Revocado':'Autorizado'}</span>
-      </div>`
-    ).join('')}</div>`;
-  showModal('Buscar Hermano', listHtml, [{text:'Cancelar'}]);
+function openReplace(posId, posName) {
+  const pos = S.pos || {};
+  const html = `<input placeholder="Filtrar nombre..." oninput="filterRepList(this.value)" style="margin-bottom:10px">
+    <div id="repList" style="max-height:300px;overflow-y:auto">${ALL_BROTHERS.map(name => {
+      const taken = POSITIONS.some(p => {
+        const st = pos[String(p.id)]||{};
+        return (st.subName||'').toLowerCase()===name.toLowerCase() && (st.status==='present'||st.status==='sub');
+      });
+      return `<div class="rep-item" onclick="assignSub('${posId}','${esc(posName)}','${esc(name)}')">
+        <div><b>${esc(name)}</b></div>
+        <span style="font-size:12px;font-weight:700;color:${taken?'var(--warn)':'var(--ok)'}">${taken?'Ya asignado':'Disponible'}</span>
+      </div>`;
+    }).join('')}</div>`;
+  showModal(`Reemplazo: ${posName}`, html, [{text:'Cancelar'}]);
 }
 
-function filterManualSearch(q) {
-  document.querySelectorAll('.mitem').forEach(el => {
-    el.style.display = el.dataset.name.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+function filterRepList(q) {
+  document.querySelectorAll('.rep-item').forEach(el => {
+    el.style.display = el.textContent.toLowerCase().includes(q.toLowerCase())?'':'none';
   });
 }
 
-async function manualGrant(uid) {
-  const u = USERS[uid];
-  if (!u) return;
-  if (u.active === false) { toast(`${u.name} tiene acceso revocado`, true); $('modal').hidden = true; return; }
-  await logEntry(uid, u.name, false);
+async function assignSub(posId, posName, subName) {
+  await put(`s/pos/${posId}`,{ status:'sub', name:posName, subName, updatedAt:Date.now(), updatedBy:ME.name });
   $('modal').hidden = true;
-  showResultGreen(u.name, u.role || '');
+  toast(`↔ ${subName} asignado a posición ${posId}`);
+  await loadAll();
 }
 
-// ---- INSIDE LIST ----
-function renderInsideList() {
-  const now = Date.now();
-  const inside = Object.entries(ENTRIES).filter(([,e]) => !e.exitTime).sort((a,b) => b[1].entryTime - a[1].entryTime);
-  $('insideCount').textContent = inside.length;
-  if (!inside.length) { $('insideList').innerHTML = '<p style="color:var(--muted);text-align:center;padding:20px">Nadie dentro en este momento.</p>'; return; }
-  $('insideList').innerHTML = inside.map(([id,e]) => {
-    const mins = Math.floor((now - e.entryTime) / 60000);
-    const long = mins >= 30;
-    const t = new Date(e.entryTime).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
-    return `<div class="inside-item${long?' long':''}">
-      <div>
-        <div class="ii-name">${esc(e.name)}</div>
-        <div class="ii-meta">${e.isTemp ? 'QR Temporal' : 'QR Permanente'}</div>
-        <div class="ii-time">Entró ${t} · ${mins} min</div>
+// ── MY POSITION ───────────────────────────────────────────────
+function renderMyPosition() {
+  const pos = S.pos || {};
+  const firstName = ME.name.split(' ')[0].toLowerCase();
+  const myPos = POSITIONS.filter(p => p.name.toLowerCase().includes(firstName));
+  if (!myPos.length) {
+    $('myPositionCard').innerHTML=`<div class="card">
+      <h2>Mi Posición</h2>
+      <p style="color:var(--muted)">No se encontró tu posición. Consulta con tu Capitán.</p>
+    </div>`;
+    return;
+  }
+  $('myPositionCard').innerHTML = myPos.map(p => {
+    const st = pos[String(p.id)]||{};
+    const status = st.status||'pending';
+    const cap = CAPITANES.find(c=>c.id===p.cap);
+    return `<div class="card" style="border-left:4px solid ${cap?.color||'var(--primary)'}">
+      <h2>Mi Posición — #${typeof p.id==='number'?p.id:'—'}</h2>
+      <div style="font-size:17px;font-weight:700;margin-bottom:4px">${esc(p.name)}</div>
+      <div style="font-size:14px;color:var(--muted);margin-bottom:6px">${esc(p.desc)}</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:12px">Grupo: ${esc(cap?.label||'')}</div>
+      <span class="badge ${status==='present'?'present':status==='sub'?'sub':status==='absent'?'absent':'pending'}" style="font-size:14px;padding:8px 16px">
+        ${status==='present'?'✓ Presente':status==='sub'?'↔ Sustituto asignado':status==='absent'?'✗ Ausente':'— Pendiente confirmación'}
+      </span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+        <button class="ok" onclick="markStatus('${p.id}','present','${esc(p.name)}')">✓ Estoy en mi lugar</button>
+        <button class="warn" onclick="markStatus('${p.id}','absent','${esc(p.name)}')">✗ No puedo estar</button>
       </div>
-      <button class="ok" onclick="markExit('${id}')" style="padding:8px 14px;font-size:13px">Salió</button>
     </div>`;
   }).join('');
 }
 
-async function markExit(id) {
-  await put(`access/entries/${id}/exitTime`, Date.now());
+// ── CONTEO ────────────────────────────────────────────────────
+function renderConteo() {
+  const areaKey = COUNT_AREAS[ME.role];
+  if (!areaKey) return;
+  $('conteoAreaLabel').textContent = areaKey.label;
+  const areaData = (Counts||{})[areaKey.id]||{};
+  const current = areaData.count||0;
+  $('countDisplay').textContent = current;
+  if ($('newCountInput')) $('newCountInput').placeholder = String(current);
+  const hist = Object.entries(areaData.history||{}).sort((a,b)=>b[1].ts-a[1].ts).slice(0,8);
+  $('conteoHistory').innerHTML = hist.length
+    ? hist.map(([,h])=>{
+        const t=new Date(h.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+        return `<div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--card-alt);border-radius:6px;margin-bottom:4px;font-size:14px"><b>${h.count} personas</b><span style="color:var(--muted)">${t}</span></div>`;
+      }).join('')
+    : '<p style="color:var(--muted)">Sin historial aún.</p>';
+}
+
+async function saveCount() {
+  const areaKey = COUNT_AREAS[ME.role];
+  if (!areaKey) return;
+  const count = +$('newCountInput').value;
+  if (isNaN(count)||count<0){toast('Número inválido',true);return;}
+  const ts = Date.now();
+  const histId = ts+'_'+Math.random().toString(36).slice(2,5);
+  await put(`counts/${areaKey.id}/count`,count);
+  await put(`counts/${areaKey.id}/updatedAt`,ts);
+  await put(`counts/${areaKey.id}/updatedBy`,ME.name);
+  await put(`counts/${areaKey.id}/history/${histId}`,{count,ts,by:ME.name});
+  $('newCountInput').value='';
+  toast(`Conteo guardado: ${count} personas`);
+  await loadAll();
+}
+
+// ── SPILLS ────────────────────────────────────────────────────
+async function reportSpill() {
+  const type=$('spillType').value;
+  const loc=$('spillLocation').value.trim();
+  if(!type){toast('Selecciona el tipo',true);return;}
+  if(!loc){toast('Escribe la ubicación',true);return;}
+  const id=Date.now()+'_'+Math.random().toString(36).slice(2,5);
+  await put(`s/spills/${id}`,{type,location:loc,reportedBy:ME.name,status:'pending',ts:Date.now()});
+  $('spillType').value='';$('spillLocation').value='';
+  toast('Derrame reportado');
+  await loadAll();
+}
+
+function renderSpills() {
+  const spills=Object.entries(S.spills||{}).sort((a,b)=>b[1].ts-a[1].ts);
+  const active=spills.filter(([,s])=>s.status!=='done');
+  const done=spills.filter(([,s])=>s.status==='done').slice(0,10);
+
+  if(!active.length){
+    $('spillsList').innerHTML='<p style="color:var(--ok);font-weight:600;padding:10px">✓ Sin derrames activos</p>';
+  } else {
+    $('spillsList').innerHTML=active.map(([id,s])=>spillRow(id,s,false)).join('');
+  }
+
+  // History (always visible for limpieza, hidden for others unless they scroll)
+  if($('spillHistCard')&&!$('spillHistCard').hidden){
+    $('spillsHistList').innerHTML=done.length
+      ?done.map(([,s])=>{
+          const t=new Date(s.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+          const td=s.doneAt?new Date(s.doneAt).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}):'—';
+          return `<div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--ok-bg);border-left:3px solid var(--ok);border-radius:6px;margin-bottom:4px;font-size:13px;flex-wrap:wrap;gap:4px">
+            <span><b>${esc(s.type)}</b> · ${esc(s.location)}</span>
+            <span style="color:var(--muted)">${t} → ${td} · ${esc(s.takenBy||'?')}</span>
+          </div>`;
+        }).join('')
+      :'<p style="color:var(--muted)">Sin derrames resueltos hoy.</p>';
+  }
+}
+
+function spillRow(id,s,isDone){
+  const t=new Date(s.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+  const color=isDone?'var(--ok)':s.status==='inprogress'?'var(--warn)':'var(--err)';
+  const label=isDone?'Resuelto':s.status==='inprogress'?'En proceso':'Pendiente';
+  const canAct=['super','jaime','steven','abdiel','limpieza'].includes(ME.role)||ME.role==='acom';
+  return `<div class="spill-row${isDone?' done':s.status==='inprogress'?' inprogress':''}">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px">
+      <b>${esc(s.type)}</b><span style="font-size:12px;font-weight:700;color:${color}">${label}</span>
+    </div>
+    <div style="font-size:13px;color:var(--muted);margin-top:3px">📍 ${esc(s.location)} · ${t} · ${esc(s.reportedBy)}</div>
+    ${s.takenBy?`<div style="font-size:13px;color:var(--warn);font-weight:600;margin-top:3px">🧹 Limpiando: ${esc(s.takenBy)}</div>`:''}
+    ${!isDone&&canAct?`<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+      ${s.status==='pending'?`<button class="sub" onclick="takeSpill('${id}')" style="padding:7px 12px;font-size:13px">🧹 Limpiar</button>`:''}
+      ${s.status==='inprogress'?`<button class="ok" onclick="doneSpill('${id}')" style="padding:7px 12px;font-size:13px">✓ Terminado</button>`:''}
+      ${ME.role==='super'?`<button onclick="delSpill('${id}')" style="padding:7px 12px;font-size:13px;color:var(--err)">Eliminar</button>`:''}
+    </div>`:''}
+  </div>`;
+}
+
+async function takeSpill(id){
+  await put(`s/spills/${id}/status`,'inprogress');
+  await put(`s/spills/${id}/takenBy`,ME.name);
+  await put(`s/spills/${id}/takenAt`,Date.now());
+  toast('Tomaste el derrame para limpiar');
+  await loadAll();
+}
+async function doneSpill(id){
+  await put(`s/spills/${id}/status`,'done');
+  await put(`s/spills/${id}/doneAt`,Date.now());
+  toast('Derrame resuelto ✓');
+  await loadAll();
+}
+async function delSpill(id){
+  await del(`s/spills/${id}`);
+  toast('Derrame eliminado');
+  await loadAll();
+}
+
+// ── QR SCANNER ────────────────────────────────────────────────
+async function sign(msg){
+  if(!crypto.subtle)throw new Error("Requiere HTTPS para firmar QRs.");
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,16);
+}
+function todayStr(){return new Date().toISOString().slice(0,10);}
+
+async function validateQR(content){
+  const parts=content.split('|');
+  if(parts[0]==='TMP'){
+    if(parts.length!==5)return{valid:false,reason:"Formato QR temporal inválido"};
+    const[,tempId,zone,expiresAt,sig]=parts;
+    let exp;try{exp=await sign(`${tempId}|${zone}|${expiresAt}|${APP_SECRET}`);}catch(e){return{valid:false,reason:e.message};}
+    if(sig!==exp)return{valid:false,reason:"Firma inválida"};
+    if(Date.now()>+expiresAt)return{valid:false,reason:"QR temporal expirado"};
+    const tmp=(ACC.tempQr||{})[tempId];
+    if(!tmp)return{valid:false,reason:"QR temporal no encontrado"};
+    if(zone!==ZONE)return{valid:false,reason:"QR es para otra zona"};
+    return{valid:true,temp:true,name:tmp.name,role:'QR Temporal'};
+  }
+  if(parts[0]==='ASM'){
+    if(parts.length!==4)return{valid:false,reason:"Formato QR inválido"};
+    const[,uid,dateStr,sig]=parts;
+    if(dateStr!==todayStr())return{valid:false,reason:"Código de otro día"};
+    let exp;try{exp=await sign(`${uid}|${dateStr}|${APP_SECRET}`);}catch(e){return{valid:false,reason:e.message};}
+    if(sig!==exp)return{valid:false,reason:"Firma inválida"};
+    const u=(ACC.users||{})[uid];
+    if(!u)return{valid:false,reason:"Hermano no registrado"};
+    if(u.active===false)return{valid:false,reason:"Acceso revocado"};
+    return{valid:true,uid,user:u};
+  }
+  return{valid:false,reason:"Formato desconocido"};
+}
+
+async function startCamera(){
+  if(scanMode)return;
+  try{
+    scanner=new Html5Qrcode("reader");
+    scanMode=true;
+    await scanner.start({facingMode:"environment"},{fps:10,qrbox:{width:250,height:250}},onScanSuccess,()=>{});
+  }catch(e){toast("No se pudo iniciar la cámara",true);scanMode=false;}
+}
+async function stopCamera(){
+  if(scanner&&scanMode){try{await scanner.stop();scanner.clear();}catch(e){}}
+  scanMode=false;
+}
+
+async function onScanSuccess(text){
+  if(text===lastScan&&Date.now()-lastScanTs<3000)return;
+  lastScan=text;lastScanTs=Date.now();
+  const parts=text.split('|');
+  if(parts[0]==='TMP'&&parts[1]){
+    try{const f=await fb(`access/tempQr/${parts[1]}`);if(f){if(!ACC.tempQr)ACC.tempQr={};ACC.tempQr[parts[1]]=f;}}catch(e){}
+  }
+  const res=await validateQR(text);
+  if(!res.valid){showQRResult(false,res.reason);return;}
+  const name=res.temp?res.name:res.user.name;
+  const role=res.temp?'QR Temporal':res.user.role||'Autorizado';
+  const uid=res.temp?`temp:${text.split('|')[1]}`:res.uid;
+  await logEntry(uid,name,!!res.temp);
+  showQRResult(true,null,name,role);
+  toast(`Entrada: ${name}`);
+}
+
+async function logEntry(uid,name,isTemp){
+  const id=Date.now()+'_'+Math.random().toString(36).slice(2,5);
+  await put(`access/entries/${id}`,{uid,zone:ZONE,name,entryTime:Date.now(),exitTime:null,isTemp:!!isTemp});
+  await loadAll();
+}
+
+function showQRResult(ok,reason,name,role){
+  if(ok){
+    const now=new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+    $('qrResult').innerHTML=`<div class="result green"><h2>✓ Acceso Permitido</h2><div class="rname">${esc(name)}</div><div class="rrole">${esc(role)}</div><div style="font-size:13px;color:var(--muted);margin-top:8px">Entrada: ${now}</div></div>`;
+  }else{
+    $('qrResult').innerHTML=`<div class="result red"><h2>✗ Acceso Denegado</h2><div class="rreason">${esc(reason)}</div><div class="rhint">Diríjase al Superintendente de Acomodadores</div></div>`;
+  }
+}
+
+function renderInsideList(){
+  const now=Date.now();
+  const inside=Object.entries(ACC.entries||{}).filter(([,e])=>!e.exitTime).sort((a,b)=>b[1].entryTime-a[1].entryTime);
+  if(!inside.length){$('insideListQR').innerHTML='<p style="color:var(--muted);text-align:center;padding:16px">Nadie dentro en este momento.</p>';return;}
+  $('insideListQR').innerHTML=inside.map(([id,e])=>{
+    const mins=Math.floor((now-e.entryTime)/60000);
+    const t=new Date(e.entryTime).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+    return `<div class="inside-row${mins>=30?' long':''}">
+      <div><b>${esc(e.name)}</b><div style="font-size:12px;color:var(--muted)">Entró ${t} · ${mins} min</div></div>
+      <button class="ok" onclick="markExit('${id}')" style="padding:7px 12px;font-size:13px">Salió</button>
+    </div>`;
+  }).join('');
+}
+
+async function markExit(id){
+  await put(`access/entries/${id}/exitTime`,Date.now());
   toast('Salida registrada');
   await loadAll();
 }
 
-// ---- ADMIN ----
-function loginAdmin() {
-  const key = $('adminUserSel').value;
-  const pass = $('adminPassInput').value;
-  const u = ADMIN_USERS[key];
-  if (!u || u.pass !== pass) { $('adminErr').textContent = 'Contraseña incorrecta'; return; }
-  adminLogged = true;
-  adminMe = u;
-  $('adminLoginCard').hidden = true;
-  $('adminPanel').hidden = false;
-  renderAuthList('');
-  renderTempList();
+function manualQRSearch(){
+  const users=ACC.users||{};
+  const html=`<input placeholder="Buscar nombre..." oninput="filterManualList(this.value)" style="margin-bottom:10px">
+    <div id="manualList" style="max-height:320px;overflow-y:auto">${Object.entries(users).map(([uid,u])=>
+      `<div onclick="manualGrant('${uid}')" style="padding:10px 12px;border:1px solid var(--border);border-radius:6px;cursor:pointer;margin-bottom:5px;display:flex;justify-content:space-between;align-items:center" class="mitem">
+        <div><b>${esc(u.name)}</b><div style="font-size:12px;color:var(--muted)">${esc(u.role||'')}</div></div>
+        <span style="font-size:12px;font-weight:700;color:${u.active===false?'var(--err)':'var(--ok)'}">${u.active===false?'Revocado':'✓ Autorizado'}</span>
+      </div>`
+    ).join('')}</div>`;
+  showModal('Buscar Hermano Autorizado',html,[{text:'Cancelar'}]);
 }
 
-async function addAuthorized() {
-  const name = $('newAuthName').value.trim();
-  const role = $('newAuthRole').value;
-  if (!name) { toast('Escribe el nombre', true); return; }
-  if (!role) { toast('Selecciona un rol', true); return; }
-  const uid = 'usr_' + Date.now() + '_' + Math.random().toString(36).slice(2,5);
-  const user = { name, role, active:true, createdAt:Date.now() };
-  await put(`access/users/${uid}`, user);
-  USERS[uid] = user;
-  $('newAuthName').value = '';
-  $('newAuthRole').value = '';
-  toast(`${name} agregado`);
-  await showUserQR(uid);
-  renderAuthList('');
+function filterManualList(q){
+  document.querySelectorAll('.mitem').forEach(el=>{
+    el.style.display=el.textContent.toLowerCase().includes(q.toLowerCase())?'':'none';
+  });
 }
 
-function renderAuthList(filter) {
-  const q = (filter||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  const list = Object.entries(USERS)
-    .filter(([,u]) => !q || (u.name||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q))
-    .sort((a,b) => (a[1].name||'').localeCompare(b[1].name||''));
-  if (!list.length) { $('authList').innerHTML = '<p style="color:var(--muted)">No hay hermanos autorizados.</p>'; return; }
-  $('authList').innerHTML = list.map(([uid,u]) => `
-    <div class="user-card${u.active===false?' revoked':''}">
-      <div class="uc-name">${esc(u.name)}${u.active===false?' — REVOCADO':''}</div>
-      <div class="uc-meta">${esc(u.role||'Sin rol')}</div>
-      <div class="uc-actions">
-        <button onclick="showUserQR('${uid}')">Ver QR</button>
-        <button class="${u.active===false?'ok':'danger'}" onclick="toggleUser('${uid}')">${u.active===false?'Reactivar':'Revocar'}</button>
-        <button onclick="deleteUser('${uid}')" style="color:var(--err)">Eliminar</button>
+async function manualGrant(uid){
+  const u=(ACC.users||{})[uid];
+  if(!u)return;
+  if(u.active===false){toast(`${u.name} tiene acceso revocado`,true);$('modal').hidden=true;return;}
+  await logEntry(uid,u.name,false);
+  $('modal').hidden=true;
+  showQRResult(true,null,u.name,u.role||'');
+}
+
+// ── SEARCH ────────────────────────────────────────────────────
+function doSearch(q){
+  if(!q.trim()){$('searchResults').innerHTML='';return;}
+  const ql=q.toLowerCase();
+  const pos=S.pos||{};
+  const results=POSITIONS.filter(p=>
+    p.name.toLowerCase().includes(ql)||p.desc.toLowerCase().includes(ql)||String(p.id).includes(ql)
+  );
+  if(!results.length){$('searchResults').innerHTML='<p style="color:var(--muted)">Sin resultados</p>';return;}
+  $('searchResults').innerHTML=results.map(p=>{
+    const st=pos[String(p.id)]||{};
+    const status=st.status||'pending';
+    const cap=CAPITANES.find(c=>c.id===p.cap);
+    return `<div class="pos-row" style="border:1px solid var(--border);border-radius:6px;margin-bottom:8px">
+      <div class="pos-num ${p.type==='session'?'orange':''}">${typeof p.id==='number'?p.id:'—'}</div>
+      <div class="pos-info">
+        <div class="pos-name">${esc(p.name)}</div>
+        <div class="pos-desc">${esc(p.desc)}</div>
+        <div style="font-size:12px;color:var(--muted)">${esc(cap?.label||'')}</div>
+        ${st.subName?`<div style="font-size:12px;color:var(--warn);font-weight:600">Sustituto: ${esc(st.subName)}</div>`:''}
       </div>
-    </div>
-  `).join('');
-}
-
-async function showUserQR(uid) {
-  const u = USERS[uid];
-  if (!u) return;
-  let content;
-  try { content = await buildQR(uid); } catch(e) { toast(e.message, true); return; }
-  showModal(`QR de ${u.name}`,
-    `<div class="qr-wrap"><div id="qrHolder"></div><div class="qn">${esc(u.name)}</div><div class="qm">${esc(u.role||'')}</div></div>`,
-    [{ text:'Imprimir', cls:'pri', action:() => printQR(uid,u,content), keepOpen:true },{ text:'Cerrar' }]
-  );
-  setTimeout(() => {
-    const h = $('qrHolder');
-    if (h) { h.innerHTML=''; new QRCode(h, { text:content, width:200, height:200, correctLevel:QRCode.CorrectLevel.M }); }
-  }, 60);
-}
-
-function printQR(uid, u, content) {
-  const w = window.open('','_blank');
-  w.document.write(`<html><head><title>QR ${esc(u.name)}</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>body{font-family:'Noto Sans',sans-serif;text-align:center;padding:30px;color:#1a1a1a}
-  .card{border:2px dashed #5a1212;padding:24px;display:inline-block;border-radius:10px;background:#f9f5e9}
-  .title{font-size:13px;color:#b8860b;font-weight:700;letter-spacing:1px;margin-bottom:12px;text-transform:uppercase}
-  .name{font-weight:700;font-size:18px;margin:12px 0 4px;color:#5a1212}
-  .role{font-size:13px;color:#6b5d4f}</style></head><body>
-  <div class="card"><div class="title">Asamblea de Circuito · La Feria TX</div>
-  <div id="qr"></div><div class="name">${esc(u.name)}</div><div class="role">${esc(u.role||'')}</div></div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
-  <script>new QRCode(document.getElementById('qr'),{text:${JSON.stringify(content)},width:200,height:200});setTimeout(()=>window.print(),700);<\/script>
-  </body></html>`);
-}
-
-async function printAllQRs() {
-  const entries = Object.entries(USERS).filter(([,u]) => u.active !== false);
-  if (!entries.length) { toast('No hay usuarios activos', true); return; }
-  let contents;
-  try { contents = await Promise.all(entries.map(async ([uid]) => ({ uid, content: await buildQR(uid) }))); }
-  catch(e) { toast(e.message, true); return; }
-  const w = window.open('','_blank');
-  const cards = entries.map(([uid,u],i) => `<div class="pc"><div id="qr${i}"></div><div class="pn">${esc(u.name)}</div><div class="pr">${esc(u.role||'')}</div></div>`).join('');
-  w.document.write(`<html><head><title>QRs Acceso</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
-  <style>body{font-family:'Noto Sans',sans-serif;padding:14px;background:#fff}
-  .pc{display:inline-block;margin:8px;padding:14px;border:2px dashed #5a1212;border-radius:10px;text-align:center;page-break-inside:avoid;width:190px;vertical-align:top;background:#f9f5e9}
-  .pn{font-weight:700;font-size:13px;margin:7px 0 2px;color:#5a1212}.pr{font-size:11px;color:#6b5d4f}
-  @media print{.pc{page-break-inside:avoid}}</style></head>
-  <body>${cards}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
-  <script>const items=${JSON.stringify(contents.map((c,i)=>({i,content:c.content})))};
-  items.forEach(({i,content})=>{new QRCode(document.getElementById('qr'+i),{text:content,width:150,height:150})});
-  setTimeout(()=>window.print(),1000);<\/script></body></html>`);
-}
-
-async function toggleUser(uid) {
-  const u = USERS[uid];
-  if (!u) return;
-  const newActive = u.active === false;
-  await put(`access/users/${uid}/active`, newActive);
-  USERS[uid].active = newActive;
-  toast(newActive ? `${u.name} reactivado` : `${u.name} revocado`);
-  renderAuthList($('searchAuth').value);
-}
-
-async function deleteUser(uid) {
-  const u = USERS[uid];
-  showModal('Eliminar hermano',
-    `<p>¿Eliminar definitivamente a <b>${esc(u?.name)}</b>? Su QR dejará de funcionar.</p>`,
-    [{ text:'Eliminar', cls:'danger', action: async () => {
-      await del(`access/users/${uid}`);
-      delete USERS[uid];
-      renderAuthList('');
-      toast('Hermano eliminado');
-    }},{ text:'Cancelar' }]
-  );
-}
-
-// ---- TEMP QR ----
-async function genTempQR() {
-  const name = $('tempName').value.trim();
-  const hours = +$('tempHours').value;
-  if (!name) { toast('Escribe el nombre', true); return; }
-  const tempId = Math.random().toString(36).slice(2,10);
-  const expiresAt = Date.now() + hours * 3600000;
-  const temp = { zone:ZONE, expiresAt, name, createdAt:Date.now(), createdBy:adminMe?.name||'Admin', uses:0 };
-  await put(`access/tempQr/${tempId}`, temp);
-  TEMP[tempId] = temp;
-  let sig;
-  try { sig = await sign(`${tempId}|${ZONE}|${expiresAt}|${APP_SECRET}`); } catch(e) { toast(e.message,true); return; }
-  const content = `TMP|${tempId}|${ZONE}|${expiresAt}|${sig}`;
-  const disp = $('tempQRDisplay');
-  disp.hidden = false;
-  disp.innerHTML = `<div class="qr-wrap" style="margin-top:14px"><div id="tmpQRHolder"></div>
-    <div class="qn">${esc(name)}</div>
-    <div class="qm" style="color:var(--warn);font-weight:600">Expira: ${new Date(expiresAt).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})}</div>
-    <button onclick="$('tempQRDisplay').hidden=true;$('tempName').value=''" style="margin-top:8px;padding:7px 14px;font-size:13px">Cerrar</button>
-  </div>`;
-  setTimeout(() => {
-    const h = $('tmpQRHolder');
-    if (h) { h.innerHTML=''; new QRCode(h, { text:content, width:180, height:180, correctLevel:QRCode.CorrectLevel.M }); }
-  }, 50);
-  $('tempName').value = '';
-  toast(`QR temporal generado para ${name}`);
-  renderTempList();
-}
-
-function renderTempList() {
-  const now = Date.now();
-  const active = Object.entries(TEMP).filter(([,t]) => t.expiresAt > now).sort((a,b) => a[1].expiresAt - b[1].expiresAt);
-  $('tempCount').textContent = active.length;
-  if (!active.length) { $('tempList').innerHTML = '<p style="color:var(--muted)">Sin QRs temporales activos.</p>'; return; }
-  $('tempList').innerHTML = active.map(([id,t]) => {
-    const mins = Math.floor((t.expiresAt - now) / 60000);
-    const exp = new Date(t.expiresAt).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
-    return `<div class="user-card" style="border-left:4px solid var(--warn)">
-      <div class="uc-name">${esc(t.name)}</div>
-      <div class="uc-meta">Expira ${exp} · ${mins} min restantes${t.uses ? ' · Usado '+t.uses+' '+(t.uses===1?'vez':'veces') : ''}</div>
-      <div class="uc-actions"><button class="danger" onclick="cancelTempQR('${id}')" style="font-size:13px">Cancelar QR</button></div>
+      <span class="badge ${status==='present'?'present':status==='sub'?'sub':status==='absent'?'absent':'pending'}">
+        ${status==='present'?'✓':status==='sub'?'↔':status==='absent'?'✗':'—'}
+      </span>
     </div>`;
   }).join('');
 }
 
-async function cancelTempQR(id) {
-  const t = TEMP[id];
-  showModal('Cancelar QR temporal',
-    `<p>¿Cancelar el QR temporal de <b>${esc(t?.name)}</b>?</p>`,
-    [{ text:'Cancelar QR', cls:'danger', action: async () => {
-      await del(`access/tempQr/${id}`);
-      delete TEMP[id];
-      renderTempList();
-      toast('QR temporal cancelado');
-    }},{ text:'No cancelar' }]
-  );
-}
-
-// ---- MODAL / TOAST ----
-function showModal(title, bodyHtml, buttons) {
-  $('modalBox').innerHTML = `<h2>${esc(title)}</h2><div>${bodyHtml}</div><div class="modal-btns" id="mdlBtns"></div>`;
-  buttons.forEach(b => {
-    const btn = document.createElement('button');
-    btn.textContent = b.text; btn.className = b.cls||'';
-    btn.onclick = () => { if(b.action) b.action(); if(!b.keepOpen) $('modal').hidden=true; };
+// ── MODAL / TOAST ─────────────────────────────────────────────
+function showModal(title,bodyHtml,buttons){
+  $('modalBox').innerHTML=`<h2>${esc(title)}</h2><div>${bodyHtml}</div><div class="modal-btns" id="mdlBtns"></div>`;
+  buttons.forEach(b=>{
+    const btn=document.createElement('button');
+    btn.textContent=b.text;btn.className=b.cls||'';
+    btn.onclick=()=>{if(b.action)b.action();if(!b.keepOpen)$('modal').hidden=true;};
     $('mdlBtns').appendChild(btn);
   });
-  $('modal').hidden = false;
-  const inp = $('modalBox').querySelector('input');
-  if (inp) setTimeout(()=>inp.focus(),50);
+  $('modal').hidden=false;
+  const inp=$('modalBox').querySelector('input');
+  if(inp)setTimeout(()=>inp.focus(),50);
 }
 
-function toast(msg, err) {
-  const t = document.createElement('div');
-  t.className = 'toast'+(err?' err':''); t.textContent = msg;
+function toast(msg,err){
+  const t=document.createElement('div');
+  t.className='toast'+(err?' err':'');t.textContent=msg;
   $('toastWrap').appendChild(t);
   setTimeout(()=>t.classList.add('show'),10);
   setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},3200);
 }
-
-function esc(s) {
-  return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-}
-
-// Start
-loadAll();
-pollIv = setInterval(loadAll, 8000);
 </script>
 </body>
 </html>
