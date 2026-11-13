@@ -9,11 +9,11 @@
 <style>
 :root{--red:#5a1212;--red-dark:#3d0c0c;--blue:#2c4a6b;--blue-dark:#1a2f47;--blue-bg:#e3eaf2;--brown:#7a5c2e;--brown-dark:#5a4420;--brown-bg:#efe6d0;--gold:#b8860b;--bg:#f2ecd9;--card:#fbf6e8;--card-alt:#e6dcc0;--text:#1a1a1a;--muted:#6b5d4f;--border:#cfc4a8;--ok:#4a6b3a;--ok-bg:#e6edde;--err:#a8251c;--err-bg:#f5dedb;--warn:#c28a1c;--warn-bg:#f8f1dc;--blue-a:#3d5a80;--org-a:#c28a1c}
 [hidden]{display:none!important}*{box-sizing:border-box}
-body{margin:0;font:16px/1.5 'Noto Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text)}
+body{margin:0;font:calc(16px*var(--fs))/1.5 'Noto Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text)}
 body.big{zoom:1.15}
 header{background:var(--red);color:#fff;padding:12px 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-header h1{font-size:17px;margin:0;flex:1;min-width:180px;font-weight:600}
-.net{font-size:12px;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.18)}
+header h1{font-size:calc(17px*var(--fs));margin:0;flex:1;min-width:180px;font-weight:600}
+.net{font-size:calc(12px*var(--fs));padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.18)}
 .net.on::before{content:"● ";color:#9fd49f}.net.off{background:#fff;color:var(--err);font-weight:700}.net.loc{background:#fff;color:var(--muted)}
 button{font:inherit;border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:6px;padding:10px 14px;cursor:pointer;font-weight:600;transition:background .15s;font-family:inherit}
 button:hover{background:var(--card-alt)}
@@ -30,48 +30,48 @@ main{max-width:1100px;margin:auto;padding:12px;display:grid;gap:12px}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 #homeScreen{min-height:100vh;background:linear-gradient(160deg,var(--red) 0%,var(--red-dark) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;gap:32px}
 .home-header{text-align:center;color:#fff;max-width:600px}
-.home-header h1{margin:0 0 8px;font-size:32px;font-weight:700;letter-spacing:.5px}
-.home-header .sub{font-size:15px;opacity:.85;letter-spacing:.5px}
+.home-header h1{margin:0 0 8px;font-size:calc(32px*var(--fs));font-weight:700;letter-spacing:.5px}
+.home-header .sub{font-size:calc(15px*var(--fs));opacity:.85;letter-spacing:.5px}
 .home-header .gold-line{width:80px;height:3px;background:var(--gold);margin:16px auto;border-radius:2px}
 .mode-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;max-width:920px;width:100%}
 .mode-card{border:none;border-radius:12px;padding:32px 20px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:12px;color:#fff;transition:all .2s;text-align:center;font-family:inherit;box-shadow:0 4px 20px rgba(0,0,0,.15);min-height:220px;justify-content:center}
 .mode-card:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,.25)}
 .mode-card .mode-icon{width:64px;height:64px;opacity:.95}
-.mode-card .mode-title{font-size:22px;font-weight:700;letter-spacing:.5px}
-.mode-card .mode-desc{font-size:14px;opacity:.85;line-height:1.4;max-width:200px}
+.mode-card .mode-title{font-size:calc(22px*var(--fs));font-weight:700;letter-spacing:.5px}
+.mode-card .mode-desc{font-size:calc(14px*var(--fs));opacity:.85;line-height:1.4;max-width:200px}
 .mode-acom{background:linear-gradient(160deg,var(--red),var(--red-dark));border:2px solid rgba(255,255,255,.15)}
 .mode-vol{background:linear-gradient(160deg,var(--blue),var(--blue-dark));border:2px solid rgba(255,255,255,.15)}
 .mode-admin{background:linear-gradient(160deg,var(--brown),var(--brown-dark));border:2px solid rgba(255,255,255,.15)}
-.home-footer{color:#fff;opacity:.6;font-size:13px;margin-top:20px}
+.home-footer{color:#fff;opacity:.6;font-size:calc(13px*var(--fs));margin-top:20px}
 #acomLoginScreen,#volLoginScreen,#adminLoginScreen{min-height:100vh;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px}
 .login-card{max-width:480px;width:100%;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:28px;box-shadow:0 8px 40px rgba(0,0,0,.1)}
-.login-card h2{margin:0 0 4px;font-size:24px;color:var(--red);font-weight:700}
-.login-card .lg-sub{font-size:14px;color:var(--muted);margin-bottom:20px}
-.login-card input,.login-card select{font:inherit;padding:14px;border:1px solid var(--border);border-radius:8px;width:100%;background:var(--card);color:var(--text);font-family:inherit;font-size:16px;margin-bottom:10px}
+.login-card h2{margin:0 0 4px;font-size:calc(24px*var(--fs));color:var(--red);font-weight:700}
+.login-card .lg-sub{font-size:calc(14px*var(--fs));color:var(--muted);margin-bottom:20px}
+.login-card input,.login-card select{font:inherit;padding:14px;border:1px solid var(--border);border-radius:8px;width:100%;background:var(--card);color:var(--text);font-family:inherit;font-size:calc(16px*var(--fs));margin-bottom:10px}
 .login-card input:focus,.login-card select:focus{outline:2px solid var(--gold);border-color:var(--gold)}
-.login-card .back-btn{background:transparent;color:var(--muted);border:none;padding:8px 0;cursor:pointer;font-weight:600;font-size:14px;margin-bottom:16px;text-align:left}
+.login-card .back-btn{background:transparent;color:var(--muted);border:none;padding:8px 0;cursor:pointer;font-weight:600;font-size:calc(14px*var(--fs));margin-bottom:16px;text-align:left}
 .login-card .back-btn:hover{color:var(--red)}
-.res-item{width:100%;text-align:left;margin-top:6px;padding:14px;font-size:16px}
+.res-item{width:100%;text-align:left;margin-top:6px;padding:14px;font-size:calc(16px*var(--fs))}
 .vol-info-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:12px}
-.vol-info-card h2{margin:0 0 4px;font-size:22px;color:var(--blue)}
-.vol-info-card .sub{font-size:14px;color:var(--muted);margin-bottom:16px}
-.turno-pill{display:inline-flex;align-items:center;gap:8px;background:var(--blue-bg);color:var(--blue);border:1px solid #90b8e0;border-radius:6px;padding:8px 14px;margin:4px 4px 0 0;font-weight:600;font-size:14px;flex-wrap:wrap}
-.turno-pill b{color:var(--blue-dark);font-size:13px;text-transform:uppercase;letter-spacing:.5px}
-.turno-pill .pos-num{background:var(--blue);color:#fff;border-radius:4px;padding:2px 8px;font-size:13px;font-weight:700}
-.obj-badge{background:var(--ok);color:#fff;border-radius:4px;padding:2px 8px;font-size:12px;font-weight:700}
+.vol-info-card h2{margin:0 0 4px;font-size:calc(22px*var(--fs));color:var(--blue)}
+.vol-info-card .sub{font-size:calc(14px*var(--fs));color:var(--muted);margin-bottom:16px}
+.turno-pill{display:inline-flex;align-items:center;gap:8px;background:var(--blue-bg);color:var(--blue);border:1px solid #90b8e0;border-radius:6px;padding:8px 14px;margin:4px 4px 0 0;font-weight:600;font-size:calc(14px*var(--fs));flex-wrap:wrap}
+.turno-pill b{color:var(--blue-dark);font-size:calc(13px*var(--fs));text-transform:uppercase;letter-spacing:.5px}
+.turno-pill .pos-num{background:var(--blue);color:#fff;border-radius:4px;padding:2px 8px;font-size:calc(13px*var(--fs));font-weight:700}
+.obj-badge{background:var(--ok);color:#fff;border-radius:4px;padding:2px 8px;font-size:calc(12px*var(--fs));font-weight:700}
 #volMapView{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:12px}
-#volMapView h3{margin:0 0 12px;font-size:16px;color:var(--blue)}
+#volMapView h3{margin:0 0 12px;font-size:calc(16px*var(--fs));color:var(--blue)}
 @keyframes volBlink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.15)}}
 .vol-marker-pulse{animation:volBlink 1.2s ease-in-out infinite;transform-origin:center;transform-box:fill-box}
 #alert{border:2px solid var(--err);color:var(--err);font-weight:600;background:var(--card)}
 #mapw{overflow:auto;padding:0;-webkit-overflow-scrolling:touch;border:2px solid var(--red);border-radius:8px;position:relative;background:var(--card)}
 svg.map-svg{width:100%;height:auto;display:block;transition:width 0.2s}
 #toast-container{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none}
-.toast{background:var(--ok);color:#fff;padding:14px 22px;border-radius:6px;font-weight:700;box-shadow:0 4px 16px rgba(0,0,0,.3);opacity:0;transition:opacity .3s,transform .3s;transform:translateY(20px);max-width:340px;font-size:15px}
+.toast{background:var(--ok);color:#fff;padding:14px 22px;border-radius:6px;font-weight:700;box-shadow:0 4px 16px rgba(0,0,0,.3);opacity:0;transition:opacity .3s,transform .3s;transform:translateY(20px);max-width:340px;font-size:calc(15px*var(--fs))}
 .toast.err{background:var(--err)}.toast.show{opacity:1;transform:translateY(0)}
 .pc{cursor:pointer}.pc text{font:700 15px 'Noto Sans',sans-serif;fill:#fff;pointer-events:none}
 @keyframes bl{50%{opacity:.15}}.pulse{fill:none;stroke:var(--err);stroke-width:8;animation:bl 1s infinite}
-.mut{color:var(--muted)}h3{margin:0 0 6px;font-size:18px;color:var(--red)}
+.mut{color:var(--muted)}h3{margin:0 0 6px;font-size:calc(18px*var(--fs));color:var(--red)}
 .who{background:var(--card-alt);border-left:4px solid var(--red);padding:10px 12px;margin:10px 0;border-radius:0 6px 6px 0}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
 .bar{height:8px;background:#ddd0b0;border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--red);transition:width .3s}
@@ -84,72 +84,72 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 .cnt-sec.hl{border:2px solid var(--red);background:#f0dada;box-shadow:0 0 0 3px rgba(168,37,28,.2)}
 .spill{cursor:pointer}
 .spill-panel{background:var(--card);border:2px solid var(--gold);border-radius:8px;padding:14px;margin:8px 0}
-.spill-item{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--warn);border-radius:6px;padding:12px;margin:8px 0;font-size:14px}
+.spill-item{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--warn);border-radius:6px;padding:12px;margin:8px 0;font-size:calc(14px*var(--fs))}
 .map-toolbar{display:flex;gap:6px;padding:10px;background:var(--card-alt);border:1px solid var(--border);border-radius:8px;align-items:center;flex-wrap:wrap}
-.map-toolbar .zoom-btn{padding:8px 16px;font-weight:700;font-size:18px;min-width:50px}
-.map-toolbar .hint{font-size:13px;color:var(--muted);flex:1}
+.map-toolbar .zoom-btn{padding:8px 16px;font-weight:700;font-size:calc(18px*var(--fs));min-width:50px}
+.map-toolbar .hint{font-size:calc(13px*var(--fs));color:var(--muted);flex:1}
 .map-toolbar.spill-active{background:var(--warn-bg);border-color:var(--warn)}
 .map-toolbar.spill-active .hint{color:#8a5a00;font-weight:600}
 #adminApp{min-height:100vh;background:var(--bg)}
 #adminApp header{background:var(--brown)}
 #adminApp main{max-width:1400px}
 .admin-tabs{display:flex;gap:6px;flex-wrap:wrap;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px}
-.admin-tabs button{flex:1;min-width:110px;padding:12px 16px;font-size:14px;border-radius:6px}
+.admin-tabs button{flex:1;min-width:110px;padding:12px 16px;font-size:calc(14px*var(--fs));border-radius:6px}
 .admin-tabs button.on{background:var(--brown);color:#fff;border-color:var(--brown)}
 .admin-container{display:grid;grid-template-columns:1fr 320px;gap:14px;align-items:start}
 @media (max-width:900px){.admin-container{grid-template-columns:1fr}}
 .turno-selector{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.turno-selector button{flex:1;min-width:85px;padding:10px 8px;font-size:13px;border-radius:6px;line-height:1.2}
+.turno-selector button{flex:1;min-width:85px;padding:10px 8px;font-size:calc(13px*var(--fs));border-radius:6px;line-height:1.2}
 .turno-selector button.on{background:var(--brown);color:#fff;border-color:var(--brown)}
-.turno-selector button small{display:block;font-size:11px;opacity:.7;margin-top:2px;font-weight:400}
-.pos-table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;font-size:14px}
-.pos-table th{background:var(--brown-bg);padding:10px 8px;text-align:left;font-size:11px;color:var(--brown-dark);text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--border);font-weight:700}
+.turno-selector button small{display:block;font-size:calc(11px*var(--fs));opacity:.7;margin-top:2px;font-weight:400}
+.pos-table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;font-size:calc(14px*var(--fs))}
+.pos-table th{background:var(--brown-bg);padding:10px 8px;text-align:left;font-size:calc(11px*var(--fs));color:var(--brown-dark);text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--border);font-weight:700}
 .pos-table td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:middle}
 .pos-table tr:last-child td{border-bottom:none}
 .pos-table tr:hover td{background:var(--card-alt)}
-.pos-table .pos-num{font-weight:700;color:var(--brown);width:44px;font-size:15px}
-.pos-table .pos-sec{font-size:12px;color:var(--muted)}
-.pos-table select{padding:6px 8px;font-size:12px;border-radius:4px}
+.pos-table .pos-num{font-weight:700;color:var(--brown);width:44px;font-size:calc(15px*var(--fs))}
+.pos-table .pos-sec{font-size:calc(12px*var(--fs));color:var(--muted)}
+.pos-table select{padding:6px 8px;font-size:calc(12px*var(--fs));border-radius:4px}
 .pos-table tr.assigned td{background:var(--ok-bg)}
 .side-panel{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto}
-.side-panel h3{margin:0 0 10px;font-size:14px;color:var(--brown);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-.side-panel .stat-line{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.side-panel h3{margin:0 0 10px;font-size:calc(14px*var(--fs));color:var(--brown);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.side-panel .stat-line{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:calc(13px*var(--fs))}
 .side-panel .stat-line:last-child{border-bottom:none}
 .side-panel .stat-line b{color:var(--brown)}
-.side-panel .rule-box{background:var(--warn-bg);border-left:3px solid var(--warn);padding:8px 10px;font-size:12px;line-height:1.5;color:#8a5a00;border-radius:4px;margin-bottom:10px}
-.side-panel .avail-list{font-size:13px;line-height:1.8}
-.side-panel .avail-list .conflict{color:var(--err);font-size:11px;margin-left:4px}
+.side-panel .rule-box{background:var(--warn-bg);border-left:3px solid var(--warn);padding:8px 10px;font-size:calc(12px*var(--fs));line-height:1.5;color:#8a5a00;border-radius:4px;margin-bottom:10px}
+.side-panel .avail-list{font-size:calc(13px*var(--fs));line-height:1.8}
+.side-panel .avail-list .conflict{color:var(--err);font-size:calc(11px*var(--fs));margin-left:4px}
 .side-panel .avail-list .ok-mark{color:var(--ok);margin-right:4px}
 .clear-turno-bar{background:var(--warn-bg);border:1px solid #f0d090;padding:10px 12px;border-radius:6px;margin-bottom:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.clear-turno-bar span{font-size:13px;color:#8a5a00;flex:1}
+.clear-turno-bar span{font-size:calc(13px*var(--fs));color:#8a5a00;flex:1}
 .cnt-sec{border:1px solid var(--border);border-radius:8px;padding:12px;background:var(--card);text-align:center;position:relative;cursor:pointer;transition:all .15s}
 .cnt-sec:hover{border-color:var(--gold)}
-.cnt-sec .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
-.cnt-sec .num{font-size:28px;font-weight:700;color:var(--brown);margin:4px 0}
-.cnt-sec .max{font-size:12px;color:var(--muted)}
+.cnt-sec .label{font-size:calc(12px*var(--fs));color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.cnt-sec .num{font-size:calc(28px*var(--fs));font-weight:700;color:var(--brown);margin:4px 0}
+.cnt-sec .max{font-size:calc(12px*var(--fs));color:var(--muted)}
 .cnt-sec.at-max{background:var(--warn-bg);border-color:#e0b878}
 .cnt-sec.over{background:var(--err-bg);border-color:#e5a5a0}
 .cnt-sec.over .num{color:var(--err)}
-.cnt-sec .edit-max{margin-top:8px;display:flex;gap:4px;align-items:center;justify-content:center;font-size:12px;color:var(--muted)}
-.cnt-sec .edit-max input{width:70px;padding:4px 6px;font-size:12px;text-align:center}
-.cnt-input{width:70px;padding:6px;font-size:22px;text-align:center;font-weight:700;border:2px solid var(--border);border-radius:6px;color:var(--brown);background:var(--card)}
+.cnt-sec .edit-max{margin-top:8px;display:flex;gap:4px;align-items:center;justify-content:center;font-size:calc(12px*var(--fs));color:var(--muted)}
+.cnt-sec .edit-max input{width:70px;padding:4px 6px;font-size:calc(12px*var(--fs));text-align:center}
+.cnt-input{width:70px;padding:6px;font-size:calc(22px*var(--fs));text-align:center;font-weight:700;border:2px solid var(--border);border-radius:6px;color:var(--brown);background:var(--card)}
 .cnt-input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,134,11,.2)}
 .cnt-input.over{border-color:var(--err);background:var(--err-bg);color:var(--err)}
 .aux-item{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--card-alt);border-radius:6px;margin-bottom:6px;gap:8px}
-.aux-item .name{font-weight:600;flex:1;font-size:14px}
-.aux-item .turns{font-size:11px;color:var(--muted);margin-top:2px;font-weight:400}
+.aux-item .name{font-weight:600;flex:1;font-size:calc(14px*var(--fs))}
+.aux-item .turns{font-size:calc(11px*var(--fs));color:var(--muted);margin-top:2px;font-weight:400}
 #walkersView{max-width:1100px;margin:12px auto;padding:12px}
 #walkGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px;margin-top:12px}
 .wslot{padding:12px 6px;border-radius:6px;background:var(--card);border:2px solid var(--border);cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all .15s;min-width:0}
 .wslot:hover{border-color:var(--gold)}
 .wslot.occ{background:var(--ok-bg);border-color:var(--ok)}
-.wslot b{font-size:15px;font-weight:700;color:var(--text)}
+.wslot b{font-size:calc(15px*var(--fs));font-weight:700;color:var(--text)}
 .wslot.occ b{color:var(--ok)}
-.wslot small{font-size:11px;color:var(--muted);text-align:center;word-break:break-word}
+.wslot small{font-size:calc(11px*var(--fs));color:var(--muted);text-align:center;word-break:break-word}
 .wslot.occ small{color:var(--ok);font-weight:600}
 .wslot.found{background:#fff3cd!important;border:3px solid #d11!important;box-shadow:0 0 0 4px rgba(221,17,17,.35);animation:foundPulse 1s infinite}
 @keyframes foundPulse{0%,100%{box-shadow:0 0 0 4px rgba(221,17,17,.35)}50%{box-shadow:0 0 0 14px rgba(221,17,17,.05)}}
-.cq-lg{display:flex;gap:14px;justify-content:center;font-size:13px;flex-wrap:wrap;margin:8px 0;color:#555}
+.cq-lg{display:flex;gap:14px;justify-content:center;font-size:calc(13px*var(--fs));flex-wrap:wrap;margin:8px 0;color:#555}
 .cq-lg i{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:4px;vertical-align:-2px}
 .cslot{cursor:pointer}
 .cslot rect{fill:#ddd0b0;stroke:#9a9a9a;stroke-width:1}
@@ -159,7 +159,7 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 .cslot.found text{fill:#222!important}
 .cslot text{pointer-events:none;font-family:'Noto Sans',sans-serif;fill:#666}
 .cslot.occ text{fill:#fff;font-weight:700}
-.walker-info{background:var(--ok-bg);border-left:4px solid var(--ok);padding:10px 12px;border-radius:6px;margin-bottom:10px;font-size:14px}
+.walker-info{background:var(--ok-bg);border-left:4px solid var(--ok);padding:10px 12px;border-radius:6px;margin-bottom:10px;font-size:calc(14px*var(--fs))}
 #spillAdminApp{min-height:100vh;background:var(--bg)}
 #spillAdminApp header{background:var(--ok)}
 #spillAdminApp main{max-width:1400px}
@@ -176,24 +176,65 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 #modal[hidden]{display:none}
 #modal .box{background:var(--bg);border-radius:10px;padding:22px;width:100%;max-width:480px;display:grid;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.5);max-height:90vh;overflow-y:auto}
 #modal .box.wide{max-width:900px}
-#modal h2{margin:0;color:var(--red);font-size:19px;font-weight:700}
+#modal h2{margin:0;color:var(--red);font-size:calc(19px*var(--fs));font-weight:700}
 .modal-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
 .modal-btns button{flex:1;min-width:90px}
 .admin-map-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.admin-map-toolbar button{padding:12px 20px;font-size:14px}
+.admin-map-toolbar button{padding:12px 20px;font-size:calc(14px*var(--fs))}
 .admin-map-toolbar button.on{background:var(--brown);color:#fff;border-color:var(--brown)}
 .vol-marker{cursor:grab;touch-action:none}
 .vol-marker:active{cursor:grabbing}
 #adminVolSvg{touch-action:none}
-#floatCamera{position:fixed;bottom:20px;right:20px;width:68px;height:68px;border-radius:50%;background:var(--gold);color:#fff;border:2px solid #fff;box-shadow:0 4px 16px rgba(184,134,11,.5);cursor:pointer;z-index:95;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:10px;font-weight:700;padding:4px;font-family:inherit}
+#floatCamera{position:fixed;bottom:20px;right:20px;width:68px;height:68px;border-radius:50%;background:var(--gold);color:#fff;border:2px solid #fff;box-shadow:0 4px 16px rgba(184,134,11,.5);cursor:pointer;z-index:95;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:calc(10px*var(--fs));font-weight:700;padding:4px;font-family:inherit}
 #floatCamera:hover{background:#8a6508;transform:scale(1.05)}
 .team-header{background:var(--brown-bg);padding:10px 14px;border-radius:6px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.team-header h3{margin:0;color:var(--brown-dark);font-size:14px;text-transform:uppercase;letter-spacing:.5px}
-.team-header small{font-size:12px;color:var(--muted)}
+.team-header h3{margin:0;color:var(--brown-dark);font-size:calc(14px*var(--fs));text-transform:uppercase;letter-spacing:.5px}
+.team-header small{font-size:calc(12px*var(--fs));color:var(--muted)}
 .obj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
 .obj-card{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--ok);border-radius:8px;padding:14px}
-.obj-card h4{margin:0 0 2px;font-size:15px;color:var(--ok)}
-.obj-card .hr{font-size:12px;color:var(--muted);margin-bottom:10px}
+.obj-card h4{margin:0 0 2px;font-size:calc(15px*var(--fs));color:var(--ok)}
+.obj-card .hr{font-size:calc(12px*var(--fs));color:var(--muted);margin-bottom:10px}
+
+:root{--fs:1.25}
+@media (min-width:768px){:root{--fs:1.35}}
+@media (min-width:1200px){:root{--fs:1.3}}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+header{padding:calc(12px*var(--fs)) 16px;padding-top:max(12px,env(safe-area-inset-top))}
+button{min-height:52px;padding:12px 20px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+select,input{min-height:52px;font-size:max(16px,calc(16px*var(--fs)))}
+.card{padding:18px}
+main{padding:12px}
+.admin-tabs button{min-width:130px;min-height:56px}
+.turno-selector button{min-height:60px;min-width:96px}
+.map-toolbar .zoom-btn{min-width:64px;min-height:56px}
+.cnt-input{width:96px;min-height:58px}
+.home-header h1{font-size:clamp(34px,6vw,52px)}
+.home-header .sub{font-size:clamp(18px,3vw,24px)}
+.mode-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:22px;max-width:1000px}
+.mode-card{min-height:clamp(190px,28vh,300px);padding:34px 22px;border-radius:16px}
+.mode-card .mode-icon{width:clamp(64px,10vw,92px);height:clamp(64px,10vw,92px)}
+.mode-card .mode-title{font-size:clamp(28px,4.5vw,36px)}
+.mode-card .mode-desc{font-size:clamp(17px,2.6vw,21px);max-width:280px}
+.home-footer{font-size:clamp(15px,2.4vw,18px)}
+.login-card{max-width:600px;padding:32px}
+.login-card h2{font-size:clamp(28px,5vw,36px)}
+.login-card input,.login-card select{min-height:60px}
+.res-item{min-height:62px;padding:16px}
+#walkGrid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
+.wslot{min-height:76px}
+.modal-btns button{min-height:58px}
+#modal .box{max-width:560px;padding:26px}
+#walkCroquis{max-width:600px!important}
+.toast{max-width:min(92vw,520px)}
+.orient-box{background:var(--ok-bg);border-left:5px solid var(--ok);border-radius:8px;padding:14px 16px;margin:12px auto 4px;max-width:600px;line-height:1.55}
+.orient-box h3{margin:0 0 6px;color:var(--ok);font-size:calc(17px*var(--fs))}
+.orient-box div{margin:4px 0;font-size:calc(15px*var(--fs))}
+@media (max-width:600px){
+  .pos-table th,.pos-table td{padding:8px 4px}
+  .pos-table select{min-height:46px;width:100%}
+  header h1{min-width:100%}
+  .admin-tabs button{flex:1 1 45%}
+}
 </style>
 </head>
 <body>
@@ -249,20 +290,20 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 <div id="volView" hidden style="max-width:900px;margin:12px auto;padding:12px">
   <div class="row" style="margin-bottom:12px">
     <button onclick="goHome()" style="background:var(--blue);color:#fff;border-color:var(--blue);font-weight:700">← Volver</button>
-    <span id="volViewName" style="font-weight:700;font-size:16px;color:var(--blue)"></span>
+    <span id="volViewName" style="font-weight:700;font-size:calc(16px*var(--fs));color:var(--blue)"></span>
     <button id="btnVolWalkers" onclick="openWalkers('vol')" style="background:var(--blue);color:#fff;border-color:var(--blue);font-weight:700;margin-left:auto">Walkers</button>
   </div>
   <div id="volInfoContent"></div>
   <div id="volMapView" hidden>
     <h3 id="volMapTitle">Tu ubicación en el mapa</h3>
-    <p style="color:var(--muted);font-size:13px;margin:0 0 10px">Los círculos que parpadean indican dónde debes estar en cada turno.</p>
+    <p style="color:var(--muted);font-size:calc(13px*var(--fs));margin:0 0 10px">Los círculos que parpadean indican dónde debes estar en cada turno.</p>
     <div style="border:2px solid var(--blue);border-radius:8px;overflow:hidden;background:var(--card)">
       <svg id="volMapSvg" viewBox="0 0 1310 926" style="width:100%;height:auto;display:block">
         <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
         <g id="volMapMarkers"></g>
       </svg>
     </div>
-    <div id="volMapLegend" style="display:flex;gap:14px;font-size:13px;flex-wrap:wrap;margin-top:10px;color:var(--muted)"></div>
+    <div id="volMapLegend" style="display:flex;gap:14px;font-size:calc(13px*var(--fs));flex-wrap:wrap;margin-top:10px;color:var(--muted)"></div>
   </div>
 </div>
 
@@ -274,7 +315,7 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
     <select id="adminUserSel"><option value="">Seleccione su nombre</option></select>
     <input id="adminPassInput" type="password" placeholder="Contraseña" onkeydown="if(event.key==='Enter')adminLogin()">
     <button class="pri" onclick="adminLogin()" style="padding:14px">Entrar</button>
-    <div id="adminLoginErr" style="color:var(--err);font-weight:600;font-size:14px;min-height:20px;text-align:center"></div>
+    <div id="adminLoginErr" style="color:var(--err);font-weight:600;font-size:calc(14px*var(--fs));min-height:20px;text-align:center"></div>
   </div>
 </div>
 
@@ -305,8 +346,8 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
     <div id="adminTabAsignaciones">
       <div class="clear-turno-bar">
         <span id="clearTurnoMsg">Turno actual: <b id="clearTurnoActual">T1</b></span>
-        <button class="warn" onclick="cleanOrphanVol()" style="padding:8px 14px;font-size:13px">Limpiar huérfanas</button>
-        <button class="warn" onclick="clearTurno()" style="padding:8px 14px;font-size:13px">Limpiar turno completo</button>
+        <button class="warn" onclick="cleanOrphanVol()" style="padding:8px 14px;font-size:calc(13px*var(--fs))">Limpiar huérfanas</button>
+        <button class="warn" onclick="clearTurno()" style="padding:8px 14px;font-size:calc(13px*var(--fs))">Limpiar turno completo</button>
       </div>
       <div class="turno-selector" id="adminTurnoSelector"></div>
       <div class="admin-container">
@@ -327,24 +368,24 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
           <button onclick="toggleAdminMove()" id="btnMoveVol" style="display:none">Mover Posiciones</button>
           <button onclick="resetVolPositions()" id="btnResetVolPos" style="display:none">Restaurar</button>
         </div>
-        <div id="adminMapArea" style="min-height:200px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px;padding:40px">Selecciona un mapa arriba para ver las posiciones.</div>
-        <p id="adminMapHint" style="font-size:13px;color:var(--muted);margin-top:10px;text-align:center"></p>
+        <div id="adminMapArea" style="min-height:200px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:calc(14px*var(--fs));padding:40px">Selecciona un mapa arriba para ver las posiciones.</div>
+        <p id="adminMapHint" style="font-size:calc(13px*var(--fs));color:var(--muted);margin-top:10px;text-align:center"></p>
       </div>
     </div>
     <div id="adminTabLimpieza" hidden>
       <div class="card">
         <div class="row" style="justify-content:space-between;margin-bottom:12px">
-          <h2 style="margin:0;color:var(--ok);font-size:18px">Derrames activos</h2>
-          <span id="adminSpillCount" style="font-size:13px;color:var(--muted)"></span>
+          <h2 style="margin:0;color:var(--ok);font-size:calc(18px*var(--fs))">Derrames activos</h2>
+          <span id="adminSpillCount" style="font-size:calc(13px*var(--fs));color:var(--muted)"></span>
         </div>
         <div id="adminSpillList"></div>
       </div>
       <div class="card" style="margin-top:14px">
-        <h2 style="margin:0 0 12px;color:var(--muted);font-size:16px">Terminados hoy</h2>
+        <h2 style="margin:0 0 12px;color:var(--muted);font-size:calc(16px*var(--fs))">Terminados hoy</h2>
         <div id="adminSpillDone"></div>
       </div>
       <div class="card" style="margin-top:14px">
-        <h2 style="margin:0 0 12px;color:var(--ok);font-size:16px">Mapa de derrames</h2>
+        <h2 style="margin:0 0 12px;color:var(--ok);font-size:calc(16px*var(--fs))">Mapa de derrames</h2>
         <div style="border:2px solid var(--ok);border-radius:8px;overflow:hidden;background:var(--card)">
           <svg viewBox="0 0 1310 926" style="width:100%;height:auto;display:block">
             <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
@@ -365,7 +406,7 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 <div id="spillAdminApp" hidden>
   <header>
     <h1>Limpieza · Derrames</h1>
-    <span id="spillAdminWho" style="font-size:13px;opacity:.85"></span>
+    <span id="spillAdminWho" style="font-size:calc(13px*var(--fs));opacity:.85"></span>
     <button onclick="openWalkers('admin')">Walkers</button>
     <button onclick="resetAllSpills()" style="background:rgba(168,37,28,.85);border-color:rgba(168,37,28,.85);font-weight:700">Reiniciar Derrames</button>
     <button onclick="adminLogout()">Salir</button>
@@ -375,13 +416,13 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
       <div>
         <div class="card">
           <div class="row" style="justify-content:space-between;margin-bottom:12px">
-            <h2 style="margin:0;color:var(--ok);font-size:18px">Derrames activos</h2>
-            <span id="spillCountActive" style="font-size:13px;color:var(--muted)"></span>
+            <h2 style="margin:0;color:var(--ok);font-size:calc(18px*var(--fs))">Derrames activos</h2>
+            <span id="spillCountActive" style="font-size:calc(13px*var(--fs));color:var(--muted)"></span>
           </div>
           <div id="spillListAdmin"></div>
         </div>
         <div class="card" style="margin-top:14px">
-          <h2 style="margin:0 0 12px;color:var(--muted);font-size:16px">Terminados hoy</h2>
+          <h2 style="margin:0 0 12px;color:var(--muted);font-size:calc(16px*var(--fs))">Terminados hoy</h2>
           <div id="spillListDone"></div>
         </div>
       </div>
@@ -412,7 +453,7 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
   <header>
     <h1 id="appTitle">Acomodadores</h1>
     <span id="net" class="net"></span>
-    <span id="usr" style="font-size:13px;opacity:.85"></span>
+    <span id="usr" style="font-size:calc(13px*var(--fs));opacity:.85"></span>
     <button onclick="openWalkers('acom')" id="btnWalkers">Walkers</button>
     <button onclick="acomLogout()">Salir</button>
   </header>
@@ -432,7 +473,7 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
         <g id="sl"></g><g id="vl"></g><g id="pl"></g><g id="spl"></g>
       </svg>
     </div>
-    <div class="lg card" id="legend" style="display:flex;gap:14px;font-size:13px;flex-wrap:wrap"></div>
+    <div class="lg card" id="legend" style="display:flex;gap:14px;font-size:calc(13px*var(--fs));flex-wrap:wrap"></div>
     <div class="card" id="panel"></div>
     <div class="card" id="cntCard" hidden><h3>Conteo por sección</h3><div id="cnt"></div></div>
   </main>
@@ -441,26 +482,33 @@ select:focus,input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 <div id="walkersView" hidden>
   <header style="background:var(--ok)">
     <h1>Walkers y Sillas</h1>
-    <span id="walkCount" style="font-size:13px;background:rgba(255,255,255,.18);padding:4px 10px;border-radius:99px"></span>
+    <span id="walkCount" style="font-size:calc(13px*var(--fs));background:rgba(255,255,255,.18);padding:4px 10px;border-radius:99px"></span>
     <button id="btnResetWalkers" onclick="resetWalkersData()" style="background:rgba(168,37,28,.9);border-color:rgba(168,37,28,.9);display:none">Reiniciar Walkers</button>
     <button onclick="closeWalkers()">← Volver</button>
   </header>
   <div style="max-width:1100px;margin:12px auto;padding:12px">
     <div class="card">
-      <h2 id="wkTitle" style="margin:0 0 4px;font-size:18px;color:var(--ok)">Estacionamiento · Cuarto 123</h2>
-      <p id="wkSub" style="margin:0 0 12px;color:var(--muted);font-size:13px">Cuarto 123 · Toca un espacio para ver</p>
-      <svg id="walkCroquis" viewBox="0 0 440 700" style="width:100%;max-width:440px;display:block;margin:0 auto 6px;border:2px solid var(--ok);border-radius:10px;background:#f0e8d0"></svg>
+      <h2 id="wkTitle" style="margin:0 0 4px;font-size:calc(18px*var(--fs));color:var(--ok)">Estacionamiento · Cuarto 123</h2>
+      <p id="wkSub" style="margin:0 0 12px;color:var(--muted);font-size:calc(13px*var(--fs))">Cuarto 123 · Toca un espacio para ver</p>
+      <svg id="walkCroquis" viewBox="0 -34 440 764" style="width:100%;max-width:600px;display:block;margin:0 auto 6px;border:2px solid var(--ok);border-radius:10px;background:#f0e8d0"></svg>
       <div class="cq-lg">
         <span><i style="background:#ddd0b0;border:1px solid #999"></i>Libre</span>
         <span><i style="background:#43a047"></i>Con walker</span>
         <span><i style="background:#fbc02d;border:1px solid #d11"></i>Encontrado</span>
       </div>
-      <input type="text" id="walkerSearch" placeholder="Buscar por nombre..." oninput="searchWalker(this.value)" style="margin-top:10px;font-size:15px;padding:10px">
+      <div class="orient-box">
+        <h3>Cómo ubicar el cuarto 123</h3>
+        <div><b>Arriba (norte):</b> puertas hacia el Vestíbulo y, más allá, la pared curveada.</div>
+        <div><b>Derecha (este):</b> asientos del Auditorio, lado sur. La puerta del cuarto da hacia allá.</div>
+        <div><b>Izquierda (oeste):</b> pared exterior del edificio.</div>
+        <div><b>Abajo (sur):</b> pared exterior sur.</div>
+      </div>
+      <input type="text" id="walkerSearch" placeholder="Buscar por nombre..." oninput="searchWalker(this.value)" style="margin-top:10px;font-size:calc(15px*var(--fs));padding:10px">
       <div id="walkGrid"></div>
     </div>
     <div class="card" id="walkLogCard" hidden style="margin-top:12px">
-      <h2 style="margin:0 0 4px;font-size:16px;color:var(--ok)">Bitácora · quién y a qué hora</h2>
-      <p style="margin:0 0 10px;color:var(--muted);font-size:13px">Últimos movimientos registrados en el cuarto 123</p>
+      <h2 style="margin:0 0 4px;font-size:calc(16px*var(--fs));color:var(--ok)">Bitácora · quién y a qué hora</h2>
+      <p style="margin:0 0 10px;color:var(--muted);font-size:calc(13px*var(--fs))">Últimos movimientos registrados en el cuarto 123</p>
       <div id="walkLog"></div>
     </div>
   </div>
@@ -694,18 +742,18 @@ function renderVolInfo(name){
   $('btnVolWalkers').textContent=objT.length?'Objetos perdidos':'Walkers';
   let html=`<div class="vol-info-card"><h2>${esc(name)}</h2><div class="sub">Tus turnos y ubicación</div>`;
   if(objT.length){
-    html+=`<div style="background:var(--ok-bg);border-left:4px solid var(--ok);padding:10px 12px;border-radius:6px;margin-bottom:12px;font-size:14px"><b style="color:var(--ok)">Objetos perdidos · Cuarto 123</b><br>También ayudas en este departamento en: ${objT.map(t=>`<b>T${t}</b> (${esc(TURNOS[t].name)})`).join(', ')}</div>`;
+    html+=`<div style="background:var(--ok-bg);border-left:4px solid var(--ok);padding:10px 12px;border-radius:6px;margin-bottom:12px;font-size:calc(14px*var(--fs))"><b style="color:var(--ok)">Objetos perdidos · Cuarto 123</b><br>También ayudas en este departamento en: ${objT.map(t=>`<b>T${t}</b> (${esc(TURNOS[t].name)})`).join(', ')}</div>`;
   }
   if(!hist.length){
     html+=`<p class="mut">Aún no tienes asignaciones. Consulta con el Superintendente de Acomodadores.</p>`;
   }else{
-    html+=`<h3 style="font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:0 0 8px">Turnos asignados</h3>`;
+    html+=`<h3 style="font-size:calc(14px*var(--fs));color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:0 0 8px">Turnos asignados</h3>`;
     hist.forEach(h=>{
       const sec=sectionOf(h.posicion);
       const isObj=objList(h.turno).includes(name);
-      html+=`<div class="turno-pill"><b>T${h.turno}</b> · ${esc(TURNOS[h.turno].name)}<span class="pos-num">${h.posicion}</span><span style="font-size:12px;color:var(--muted);font-weight:400">${esc(sec.label)}</span>${isObj?'<span class="obj-badge">+ Objetos perdidos</span>':''}</div>`;
+      html+=`<div class="turno-pill"><b>T${h.turno}</b> · ${esc(TURNOS[h.turno].name)}<span class="pos-num">${h.posicion}</span><span style="font-size:calc(12px*var(--fs));color:var(--muted);font-weight:400">${esc(sec.label)}</span>${isObj?'<span class="obj-badge">+ Objetos perdidos</span>':''}</div>`;
     });
-    html+=`<div style="background:var(--warn-bg);border:1px solid #e0c884;color:#8a5a00;padding:10px 12px;border-radius:6px;font-size:14px;margin:10px 0;line-height:1.6"><b>Reglas:</b> T1, T2 y T8 prioritarios. 3 turnos adicionales. Sin consecutivos (T1+T2 ok). T5 y T6 excluyentes.</div>`;
+    html+=`<div style="background:var(--warn-bg);border:1px solid #e0c884;color:#8a5a00;padding:10px 12px;border-radius:6px;font-size:calc(14px*var(--fs));margin:10px 0;line-height:1.6"><b>Reglas:</b> T1, T2 y T8 prioritarios. 3 turnos adicionales. Sin consecutivos (T1+T2 ok). T5 y T6 excluyentes.</div>`;
   }
   html+='</div>';
   $('volInfoContent').innerHTML=html;
@@ -776,15 +824,15 @@ function renderAdminView(){
 /* ===== Admin: lista de Objetos perdidos ===== */
 function renderAdminObjetos(){
   const canEdit=canEditObjList();
-  let html=`<div style="margin-bottom:14px"><h2 style="margin:0 0 4px;font-size:18px;color:var(--ok)">Objetos perdidos · Cuarto 123</h2>
-    <p style="margin:0;font-size:13px;color:var(--muted)">Hermanas que ayudan como voluntarias de acomodadores y también en el departamento de objetos perdidos, por turno.${canEdit?'':' (Solo lectura)'}</p></div><div class="obj-grid">`;
+  let html=`<div style="margin-bottom:14px"><h2 style="margin:0 0 4px;font-size:calc(18px*var(--fs));color:var(--ok)">Objetos perdidos · Cuarto 123</h2>
+    <p style="margin:0;font-size:calc(13px*var(--fs));color:var(--muted)">Hermanas que ayudan como voluntarias de acomodadores y también en el departamento de objetos perdidos, por turno.${canEdit?'':' (Solo lectura)'}</p></div><div class="obj-grid">`;
   Object.keys(TURNOS).forEach(t=>{
     const list=objList(t);
     const asg=(S.volTurnos&&S.volTurnos[t])||{};
-    const posOf=name=>{const p=VOL_POS.find(p=>asg[p]===name);return p?`<span class="obj-badge" style="background:var(--blue)">Pos ${p}</span>`:'<span style="font-size:11px;color:var(--err)">sin posición en T'+t+'</span>';};
-    const items=list.length?list.map(name=>`<div class="aux-item"><div class="name">${esc(name)}<div class="turns">${posOf(name)}</div></div>${canEdit?`<button class="danger" data-t="${t}" data-name="${esc(name)}" onclick="adminObjRemove(this.dataset.t,this.dataset.name)" style="padding:6px 12px;font-size:12px">Quitar</button>`:''}</div>`).join(''):'<div style="color:var(--muted);font-style:italic;padding:6px 0">Sin asignar</div>';
+    const posOf=name=>{const p=VOL_POS.find(p=>asg[p]===name);return p?`<span class="obj-badge" style="background:var(--blue)">Pos ${p}</span>`:'<span style="font-size:calc(11px*var(--fs));color:var(--err)">sin posición en T'+t+'</span>';};
+    const items=list.length?list.map(name=>`<div class="aux-item"><div class="name">${esc(name)}<div class="turns">${posOf(name)}</div></div>${canEdit?`<button class="danger" data-t="${t}" data-name="${esc(name)}" onclick="adminObjRemove(this.dataset.t,this.dataset.name)" style="padding:6px 12px;font-size:calc(12px*var(--fs))">Quitar</button>`:''}</div>`).join(''):'<div style="color:var(--muted);font-style:italic;padding:6px 0">Sin asignar</div>';
     const candidates=TURNOS[t].vol.filter(n=>!list.includes(n)).sort();
-    const addSel=canEdit?`<select onchange="if(this.value){adminObjAdd('${t}',this.value)}" style="margin-top:8px;font-size:13px"><option value="">+ Agregar hermana…</option>${candidates.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('')}</select>`:'';
+    const addSel=canEdit?`<select onchange="if(this.value){adminObjAdd('${t}',this.value)}" style="margin-top:8px;font-size:calc(13px*var(--fs))"><option value="">+ Agregar hermana…</option>${candidates.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('')}</select>`:'';
     html+=`<div class="obj-card"><h4>Turno ${t}</h4><div class="hr">${esc(TURNOS[t].name)}</div>${items}${addSel}</div>`;
   });
   html+='</div>';
@@ -884,8 +932,8 @@ function renderAdminEquipo(){
     return list.map(name=>{
       const count=auxAssignedCounts[name]||0;
       return `<div class="aux-item">
-        <div class="name">${esc(name)}${count>0?` <span style="color:var(--gold);font-size:11px;font-weight:700">(${count} apoyo${count>1?'s':''})</span>`:''}</div>
-        <button class="danger" onclick="removeAuxPerson('${group}', this.dataset.name)" data-name="${esc(name)}" style="padding:6px 12px;font-size:12px">Quitar</button>
+        <div class="name">${esc(name)}${count>0?` <span style="color:var(--gold);font-size:calc(11px*var(--fs));font-weight:700">(${count} apoyo${count>1?'s':''})</span>`:''}</div>
+        <button class="danger" onclick="removeAuxPerson('${group}', this.dataset.name)" data-name="${esc(name)}" style="padding:6px 12px;font-size:calc(12px*var(--fs))">Quitar</button>
       </div>`;
     }).join('');
   };
@@ -894,7 +942,7 @@ function renderAdminEquipo(){
     <div style="margin-bottom:14px">${renderAuxGroup('corredores',corredores,'corredores')}</div>
     <h3 style="margin-top:16px">Cámaras (${camaras.length})</h3>
     <div>${renderAuxGroup('camaras',camaras,'camaras')}</div>
-    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.5">
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:calc(12px*var(--fs));color:var(--muted);line-height:1.5">
       <b>Nota:</b> Asigna un corredor o cámara como "Apoyo" de una posición. En el mapa se verá como círculo dorado junto al asignado.
     </div>`;
   $('adminEquipoSide').innerHTML=sideHtml;
@@ -995,8 +1043,8 @@ function renderAdminAsignaciones(){
     sideHtml = `<div class="rule-box" style="background:var(--err-bg);border-left:3px solid var(--err);color:var(--err);margin-bottom:10px">
       <b>⚠ T8 mandatorio</b><br>
       Faltan <b>${t8missing.length}</b> de ${t8signedUp.length} por asignar en el último turno (3:30 – 4:15 p.m.)
-      <details style="margin-top:6px"><summary style="cursor:pointer;font-size:11px;font-weight:700">Ver quiénes faltan</summary>
-      <ul style="margin:4px 0;padding-left:18px;font-size:11px">${t8missing.map(n=>`<li>${esc(n)}</li>`).join('')}</ul>
+      <details style="margin-top:6px"><summary style="cursor:pointer;font-size:calc(11px*var(--fs));font-weight:700">Ver quiénes faltan</summary>
+      <ul style="margin:4px 0;padding-left:18px;font-size:calc(11px*var(--fs))">${t8missing.map(n=>`<li>${esc(n)}</li>`).join('')}</ul>
       </details>
     </div>` + sideHtml;
   }
@@ -1006,7 +1054,7 @@ function renderAdminAsignaciones(){
     availNow.forEach(name=>{
       const chk=canAssign(t,1,name);
       const maxT=maxTurnsFor(name);
-      if(chk.ok) sideHtml+=`<div><span class="ok-mark">✓</span>${esc(name)} <span style="color:var(--muted);font-size:11px">(máx ${maxT})</span></div>`;
+      if(chk.ok) sideHtml+=`<div><span class="ok-mark">✓</span>${esc(name)} <span style="color:var(--muted);font-size:calc(11px*var(--fs))">(máx ${maxT})</span></div>`;
       else sideHtml+=`<div><span style="color:var(--err);margin-right:4px">✕</span>${esc(name)}<span class="conflict">(${chk.msg})</span></div>`;
     });
     sideHtml+=`</div>`;
@@ -1067,9 +1115,9 @@ function renderAdminConteo(){
   const total=Object.values(cnt).reduce((a,b)=>a+(+b||0),0);
   const secs=['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5'];
   let html=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px"><div>
-    <div style="margin-bottom:14px;font-size:16px"><b>Total:</b> ${total} / ${exp} (${Math.round(100*total/exp)}%)</div>
+    <div style="margin-bottom:14px;font-size:calc(16px*var(--fs))"><b>Total:</b> ${total} / ${exp} (${Math.round(100*total/exp)}%)</div>
     <div class="bar" style="margin-bottom:16px"><i style="width:${Math.min(100,100*total/exp)}%"></i></div>
-    <p style="font-size:13px;color:var(--muted);margin:0 0 10px">Toca una sección para resaltarla en el mapa</p>
+    <p style="font-size:calc(13px*var(--fs));color:var(--muted);margin:0 0 10px">Toca una sección para resaltarla en el mapa</p>
     <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr))">`;
   secs.forEach(sec=>{
     const v=cnt[sec]||0;
@@ -1083,14 +1131,14 @@ function renderAdminConteo(){
     </div>`;
   });
   html+=`</div></div><div>
-    <h3 style="margin:0 0 8px;color:var(--brown);font-size:14px;text-transform:uppercase;letter-spacing:.5px">Vista</h3>
+    <h3 style="margin:0 0 8px;color:var(--brown);font-size:calc(14px*var(--fs));text-transform:uppercase;letter-spacing:.5px">Vista</h3>
     <div style="border:2px solid var(--brown);border-radius:8px;overflow:hidden;background:var(--card);position:sticky;top:80px">
       <svg viewBox="0 0 1310 926" style="width:100%;height:auto;display:block">
         <image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>
         <g id="adminCntMapSec"></g>
       </svg>
     </div>
-    <p style="font-size:12px;color:var(--muted);margin-top:8px;text-align:center">${hl?`Resaltada: <b style="color:var(--red)">${hl}</b>`:'Ninguna resaltada'}</p>
+    <p style="font-size:calc(12px*var(--fs));color:var(--muted);margin-top:8px;text-align:center">${hl?`Resaltada: <b style="color:var(--red)">${hl}</b>`:'Ninguna resaltada'}</p>
   </div></div>
   <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
     <button onclick="put('cnt',null)" style="padding:12px">Reiniciar conteo</button>
@@ -1271,22 +1319,22 @@ function buildSpillContent(){
     const isSel=selectedSpill===id;
     const colorClass=sp.tipo==='Comida'?'spill-color-comida':sp.tipo==='Bebida'?'spill-color-bebida':'spill-color-otro';
     return `<div class="spill-card ${colorClass}${isSel?' selected':''}"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><div style="flex:1;min-width:180px">
-      <div style="font-weight:700;font-size:15px;color:${color}">${esc(SPILL_LABELS[sp.tipo]||sp.tipo)}</div>
-      <div style="font-size:13px;color:var(--muted);margin-top:2px">${esc(sec)}</div>
-      <div style="font-size:13px;color:var(--muted);margin-top:1px">${esc(sp.quien||'?')} · ${hora}</div>
-      <div style="font-size:12px;margin-top:3px"><b style="color:${isProc?'var(--warn)':'var(--err)'}">${sp.status.toUpperCase()}</b>${sp.quienLimpia?` · ${esc(sp.quienLimpia)}`:''}</div>
+      <div style="font-weight:700;font-size:calc(15px*var(--fs));color:${color}">${esc(SPILL_LABELS[sp.tipo]||sp.tipo)}</div>
+      <div style="font-size:calc(13px*var(--fs));color:var(--muted);margin-top:2px">${esc(sec)}</div>
+      <div style="font-size:calc(13px*var(--fs));color:var(--muted);margin-top:1px">${esc(sp.quien||'?')} · ${hora}</div>
+      <div style="font-size:calc(12px*var(--fs));margin-top:3px"><b style="color:${isProc?'var(--warn)':'var(--err)'}">${sp.status.toUpperCase()}</b>${sp.quienLimpia?` · ${esc(sp.quienLimpia)}`:''}</div>
     </div><div style="display:flex;gap:6px;flex-wrap:wrap">
-      <button onclick="selectSpill('${id}')" style="padding:6px 12px;font-size:13px">${isSel?'Ocultar':'Ver'}</button>
-      ${!isProc?`<button class="warn" onclick="takeSpillAdmin('${id}')" style="padding:6px 12px;font-size:13px">Tomar</button>`:''}
-      ${isProc?`<button class="ok" onclick="doneSpillAdmin('${id}')" style="padding:6px 12px;font-size:13px">Listo</button>`:''}
+      <button onclick="selectSpill('${id}')" style="padding:6px 12px;font-size:calc(13px*var(--fs))">${isSel?'Ocultar':'Ver'}</button>
+      ${!isProc?`<button class="warn" onclick="takeSpillAdmin('${id}')" style="padding:6px 12px;font-size:calc(13px*var(--fs))">Tomar</button>`:''}
+      ${isProc?`<button class="ok" onclick="doneSpillAdmin('${id}')" style="padding:6px 12px;font-size:calc(13px*var(--fs))">Listo</button>`:''}
     </div></div></div>`;
   }).join('');
   let doneHtml=!done.length?'<div style="text-align:center;padding:16px;color:var(--muted);font-style:italic">Sin terminados</div>':
-    `<details><summary style="cursor:pointer;padding:8px;color:var(--muted);font-size:14px">${done.length} terminados</summary>${done.map(([id,sp])=>{
+    `<details><summary style="cursor:pointer;padding:8px;color:var(--muted);font-size:calc(14px*var(--fs))">${done.length} terminados</summary>${done.map(([id,sp])=>{
       const hora=new Date(sp.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
       const color=SPILL_COLORS[sp.tipo]||'#999';
       const sec=sectionOfSpill(sp.x,sp.y);
-      return `<div style="padding:8px 12px;background:var(--ok-bg);border-left:3px solid ${color};border-radius:4px;margin-top:6px;font-size:13px"><b>${esc(SPILL_LABELS[sp.tipo]||sp.tipo)}</b> · ${esc(sec)} · ${esc(sp.quien||'?')} · ${hora}</div>`;
+      return `<div style="padding:8px 12px;background:var(--ok-bg);border-left:3px solid ${color};border-radius:4px;margin-top:6px;font-size:calc(13px*var(--fs))"><b>${esc(SPILL_LABELS[sp.tipo]||sp.tipo)}</b> · ${esc(sec)} · ${esc(sp.quien||'?')} · ${hora}</div>`;
     }).join('')}</details>`;
   let pins='';
   active.forEach(([id,sp])=>{
@@ -1444,7 +1492,7 @@ function attachSpillHandler(){
 function toggleSpillMode(){spillMode=!spillMode;drawBar();if(spillMode)showToast('Toca el mapa');}
 function promptSpill(x,y){
   showModal('Reportar derrame',
-    `<p>¿Qué se derramó?</p><select id="spillType"><option value="Comida">Comida</option><option value="Bebida">Bebida</option><option value="Otro">Otro (vómito)</option></select><p style="font-size:12px;color:var(--muted);margin-top:8px">Ubicación: ${sectionOfSpill(x,y)}</p>`,
+    `<p>¿Qué se derramó?</p><select id="spillType"><option value="Comida">Comida</option><option value="Bebida">Bebida</option><option value="Otro">Otro (vómito)</option></select><p style="font-size:calc(12px*var(--fs));color:var(--muted);margin-top:8px">Ubicación: ${sectionOfSpill(x,y)}</p>`,
     [{text:'Cancelar',action:()=>{spillMode=false;drawBar();}},{text:'Reportar',class:'warn',action:()=>{
       const tipo=$('spillType').value;const id=Date.now();
       put(`spills/${id}`,{x:Math.round(x),y:Math.round(y),tipo,status:'pendiente',quien:me.n,ts:id});
@@ -1462,7 +1510,7 @@ function drawCnt(){
   if(ae && ae.closest && ae.closest('#cntCard') && ae.tagName==='INPUT') return;
   const canEdit=canCnt(),cnt=S.cnt||{};
   const secs=['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5'];
-  let html=`<p style="margin:0 0 10px;font-size:13px;color:var(--muted)">Toca una sección para resaltarla</p><div class="grid">`;
+  let html=`<p style="margin:0 0 10px;font-size:calc(13px*var(--fs));color:var(--muted)">Toca una sección para resaltarla</p><div class="grid">`;
   secs.forEach(sec=>{
     const v=cnt[sec]||0;
     const max=(S.cap&&S.cap[sec]!==undefined)?S.cap[sec]:(D.cap[sec]||0);
@@ -1504,10 +1552,10 @@ function drawMine(){
   if(me.adm||me.all)return;
   if(n){
     const isDone=['ok','sub'].includes(P(n).st);
-    e.innerHTML=`<h3>Tu posición: ${n}</h3><p>${esc(D.pos[n].t)}</p>`+(isDone?'<b style="color:var(--ok);font-size:18px">✓ Registrado</b>':`<button class="ok" style="width:100%;padding:18px;font-size:20px" onclick="here(${n})">Aquí estoy</button>`);
+    e.innerHTML=`<h3>Tu posición: ${n}</h3><p>${esc(D.pos[n].t)}</p>`+(isDone?'<b style="color:var(--ok);font-size:calc(18px*var(--fs))">✓ Registrado</b>':`<button class="ok" style="width:100%;padding:18px;font-size:calc(20px*var(--fs))" onclick="here(${n})">Aquí estoy</button>`);
   }else if(D.caps.includes(me.n)){
     const isDone=S.pos?.['cap_'+me.n]?.st==='ok';
-    e.innerHTML=`<h3>Capitán</h3><p style="color:var(--muted);font-size:14px">Registra tu llegada:</p>`+(isDone?'<b style="color:var(--ok);font-size:18px">✓ Registrado</b>':`<button class="ok" style="width:100%;padding:18px;font-size:20px" onclick="hereCap()">Aquí estoy</button>`);
+    e.innerHTML=`<h3>Capitán</h3><p style="color:var(--muted);font-size:calc(14px*var(--fs))">Registra tu llegada:</p>`+(isDone?'<b style="color:var(--ok);font-size:calc(18px*var(--fs))">✓ Registrado</b>':`<button class="ok" style="width:100%;padding:18px;font-size:calc(20px*var(--fs))" onclick="hereCap()">Aquí estoy</button>`);
   }else{e.innerHTML='<h3>Corredor</h3>';}
 }
 function drawPanel(){
@@ -1532,7 +1580,7 @@ function drawSpills(){
   arr.forEach(([id,sp])=>{
     const hora=new Date(sp.ts).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
     const color=SPILL_COLORS[sp.tipo]||'#b8860b';
-    h+=`<div class="spill-item" style="border-left-color:${color}"><b style="color:${color}">${esc(SPILL_LABELS[sp.tipo]||sp.tipo)}</b> · ${sp.status.toUpperCase()}<div style="font-size:13px;color:var(--muted)">${esc(sp.quien)} · ${hora}</div></div>`;
+    h+=`<div class="spill-item" style="border-left-color:${color}"><b style="color:${color}">${esc(SPILL_LABELS[sp.tipo]||sp.tipo)}</b> · ${sp.status.toUpperCase()}<div style="font-size:calc(13px*var(--fs));color:var(--muted)">${esc(sp.quien)} · ${hora}</div></div>`;
   });
   h+='</div>';e.innerHTML=h;
 }
@@ -1618,6 +1666,12 @@ function drawCroquis(){
   const lx=c[0]+nOut[0]*(leaf+30),ly=c[1]+nOut[1]*(leaf+30);
   h+=`<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" font-size="13" font-weight="700" fill="#6e1414" text-anchor="middle">PUERTA</text>`;
   h+=`<text x="300" y="${CQ_TOP+36}" font-size="20" font-weight="700" fill="#a08a50" text-anchor="middle">CUARTO 123</text>`;
+  // Orientación: dónde queda el cuarto respecto al resto del edificio
+  h+=`<text x="220" y="-16" font-size="15" font-weight="700" fill="#555" text-anchor="middle">▲ NORTE</text>`;
+  h+=`<text x="220" y="3" font-size="12.5" font-weight="600" fill="#6e1414" text-anchor="middle">Puertas del Vestíbulo · Pared curveada</text>`;
+  h+=`<text x="19" y="350" font-size="13" font-weight="700" fill="#555" text-anchor="middle" transform="rotate(-90 19 350)">PARED OESTE (exterior)</text>`;
+  h+=`<text x="421" y="300" font-size="13" font-weight="700" fill="#a08a50" text-anchor="middle" transform="rotate(90 421 300)">AUDITORIO · ASIENTOS LADO SUR ►</text>`;
+  h+=`<text x="220" y="692" font-size="15" font-weight="700" fill="#555" text-anchor="middle">▼ SUR · pared exterior</text>`;
 
   const matchedCoords=[];
   for(const slot of WALKER_SLOTS){
@@ -1628,7 +1682,7 @@ function drawCroquis(){
     if(isMatch) cls+=' found';
     const op=(isSearchActive && !isMatch)?' opacity="0.15"':'';
     const cx=CQ_CW/2;
-    h+=`<g class="${cls}" data-slot="${slot}" transform="translate(${g.x} ${g.y})" onclick="walkerTap('${slot}')"${op}><rect x="0" y="0" width="${CQ_CW}" height="${CQ_CH}" rx="4"/>`+(cur?`<text text-anchor="middle" x="${cx}" y="10" font-size="8" opacity=".85">${g.n}</text><text text-anchor="middle" x="${cx}" y="22" font-size="10" font-weight="700">${esc(cqFirst(cur.name))}</text>`:`<text text-anchor="middle" x="${cx}" y="19" font-size="12" font-weight="700">${g.n}</text>`)+`</g>`;
+    h+=`<g class="${cls}" data-slot="${slot}" transform="translate(${g.x} ${g.y})" onclick="walkerTap('${slot}')"${op}><rect x="0" y="0" width="${CQ_CW}" height="${CQ_CH}" rx="4"/>`+(cur?`<text text-anchor="middle" x="${cx}" y="10" font-size="9" opacity=".9">${g.n}</text><text text-anchor="middle" x="${cx}" y="23" font-size="11" font-weight="700">${esc(cqFirst(cur.name))}</text>`:`<text text-anchor="middle" x="${cx}" y="20" font-size="13" font-weight="700">${g.n}</text>`)+`</g>`;
     if(isMatch) matchedCoords.push({x:g.x+CQ_CW/2,y:g.y+CQ_CH/2});
   }
   if(isSearchActive){
@@ -1671,9 +1725,9 @@ function drawWalkGrid(){
   });
 
   if(isSearchActive && matchCount===0){
-    h=`<div style="grid-column:1/-1;text-align:center;padding:30px 16px;color:var(--err);font-style:italic;font-size:15px">
+    h=`<div style="grid-column:1/-1;text-align:center;padding:30px 16px;color:var(--err);font-style:italic;font-size:calc(15px*var(--fs))">
       No se encontraron coincidencias para "<b>${esc(currentWalkerSearch)}</b>"
-      <div style="font-size:13px;color:var(--muted);margin-top:8px">Verifica el nombre o intenta con menos letras</div>
+      <div style="font-size:calc(13px*var(--fs));color:var(--muted);margin-top:8px">Verifica el nombre o intenta con menos letras</div>
     </div>`;
   }
 
@@ -1690,7 +1744,7 @@ function drawWalkLog(){
   const arr=Object.values(W_LOG||{}).filter(x=>x&&x.ts).sort((x,y)=>y.ts-x.ts).slice(0,60);
   $('walkLog').innerHTML=arr.length?arr.map(x=>{
     const num=WK_CELLS[x.slot]?WK_CELLS[x.slot].n:x.slot;
-    return `<div class="spill-item" style="border-left-color:var(--ok);margin:6px 0;padding:10px 12px"><b>${esc(x.by||'?')}</b> ${esc(x.action)} <b>${esc(x.name)}</b> · espacio <b>${num}</b><div style="font-size:12px;color:var(--muted)">${fmtHora(x.ts)}</div></div>`;
+    return `<div class="spill-item" style="border-left-color:var(--ok);margin:6px 0;padding:10px 12px"><b>${esc(x.by||'?')}</b> ${esc(x.action)} <b>${esc(x.name)}</b> · espacio <b>${num}</b><div style="font-size:calc(12px*var(--fs));color:var(--muted)">${fmtHora(x.ts)}</div></div>`;
   }).join(''):'<div style="text-align:center;padding:16px;color:var(--muted);font-style:italic">Sin movimientos todavía</div>';
 }
 function searchWalker(q){
@@ -1704,21 +1758,21 @@ function walkerTap(slot){
   const edit=canWalkerEdit();
   if(cur){
     showModal(`Espacio ${num}`,
-      `<div style="text-align:center;padding:16px 0"><div style="font-size:13px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">Ocupado por</div><div style="font-weight:700;font-size:22px;color:var(--ok)">${esc(cur.name)}</div><div style="font-size:13px;color:var(--muted);margin-top:6px">${cur.ts?'Registrado a las '+fmtHora(cur.ts):''}${cur.by?` · por ${esc(cur.by)}`:''}</div></div>`,
+      `<div style="text-align:center;padding:16px 0"><div style="font-size:calc(13px*var(--fs));color:var(--muted);text-transform:uppercase;margin-bottom:8px">Ocupado por</div><div style="font-weight:700;font-size:calc(22px*var(--fs));color:var(--ok)">${esc(cur.name)}</div><div style="font-size:calc(13px*var(--fs));color:var(--muted);margin-top:6px">${cur.ts?'Registrado a las '+fmtHora(cur.ts):''}${cur.by?` · por ${esc(cur.by)}`:''}</div></div>`,
       edit?[{text:'Aceptar'},{text:'Editar',class:'warn',keepOpen:true,action:()=>walkerEdit(slot,cur.name)},{text:'Remover',class:'danger',keepOpen:true,action:()=>walkerRemove(slot,cur.name)}]:[{text:'Cerrar'}]);
   }else{
-    const lastMsg=last?`<div class="walker-info"><b>Último:</b> ${esc(last.name)}<br><span style="font-size:12px;color:var(--muted)">Salió ${fmtHora(last.ts)}${last.by?` · por ${esc(last.by)}`:''}</span></div>`:'';
+    const lastMsg=last?`<div class="walker-info"><b>Último:</b> ${esc(last.name)}<br><span style="font-size:calc(12px*var(--fs));color:var(--muted)">Salió ${fmtHora(last.ts)}${last.by?` · por ${esc(last.by)}`:''}</span></div>`:'';
     if(!edit){
       showModal(`Espacio ${num} libre`,lastMsg||'<p style="color:var(--muted)">Espacio disponible.</p>',[{text:'Cerrar'}]);
       return;
     }
-    showModal(`Espacio ${num} libre`,`${lastMsg}<p style="margin:8px 0;font-size:14px">Nombre:</p><input id="walkerNameInput" placeholder="Nombre completo" autocomplete="off">${last?`<div style="margin-top:8px"><button onclick="walkerReassign('${slot}','${esc(last.name).replace(/'/g,"\\'")}')" style="width:100%;padding:10px;background:var(--warn-bg);color:#8a5a00;border-color:#e0c884;font-size:14px;font-weight:700">Volvió: estacionar a ${esc(last.name)} aquí</button></div>`:''}`,
+    showModal(`Espacio ${num} libre`,`${lastMsg}<p style="margin:8px 0;font-size:calc(14px*var(--fs))">Nombre:</p><input id="walkerNameInput" placeholder="Nombre completo" autocomplete="off">${last?`<div style="margin-top:8px"><button onclick="walkerReassign('${slot}','${esc(last.name).replace(/'/g,"\\'")}')" style="width:100%;padding:10px;background:var(--warn-bg);color:#8a5a00;border-color:#e0c884;font-size:calc(14px*var(--fs));font-weight:700">Volvió: estacionar a ${esc(last.name)} aquí</button></div>`:''}`,
       [{text:'Cancelar'},{text:'Guardar',class:'ok',action:()=>{const nm=$('walkerNameInput').value.trim();if(nm)walkerAssign(slot,nm,'registró');}}]);
     setTimeout(()=>{const inp=$('walkerNameInput');if(inp)inp.focus();},100);
   }
 }
 function walkerEdit(slot,oldName){
-  showModal(`Editar ${WK_CELLS[slot].n}`,`<p style="margin:0 0 8px;font-size:14px">Actual: <b>${esc(oldName)}</b></p><input id="walkerEditInput" value="${esc(oldName)}" autocomplete="off">`,
+  showModal(`Editar ${WK_CELLS[slot].n}`,`<p style="margin:0 0 8px;font-size:calc(14px*var(--fs))">Actual: <b>${esc(oldName)}</b></p><input id="walkerEditInput" value="${esc(oldName)}" autocomplete="off">`,
     [{text:'Cancelar'},{text:'Guardar',class:'ok',action:()=>{const nm=$('walkerEditInput').value.trim();if(nm&&nm!==oldName)walkerAssign(slot,nm,'editó');}}]);
   setTimeout(()=>{const inp=$('walkerEditInput');if(inp){inp.focus();inp.select();}},100);
 }
