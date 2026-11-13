@@ -241,9 +241,9 @@ main{padding:12px}
 #printReport h2{font-size:calc(24px*var(--fs));margin:0 0 6px;color:#5a1212;border-bottom:2px solid #b8860b;padding-bottom:3px}
 #printReport h3{font-size:calc(17px*var(--fs));margin:12px 0 4px;color:#333}
 #printReport p,#printReport li{font-size:calc(15px*var(--fs));margin:3px 0}
-.pr-t{width:100%;border-collapse:collapse;font-size:calc(14px*var(--fs));margin:4px 0 8px}
-.pr-t th{background:#efe6d0;text-align:left;padding:4px 6px;border:1px solid #bbb;font-size:calc(12px*var(--fs));text-transform:uppercase}
-.pr-t td{padding:3px 6px;border:1px solid #ccc;vertical-align:top}
+.pr-t{width:100%;border-collapse:collapse;font-size:calc(14px*var(--fs));margin:4px 0 8px;border:1.5px solid #222}
+.pr-t th{background:#efe6d0;text-align:left;padding:5px 6px;border:1px solid #333;font-size:calc(12px*var(--fs));text-transform:uppercase}
+.pr-t td{padding:4px 6px;border:1px solid #444;vertical-align:middle}
 .pr-t tr{break-inside:avoid}
 .pr-map{width:100%;border:1px solid #888;display:block;break-inside:avoid}
 .pr-obj{background:#e6edde;font-weight:700}
@@ -256,6 +256,20 @@ main{padding:12px}
   body.printing #printReport{display:block!important}
   .pr-page{break-before:page;page-break-before:always}
 }
+
+.pr-w{width:100%;border-collapse:collapse;table-layout:fixed;font-size:calc(14px*var(--fs));border:1.5px solid #222}
+.pr-w th{background:#efe6d0;border:1px solid #333;padding:3px 4px;font-size:calc(12px*var(--fs));text-transform:uppercase}
+.pr-w td{border:1px solid #333;height:.27in;padding:0 4px;overflow:hidden;white-space:nowrap}
+.pr-w td.c{text-align:center;font-weight:700}
+.pr-w tr{break-inside:avoid}
+.pr-w.lg td{height:.31in}
+.pr-w.big td{height:.42in;font-size:calc(18px*var(--fs))}
+.pr-w tr.tot td{background:#efe6d0;font-weight:700}
+.pr-two{display:flex;gap:.18in;align-items:flex-start}
+.pr-two>table{flex:1;min-width:0}
+.bx{display:inline-block;width:.14in;height:.14in;border:1.3px solid #000;vertical-align:-2px;margin:0 3px 0 6px}
+.pr-line{display:flex;gap:.3in;margin-top:.25in;font-size:calc(15px*var(--fs))}
+.pr-line span{flex:1;border-bottom:1.3px solid #000;padding-bottom:2px}
 </style>
 </head>
 <body>
@@ -1837,7 +1851,7 @@ function prAcomMap(){
     m+=`<circle cx="${c.x}" cy="${c.y}" r="19" fill="${fill}" stroke="#fff" stroke-width="2.5"/><text x="${c.x}" y="${c.y+6}" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">${n}</text>`;
     if(w) m+=`<text x="${c.x}" y="${c.y+38}" text-anchor="middle" font-size="11" font-weight="600" fill="#222" style="paint-order:stroke;stroke:#fff;stroke-width:3">${esc(w)}</text>`;
   });
-  return `<svg class="pr-map" viewBox="0 0 1310 926"><image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>${m}</svg>`;
+  return `<svg class="pr-map" viewBox="0 0 926 1310" style="width:6.3in;height:8.9in;margin:0 auto"><g transform="translate(0 1310) rotate(-90)"><image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>${m}</g></svg>`;
 }
 function prVolMap(t){
   const asg=(S.volTurnos&&S.volTurnos[t])||{};
@@ -1861,7 +1875,7 @@ async function exportAllPdf(){
   const totalAsg=Object.keys(TURNOS).reduce((a,t)=>a+countAsignadas(t),0);
   const occ=WALKER_SLOTS.filter(k=>wk[k]).length;
   r+=`<div><h1>Asamblea de Circuito · La Feria, Texas</h1><p style="font-size:calc(18px*var(--fs))"><b>Reporte completo · Dept. de Acomodadores</b></p><p>Generado: ${esc(stamp)}${adminMe?' · por '+esc(adminMe.n):''}</p>
-  <h3>Contenido</h3><ol><li>Posiciones de acomodadores</li><li>Mapa de acomodadores</li><li>Voluntarias: asignaciones y mapa por turno (T1 a T8)</li><li>Objetos perdidos</li><li>Cuarto 123 · estacionamiento de carritos / walkers</li><li>Conteo por sección</li></ol>
+  <h3>Contenido</h3><ol><li>Posiciones de acomodadores</li><li>Mapa de acomodadores</li><li>Voluntarias: asignaciones y mapa por turno (T1 a T8)</li><li>Objetos perdidos</li><li>Cuarto 123 · estacionamiento de carritos / walkers</li><li>Hojas en papel: control del cuarto 123, bitácora y conteo de asistencia (11:20 a.m. y 2:20 p.m.)</li></ol>
   <h3>Resumen</h3>${prTable(['Concepto','Total'],[prTr(['Posiciones de acomodadores',POS.filter(n=>D.pos[n].v!==1).length]),prTr(['Asignaciones de voluntarias (todos los turnos)',totalAsg]),prTr(['Espacios ocupados en cuarto 123',`${occ} / ${WALKER_SLOTS.length}`])])}</div>`;
 
   // 1. Posiciones de acomodadores
@@ -1879,7 +1893,7 @@ async function exportAllPdf(){
   r+='</div>';
 
   // 2. Mapa acomodadores
-  r+=`<div class="pr-page"><h2>2. Mapa de acomodadores</h2><p>Círculo azul = posición fija · Círculo dorado = intermitente</p>${prAcomMap()}</div>`;
+  r+=`<div class="pr-page"><h2>2. Mapa de acomodadores</h2><p>Azul = posición fija · Dorado = intermitente · Plano girado: gire la hoja 90° a la derecha para verlo en su posición original.</p>${prAcomMap()}</div>`;
 
   // 3. Voluntarias por turno
   Object.keys(TURNOS).forEach(t=>{
@@ -1910,16 +1924,23 @@ async function exportAllPdf(){
   const cq=$('walkCroquis').innerHTML;
   currentWalkerSearch=savedQ;drawCroquis();
   r+=`<div class="pr-page"><h2>5. Cuarto 123 · Estacionamiento de carritos / walkers</h2><p>Arriba = norte (puertas del vestíbulo y pared curveada) · Derecha = auditorio, lado sur · Izquierda = pared oeste · Abajo = pared sur.</p><svg viewBox="0 -34 440 764" style="width:100%;max-width:4.6in;display:block;margin:0 auto;border:2px solid #4a6b3a;border-radius:8px;background:#f0e8d0">${cq}</svg></div>`;
-  const occList=WALKER_SLOTS.filter(k=>wk[k]);
-  r+=`<div class="pr-page"><h2>5. Cuarto 123 · Espacios ocupados (${occ}/${WALKER_SLOTS.length})</h2>`+(occList.length?prTable(['Espacio','Nombre','Hora','Registrado por'],occList.map(k=>prTr([`<b>${WK_CELLS[k].n}</b>`,esc(wk[k].name),fmtHora(wk[k].ts),esc(wk[k].by||'—')]))):'<p class="pr-empty">Sin walkers registrados.</p>');
-  const logArr=Object.values(W_LOG||{}).filter(x=>x&&x.ts).sort((x,y)=>y.ts-x.ts).slice(0,80);
-  r+=`<h3>Bitácora (últimos movimientos)</h3>`+(logArr.length?prTable(['Hora','Quién','Acción','Nombre','Espacio'],logArr.map(x=>prTr([fmtHora(x.ts),esc(x.by||'?'),esc(x.action),esc(x.name),WK_CELLS[x.slot]?WK_CELLS[x.slot].n:esc(x.slot)]))):'<p class="pr-empty">Sin movimientos.</p>')+'</div>';
-
-  // 6. Conteo
-  const cnt=S.cnt||{},exp=S.expect||D.expect;
+  // Hojas en papel (por si falla el internet)
+  const wRow=k=>{const c=wk[k];return `<tr><td class="c">${WK_CELLS[k].n}</td><td>${c?esc(c.name):''}</td><td>${c&&c.ts?fmtHora(c.ts):''}</td><td></td></tr>`;};
+  const half=(a,b)=>`<table class="pr-w"><thead><tr><th style="width:12%">Esp.</th><th>Nombre</th><th style="width:19%">Entra</th><th style="width:19%">Sale</th></tr></thead><tbody>${WALKER_SLOTS.slice(a,b).map(wRow).join('')}</tbody></table>`;
+  r+=`<div class="pr-page"><h2>Cuarto 123 · Hoja de control en papel</h2><p>Un renglón por espacio (1–60). Escriba el nombre y la hora de entrada; al salir, la hora de salida. Se llenó con los datos actuales del sistema.</p><div class="pr-two">${half(0,30)}${half(30,60)}</div></div>`;
+  const bx='<span class="bx"></span>';
+  for(let h=1;h<=2;h++){
+    const rows=Array.from({length:27},(_,i)=>`<tr><td class="c">${i+1}</td><td></td><td></td><td></td><td>${bx}Entra ${bx}Sale ${bx}Volvió</td><td></td></tr>`).join('');
+    r+=`<div class="pr-page"><h2>Cuarto 123 · Bitácora en papel (hoja ${h})</h2><p>Anote cada movimiento en orden. Si ya se llenó, use la otra hoja.</p><table class="pr-w lg"><thead><tr><th style="width:6%">#</th><th style="width:14%">Hora</th><th>Nombre</th><th style="width:11%">Espacio</th><th style="width:31%">Movimiento</th><th style="width:12%">Inic.</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+  // Conteo de asistencia en papel
   const secs=['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5'];
-  const tot=secs.reduce((a,k)=>a+(+cnt[k]||0),0);
-  r+=`<div class="pr-page"><h2>6. Conteo por sección</h2><p><b>Total:</b> ${tot} / ${exp} (${Math.round(100*tot/exp)}%)</p>`+prTable(['Sección','Conteo','Máximo'],secs.map(k=>{const mx=(S.cap&&S.cap[k]!==undefined)?S.cap[k]:(D.cap[k]||0);return prTr([`<b>${k}</b>`,cnt[k]||0,mx>0?mx:'sin límite']);}))+'</div>';
+  const exp=S.expect||D.expect;
+  r+=`<div class="pr-page"><h2>Conteo de asistencia · hoja en papel</h2><p>Asistencia esperada: <b>${exp}</b></p>
+  <table class="pr-w big"><thead><tr><th style="width:20%">Sección</th><th style="width:16%">Máx.</th><th>Conteo 11:20 a.m.</th><th>Conteo 2:20 p.m.</th></tr></thead><tbody>${secs.map(k=>{const mx=(S.cap&&S.cap[k]!==undefined)?S.cap[k]:(D.cap[k]||0);return `<tr><td class="c">${k}</td><td class="c">${mx>0?mx:'—'}</td><td></td><td></td></tr>`;}).join('')}<tr class="tot"><td class="c">TOTAL</td><td></td><td></td><td></td></tr></tbody></table>
+  <h3>Bautizados</h3>
+  <table class="pr-w big"><thead><tr><th style="width:24%">Conteo</th><th>Hombres</th><th>Mujeres</th><th>Total</th></tr></thead><tbody><tr><td class="c">11:20 a.m.</td><td></td><td></td><td></td></tr><tr><td class="c">2:20 p.m.</td><td></td><td></td><td></td></tr></tbody></table>
+  <div class="pr-line"><span>Contó:</span><span>Revisó:</span><span>Fecha:</span></div></div>`;
 
   $('printReport').innerHTML=r;
   document.body.classList.add('printing');
