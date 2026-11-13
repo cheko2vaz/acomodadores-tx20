@@ -1861,7 +1861,7 @@ function prVolMap(t){
     m+=`<circle cx="${c.x}" cy="${c.y}" r="24" fill="${sec.color}" stroke="#fff" stroke-width="3"/><text x="${c.x}" y="${c.y+7}" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">${pos}</text>`;
     if(who) m+=`<text x="${c.x}" y="${c.y+44}" text-anchor="middle" font-size="13" font-weight="700" fill="${sec.color}" style="paint-order:stroke;stroke:#fff;stroke-width:3.5">${esc(who.split(' ')[0])}</text>`;
   });
-  return `<svg class="pr-map" viewBox="0 0 1310 926"><image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>${m}</svg>`;
+  return `<svg class="pr-map" viewBox="0 0 926 1310" style="width:6.3in;height:8.9in;margin:0 auto"><g transform="translate(0 1310) rotate(-90)"><image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>${m}</g></svg>`;
 }
 async function exportAllPdf(){
   if(!adminMe||!adminMe.exportPdf){showToast('Sin permiso para exportar',true);return;}
@@ -1875,7 +1875,7 @@ async function exportAllPdf(){
   const totalAsg=Object.keys(TURNOS).reduce((a,t)=>a+countAsignadas(t),0);
   const occ=WALKER_SLOTS.filter(k=>wk[k]).length;
   r+=`<div><h1>Asamblea de Circuito · La Feria, Texas</h1><p style="font-size:calc(18px*var(--fs))"><b>Reporte completo · Dept. de Acomodadores</b></p><p>Generado: ${esc(stamp)}${adminMe?' · por '+esc(adminMe.n):''}</p>
-  <h3>Contenido</h3><ol><li>Posiciones de acomodadores</li><li>Mapa de acomodadores</li><li>Voluntarias: asignaciones y mapa por turno (T1 a T8)</li><li>Objetos perdidos</li><li>Cuarto 123 · estacionamiento de carritos / walkers</li><li>Hojas en papel: control del cuarto 123, bitácora y conteo de asistencia (11:20 a.m. y 2:20 p.m.)</li></ol>
+  <h3>Contenido</h3><ol><li>Posiciones de acomodadores</li><li>Mapa de acomodadores</li><li>Voluntarias: asignaciones y mapa por turno (T1 a T8)</li><li>Objetos perdidos</li><li>Cuarto 123 · estacionamiento de carritos / walkers</li><li>Hojas en papel: control del cuarto 123 y conteo de asistencia (11:35 a.m.)</li></ol>
   <h3>Resumen</h3>${prTable(['Concepto','Total'],[prTr(['Posiciones de acomodadores',POS.filter(n=>D.pos[n].v!==1).length]),prTr(['Asignaciones de voluntarias (todos los turnos)',totalAsg]),prTr(['Espacios ocupados en cuarto 123',`${occ} / ${WALKER_SLOTS.length}`])])}</div>`;
 
   // 1. Posiciones de acomodadores
@@ -1907,7 +1907,7 @@ async function exportAllPdf(){
     }));
     r+=`<p><b>Objetos perdidos T${t}:</b> ${objN.length?esc(objN.join(', ')):'—'}</p>`;
     r+=`<p><b>Inscritas sin posición (${sinPos.length}):</b> ${sinPos.length?esc(sinPos.join(', ')):'ninguna'}</p></div>`;
-    r+=`<div class="pr-page"><h2>3.${t} Mapa de voluntarias · Turno ${t}</h2><p>${esc(TURNOS[t].name)}</p>${prVolMap(t)}</div>`;
+    r+=`<div class="pr-page"><h2>3.${t} Mapa de voluntarias · Turno ${t}</h2><p>${esc(TURNOS[t].name)} · Plano girado: gire la hoja 90° a la derecha para verlo en su posición original.</p>${prVolMap(t)}</div>`;
   });
 
   // 4. Objetos perdidos
@@ -1928,18 +1928,13 @@ async function exportAllPdf(){
   const wRow=k=>{const c=wk[k];return `<tr><td class="c">${WK_CELLS[k].n}</td><td>${c?esc(c.name):''}</td><td>${c&&c.ts?fmtHora(c.ts):''}</td><td></td></tr>`;};
   const half=(a,b)=>`<table class="pr-w"><thead><tr><th style="width:12%">Esp.</th><th>Nombre</th><th style="width:19%">Entra</th><th style="width:19%">Sale</th></tr></thead><tbody>${WALKER_SLOTS.slice(a,b).map(wRow).join('')}</tbody></table>`;
   r+=`<div class="pr-page"><h2>Cuarto 123 · Hoja de control en papel</h2><p>Un renglón por espacio (1–60). Escriba el nombre y la hora de entrada; al salir, la hora de salida. Se llenó con los datos actuales del sistema.</p><div class="pr-two">${half(0,30)}${half(30,60)}</div></div>`;
-  const bx='<span class="bx"></span>';
-  for(let h=1;h<=2;h++){
-    const rows=Array.from({length:27},(_,i)=>`<tr><td class="c">${i+1}</td><td></td><td></td><td></td><td>${bx}Entra ${bx}Sale ${bx}Volvió</td><td></td></tr>`).join('');
-    r+=`<div class="pr-page"><h2>Cuarto 123 · Bitácora en papel (hoja ${h})</h2><p>Anote cada movimiento en orden. Si ya se llenó, use la otra hoja.</p><table class="pr-w lg"><thead><tr><th style="width:6%">#</th><th style="width:14%">Hora</th><th>Nombre</th><th style="width:11%">Espacio</th><th style="width:31%">Movimiento</th><th style="width:12%">Inic.</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-  }
   // Conteo de asistencia en papel
   const secs=['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5'];
   const exp=S.expect||D.expect;
   r+=`<div class="pr-page"><h2>Conteo de asistencia · hoja en papel</h2><p>Asistencia esperada: <b>${exp}</b></p>
-  <table class="pr-w big"><thead><tr><th style="width:20%">Sección</th><th style="width:16%">Máx.</th><th>Conteo 11:20 a.m.</th><th>Conteo 2:20 p.m.</th></tr></thead><tbody>${secs.map(k=>{const mx=(S.cap&&S.cap[k]!==undefined)?S.cap[k]:(D.cap[k]||0);return `<tr><td class="c">${k}</td><td class="c">${mx>0?mx:'—'}</td><td></td><td></td></tr>`;}).join('')}<tr class="tot"><td class="c">TOTAL</td><td></td><td></td><td></td></tr></tbody></table>
+  <table class="pr-w big"><thead><tr><th style="width:20%">Sección</th><th style="width:16%">Máx.</th><th>Conteo 11:35 a.m.</th></tr></thead><tbody>${secs.map(k=>{const mx=(S.cap&&S.cap[k]!==undefined)?S.cap[k]:(D.cap[k]||0);return `<tr><td class="c">${k}</td><td class="c">${mx>0?mx:'—'}</td><td></td></tr>`;}).join('')}<tr class="tot"><td class="c">TOTAL</td><td></td><td></td></tr></tbody></table>
   <h3>Bautizados</h3>
-  <table class="pr-w big"><thead><tr><th style="width:24%">Conteo</th><th>Hombres</th><th>Mujeres</th><th>Total</th></tr></thead><tbody><tr><td class="c">11:20 a.m.</td><td></td><td></td><td></td></tr><tr><td class="c">2:20 p.m.</td><td></td><td></td><td></td></tr></tbody></table>
+  <table class="pr-w big"><thead><tr><th style="width:24%">Conteo</th><th>Hombres</th><th>Mujeres</th><th>Total</th></tr></thead><tbody><tr><td class="c">11:35 a.m.</td><td></td><td></td><td></td></tr></tbody></table>
   <div class="pr-line"><span>Contó:</span><span>Revisó:</span><span>Fecha:</span></div></div>`;
 
   $('printReport').innerHTML=r;
