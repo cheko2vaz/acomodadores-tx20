@@ -235,10 +235,32 @@ main{padding:12px}
   header h1{min-width:100%}
   .admin-tabs button{flex:1 1 45%}
 }
+
+#printReport{display:none;--fs:.72;font-family:'Noto Sans',system-ui,sans-serif;color:#000;background:#fff}
+#printReport h1{font-size:calc(34px*var(--fs));margin:0 0 4px;color:#5a1212}
+#printReport h2{font-size:calc(24px*var(--fs));margin:0 0 6px;color:#5a1212;border-bottom:2px solid #b8860b;padding-bottom:3px}
+#printReport h3{font-size:calc(17px*var(--fs));margin:12px 0 4px;color:#333}
+#printReport p,#printReport li{font-size:calc(15px*var(--fs));margin:3px 0}
+.pr-t{width:100%;border-collapse:collapse;font-size:calc(14px*var(--fs));margin:4px 0 8px}
+.pr-t th{background:#efe6d0;text-align:left;padding:4px 6px;border:1px solid #bbb;font-size:calc(12px*var(--fs));text-transform:uppercase}
+.pr-t td{padding:3px 6px;border:1px solid #ccc;vertical-align:top}
+.pr-t tr{break-inside:avoid}
+.pr-map{width:100%;border:1px solid #888;display:block;break-inside:avoid}
+.pr-obj{background:#e6edde;font-weight:700}
+.pr-empty{color:#a8251c;font-style:italic}
+@media print{
+  @page{size:letter;margin:.5in}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body.printing{background:#fff!important;zoom:1!important}
+  body.printing>*:not(#printReport){display:none!important}
+  body.printing #printReport{display:block!important}
+  .pr-page{break-before:page;page-break-before:always}
+}
 </style>
 </head>
 <body>
 <div id="toast-container"></div>
+<div id="printReport"></div>
 <div id="modal" hidden><div class="box" id="modalBox"></div></div>
 
 <div id="homeScreen">
@@ -325,6 +347,7 @@ main{padding:12px}
     <span id="adminWhoLabel" class="net"></span>
     <button onclick="openWalkers('admin')">Walkers</button>
     <button onclick="openCamera()" id="btnCameraAdmin" hidden style="background:var(--gold);border-color:var(--gold);color:#fff;font-weight:700">Escáner</button>
+    <button onclick="exportAllPdf()" id="btnExportPdf" hidden style="background:#fff;border-color:#fff;color:var(--red);font-weight:700">Exportar todo a PDF</button>
     <button onclick="resetAllPresentes()" id="btnResetPresentes" hidden style="background:rgba(194,138,28,.9);border-color:rgba(194,138,28,.9);color:#fff;font-weight:700">Reiniciar Presentes</button>
     <button onclick="adminLogout()">Salir</button>
   </header>
@@ -535,7 +558,7 @@ const OBJ_DEFAULT={
   "7":["Gloria (Gigi) Mastropole","Gloria Palmira Mastropole"],
   "8":["Leticia Fernández","Reyna Jetcél Hernandez Madrid"]
 };
-const VOL_SECTIONS=[{id:"vest-norte",label:"Vestíbulo Norte",pos:[101,102,103,104,105],color:"#5a1212"},{id:"vest-portico",label:"Vestíbulo Pórtico",pos:[106,107,108,109],color:"#3d5a80"},{id:"vest-sur",label:"Vestíbulo Sur",pos:[110,111,112,113,114],color:"#4a6b3a"},{id:"aud-sur",label:"Auditorio Sur",pos:[115,116],color:"#c28a1c"},{id:"aud-contra",label:"Objetos perdidos",pos:[117,118],color:"#a8251c"},{id:"aud-norte",label:"Auditorio Norte",pos:[119,120],color:"#2c6e6e"}];
+const VOL_SECTIONS=[{id:"vest-norte",label:"Vestíbulo Norte",pos:[101,102,103,104,105],color:"#5a1212"},{id:"vest-portico",label:"Vestíbulo Pórtico",pos:[106,107,108,109],color:"#3d5a80"},{id:"vest-sur",label:"Vestíbulo Sur",pos:[110,111,112,113,114],color:"#4a6b3a"},{id:"aud-sur",label:"Auditorio Sur",pos:[115,116],color:"#c28a1c"},{id:"aud-contra",label:"Auditorio Contrapared",pos:[117,118],color:"#a8251c"},{id:"aud-norte",label:"Auditorio Norte",pos:[119,120],color:"#2c6e6e"}];
 const VOL_POS_COORDS={101:{x:120,y:170},102:{x:210,y:170},103:{x:300,y:170},104:{x:390,y:170},105:{x:480,y:170},106:{x:120,y:370},107:{x:210,y:370},108:{x:300,y:370},109:{x:390,y:370},110:{x:120,y:570},111:{x:210,y:570},112:{x:300,y:570},113:{x:390,y:570},114:{x:480,y:570},115:{x:730,y:700},116:{x:830,y:700},117:{x:730,y:480},118:{x:830,y:480},119:{x:730,y:280},120:{x:830,y:280}};
 
 /* ===== Croquis Cuarto 123 (forma triangular, 60 espacios) ===== */
@@ -563,14 +586,13 @@ const D={"caps":["Eliud Luna","Hugo Galvan","Jimmy Vasquez","José A. González"
 "pos":{"1":{"who":"Luis Barberena","t":"Alarma Multiusos","x":1172,"y":220,"l":1,"a":"alm"},"2":{"who":"Guadalupe De La Cruz","t":"Salida emergencia","x":1172,"y":404,"l":1,"a":"alm"},"3":{"who":"Macario Martinez","t":"Detras plataforma","x":1100,"y":432,"l":1,"a":"ctl"},"4":{"who":"Celestino Chavez","t":"Escaleras plat.","x":1172,"y":490,"l":1,"a":"ctl"},"5":{"who":"Valente Alejandro","t":"Entrada sur plataforma","x":1172,"y":660,"l":1,"a":"alm"},"6":{"who":"Norberto Cardenas","t":"Alarma Sur","x":1073,"y":775,"l":1,"a":"alm"},"7":{"who":"Alfonso Hernández","t":"Puerta Principal","x":1073,"y":657,"l":1,"a":"ent"},"8":{"who":"Osiel Agustin","t":"Alternando","x":1073,"y":553,"l":1,"a":"ctl"},"9":{"who":"Alfredo Jiménez","t":"Alternando","x":993,"y":527,"l":1,"a":"ctl"},"10":{"who":"Gustavo Saucedo","t":"Escenario","x":981,"y":438,"l":1,"a":"ctl"},"11":{"who":"Josue Campos","t":"Frente NE","x":994,"y":341,"l":1,"a":"ctl"},"12":{"who":"Rey Castillo","t":"Frente Norte","x":1073,"y":336,"l":1,"a":"ctl"},"13":{"who":"Jose González Jr","t":"Puerta Secundaria","x":1073,"y":238,"l":1,"a":"ent"},"14":{"who":"Carlos Leonardo Salas Zuñiga","t":"Alarma Norte","x":1073,"y":141,"l":1,"a":"alm"},"15":{"who":"Vianney Morales López","t":"Alarma Audio","x":693,"y":141,"l":1,"a":"alm"},"16":{"who":"Ricardo Altamirano","t":"Alarma","x":612,"y":347,"l":1,"a":"ent"},"17":{"who":"Luis Duran","t":"Alarma","x":612,"y":548,"l":1,"a":"ent"},"18":{"who":"Jamin Muñiz","t":"Alarma Sur","x":693,"y":775,"l":1,"a":"alm"},"19":{"who":"Adrián Mota Arcos","t":"Entrada Sur","x":551,"y":577,"l":1,"a":"ent"},"20":{"who":"Francisco Montoya","t":"Entrada Sur","x":463,"y":577,"l":1,"a":"ent"},"21":{"who":"Roberto Quiroga","t":"Portico","x":211,"y":473,"l":1,"a":"ent"},"22":{"who":"Eulogio Montelongo","t":"Portico/Alberca","x":428,"y":604,"l":1,"a":"ent"},"23":{"who":"Tony Duran","t":"Entrada Norte","x":463,"y":320,"l":1,"a":"ent"},"24":{"who":"Abisai Muniz","t":"Entrada Norte","x":551,"y":318,"l":1,"a":"ent"},"25":{"who":"Gonzalo Mejia Sr.","t":"Auditorio","x":818,"y":153,"l":0,"a":"aud"},"26":{"who":"Carlos Martínez","t":"Auditorio","x":697,"y":340,"l":0,"a":"aud"},"27":{"who":"Felipe Ortiz","t":"Auditorio","x":690,"y":548,"l":0,"a":"aud"},"28":{"who":"Juan Salinas","t":"Auditorio","x":833,"y":735,"l":0,"a":"aud"},"29":{"who":"Javier Borjas","t":"Auditorio","x":807,"y":544,"l":0,"a":"aud"},"30":{"who":"Martin Davila","t":"Auditorio","x":813,"y":342,"l":0,"a":"aud"},"31":{"who":"Juan F Garza","t":"Auditorio","x":902,"y":239,"l":0,"a":"aud"},"32":{"who":"Isaias Martinez","t":"Auditorio","x":947,"y":388,"l":0,"a":"aud"},"33":{"who":"Alex Vazquez","t":"Auditorio","x":941,"y":462,"l":0,"a":"aud"},"34":{"who":"Alfredo Garza","t":"Auditorio","x":936,"y":601,"l":0,"a":"aud"},"35":{"who":"","t":"Entrada vestíbulo","x":146,"y":456,"l":0,"a":"ent"}},
 "cap":{"A1":0,"A2":464,"A3":475,"A4":464,"A5":0,"B1":0,"B2":158,"B3":156,"B4":158,"B5":0},"expect":2474};
 for(const k in VOL_POS_COORDS){D.pos[k]={who:"",t:"Voluntaria "+k,x:VOL_POS_COORDS[k].x,y:VOL_POS_COORDS[k].y,l:0,a:"vol",v:1}}
-D.pos[117].t="Objetos perdidos";D.pos[118].t="Objetos perdidos";
 const ADM=[
-  {"n":"Sergio E. Vazquez Jr.","pwd":"acomodadores2026","all":1,"cnt":1,"adm":1,"areas":[],"walkersReset":1,"resetPresentes":1},
+  {"n":"Sergio E. Vazquez Jr.","pwd":"acomodadores2026","all":1,"exportPdf":1,"cnt":1,"adm":1,"areas":[],"walkersReset":1,"resetPresentes":1},
   {"n":"Alberto Herrera","pwd":"seccion@","all":1,"cnt":1,"adm":1,"areas":[],"walkersReset":1,"resetPresentes":1},
   {"n":"Steven Snyder","pwd":"auxiliar2026","areas":["ctl","aud"],"adm":1,"cnt":1},
   {"n":"Jaime Palestina","pwd":"superaux2026","areas":["alm","ent"],"adm":1,"cnt":1,"resetPresentes":1},
   {"n":"Abdiel Juarez Jr.","pwd":"clave2026","areas":["aud"],"cnt":1,"adm":1},
-  {"n":"José A. González","pwd":"capitan2026","pwd2":"jose2026","areas":["vol"],"adm":1,"walkersReset":1,"objetos":1,"walkers":1},
+  {"n":"José A. González","pwd":"capitan2026","pwd2":"jose2026","areas":["vol"],"adm":1,"walkersReset":1,"objetos":1},
   {"n":"Sergio Vazquez Sr.","pwd":"objetos1","walkers":1,"objetos":1,"adm":1,"walkersReset":1,"areas":[]},
   {"n":"Carlos Vasquez","pwd":"limpieza2026","adm":1,"spillOnly":1,"spill":1,"areas":[]},
   {"n":"Damian Fernandez","pwd":"damian2026","walkers":1,"spill":1,"limited":1,"adm":1,"areas":[]}
@@ -640,10 +662,9 @@ function objList(t){
 }
 function objTurnosOf(name){return Object.keys(TURNOS).filter(t=>objList(t).includes(name));}
 const isObjUser=name=>!!name&&objTurnosOf(name).length>0;
-const isVoluntariaUser=name=>!!name&&D.roster.some(r=>r.c==='Voluntaria'&&nrm(r.n)===nrm(name));
 const walkerUser=()=>(me&&me.n)||volCurrentName||'';
-const canWalkerEdit=()=>WALKERS_EDIT_OPEN||(me&&(me.adm||me.all||me.objetos||me.walkers))||isObjUser(walkerUser())||isVoluntariaUser(walkerUser());
-const canWalkerLog=()=>!!(me&&(me.adm||me.all||me.objetos))||isVoluntariaUser(walkerUser());
+const canWalkerEdit=()=>WALKERS_EDIT_OPEN||(me&&(me.adm||me.all||me.objetos||me.walkers))||isObjUser(walkerUser());
+const canWalkerLog=()=>!!(me&&(me.adm||me.all||me.objetos));
 const canEditObjList=()=>!!(me&&(me.all||me.objetos));
 
 function sectionOfSpill(x,y){
@@ -651,7 +672,7 @@ function sectionOfSpill(x,y){
   if(x<500){if(y<250) return 'Vestíbulo Norte';if(y>500) return 'Vestíbulo Sur';return 'Vestíbulo Pórtico';}
   if(y<350) return 'Auditorio Norte';
   if(y>550) return 'Auditorio Sur';
-  return 'Objetos perdidos';
+  return 'Auditorio Contrapared';
 }
 function volHistory(name){
   const res=[],vt=S.volTurnos||{};
@@ -799,6 +820,7 @@ function adminLogin(){
   const showCam = CAMERA_ACCESS.some(n => nrm(n)===nrm(u.n));
   $('btnCameraAdmin').hidden = !showCam;
   $('btnResetPresentes').hidden = !u.resetPresentes;
+  $('btnExportPdf').hidden = !u.exportPdf;
   start();renderAdminView();
 }
 function adminLogout(){clearInterval(iv);adminMe=null;me=null;S={};hl=null;selectedSpill=null;goHome();}
@@ -1751,14 +1773,6 @@ function drawWalkLog(){
 }
 function searchWalker(q){
   currentWalkerSearch=q||'';
-  const norm=nrm(currentWalkerSearch.trim());
-
-  // Si se borra la búsqueda o queda muy corta, se limpia todo resaltado/parpadeo.
-  if(norm.length<2){
-    drawWalkers();
-    return;
-  }
-
   drawWalkGrid();
   drawCroquis();
 }
@@ -1803,17 +1817,114 @@ async function walkerRemove(slot,name){
   await fetch(`${WK}/last/${slot}.json`,{method:'PUT',body:JSON.stringify({name,ts:Date.now(),by:walkerUser()||'?'})});
   await fetch(`${WK}/w/${slot}.json`,{method:'DELETE'});
   await walkerLog(slot,'removió a',name);
-
-  // Limpia la búsqueda activa para que no quede ninguna celda resaltada/parpadeando.
-  currentWalkerSearch='';
-  const searchEl=$('walkerSearch');
-  if(searchEl) searchEl.value='';
-
-  await loadWalkers();
-  drawWalkers();
-
-  $('modal').hidden=true;
+  await loadWalkers();$('modal').hidden=true;
   showToast(`${name} removido`);
+}
+
+
+/* ===== Exportar todo a PDF (solo Sergio Jr.) ===== */
+function prTable(heads,rows){
+  return `<table class="pr-t"><thead><tr>${heads.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table>`;
+}
+const prTr=(cells,cls)=>`<tr${cls?` class="${cls}"`:''}>${cells.map(c=>`<td>${c}</td>`).join('')}</tr>`;
+const prStatus=st=>st==='ok'?'Presente':st==='sub'?'Sustituto':st==='abs'?'Ausente':'Pendiente';
+function prAcomMap(){
+  let m='';
+  POS.filter(n=>D.pos[n].v!==1).forEach(n=>{
+    const c=coordsOf(n),p=P(n),raw=D.pos[n];
+    const fill=raw.l?'#3d5a80':'#c28a1c';
+    const w=(p.sub||p.who||'').split(' ')[0];
+    m+=`<circle cx="${c.x}" cy="${c.y}" r="19" fill="${fill}" stroke="#fff" stroke-width="2.5"/><text x="${c.x}" y="${c.y+6}" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">${n}</text>`;
+    if(w) m+=`<text x="${c.x}" y="${c.y+38}" text-anchor="middle" font-size="11" font-weight="600" fill="#222" style="paint-order:stroke;stroke:#fff;stroke-width:3">${esc(w)}</text>`;
+  });
+  return `<svg class="pr-map" viewBox="0 0 1310 926"><image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>${m}</svg>`;
+}
+function prVolMap(t){
+  const asg=(S.volTurnos&&S.volTurnos[t])||{};
+  let m='';
+  VOL_POS.forEach(pos=>{
+    const c=volCoord(pos,t),sec=sectionOf(pos),who=asg[pos]||'';
+    m+=`<circle cx="${c.x}" cy="${c.y}" r="24" fill="${sec.color}" stroke="#fff" stroke-width="3"/><text x="${c.x}" y="${c.y+7}" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">${pos}</text>`;
+    if(who) m+=`<text x="${c.x}" y="${c.y+44}" text-anchor="middle" font-size="13" font-weight="700" fill="${sec.color}" style="paint-order:stroke;stroke:#fff;stroke-width:3.5">${esc(who.split(' ')[0])}</text>`;
+  });
+  return `<svg class="pr-map" viewBox="0 0 1310 926"><image href="map.jpg" width="1310" height="926" preserveAspectRatio="none"/>${m}</svg>`;
+}
+async function exportAllPdf(){
+  if(!adminMe||!adminMe.exportPdf){showToast('Sin permiso para exportar',true);return;}
+  showToast('Preparando PDF…');
+  try{await load();await loadWalkers();}catch(e){}
+  const stamp=new Date().toLocaleString('es-MX',{dateStyle:'long',timeStyle:'short'});
+  const wk=W_DATA||{};
+  let r='';
+
+  // Portada
+  const totalAsg=Object.keys(TURNOS).reduce((a,t)=>a+countAsignadas(t),0);
+  const occ=WALKER_SLOTS.filter(k=>wk[k]).length;
+  r+=`<div><h1>Asamblea de Circuito · La Feria, Texas</h1><p style="font-size:calc(18px*var(--fs))"><b>Reporte completo · Dept. de Acomodadores</b></p><p>Generado: ${esc(stamp)}${adminMe?' · por '+esc(adminMe.n):''}</p>
+  <h3>Contenido</h3><ol><li>Posiciones de acomodadores</li><li>Mapa de acomodadores</li><li>Voluntarias: asignaciones y mapa por turno (T1 a T8)</li><li>Objetos perdidos</li><li>Cuarto 123 · estacionamiento de carritos / walkers</li><li>Conteo por sección</li></ol>
+  <h3>Resumen</h3>${prTable(['Concepto','Total'],[prTr(['Posiciones de acomodadores',POS.filter(n=>D.pos[n].v!==1).length]),prTr(['Asignaciones de voluntarias (todos los turnos)',totalAsg]),prTr(['Espacios ocupados en cuarto 123',`${occ} / ${WALKER_SLOTS.length}`])])}</div>`;
+
+  // 1. Posiciones de acomodadores
+  const areas=[['alm','Alarmas de incendios'],['ctl','Control y plataforma'],['ent','Entradas y salidas'],['aud','Auditorio']];
+  r+=`<div class="pr-page"><h2>1. Posiciones de acomodadores</h2>`;
+  areas.forEach(([id,name])=>{
+    const list=POS.filter(n=>D.pos[n].a===id&&D.pos[n].v!==1);
+    if(!list.length) return;
+    r+=`<h3>${name}</h3>`+prTable(['Pos','Tarea','Acomodador','Apoyo','Estado'],list.map(n=>{
+      const p=P(n),aux=(S.pos&&S.pos[n]&&S.pos[n].aux)||'';
+      const who=p.sub?`${esc(p.sub)} <i>(sustituto de ${esc(p.who||'—')})</i>`:esc(p.who||'—');
+      return prTr([`<b>${n}</b>`,esc(D.pos[n].t),who,esc(aux||'—'),prStatus(p.st)]);
+    }));
+  });
+  r+='</div>';
+
+  // 2. Mapa acomodadores
+  r+=`<div class="pr-page"><h2>2. Mapa de acomodadores</h2><p>Círculo azul = posición fija · Círculo dorado = intermitente</p>${prAcomMap()}</div>`;
+
+  // 3. Voluntarias por turno
+  Object.keys(TURNOS).forEach(t=>{
+    const asg=(S.volTurnos&&S.volTurnos[t])||{},objN=objList(t);
+    const asignadas=Object.values(asg).filter(Boolean);
+    const sinPos=TURNOS[t].vol.filter(n=>!asignadas.includes(n)).sort();
+    r+=`<div class="pr-page"><h2>3.${t} Voluntarias · Turno ${t} (${esc(TURNOS[t].name)})</h2>`;
+    r+=prTable(['Pos','Sección','Voluntaria','Objetos perdidos'],VOL_POS.map(pos=>{
+      const who=asg[pos]||'';
+      return prTr([`<b>${pos}</b>`,esc(sectionOf(pos).label),who?esc(who):'<span class="pr-empty">Sin asignar</span>',who&&objN.includes(who)?'Sí':''],who&&objN.includes(who)?'pr-obj':'');
+    }));
+    r+=`<p><b>Objetos perdidos T${t}:</b> ${objN.length?esc(objN.join(', ')):'—'}</p>`;
+    r+=`<p><b>Inscritas sin posición (${sinPos.length}):</b> ${sinPos.length?esc(sinPos.join(', ')):'ninguna'}</p></div>`;
+    r+=`<div class="pr-page"><h2>3.${t} Mapa de voluntarias · Turno ${t}</h2><p>${esc(TURNOS[t].name)}</p>${prVolMap(t)}</div>`;
+  });
+
+  // 4. Objetos perdidos
+  r+=`<div class="pr-page"><h2>4. Objetos perdidos · Cuarto 123</h2><p>Hermanas que ayudan como voluntarias de acomodadores y en objetos perdidos.</p>`+prTable(['Turno','Horario','Hermanas','Posición de acomodadora'],Object.keys(TURNOS).map(t=>{
+    const asg=(S.volTurnos&&S.volTurnos[t])||{};
+    const l=objList(t);
+    const pos=l.map(n=>{const p=VOL_POS.find(p=>asg[p]===n);return `${esc(n)}: ${p||'sin posición'}`;}).join('<br>');
+    return prTr([`<b>T${t}</b>`,esc(TURNOS[t].name),esc(l.join(', ')||'—'),pos||'—']);
+  }))+'</div>';
+
+  // 5. Cuarto 123
+  const savedQ=currentWalkerSearch;currentWalkerSearch='';
+  drawCroquis();
+  const cq=$('walkCroquis').innerHTML;
+  currentWalkerSearch=savedQ;drawCroquis();
+  r+=`<div class="pr-page"><h2>5. Cuarto 123 · Estacionamiento de carritos / walkers</h2><p>Arriba = norte (puertas del vestíbulo y pared curveada) · Derecha = auditorio, lado sur · Izquierda = pared oeste · Abajo = pared sur.</p><svg viewBox="0 -34 440 764" style="width:100%;max-width:4.6in;display:block;margin:0 auto;border:2px solid #4a6b3a;border-radius:8px;background:#f0e8d0">${cq}</svg></div>`;
+  const occList=WALKER_SLOTS.filter(k=>wk[k]);
+  r+=`<div class="pr-page"><h2>5. Cuarto 123 · Espacios ocupados (${occ}/${WALKER_SLOTS.length})</h2>`+(occList.length?prTable(['Espacio','Nombre','Hora','Registrado por'],occList.map(k=>prTr([`<b>${WK_CELLS[k].n}</b>`,esc(wk[k].name),fmtHora(wk[k].ts),esc(wk[k].by||'—')]))):'<p class="pr-empty">Sin walkers registrados.</p>');
+  const logArr=Object.values(W_LOG||{}).filter(x=>x&&x.ts).sort((x,y)=>y.ts-x.ts).slice(0,80);
+  r+=`<h3>Bitácora (últimos movimientos)</h3>`+(logArr.length?prTable(['Hora','Quién','Acción','Nombre','Espacio'],logArr.map(x=>prTr([fmtHora(x.ts),esc(x.by||'?'),esc(x.action),esc(x.name),WK_CELLS[x.slot]?WK_CELLS[x.slot].n:esc(x.slot)]))):'<p class="pr-empty">Sin movimientos.</p>')+'</div>';
+
+  // 6. Conteo
+  const cnt=S.cnt||{},exp=S.expect||D.expect;
+  const secs=['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5'];
+  const tot=secs.reduce((a,k)=>a+(+cnt[k]||0),0);
+  r+=`<div class="pr-page"><h2>6. Conteo por sección</h2><p><b>Total:</b> ${tot} / ${exp} (${Math.round(100*tot/exp)}%)</p>`+prTable(['Sección','Conteo','Máximo'],secs.map(k=>{const mx=(S.cap&&S.cap[k]!==undefined)?S.cap[k]:(D.cap[k]||0);return prTr([`<b>${k}</b>`,cnt[k]||0,mx>0?mx:'sin límite']);}))+'</div>';
+
+  $('printReport').innerHTML=r;
+  document.body.classList.add('printing');
+  window.onafterprint=()=>document.body.classList.remove('printing');
+  setTimeout(()=>window.print(),400);
 }
 
 function showModal(title,body,btns){
