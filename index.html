@@ -1828,7 +1828,6 @@ async function walkerAssign(slot,name,action){
 async function walkerReassign(slot,name){await walkerAssign(slot,name,'volvió a estacionar a');$('modal').hidden=true;}
 async function walkerRemove(slot,name){
   if(!canWalkerEdit()){showToast('Sin permiso para editar',true);return;}
-  if(!confirm(`¿Remover a ${name}?`)) return;
   await fetch(`${WK}/last/${slot}.json`,{method:'PUT',body:JSON.stringify({name,ts:Date.now(),by:walkerUser()||'?'})});
   await fetch(`${WK}/w/${slot}.json`,{method:'DELETE'});
   await walkerLog(slot,'removió a',name);
