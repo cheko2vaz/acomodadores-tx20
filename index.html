@@ -676,11 +676,12 @@ function objList(t){
 }
 function objTurnosOf(name){return Object.keys(TURNOS).filter(t=>objList(t).includes(name));}
 const isObjUser=name=>!!name&&objTurnosOf(name).length>0;
+const isVoluntariaUser=name=>!!name&&D.roster.some(r=>r.c==='Voluntaria'&&nrm(r.n)===nrm(name));
 const walkerUser=()=>(me&&me.n)||volCurrentName||'';
-const canWalkerEdit=()=>WALKERS_EDIT_OPEN||(me&&(me.adm||me.all||me.objetos||me.walkers))||isObjUser(walkerUser());
-const canWalkerLog=()=>!!(me&&(me.adm||me.all||me.objetos));
+const canWalkerEdit=()=>WALKERS_EDIT_OPEN||(me&&(me.adm||me.all||me.objetos||me.walkers))||isObjUser(walkerUser())||isVoluntariaUser(walkerUser());
+const canWalkerLog=()=>!!(me&&(me.adm||me.all||me.objetos))||isVoluntariaUser(walkerUser());
 const canEditObjList=()=>!!(me&&(me.all||me.objetos));
-
+  
 function sectionOfSpill(x,y){
   if(x>1050) return 'Plataforma';
   if(x<500){if(y<250) return 'Vestíbulo Norte';if(y>500) return 'Vestíbulo Sur';return 'Vestíbulo Pórtico';}
@@ -776,7 +777,7 @@ function renderVolInfo(name){
   }
   const hist=volHistory(name);
   const objT=objTurnosOf(name);
-  $('btnVolWalkers').textContent=objT.length?'Objetos perdidos':'Walkers';
+    $('btnVolWalkers').textContent='Walkers';
   let html=`<div class="vol-info-card"><h2>${esc(name)}</h2><div class="sub">Tus turnos y ubicación</div>`;
   if(objT.length){
     html+=`<div style="background:var(--ok-bg);border-left:4px solid var(--ok);padding:10px 12px;border-radius:6px;margin-bottom:12px;font-size:calc(14px*var(--fs))"><b style="color:var(--ok)">Objetos perdidos · Cuarto 123</b><br>También ayudas en este departamento en: ${objT.map(t=>`<b>T${t}</b> (${esc(TURNOS[t].name)})`).join(', ')}</div>`;
